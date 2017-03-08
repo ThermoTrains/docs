@@ -1,0 +1,8 @@
+# IDE specifics
+.idea/
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+build/

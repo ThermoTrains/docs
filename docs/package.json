@@ -1,0 +1,26 @@
+{
+  "name": "thermotrains-docs",
+  "version": "0.0.1",
+  "description": "Documentation of a study of thermal detection of isolation problems on Swiss trains",
+  "scripts": {
+    "build": "npm run build:html && npm run build:pdf",
+    "build:html": "node ./js/build.js",
+    "build:pdf": "prince --javascript build/index.html -o build/thermo-trains.pdf"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thermotrains/thermotrains.git"
+  },
+  "author": "Sebastian Häni <haeni.sebastian@gmail.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/thermotrains/thermotrains/issues"
+  },
+  "homepage": "https://github.com/thermotrains/thermotrains#readme",
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "normalize.css": "^5.0.0",
+    "nunjucks": "^3.0.0"
+  }
+}
