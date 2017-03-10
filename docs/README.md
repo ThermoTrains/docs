@@ -1,7 +1,8 @@
 # Thermo Trains Documentation
 
-## Generate
+## Generate PDF
 
-1. Install PrinceXML
+1. Install [PrinceXML](https://www.princexml.com/)
 2. `npm install`
 3. `npm run build`
+
