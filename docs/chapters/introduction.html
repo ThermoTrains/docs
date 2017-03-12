@@ -1,0 +1,89 @@
+<div class="chapter">
+    <h2 class="break">Introduction</h2>
+
+    <h3>Current Situation</h3>
+
+    <p>
+        WorldSkills International is a non-profit membership association which organizes a world championship in skilled
+        professions every two years. The author of this thesis is employed by WorldSkills International. To manage
+        members
+        and to organize the preparation and execution of the competition the organization runs multiple web
+        applications.
+        The mix of PHP and Java applications consists of legacy systems and a newly developed software system with a
+        service-oriented architecture.
+    </p>
+
+    <p>
+        All web software is running on rented virtual servers with a Linux operating system. They are managed manually
+        using
+        a web control panel (<a href="#ref-plesk">Parallels Plesk</a>). Changes to the infrastructure are done by the
+        four
+        internal software developers manually.
+    </p>
+
+    <p>
+        Fundamental changes like the migration to a new server or the switch to a new runtime engine require a lot of
+        knowledge about the existing system and manual testing of the new installation.
+    </p>
+
+    <h3>Objectives</h3>
+
+    <p>
+        The main goal of this thesis is to develop a concept for a versioned, testable and reproducible infrastructure.
+        Changes to the system should be visible for the IT team and traceable if needed. As a result knowledge is shared
+        in
+        written form.
+    </p>
+
+    <p class="break">
+        To achieve this goal, manual steps to build or change the infrastructure should be replaced by code stored in a
+        revision control system. Three different types of software for provisioning of servers and deployment exist at
+        the
+        moment:
+    </p>
+
+    <ul>
+        <li>Software containers: Software needed to run an application is encapsulated and run in operating system-level
+            virtualization. Examples are <a href="#ref-docker">Docker</a>, <a href="#ref-rkt">rkt</a>.
+        </li>
+        <li>Configuration repository: A centralized repository with configuration files and software is used to
+            configure
+            servers. Examples are <a href="#ref-chef">Chef</a>, <a href="#ref-puppet">Puppet</a>, <a
+                    href="#ref-cfengine">CFEngine</a>.
+        </li>
+        <li>Remote command execution: Installation commands and configuration files are transmitted in a coordinated
+            manner
+            to a remote server. Examples are <a href="#ref-ansible">Ansible</a>, <a href="#ref-saltstack">SaltStack</a>,
+            <a href="#ref-rex">Rex</a>.
+        </li>
+    </ul>
+
+    <p>
+        These types of software should be evaluated and an architecture documentation as well as a test concept should
+        be
+        written.
+        The proposed architecture should then be tested in a proof-of-concept.
+    </p>
+
+    <h3>Tasks</h3>
+
+    <p>
+        The following tasks will be completed by the student as part of the bachelor thesis:
+    </p>
+
+    <ol>
+        <li>Analyze infrastructure requirements</li>
+        <li>Test requirements with popular representatives for each type of provisioning software</li>
+        <li>Evaluate provisioning software</li>
+        <li>Write architecture documentation</li>
+        <li>Develop test concept</li>
+        <li>Implement proof-of-concept with automated provisioning and deployment</li>
+    </ol>
+
+    <h3 class="break">Project Management</h3>
+
+    <p>
+        The following gantt diagram shows an overview of the actual timeline during the project as well as the dates of
+        the most important milestones.
+    </p>
+</div>

@@ -21,7 +21,7 @@ h2 {
         content: string(page-title);
         padding-left: 90px;
         padding-top: 30px;
-        font-family: "Helvetica Neue", Helvetica, sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-size: 0.75em;
         color: #888;
     }
@@ -29,7 +29,7 @@ h2 {
     @top-right {
         content: string(chapter-title);
         padding-top: 25px;
-        font-family: "Helvetica Neue", Helvetica, sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-size: 0.75em;
         color: #888;
     }
@@ -37,14 +37,14 @@ h2 {
     @bottom-left {
         content: string(version);
         padding-left: 90px;
-        font-family: "Helvetica Neue", Helvetica, sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-size: 0.75em;
         color: #888;
     }
 
     @bottom-right {
         content: counter(page);
-        font-family: "Helvetica Neue", Helvetica, sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-size: 0.75em;
         color: #888;
     }
@@ -71,13 +71,12 @@ h2 {
     }
 }
 
-
 /* HTML elements */
 
 html {
     color: #111;
     line-height: 1.6;
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     text-rendering: optimizeLegibility;
     counter-reset: chapter -2;
     font-size: 10pt;
@@ -253,7 +252,6 @@ dd {
     margin-bottom: 1em;
 }
 
-
 /* titles */
 
 h1 {
@@ -310,7 +308,6 @@ h3.nonr:before {
     content: none;
 }
 
-
 /* references */
 
 a[href^="#ref-"]:before {
@@ -353,7 +350,6 @@ a[href^="#ref-"]:after {
 *[id^="ref-"]:before {
     content: "[" counter(reference) "] ";
 }
-
 
 /* specials */
 
@@ -403,7 +399,6 @@ a[href^="#ref-"]:after {
     padding-left: 90px;
 }
 
-
 /* screen view */
 
 @media screen {
@@ -444,7 +439,6 @@ a[href^="#ref-"]:after {
 }
 
 @media screen and (min-width: 40.5em) {
-
     .chapter {
         max-width: 700px;
     }

@@ -1,0 +1,42 @@
+<div class="chapter">
+
+<h2 class="break nonr">Abstract</h2>
+
+<p>
+    WorldSkills International manages its web infrastructure manually with a small team of developers. There is no
+    designated system administrator, the responsibility of managing the web infrastructure is shared among the
+    developers. The author of this thesis is employed as a developer by WorldSkills International. Target of the thesis
+    is to develop a concept for a testable and reproducible infrastructure where all changes are done within a revision
+    control system. This increases visibility of changes within the developers team and makes the change tracable.
+</p>
+
+<p>
+    Many software solutions exist for provisioning of servers and deployment of applications. They can be grouped into
+    software containers, configuration repository, and remote command execution. With software containers the software
+    needed to run an application is encapsulated and run in operating system-level virtualization. A configuration
+    repository is a centralized repository with configuration files and software is used to configure servers based on
+    the configuration files. With remote command execution the installation commands and configuration files are
+    transmitted in a coordinated manner to a remote server.
+</p>
+
+<p>
+    The current infrastructure requirements were analyzed and documented. The different types of software for
+    provisioning of servers and deployment of applications were considered for solving the problem. Each type was
+    evaluated with a popular representative according to the requirements. The evaluation showed that software
+    containers need additional software for the orchestration of the provisioning and deployment. Due to the additional
+    complexity and the missing requirements for software containers their usage was delayed to a potential separate
+    project after this thesis. The automation software Ansible was choosen as best fitting for the requirements.
+</p>
+
+<p>
+    An architecture concept for an automated infrastructure was developed and successfully verified in a
+    proof-of-concept. All software and configuration files required are defined in structured text files that can be
+    read and transmitted to the server with Ansible. Local development and testing can be done in a virtual machine on
+    the developers’ computer. The whole infrastructure can easily be cloned by running the provisioning scripts against
+    new servers. A continious integration server executes the provisioning script after each change and verifies the
+    infrastructure with system tests. The automated creation of the proof-of-concept infrastructure takes about 20
+    minutes. The automated process of setting up a new infrastructure environment for testing is simply initiated by
+    creating a new branch adhering to a naming scheme. The implementation of the architecture concept and a migration to
+    the new automated infrastructure is planned for fall 2015.
+</p>
+</div>

@@ -51,7 +51,7 @@ var doc = doc || {};
 
     doc.createListItem = function (node, id, chapter, subChapter) {
 
-        var li, a, spanChapter, spanTitle;
+        var li, a;
 
         node.attr('id', id);
 
@@ -66,7 +66,6 @@ var doc = doc || {};
 
         $('<span>').appendTo(a).attr('class', 'toc-nr').text(chapter);
 
-        spanTitle = $('span');
         $('<span>').appendTo(a).attr('class', 'toc-title').text(node.text());
 
         li.append(a);
@@ -119,10 +118,8 @@ var doc = doc || {};
     }
 
     $(function () {
-
         var document = new doc.Document();
         document.render();
-
     });
 
 })(jQuery);

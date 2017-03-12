@@ -16,7 +16,6 @@ gulp.task('clean', function () {
 });
 
 gulp.task('nunjucks', function () {
-    //nunjucksRender.nunjucks.configure(['app/templates/'], {watch: false});
     return gulp.src('index.html')
         .pipe(nunjucksRender())
         .on('error', function (error) {
@@ -47,7 +46,7 @@ gulp.task('serve', ['default'], function () {
 
     // Restart the server when file changes
     gulp.watch(['styles/**/*.css'], function (file) {
-        runSequence('sass', function () {
+        runSequence('styles', function () {
             server.notify.apply(server, [file]);
         });
     });
