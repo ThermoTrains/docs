@@ -1,11 +1,17 @@
+const fs = require('fs');
+
 const gulp = require('gulp');
 const gutil = require('gulp-util');
-const runSequence = require('run-sequence');
-const nunjucksRender = require('gulp-nunjucks-render');
 const gls = require('gulp-live-server');
+const nunjucksRender = require('gulp-nunjucks-render');
+
+const runSequence = require('run-sequence');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const del = require('del');
+const moment = require('moment');
+
+const pkg = JSON.parse(fs.readFileSync('./package.json'));
 
 gulp.task('default', function () {
     runSequence('clean', ['nunjucks', 'js', 'styles', 'images']);
@@ -17,7 +23,12 @@ gulp.task('clean', function () {
 
 gulp.task('nunjucks', function () {
     return gulp.src('index.html')
-        .pipe(nunjucksRender())
+        .pipe(nunjucksRender({
+            data: {
+                documentVersion: pkg.version,
+                buildDate: moment().format('DD.MM.YYYY')
+            }
+        }))
         .on('error', function (error) {
             gutil.log(gutil.colors.red('Error (' + error.plugin + '): ' + error.message));
             this.emit('end');

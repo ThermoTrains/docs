@@ -1,63 +1,78 @@
-var doc = doc || {};
-
 (function ($) {
     "use strict";
 
-    doc.Document = function () {
+    var Document = function () {
 
     };
 
-    doc.Document.prototype.render = function () {
+    Document.prototype.render = function () {
         this.renderTableOfContents();
         this.renderTableOfFigures();
     };
 
-    doc.Document.prototype.renderTableOfContents = function () {
+    Document.prototype.renderTableOfContents = function () {
 
-        var headers = $('h2'),
-            toc = $('#toc'),
-            i, j, node, id, chapter, li, sli, childs, ol;
+        var headers = $('h2');
+        var toc = $('#toc');
 
         // skip first two headers (Abstract, TOC)
         headers = headers.slice(2);
 
         headers.each(function (i, element) {
-
             element = $(element);
 
-            i = i + 1;
-            id = 'chapter-' + i;
-            li = doc.createListItem(element, id, i);
+            i++;
+            var id = 'chapter-' + i;
+            var li = createListItem(element, id, i);
 
-            childs = element.closest('.chapter').find('h3');
-            ol = $('<ol>');
+            var children = element.closest('.chapter').find('h3');
+            var ol = $('<ol>');
 
-            childs.each(function (j, child) {
+            children.each(function (j, child) {
 
                 child = $(child);
 
-                j = j + 1;
+                j++;
                 id = 'chapter-' + i + '-' + j;
-                sli = doc.createListItem(child, id, i, j);
+                var sli = createListItem(child, id, i, j);
                 ol.append(sli);
 
             });
 
             li.append(ol);
             toc.append(li);
-
         });
     };
 
-    doc.createListItem = function (node, id, chapter, subChapter) {
+    Document.prototype.renderTableOfFigures = function () {
 
-        var li, a;
+        var captions = $('figcaption');
+        var figures = $('#figures');
 
+        captions.each(function (i, caption) {
+
+            caption = $(caption);
+            var figure = caption.parents('figure');
+            var id = 'figure-' + i;
+
+            figure.attr('id', id);
+            caption.prepend('<span>Fig. ' + (i + 1) + ' </span>');
+
+            var li = $('<li>');
+
+            var a = $('<a>').attr('href', '#' + id).text(caption.text());
+
+            li.append(a);
+            figures.append(li);
+        });
+    };
+
+    function createListItem(node, id, chapter, subChapter) {
         node.attr('id', id);
 
-        li = $('<li>');
+        var li = $('<li>');
 
-        a = $('<a>').attr('href', '#' + id);
+        var a = $('<a>').attr('href', '#' + id);
 
         chapter = '' + chapter;
         if (typeof subChapter != 'undefined') {
@@ -71,55 +86,23 @@ var doc = doc || {};
         li.append(a);
 
         return li;
-    };
+    }
 
-    doc.Document.prototype.renderTableOfFigures = function () {
+    function refFootnote(href) {
+        var reference = $(href);
+        var link = reference.find('a');
+        var ref = reference.find('.ref');
 
-        var captions = $('figcaption'),
-            figures = $('#figures'),
-            figure, li, a, id;
-
-        captions.each(function (i, caption) {
-
-            caption = $(caption);
-            figure = caption.parents('figure');
-            id = 'figure-' + i;
-
-            figure.attr('id', id);
-            caption.prepend('<span>Fig. ' + (i + 1) + ' </span>');
-
-            li = $('<li>');
-
-            a = $('<a>').attr('href', '#' + id).text(caption.text());
-
-            li.append(a);
-            figures.append(li);
-        });
-    };
-
-    doc.refFootnote = function (href) {
-
-        var reference = $(href),
-            link = reference.find('a'),
-            ref = reference.find('.ref'),
-            footnote;
-
-        if (link.length > 0) {
-            footnote = link.text();
-        } else {
-            footnote = ref.text();
-        }
-
-        return footnote;
-    };
+        return link.length > 0 ? link.text() : ref.text();
+    }
 
     if (typeof Prince != 'undefined') {
-        Prince.addScriptFunc('ref-footnote', doc.refFootnote);
+        Prince.addScriptFunc('ref-footnote', refFootnote);
     }
 
     $(function () {
-        var document = new doc.Document();
-        document.render();
+        var doc = new Document();
+        doc.render();
     });
 
 })(jQuery);

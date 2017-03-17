@@ -366,6 +366,11 @@ a[href^="#ref-"]:after {
     margin-bottom: 16.5em;
 }
 
+.front td {
+    border: none;
+    font-size: 1em;
+}
+
 #toc,
 #toc ol,
 #figures {
