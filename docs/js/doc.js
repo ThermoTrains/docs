@@ -8,10 +8,10 @@
   Document.prototype.render = function () {
     this.renderTableOfContents();
     this.renderTableOfFigures();
+    this.renderBibliography();
   };
 
   Document.prototype.renderTableOfContents = function () {
-
     var headers = $('h2');
     var toc = $('#toc');
 
@@ -45,7 +45,6 @@
   };
 
   Document.prototype.renderTableOfFigures = function () {
-
     var captions = $('figcaption');
     var figures = $('#figures');
 
@@ -59,7 +58,6 @@
       caption.prepend('<span>Fig. ' + (i + 1) + ' </span>');
 
       var li = $('<li>');
-
       var a = $('<a>').attr('href', '#' + id).text(caption.text());
 
       li.append(a);
@@ -67,11 +65,20 @@
     });
   };
 
+  Document.prototype.renderBibliography = function () {
+    var references = $('.reference-item');
+    var bibliography = $('#references');
+
+    references.each(function (i, reference) {
+      bibliography.append($(reference));
+      // reference.remove();
+    });
+  };
+
   function createListItem(node, id, chapter, subChapter) {
     node.attr('id', id);
 
     var li = $('<li>');
-
     var a = $('<a>').attr('href', '#' + id);
 
     chapter = '' + chapter;
@@ -80,9 +87,7 @@
     }
 
     $('<span>').appendTo(a).attr('class', 'toc-nr').text(chapter);
-
     $('<span>').appendTo(a).attr('class', 'toc-title').text(node.text());
-
     li.append(a);
 
     return li;

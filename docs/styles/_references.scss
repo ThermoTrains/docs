@@ -38,3 +38,7 @@ a[href^="#ref-"]:after {
 *[id^="ref-"]:before {
   content: "[" counter(reference) "] ";
 }
+
+.reference-item {
+  text-align: left;
+}
