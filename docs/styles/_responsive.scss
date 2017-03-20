@@ -1,0 +1,92 @@
+@media screen {
+
+  html {
+    font-size: 1em;
+  }
+
+  body {
+    margin: 4em 3em 6em 3em;
+  }
+
+  a {
+    color: $palette-primary;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .front .cover {
+    margin-bottom: 1em;
+  }
+
+  .chapter {
+    border-top: 1px solid #ddd;
+    margin-bottom: 2em;
+  }
+
+  pre code {
+    font-size: 0.75em;
+  }
+
+  .break {
+    margin-top: 2em;
+  }
+}
+
+@media screen and (min-width: 40.5em) {
+  .chapter {
+    max-width: 700px;
+  }
+}
+
+@media screen and (max-width: 40.5em) {
+
+  html {
+    font-size: 0.8em;
+  }
+
+  body {
+    margin: 3em 0 4em 0;
+  }
+
+  h1,
+  h2,
+  h2.nonr,
+  h3,
+  h3.nonr,
+  h4,
+  p,
+  figure,
+  figure.full,
+  #figures li,
+  #toc > li {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  ul,
+  ol {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  h2:before,
+  h3:before {
+    margin-left: 0;
+    width: 30px;
+    padding-right: 10px;
+    text-align: left;
+  }
+
+  figure,
+  *[id^="ref-"] {
+    display: block;
+    overflow: scroll;
+  }
+}

@@ -4,6 +4,7 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 const gls = require('gulp-live-server');
 const nunjucksRender = require('gulp-nunjucks-render');
+const sass = require('gulp-sass');
 
 const runSequence = require('run-sequence');
 const source = require('vinyl-source-stream');
@@ -42,7 +43,8 @@ gulp.task('js', function () {
 });
 
 gulp.task('styles', function () {
-  gulp.src('{styles/**/*.css,node_modules/normalize.css/normalize.css}')
+  gulp.src('{styles/**/main.scss,node_modules/normalize.css/normalize.css}')
+    .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('build/'));
 });
 
@@ -56,7 +58,7 @@ gulp.task('serve', ['default'], function () {
   server.start();
 
   // Restart the server when file changes
-  gulp.watch(['styles/**/*.css'], function (file) {
+  gulp.watch(['styles/**/*.scss'], function (file) {
     runSequence('styles', function () {
       server.notify.apply(server, [file]);
     });

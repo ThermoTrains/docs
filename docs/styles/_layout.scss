@@ -1,0 +1,71 @@
+
+title {
+  string-set: page-title content();
+}
+
+.version {
+  string-set: version content();
+}
+
+h2 {
+  string-set: chapter-title content();
+}
+
+@page {
+  size: a4;
+  margin: 30mm 20mm 40mm 20mm;
+  counter-reset: footnote;
+
+  @top-left {
+    content: string(page-title);
+    padding-left: 90px;
+    padding-top: 30px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.75em;
+    color: #888;
+  }
+
+  @top-right {
+    content: string(chapter-title);
+    padding-top: 25px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.75em;
+    color: #888;
+  }
+
+  @bottom-left {
+    content: string(version);
+    padding-left: 90px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.75em;
+    color: #888;
+  }
+
+  @bottom-right {
+    content: counter(page);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.75em;
+    color: #888;
+  }
+
+  @footnotes {
+    padding-top: 1em;
+    margin-bottom: -13mm;
+  }
+}
+
+@page front {
+  margin-bottom: 0;
+
+  @top-left {
+    content: none;
+  }
+
+  @bottom-left {
+    content: none;
+  }
+
+  @bottom-right {
+    content: none;
+  }
+}
