@@ -42,3 +42,15 @@ a[href^="#ref-"]:after {
 .reference-item {
   text-align: left;
 }
+
+.retreived {
+  white-space: nowrap;
+
+  &:before {
+    content: '(abgerufen am ';
+  }
+
+  &:after {
+    content: ')';
+  }
+}

@@ -1,89 +1,81 @@
 <div class="chapter">
-  <h2 class="break">Introduction</h2>
+  <h2 class="break">Einleitung</h2>
 
-  <h3>Current Situation</h3>
-
-  <p>
-    WorldSkills International is a non-profit membership association which organizes a world championship in skilled
-    professions every two years. The author of this thesis is employed by WorldSkills International. To manage
-    members
-    and to organize the preparation and execution of the competition the organization runs multiple web
-    applications.
-    The mix of PHP and Java applications consists of legacy systems and a newly developed software system with a
-    service-oriented architecture.
-  </p>
+  <h3>Ausgangslage</h3>
 
   <p>
-    All web software is running on rented virtual servers with a Linux operating system. They are managed manually
-    using
-    a web control panel (<a href="#ref-plesk">Parallels Plesk</a>). Changes to the infrastructure are done by the
-    four
-    internal software developers manually.
+    Die Abteilung des SBB Personenverkehrs möchte bis 2020 im Rahmen ihres
+    Energieeinsparungsprojekts 600 Gigawatt einsparen. Eine Massnahme daraus ist,
+    Schienenfahrzeuge automatisch auf fehlerhafte Isolationen zu prüfen. Durch die
+    Bedingungen, denen die Materialien im täglichen Verkehr ausgesetzt sind, kommt es vor, dass
+    sich Isolationsteile vor allem im Dachbereich lösen oder aufgrund von Materialfehlern oder
+    Wasser- und Feuchtigkeitseintritt Schaden nehmen und zerfallen.
   </p>
+
+  <h3>Ziel</h3>
 
   <p>
-    Fundamental changes like the migration to a new server or the switch to a new runtime engine require a lot of
-    knowledge about the existing system and manual testing of the new installation.
+    Fehlerhafte Fahrzeuge werden automatisch erkannt und in einem Servicecenter mit
+    Erkennungsnummer gemeldet.
   </p>
 
-  <h3>Objectives</h3>
+  <h3>Projektidee</h3>
 
   <p>
-    The main goal of this thesis is to develop a concept for a versioned, testable and reproducible infrastructure.
-    Changes to the system should be visible for the IT team and traceable if needed. As a result knowledge is shared
-    in
-    written form.
+    Mit Hilfe einer Wärmebildkamera sollen die Fahrzeuge auf Wärmeverlust untersucht werden.
+    So kann man defekte Wärmebrücken und Isolationen sichtbar machen. Wir werden uns als
+    erstes auf Wärmebildkameras fokussieren. Es soll aber nicht ausgeschlossen sein auch
+    andere Erkennungsmöglichkeiten zu benutzen.
   </p>
 
-  <p class="break">
-    To achieve this goal, manual steps to build or change the infrastructure should be replaced by code stored in a
-    revision control system. Three different types of software for provisioning of servers and deployment exist at
-    the
-    moment:
-  </p>
-
-  <ul>
-    <li>Software containers: Software needed to run an application is encapsulated and run in operating system-level
-      virtualization. Examples are <a href="#ref-docker">Docker</a>, <a href="#ref-rkt">rkt</a>.
-    </li>
-    <li>Configuration repository: A centralized repository with configuration files and software is used to
-      configure
-      servers. Examples are <a href="#ref-chef">Chef</a>, <a href="#ref-puppet">Puppet</a>, <a
-        href="#ref-cfengine">CFEngine</a>.
-    </li>
-    <li>Remote command execution: Installation commands and configuration files are transmitted in a coordinated
-      manner
-      to a remote server. Examples are <a href="#ref-ansible">Ansible</a>, <a href="#ref-saltstack">SaltStack</a>,
-      <a href="#ref-rex">Rex</a>.
-    </li>
-  </ul>
-
-  <p>
-    These types of software should be evaluated and an architecture documentation as well as a test concept should
-    be
-    written.
-    The proposed architecture should then be tested in a proof-of-concept.
-  </p>
-
-  <h3>Tasks</h3>
-
-  <p>
-    The following tasks will be completed by the student as part of the bachelor thesis:
-  </p>
+  <h3>Ziele Phase 1</h3>
 
   <ol>
-    <li>Analyze infrastructure requirements</li>
-    <li>Test requirements with popular representatives for each type of provisioning software</li>
-    <li>Evaluate provisioning software</li>
-    <li>Write architecture documentation</li>
-    <li>Develop test concept</li>
-    <li>Implement proof-of-concept with automated provisioning and deployment</li>
+    <li><strong>Machbarkeit klären:</strong>​ Die Machbarkeit des Vorhabens ist nicht gegeben. Im Projekt 2
+      stellen wir abschliessend fest, ob das Projekt mit der heutigen Hardware, Umgebung,
+      Prozessen realisierbar ist.
+    </li>
+    <li><strong>Evaluation Hardware:</strong>​ Wir finden die nötige Hardware und haben abschliessend
+      festgestellt, ob sie unseren Anforderungen genügt. Auch Evaluieren wir die “Box” die
+      evtl. nicht nur eine Kamera sondern auch andere Hardware wie Computer, CMOS
+      Kameras und ein GSM Modul enthält.
+    </li>
+    <li><strong>Evaluation​ Computer Vision Pipeline:</strong>​ Wir finden eine praktikable Pipeline für die
+      Verarbeitung des Videostreams der Züge.
+    </li>
+    <li><strong>Evaluation Standorte:</strong> ​Wir finden geeignete Standorte um unsere “Box” aufzustellen
+      und nehmen auch gleich ein Test-Set an Daten auf, das wir für Experimente brauchen
+      können. Wir befragen Experten bei der SBB, die uns helfen die Daten manuell zu
+      klassifizieren.
+    </li>
+  </ol>
+
+  <h3>Ziele Phase 2</h3>
+
+  <p>In der Phase 2 wollen wir uns vor allem um die Fertigstellung unserer "Box" kümmern.</p>
+
+  <ol>
+    <li><strong>Hardware:​</strong> Die "Box" ist soweit ausgereift, dass sie längere Zeit aufgestellt werden
+      kann und ohne Beobachter Daten sammelt.
+    </li>
+    <li><strong>Kunde:</strong>​ Der Kunde, die SBB, soll beurteilen können, ob sich breiter Einsatz des System
+      lohnt. Über die Fortführung des Projektes kann entschieden werden.
+    </li>
+    <li><strong>Computer Vision Pipeline:</strong>​ Die Pipeline ist aufgrund vieler Testdaten ausgereift. Die
+      verschiedenen Einflussfaktoren wurden erkannt und werden berücksichtigt.
+    </li>
+    <li><strong>Klassifizierung:</strong> ​Die Erkennung der fehlerhaften Stellen funktioniert mit einer zufrieden
+      stellenden Rate. Eine Null-Rate an “false negatives” ist fast vorhanden. Es gibt nur
+      wenige “false positives”.
+    </li>
+    <li><strong>Integration:</strong> ​Die Box ist integriert in ein System der SBB. Die Benachrichtigung an das
+      Servicecenter funktioniert.
+    </li>
   </ol>
 
   <h3 class="break">Project Management</h3>
 
   <p>
-    The following gantt diagram shows an overview of the actual timeline during the project as well as the dates of
-    the most important milestones.
+    TODO
   </p>
 </div>
