@@ -1,9 +1,13 @@
 # IDE specifics
 .idea/
+.vs/
+*.user
 
 # Dependencies
 node_modules/
 
 # Build artifacts
 build/
-npm-debug.log
+
+# Log files
+*.log
