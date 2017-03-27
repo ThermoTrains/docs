@@ -5,5 +5,10 @@
 
 #pragma once
 
+
 #include <stdio.h>
-#include <tchar.h>
+#ifdef _WIN32
+  #include <tchar.h>
+#elif __APPLE__
+  #include <wchar.h>
+#endif
