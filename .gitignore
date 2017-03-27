@@ -8,6 +8,11 @@ node_modules/
 
 # Build artifacts
 build/
+bin
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
 
 # Log files
 *.log
