@@ -9,7 +9,10 @@ node_modules/
 # Build artifacts
 build/
 bin
-cmake-build-debug/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
 
 # Log files
 *.log

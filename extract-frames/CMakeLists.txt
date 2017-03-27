@@ -9,14 +9,14 @@ project(extract-frames)
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
 set(CMAKE_COLOR_MAKEFILE TRUE)
 set(CMAKE_SUPPRESS_REGENERATION TRUE)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_HOME_DIRECTORY}/build")
 
 if(WIN32)
    if(MSVC)
       add_definitions(-DGLEW_STATIC)
       set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/INCREMENTAL:NO ${CMAKE_EXE_LINKER_FLAGS}")
       set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG /NODEFAULTLIB:MSVCRT ${CMAKE_EXE_LINKER_FLAGS}")
-   endif(MSVC)      
+   endif(MSVC)
 endif(WIN32)
 
 if(CMAKE_CONFIGURATION_TYPES)
@@ -35,22 +35,22 @@ endif()
 
 # configure the Visual Studio user file
 if(WIN32)
-   if(MSVC)
-	# find user and system name
-	set(VC_USER_SYSTEM_NAME $ENV{USERDOMAIN} CACHE STRING SystemName)
-	set(VC_USER_USER_NAME $ENV{USERNAME} CACHE STRING UserName)
+    if(MSVC)
+        # find user and system name
+        set(VC_USER_SYSTEM_NAME $ENV{USERDOMAIN} CACHE STRING SystemName)
+        set(VC_USER_USER_NAME $ENV{USERNAME} CACHE STRING UserName)
 
-	# configure the template file
-	set(USER_FILE ${PROJECT_NAME}.vcxproj.user)
-	set(OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/${USER_FILE})
+        # configure the template file
+        set(USER_FILE ${PROJECT_NAME}.vcxproj.user)
+        set(OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/${USER_FILE})
 
-	# setup working directories in template file
-	set(USERFILE_WORKING_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/bin/Debug)
-	set(USERFILE_WORKING_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/bin/Release)
-	set(USERFILE_ARGUMENTS_RELEASE "")
-	set(USERFILE_ARGUMENTS_DEBUG "")
-	configure_file(${CMAKE_HOME_DIRECTORY}/_CMAKE/CG-PROJECTS.vcxproj.usertemplate ${OUTPUT_PATH} @ONLY)
-   endif(MSVC)
+        # setup working directories in template file
+        set(USERFILE_WORKING_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/bin/Debug)
+        set(USERFILE_WORKING_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/bin/Release)
+        set(USERFILE_ARGUMENTS_RELEASE "")
+        set(USERFILE_ARGUMENTS_DEBUG "")
+        configure_file(${CMAKE_HOME_DIRECTORY}/_CMAKE/THERMOTRAINS.vcxproj.usertemplate ${OUTPUT_PATH} @ONLY)
+    endif(MSVC)
 endif(WIN32)
 
 # find sources
@@ -68,7 +68,7 @@ file(GLOB HDRS
 source_group("inc" FILES ${HDRS})
 
 # find packages and libs
-find_package( OpenCV REQUIRED)
+find_package(OpenCV REQUIRED)
 
 # find framework (specific to mac)
 if (APPLE)
@@ -96,4 +96,3 @@ set(EXECUTABLE_NAME ${PROJECT_NAME})
 add_executable(${EXECUTABLE_NAME} ${SRCS} ${HDRS} ${GLSL})
 # add framework (specific to mac)
 target_link_libraries(${EXECUTABLE_NAME} ${LIBS_RELEASE} ${LIBS_DEBUG} ${COCOA_LIBRARY})
-

@@ -11,7 +11,15 @@ endif()
 
 # setup CMAKE default search paths
 set(SOURCE_DIR .)
-set(CMAKE_MODULE_PATH "${CMAKE_HOME_DIRECTORY}/_CMAKE;${CMAKE_MODULE_PATH}")
+set(CMAKE_MODULE_PATH "${CMAKE_HOME_DIRECTORY}/_cmake;${CMAKE_MODULE_PATH}")
+
+if(WIN32)
+  set(CMAKE_PREFIX_PATH "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/x64/vc14/lib")
+endif()
+
+if(APPLE)
+  set(CMAKE_PREFIX_PATH "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx")
+endif()
 
 # macro to force the build directory to be different from source directory
 include(MACRO_ENSURE_OUT_OF_SOURCE_BUILD)
@@ -22,7 +30,7 @@ include(MACRO_GET_DIRECTORIES)
 GET_DIRECTORIES(PROJECTS extract-frames ${SOURCE_DIR})
 
 if(APPLE)
-  # we fix the min. deployment target platform version 
+  # we fix the min. deployment target platform version
   # (for convenience reasons) in the project settings of Xcode
   set(CMAKE_OSX_DEPLOYMENT_TARGET 10.12)
 endif()
@@ -35,4 +43,3 @@ foreach(PROJECT ${PROJECTS})
 		add_subdirectory(${PROJECT})
 	endif(EXISTS ${PROJECT})
 endforeach(PROJECT ${PROJECTS})
-
