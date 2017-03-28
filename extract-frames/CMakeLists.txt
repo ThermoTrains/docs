@@ -13,7 +13,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_HOME_DIRECTORY}/build")
 
 if(WIN32)
    if(MSVC)
-      add_definitions(-DGLEW_STATIC)
       set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/INCREMENTAL:NO ${CMAKE_EXE_LINKER_FLAGS}")
       set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG /NODEFAULTLIB:MSVCRT ${CMAKE_EXE_LINKER_FLAGS}")
    endif(MSVC)
@@ -72,9 +71,9 @@ find_package(OpenCV REQUIRED)
 
 # find framework (specific to mac)
 if (APPLE)
-	find_library(COCOA_LIBRARY Cocoa)
+    find_library(COCOA_LIBRARY Cocoa)
 elseif()
-	set(COCOA_LIBRARY "")
+    set(COCOA_LIBRARY "")
 endif()
 
 ## setup package headers
@@ -96,3 +95,21 @@ set(EXECUTABLE_NAME ${PROJECT_NAME})
 add_executable(${EXECUTABLE_NAME} ${SRCS} ${HDRS} ${GLSL})
 # add framework (specific to mac)
 target_link_libraries(${EXECUTABLE_NAME} ${LIBS_RELEASE} ${LIBS_DEBUG} ${COCOA_LIBRARY})
+
+# copy static libraries to binary directory
+if (WIN32)
+    file(GLOB OPEN_CV_DLLS
+        "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/x64/vc14/bin/*.dll"
+    )
+endif()
+
+if (APPLE)
+    file(GLOB OPEN_CV_DLLS
+        "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx/*.so"
+    )
+endif()
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${OPEN_CV_DLLS}
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
