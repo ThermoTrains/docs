@@ -66,27 +66,30 @@ file(GLOB HDRS
 )
 source_group("inc" FILES ${HDRS})
 
+if(WIN32)
+    include_directories(${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/x64/vc14/lib)
+    file(GLOB LIBRARIES "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/x64/vc14/lib/*.lib")
+endif()
+
+if(APPLE)
+    include_directories(${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx)
+    file(GLOB LIBRARIES "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx/*.dylib")
+endif()
+
+message("LIBRARIES = ${LIBRARIES}")
+
 # find packages and libs
 find_package(OpenCV REQUIRED)
 
-# find framework (specific to mac)
-if (APPLE)
-    find_library(COCOA_LIBRARY Cocoa)
-elseif()
-    set(COCOA_LIBRARY "")
-endif()
-
-## setup package headers
-include_directories( ${OpenCV_INCLUDE_DIRS} )
-
 # setup debug/release libraries
 set(LIBS_DEBUG)
-foreach(lib; ${OpenCV_LIBS})
+foreach(lib; ${LIBRARIES})
+    MESSAGE( STATUS "LIB: " ${lib} )
     list(APPEND LIBS_DEBUG debug ${lib})
 endforeach()
 
 set(LIBS_RELEASE)
-foreach(lib; ${OpenCV_LIBS})
+foreach(lib; ${LIBRARIES})
     list(APPEND LIBS_RELEASE optimized ${lib})
 endforeach()
 
