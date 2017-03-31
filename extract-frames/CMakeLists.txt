@@ -68,23 +68,23 @@ source_group("inc" FILES ${HDRS})
 
 if(APPLE)
     include_directories(${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx)
-    file(GLOB LIBRARIES "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx/*.dylib")
+    file(GLOB OpenCV_LIBS "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx/*.dylib")
 endif()
-
-message("LIBRARIES = ${LIBRARIES}")
 
 # find packages and libs
 find_package(OpenCV REQUIRED)
 
+## setup package headers
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+
 # setup debug/release libraries
 set(LIBS_DEBUG)
-foreach(lib; ${LIBRARIES})
-    MESSAGE( STATUS "LIB: " ${lib} )
+foreach(lib; ${OpenCV_LIBS})
     list(APPEND LIBS_DEBUG debug ${lib})
 endforeach()
 
 set(LIBS_RELEASE)
-foreach(lib; ${LIBRARIES})
+foreach(lib; ${OpenCV_LIBS})
     list(APPEND LIBS_RELEASE optimized ${lib})
 endforeach()
 
@@ -92,7 +92,7 @@ endforeach()
 set(EXECUTABLE_NAME ${PROJECT_NAME})
 add_executable(${EXECUTABLE_NAME} ${SRCS} ${HDRS} ${GLSL})
 # add framework (specific to mac)
-target_link_libraries(${EXECUTABLE_NAME} ${LIBS_RELEASE} ${LIBS_DEBUG} ${COCOA_LIBRARY})
+target_link_libraries(${EXECUTABLE_NAME} ${LIBS_RELEASE} ${LIBS_DEBUG})
 
 # copy static libraries to binary directory
 if (WIN32)

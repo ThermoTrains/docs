@@ -17,10 +17,6 @@ if(WIN32)
   set(CMAKE_PREFIX_PATH "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/x64/vc14/lib")
 endif()
 
-if(APPLE)
-  set(CMAKE_PREFIX_PATH "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx")
-endif()
-
 # macro to force the build directory to be different from source directory
 include(MACRO_ENSURE_OUT_OF_SOURCE_BUILD)
 ENSURE_OUT_OF_SOURCE_BUILD("${PROJECT_NAME} requires an out of source build.")
