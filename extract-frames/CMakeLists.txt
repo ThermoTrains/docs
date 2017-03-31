@@ -66,11 +66,6 @@ file(GLOB HDRS
 )
 source_group("inc" FILES ${HDRS})
 
-if(WIN32)
-    include_directories(${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/x64/vc14/lib)
-    file(GLOB LIBRARIES "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/x64/vc14/lib/*.lib")
-endif()
-
 if(APPLE)
     include_directories(${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx)
     file(GLOB LIBRARIES "${CMAKE_HOME_DIRECTORY}/_lib/prebuilt/OpenCV/macx/*.dylib")
