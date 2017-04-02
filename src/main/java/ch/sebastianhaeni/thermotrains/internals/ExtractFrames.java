@@ -5,10 +5,12 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
+import java.io.File;
+
 import static org.opencv.imgcodecs.Imgcodecs.imwrite;
 
 public class ExtractFrames {
-  public static void extractFrames(String inputVideoFilename, int framesToExtract) {
+  public static void extractFrames(String inputVideoFilename, int framesToExtract, String outputFolder) {
     VideoCapture capture = new VideoCapture();
 
     if (!capture.open(inputVideoFilename)) {
@@ -35,8 +37,9 @@ public class ExtractFrames {
 
       String filename = "Frame " + ++frameCounter + ".jpg";
 
-      imwrite(filename, frame);
-      System.out.println("saved " + filename);
+      File file = new File(outputFolder, filename);
+      imwrite(file.getAbsolutePath(), frame);
+      System.out.println("saved " + file.getAbsolutePath());
     }
   }
 }

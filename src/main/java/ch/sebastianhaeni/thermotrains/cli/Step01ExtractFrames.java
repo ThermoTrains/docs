@@ -9,14 +9,15 @@ public class Step01ExtractFrames {
   }
 
   public static void main(String[] args) {
-    if (args.length != 2) {
-      System.out.println("Usage: java -jar Step01ExtractFrames.jar <video> <frame count>");
+    if (args.length != 3) {
+      System.out.println("Usage: java -jar Step01ExtractFrames.jar <video> <frame count> <output folder>");
       return;
     }
 
     String inputVideoFilename = args[0];
     int framesToExtract = Integer.parseInt(args[1]);
+    String outputFolder = args[2];
 
-    ExtractFrames.extractFrames(inputVideoFilename, framesToExtract);
+    ExtractFrames.extractFrames(inputVideoFilename, framesToExtract, outputFolder);
   }
 }

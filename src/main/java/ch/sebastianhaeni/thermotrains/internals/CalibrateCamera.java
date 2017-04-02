@@ -1,7 +1,9 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
-import ch.sebastianhaeni.thermotrains.models.Calibration;
+import ch.sebastianhaeni.thermotrains.serialization.Calibration;
+import ch.sebastianhaeni.thermotrains.serialization.MatSerialization;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.opencv.core.*;
 
 import java.io.File;
@@ -22,7 +24,7 @@ import static org.opencv.imgproc.Imgproc.*;
 
 public class CalibrateCamera {
 
-  public static void performCheckerboardCalibration(String inputCheckerboardFrameFolder, double squareSize) {
+  public static void performCheckerboardCalibration(String inputCheckerboardFrameFolder, double squareSize, String outputFolder) {
     LinkedBlockingDeque<Path> inputFiles = new LinkedBlockingDeque<>();
     PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**.jpg");
     File folder = new File(inputCheckerboardFrameFolder);
@@ -86,7 +88,8 @@ public class CalibrateCamera {
       cornerSubPix(gray, corners, winSize, zeroZone, criteria);
 
       drawChessboardCorners(img, patternSize, corners, true);
-      imwrite("checkerboard-" + inputFile.getFileName(), img);
+      File file = new File(outputFolder, "checkerboard-" + inputFile.getFileName());
+      imwrite(file.getAbsolutePath(), img);
 
       imagePoints.add(corners);
       objectPoints.add(objectPoint);
@@ -98,13 +101,25 @@ public class CalibrateCamera {
     List<Mat> tvecs = new ArrayList<>();
     double rms = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs);
 
+    System.out.println("Calibration RMS: " + rms);
+
+    double fy = cameraMatrix.get(1, 1)[0];
+    double cy = cameraMatrix.get(1, 2)[0];
+    double fovRad = 2 * Math.atan2(cy, fy);
+    double RAD2DEG = 180.0f / Math.PI;
+    System.out.println("Vertical FOV: " + fovRad * RAD2DEG);
+
     Calibration calibration = new Calibration(cameraMatrix, distCoeffs, imageSize, rvecs, tvecs);
 
-    Gson gson = new Gson();
+    Gson gson = new GsonBuilder()
+      .registerTypeAdapter(Mat.class, new MatSerialization())
+      .create();
+
     String serializedJson = gson.toJson(calibration);
 
     try {
-      PrintWriter out = new PrintWriter("calibration.json");
+      File file = new File(outputFolder, "calibration.json");
+      PrintWriter out = new PrintWriter(file.getAbsoluteFile());
       out.print(serializedJson);
       out.close();
     } catch (FileNotFoundException e) {

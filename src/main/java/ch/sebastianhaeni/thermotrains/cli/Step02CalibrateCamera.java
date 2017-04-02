@@ -9,12 +9,13 @@ public class Step02CalibrateCamera {
   }
 
   public static void main(String[] args) {
-    if (args.length != 1) {
-      System.out.println("Usage: java -jar Step02CalibrateCamera.jar <frame folder>");
+    if (args.length != 2) {
+      System.out.println("Usage: java -jar Step02CalibrateCamera.jar <frame folder> <output folder>");
       return;
     }
 
     String inputCheckerboardFrameFolder = args[0];
-    CalibrateCamera.performCheckerboardCalibration(inputCheckerboardFrameFolder, 29);
+    String outputFolder = args[1];
+    CalibrateCamera.performCheckerboardCalibration(inputCheckerboardFrameFolder, 29, outputFolder);
   }
 }
