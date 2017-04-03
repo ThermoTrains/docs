@@ -2,6 +2,7 @@ package ch.sebastianhaeni.thermotrains.internals;
 
 import ch.sebastianhaeni.thermotrains.serialization.Calibration;
 import ch.sebastianhaeni.thermotrains.serialization.MatSerialization;
+import ch.sebastianhaeni.thermotrains.util.FileUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.opencv.core.*;
@@ -9,12 +10,10 @@ import org.opencv.core.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.nio.file.PathMatcher;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
 
 import static org.opencv.calib3d.Calib3d.*;
 import static org.opencv.core.CvType.CV_64F;
@@ -24,16 +23,10 @@ import static org.opencv.imgproc.Imgproc.*;
 
 public class CalibrateCamera {
 
-  public static void performCheckerboardCalibration(String inputCheckerboardFrameFolder, double squareSize, String outputFolder) {
-    LinkedBlockingDeque<Path> inputFiles = new LinkedBlockingDeque<>();
-    PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**.jpg");
-    File folder = new File(inputCheckerboardFrameFolder);
+  public static void performCheckerboardCalibration(String inputCheckerboardFrameFolder, double squareSize, String outputFolder)
+    throws FileNotFoundException {
 
-    for (File file : folder.listFiles()) {
-      if (matcher.matches(file.toPath())) {
-        inputFiles.add(file.toPath());
-      }
-    }
+    Collection<Path> inputFiles = FileUtil.getFiles(inputCheckerboardFrameFolder, "**.jpg");
 
     // interior number of corners
     Size patternSize = new Size(8, 5);
@@ -102,28 +95,28 @@ public class CalibrateCamera {
     double rms = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs);
 
     System.out.println("Calibration RMS: " + rms);
-
-    double fy = cameraMatrix.get(1, 1)[0];
-    double cy = cameraMatrix.get(1, 2)[0];
-    double fovRad = 2 * Math.atan2(cy, fy);
-    double RAD2DEG = 180.0f / Math.PI;
-    System.out.println("Vertical FOV: " + fovRad * RAD2DEG);
+    System.out.println("Vertical FOV: " + calcFov(cameraMatrix));
 
     Calibration calibration = new Calibration(cameraMatrix, distCoeffs, imageSize, rvecs, tvecs);
 
     Gson gson = new GsonBuilder()
       .registerTypeAdapter(Mat.class, new MatSerialization())
+      .setPrettyPrinting()
       .create();
 
     String serializedJson = gson.toJson(calibration);
 
-    try {
-      File file = new File(outputFolder, "calibration.json");
-      PrintWriter out = new PrintWriter(file.getAbsoluteFile());
-      out.print(serializedJson);
-      out.close();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
+    File file = new File(outputFolder, "calibration.json");
+    PrintWriter out = new PrintWriter(file.getAbsoluteFile());
+    out.print(serializedJson);
+    out.close();
+  }
+
+  private static double calcFov(Mat cameraMatrix) {
+    double fy = cameraMatrix.get(1, 1)[0];
+    double cy = cameraMatrix.get(1, 2)[0];
+    double fovRad = 2 * Math.atan2(cy, fy);
+    double RAD2DEG = 180.0f / Math.PI;
+    return fovRad * RAD2DEG;
   }
 }

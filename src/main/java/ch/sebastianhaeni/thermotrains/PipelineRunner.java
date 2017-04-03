@@ -3,6 +3,7 @@ package ch.sebastianhaeni.thermotrains;
 import ch.sebastianhaeni.thermotrains.internals.CalibrateCamera;
 import ch.sebastianhaeni.thermotrains.internals.ExtractFrames;
 import ch.sebastianhaeni.thermotrains.internals.Undistort;
+import ch.sebastianhaeni.thermotrains.util.Procedure;
 import org.opencv.core.Core;
 
 public class PipelineRunner {
@@ -42,10 +43,18 @@ public class PipelineRunner {
     ));
   }
 
-  private static void runStep(int step, Runnable runnable) {
+  private static void runStep(int step, Procedure procedure) {
     if (START_STEP > step || STOP_STEP < step) {
       return;
     }
-    runnable.run();
+
+    System.out.println("Running step " + step);
+
+    try {
+      procedure.run();
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
   }
 }

@@ -1,4 +1,4 @@
-package ch.sebastianhaeni.thermotrains.serialization;
+package ch.sebastianhaeni.thermotrains.util;
 
 import com.google.gson.JsonObject;
 import org.opencv.core.CvType;
@@ -7,9 +7,9 @@ import org.opencv.core.Mat;
 import java.nio.*;
 import java.util.Base64;
 
-public final class Util {
+public final class SerializationUtil {
 
-  static JsonObject matToJson(Mat mat) {
+  public static JsonObject matToJson(Mat mat) {
     JsonObject obj = new JsonObject();
 
     if (!mat.isContinuous()) {
@@ -56,7 +56,7 @@ public final class Util {
     return obj;
   }
 
-  static Mat matFromJson(JsonObject json) {
+  public static Mat matFromJson(JsonObject json) {
     int rows = json.get("rows").getAsInt();
     int cols = json.get("cols").getAsInt();
     int type = json.get("type").getAsInt();

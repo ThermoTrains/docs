@@ -3,6 +3,8 @@ package ch.sebastianhaeni.thermotrains.cli;
 import ch.sebastianhaeni.thermotrains.internals.CalibrateCamera;
 import org.opencv.core.Core;
 
+import java.io.FileNotFoundException;
+
 public class Step02CalibrateCamera {
   static {
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -16,6 +18,11 @@ public class Step02CalibrateCamera {
 
     String inputCheckerboardFrameFolder = args[0];
     String outputFolder = args[1];
-    CalibrateCamera.performCheckerboardCalibration(inputCheckerboardFrameFolder, 29, outputFolder);
+
+    try {
+      CalibrateCamera.performCheckerboardCalibration(inputCheckerboardFrameFolder, 29, outputFolder);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
   }
 }
