@@ -1,17 +1,14 @@
 # IDE specifics
 .idea/
+*.iml
 .vs/
-*.user
 
 # Dependencies
 node_modules/
 
 # Build artifacts
 build/
-
-# CMake
-CMakeFiles/
-CMakeCache.txt
+target/
 
 # Log files
 *.log
