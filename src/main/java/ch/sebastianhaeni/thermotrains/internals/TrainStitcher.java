@@ -2,50 +2,82 @@ package ch.sebastianhaeni.thermotrains.internals;
 
 import ch.sebastianhaeni.thermotrains.util.FileUtil;
 import ch.sebastianhaeni.thermotrains.util.MatUtil;
-import ch.sebastianhaeni.thermotrains.wrapper.Stitching;
-import org.opencv.core.Mat;
+import org.opencv.core.*;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
+import static org.opencv.core.Core.*;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
+import static org.opencv.imgproc.Imgproc.*;
 
 public class TrainStitcher {
-  private static final int verticalCrop = 100;
 
   public static void stitchTrain(String inputFolder, String outputFolder) {
 
     ArrayList<Path> inputFiles = new ArrayList<>(FileUtil.getFiles(inputFolder, "**.jpg"));
 
-    Mat pano;
-    Mat image1;
-    Mat image2 = imread(inputFiles.get(0).toString());
+    List<Integer> xOffsets = new ArrayList<>();
 
-    for (int i = 1; i < inputFiles.size(); i++) {
-      System.out.printf("Stitching image %d and %d together...\n", i - 1, i);
-      image1 = crop(image2);
-      image2 = imread(inputFiles.get(i).toString());
+    for (int i = 0; i < inputFiles.size() - 1; i++) {
 
-      pano = stitchTogether(image1, image2);
-      saveMat(outputFolder, pano, i);
+      Mat img_scene = imread(inputFiles.get(i).toString());
+      Mat img_object = createTemplate(imread(inputFiles.get(i + 1).toString()));
+
+      // Do the Matching and Normalize
+      Mat result = new Mat();
+      matchTemplate(img_scene, img_object, result, TM_SQDIFF_NORMED);
+      normalize(result, result, 0, 1, NORM_MINMAX, -1, new Mat());
+
+      // Localizing the best match with minMaxLoc
+      Core.MinMaxLocResult minMaxLocResult = minMaxLoc(result);
+
+      // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+      Point matchLoc = minMaxLocResult.minLoc;
+
+      // Show me what you got
+      Point to = new Point(matchLoc.x + img_object.cols(), matchLoc.y + img_object.rows());
+      rectangle(img_scene, matchLoc, to, Scalar.all(0), 2, 8, 0);
+      rectangle(result, matchLoc, to, Scalar.all(0), 2, 8, 0);
+
+      Mat out = img_scene.adjustROI(0, 0, img_object.width(), 0);
+
+      xOffsets.add((int) matchLoc.x);
+      saveMat(outputFolder, out, i);
     }
+
+    Mat result = imread(inputFiles.get(0).toString());
+    result = result.colRange(0, xOffsets.get(0));
+
+    for (int i = 1; i <= xOffsets.size(); i++) {
+
+      Mat right = imread(inputFiles.get(i).toString());
+
+      // cut off at offset
+      if (i < xOffsets.size()) {
+        right = right.colRange(0, xOffsets.get(i));
+      }
+
+      // cut off if too much height
+      right = right.rowRange(0, Math.min(result.height(), right.height()));
+
+      // make the same height
+      Mat rightExpanded = new Mat(new Size(right.width(), result.height()), result.type());
+      right.copyTo(rightExpanded.rowRange(0, right.rows()));
+
+      // concatenate them side by side
+      hconcat(Arrays.asList(result, rightExpanded), result);
+    }
+
+    saveMat(outputFolder, result, "result");
   }
 
-  private static Mat crop(Mat mat) {
-    int quaterWidth = mat.width() / 4;
-    return MatUtil.crop(mat, verticalCrop, 0, verticalCrop, quaterWidth);
-  }
+  private static final int verticalCrop = 100;
 
-  private static Mat stitchTogether(Mat image1, Mat image2) {
-    Mat panorama = new Mat();
-    Stitching.Status status = Stitching.stitch(panorama, Arrays.asList(image1, image2));
-
-    if (status != Stitching.Status.OK) {
-      throw new IllegalStateException(String.format("Error during stitching: %s\n", status));
-    }
-
-    return panorama;
+  private static Mat createTemplate(Mat mat) {
+    return MatUtil.crop(mat, verticalCrop, (int) (mat.width() / 1.5), verticalCrop, 0);
   }
 }
