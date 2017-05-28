@@ -18,6 +18,6 @@ public class Step01ExtractFrames {
     int framesToExtract = Integer.parseInt(args[1]);
     String outputFolder = args[2];
 
-    ExtractFrames.extractFrames(inputVideoFilename, framesToExtract, outputFolder);
+    ExtractFrames.extractFrames(framesToExtract, inputVideoFilename, outputFolder);
   }
 }

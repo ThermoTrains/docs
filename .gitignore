@@ -2,13 +2,28 @@
 .idea/
 *.iml
 .vs/
+*.filters
+*.user
 
 # Dependencies
 node_modules/
 
 # Build artifacts
+
+## Java artifacts
 build/
 target/
+
+## C++ artifacts
+src/main/cpp/x64
+*.obj
+*.iobj
+*.exp
+*.ipdb
+*.idb
+*.lib
+*.pdb
+*.tlog
 
 # Log files
 *.log

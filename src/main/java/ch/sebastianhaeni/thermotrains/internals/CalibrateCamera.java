@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.getFile;
 import static org.opencv.calib3d.Calib3d.*;
 import static org.opencv.core.CvType.CV_64F;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
@@ -23,10 +24,10 @@ import static org.opencv.imgproc.Imgproc.*;
 
 public class CalibrateCamera {
 
-  public static void performCheckerboardCalibration(String inputCheckerboardFrameFolder, double squareSize, String outputFolder)
+  public static void performCheckerboardCalibration(double squareSize, String inputFolder, String outputFolder)
     throws FileNotFoundException {
 
-    Collection<Path> inputFiles = FileUtil.getFiles(inputCheckerboardFrameFolder, "**.jpg");
+    Collection<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
 
     // interior number of corners
     Size patternSize = new Size(8, 5);
@@ -106,7 +107,7 @@ public class CalibrateCamera {
 
     String serializedJson = gson.toJson(calibration);
 
-    File file = new File(outputFolder, "calibration.json");
+    File file = getFile(outputFolder, "calibration.json");
     PrintWriter out = new PrintWriter(file.getAbsoluteFile());
     out.print(serializedJson);
     out.close();

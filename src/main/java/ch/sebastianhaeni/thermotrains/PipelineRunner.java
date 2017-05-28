@@ -1,8 +1,6 @@
 package ch.sebastianhaeni.thermotrains;
 
-import ch.sebastianhaeni.thermotrains.internals.CalibrateCamera;
-import ch.sebastianhaeni.thermotrains.internals.ExtractFrames;
-import ch.sebastianhaeni.thermotrains.internals.Undistort;
+import ch.sebastianhaeni.thermotrains.internals.*;
 import ch.sebastianhaeni.thermotrains.util.Procedure;
 import org.opencv.core.Core;
 
@@ -11,35 +9,41 @@ public class PipelineRunner {
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
   }
 
-  private static final int START_STEP = 1;
-  private static final int STOP_STEP = 3;
+  private static final int START_STEP = 7;
+  private static final int STOP_STEP = 7;
 
   public static void main(String[] args) {
-    // Step 1
     runStep(1, () -> ExtractFrames.extractFrames(
-      "samples/calibration/gopro-checkerboard.mp4",
       20,
-      "samples/calibration"
+      "samples/calibration/gopro-checkerboard.mp4",
+      "target/calibration"
     ));
-
-    runStep(1, () -> ExtractFrames.extractFrames(
-      "samples/distorted/gopro-moving-train.mp4",
-      10,
-      "samples/distorted"
-    ));
-
-    // Step 2
     runStep(2, () -> CalibrateCamera.performCheckerboardCalibration(
-      "samples/calibration",
       29,
-      "samples/calibration-found"
+      "target/calibration",
+      "target/calibration-found"
     ));
-
-    // Step 3
-    runStep(3, () -> Undistort.undistortImages(
-      "samples/calibration-found/calibration.json",
-      "samples/distorted",
-      "samples/undistorted"
+    runStep(3, () -> ExtractFrames.extractFrames(
+      50,
+      "samples/distorted/gopro-moving-train.mp4",
+      "target/distorted"
+    ));
+    runStep(4, () -> Undistort.undistortImages(
+      "target/calibration-found/calibration.json",
+      "target/distorted",
+      "target/undistorted"
+    ));
+    runStep(5, () -> Straighten.straighten(
+      "target/undistorted",
+      "target/straightened"
+    ));
+    runStep(6, () -> MotionCrop.cropToMotion(
+      "target/straightened",
+      "target/cropped"
+    ));
+    runStep(7, () -> TrainStitcher.stitchTrain(
+      "target/cropped",
+      "target/stitched"
     ));
   }
 

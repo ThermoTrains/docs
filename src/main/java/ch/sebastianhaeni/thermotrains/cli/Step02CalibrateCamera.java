@@ -20,7 +20,7 @@ public class Step02CalibrateCamera {
     String outputFolder = args[1];
 
     try {
-      CalibrateCamera.performCheckerboardCalibration(inputCheckerboardFrameFolder, 29, outputFolder);
+      CalibrateCamera.performCheckerboardCalibration(29, inputCheckerboardFrameFolder, outputFolder);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
