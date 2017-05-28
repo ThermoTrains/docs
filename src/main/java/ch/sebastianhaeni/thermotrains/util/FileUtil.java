@@ -33,6 +33,12 @@ public class FileUtil {
     System.out.printf("saved %s\n", file.getAbsolutePath());
   }
 
+  public static void saveMat(String outputFolder, Mat mat, String filename) {
+    File file = getFile(outputFolder, filename + ".jpg");
+    imwrite(file.getAbsolutePath(), mat);
+    System.out.printf("saved %s\n", file.getAbsolutePath());
+  }
+
   public static File getFile(String outputFolder, String filename) {
     File folder = new File(outputFolder);
 
