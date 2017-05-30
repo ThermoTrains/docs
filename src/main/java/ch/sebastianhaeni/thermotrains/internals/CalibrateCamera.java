@@ -12,14 +12,13 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.getFile;
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.calib3d.Calib3d.*;
 import static org.opencv.core.CvType.CV_64F;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
-import static org.opencv.imgcodecs.Imgcodecs.imwrite;
 import static org.opencv.imgproc.Imgproc.*;
 
 public class CalibrateCamera {
@@ -27,7 +26,7 @@ public class CalibrateCamera {
   public static void performCheckerboardCalibration(double squareSize, String inputFolder, String outputFolder)
     throws FileNotFoundException {
 
-    Collection<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
+    List<Path> inputFiles = new ArrayList<>(FileUtil.getFiles(inputFolder, "**.jpg"));
 
     // interior number of corners
     Size patternSize = new Size(8, 5);
@@ -54,8 +53,8 @@ public class CalibrateCamera {
 
     Size imageSize = null;
 
-    for (Path inputFile : inputFiles) {
-      Mat img = imread(inputFile.toString());
+    for (int i = 0; i < inputFiles.size(); i++) {
+      Mat img = imread(inputFiles.get(i).toString());
       Mat gray = new Mat();
       cvtColor(img, gray, COLOR_BGR2GRAY);
 
@@ -69,10 +68,8 @@ public class CalibrateCamera {
       boolean patternFound = findChessboardCorners(gray, patternSize, corners, flags);
 
       if (!patternFound) {
-        System.out.println("Could not find checkerboard pattern on " + inputFile.getFileName());
+        System.out.println("Could not find checkerboard pattern on image " + i);
         continue;
-      } else {
-        System.out.println("Found checkerboard on " + inputFile.getFileName());
       }
 
       int type = TermCriteria.EPS + TermCriteria.MAX_ITER;
@@ -82,8 +79,7 @@ public class CalibrateCamera {
       cornerSubPix(gray, corners, winSize, zeroZone, criteria);
 
       drawChessboardCorners(img, patternSize, corners, true);
-      File file = new File(outputFolder, "checkerboard-" + inputFile.getFileName());
-      imwrite(file.getAbsolutePath(), img);
+      saveMat(outputFolder, img, i);
 
       imagePoints.add(corners);
       objectPoints.add(objectPoint);

@@ -9,12 +9,12 @@ public class PipelineRunner {
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
   }
 
-  private static final int START_STEP = 7;
+  private static final int START_STEP = 6;
   private static final int STOP_STEP = 7;
 
   public static void main(String[] args) {
     runStep(1, () -> ExtractFrames.extractFrames(
-      20,
+      50,
       "samples/calibration/gopro-checkerboard.mp4",
       "target/calibration"
     ));
@@ -24,7 +24,7 @@ public class PipelineRunner {
       "target/calibration-found"
     ));
     runStep(3, () -> ExtractFrames.extractFrames(
-      50,
+      150,
       "samples/distorted/gopro-moving-train.mp4",
       "target/distorted"
     ));

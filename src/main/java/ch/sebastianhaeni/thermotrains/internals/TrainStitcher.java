@@ -2,6 +2,7 @@ package ch.sebastianhaeni.thermotrains.internals;
 
 import ch.sebastianhaeni.thermotrains.util.FileUtil;
 import ch.sebastianhaeni.thermotrains.util.MatUtil;
+import com.google.common.base.MoreObjects;
 import org.opencv.core.*;
 
 import java.nio.file.Path;
@@ -16,11 +17,29 @@ import static org.opencv.imgproc.Imgproc.*;
 
 public class TrainStitcher {
 
+  private static class Offset {
+    int x;
+    int y;
+
+    Offset(int x, int y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+        .add("x", x)
+        .add("y", y)
+        .toString();
+    }
+  }
+
   public static void stitchTrain(String inputFolder, String outputFolder) {
 
     ArrayList<Path> inputFiles = new ArrayList<>(FileUtil.getFiles(inputFolder, "**.jpg"));
 
-    List<Integer> xOffsets = new ArrayList<>();
+    List<Offset> offsets = new ArrayList<>();
 
     for (int i = 0; i < inputFiles.size() - 1; i++) {
 
@@ -41,32 +60,41 @@ public class TrainStitcher {
       // Show me what you got
       Point to = new Point(matchLoc.x + img_object.cols(), matchLoc.y + img_object.rows());
       rectangle(img_scene, matchLoc, to, Scalar.all(0), 2, 8, 0);
-      rectangle(result, matchLoc, to, Scalar.all(0), 2, 8, 0);
 
       Mat out = img_scene.adjustROI(0, 0, img_object.width(), 0);
 
-      xOffsets.add((int) matchLoc.x);
+      offsets.add(new Offset((int) matchLoc.x, (int) matchLoc.y));
       saveMat(outputFolder, out, i);
     }
 
     Mat result = imread(inputFiles.get(0).toString());
-    result = result.colRange(0, xOffsets.get(0));
+    result = result.colRange(0, offsets.get(0).x);
 
-    for (int i = 1; i <= xOffsets.size(); i++) {
+    for (int i = 1; i <= offsets.size(); i++) {
 
       Mat right = imread(inputFiles.get(i).toString());
 
       // cut off at offset
-      if (i < xOffsets.size()) {
-        right = right.colRange(0, xOffsets.get(i));
+      int start = getTemplateOffset(right);
+      int end = i < offsets.size() ? offsets.get(i).x : right.width();
+
+      if (start >= end) {
+        continue;
       }
 
+      right = right.colRange(start, end);
+
       // cut off if too much height
-      right = right.rowRange(0, Math.min(result.height(), right.height()));
+      int positiveTop = i < offsets.size() ? Math.max(offsets.get(i).y - verticalCrop, 0) : 0;
+      int negativeTop = i < offsets.size() ? Math.abs(Math.min(offsets.get(i).y - verticalCrop, 0)) : 0;
+      if (i < offsets.size()) {
+        System.out.printf("%d: %d/%d %s\n", i, positiveTop, negativeTop, offsets.get(i));
+      }
+      right = right.rowRange(positiveTop, Math.min(result.height(), right.height()));
 
       // make the same height
       Mat rightExpanded = new Mat(new Size(right.width(), result.height()), result.type());
-      right.copyTo(rightExpanded.rowRange(0, right.rows()));
+      right.copyTo(rightExpanded.rowRange(positiveTop, right.rows() + positiveTop));
 
       // concatenate them side by side
       hconcat(Arrays.asList(result, rightExpanded), result);
@@ -78,6 +106,11 @@ public class TrainStitcher {
   private static final int verticalCrop = 100;
 
   private static Mat createTemplate(Mat mat) {
-    return MatUtil.crop(mat, verticalCrop, (int) (mat.width() / 1.5), verticalCrop, 0);
+    int margin = getTemplateOffset(mat);
+    return MatUtil.crop(mat, verticalCrop, margin, verticalCrop, margin);
+  }
+
+  private static int getTemplateOffset(Mat mat) {
+    return (mat.width() / 2) - 100;
   }
 }

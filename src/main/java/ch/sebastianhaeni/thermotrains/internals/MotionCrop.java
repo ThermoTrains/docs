@@ -7,8 +7,9 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
@@ -25,23 +26,56 @@ public class MotionCrop {
     int kernelSize = 3 * 2;
     blur(background, background, new Size(kernelSize, kernelSize));
 
-    int i = 0;
-    Collection<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
+    List<Path> inputFiles = new ArrayList<>(FileUtil.getFiles(inputFolder, "**.jpg"));
 
-    for (Path inputFile : inputFiles) {
+    Map<Integer, BBox> bboxes = new HashMap<>();
+
+    for (int i = 0; i < inputFiles.size(); i++) {
+      Path inputFile = inputFiles.get(i);
       Mat img = imread(inputFile.toString());
-      Mat dst = crop(img, background);
+      BBox boundingBox = findBoundingBox(img, background);
 
-      if (dst == null) {
+      if (boundingBox == null) {
         continue;
       }
 
+      System.out.printf("Scanning %s\n", inputFile);
+
       // save to disk
-      saveMat(outputFolder, dst, ++i);
+      bboxes.put(i, boundingBox);
+    }
+
+    // get median bounding box
+    BBox medianBox = new BBox();
+    medianBox.top = median(bboxes.values().stream().mapToInt(bbox -> bbox.top).toArray());
+    medianBox.bottom = median(bboxes.values().stream().mapToInt(bbox -> bbox.bottom).toArray());
+    medianBox.left = median(bboxes.values().stream().mapToInt(bbox -> bbox.left).toArray());
+    medianBox.right = median(bboxes.values().stream().mapToInt(bbox -> bbox.right).toArray());
+
+    for (int i = 0; i < inputFiles.size(); i++) {
+
+      if (!bboxes.containsKey(i)) {
+        continue;
+      }
+
+      Path inputFile = inputFiles.get(i);
+      Mat img = imread(inputFile.toString());
+      img = crop(img, medianBox);
+
+      saveMat(outputFolder, img, i);
     }
   }
 
-  private static Mat crop(Mat source, Mat background) {
+  private static int median(int[] m) {
+    int middle = m.length / 2;
+    if (m.length % 2 == 1) {
+      return m[middle];
+    } else {
+      return (m[middle - 1] + m[middle]) / 2;
+    }
+  }
+
+  private static BBox findBoundingBox(Mat source, Mat background) {
     Mat dst = new Mat();
     source.copyTo(dst);
     Mat gray = new Mat();
@@ -81,21 +115,30 @@ public class MotionCrop {
     MatOfPoint largestContour = contours.get(0);
 
     // find bounding box of contour
-    int top = streamCoordinates(largestContour, 1).min().orElse(0);
-    int bottom = streamCoordinates(largestContour, 1).max().orElse(dst.height());
-    int left = streamCoordinates(largestContour, 0).min().orElse(0);
-    int right = streamCoordinates(largestContour, 0).max().orElse(dst.width());
+    BBox bbox = new BBox();
+    bbox.top = streamCoordinates(largestContour, 1).min().orElse(0);
+    bbox.bottom = streamCoordinates(largestContour, 1).max().orElse(dst.height());
+    bbox.left = streamCoordinates(largestContour, 0).min().orElse(0);
+    bbox.right = streamCoordinates(largestContour, 0).max().orElse(dst.width());
 
-    if (right - left < (dst.width() * .9)) {
+    if (bbox.right - bbox.left < (dst.width() * .9)) {
       // => the motion area covers not almost the whole width
       // this can be one of the following reasons
       // - it's the start of the train
       // - it's the end of the train
-      // - a bird flew through the picture
+      // - a bird flew over the empty background
       return null;
     }
 
-    return new Mat(dst, new Rect(left, top, right - left, bottom - top));
+    return bbox;
+  }
+
+  private static Mat crop(Mat mat, BBox bbox) {
+    return new Mat(mat, new Rect(bbox.left, bbox.top, bbox.right - bbox.left, bbox.bottom - bbox.top));
+  }
+
+  private static class BBox {
+    int top, bottom, left, right;
   }
 
   private static IntStream streamCoordinates(MatOfPoint contour, int index) {
