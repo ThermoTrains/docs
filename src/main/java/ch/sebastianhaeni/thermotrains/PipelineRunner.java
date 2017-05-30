@@ -9,7 +9,7 @@ public class PipelineRunner {
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
   }
 
-  private static final int START_STEP = 6;
+  private static final int START_STEP = 7;
   private static final int STOP_STEP = 7;
 
   public static void main(String[] args) {

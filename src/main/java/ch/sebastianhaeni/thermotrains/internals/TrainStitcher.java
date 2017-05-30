@@ -84,20 +84,8 @@ public class TrainStitcher {
 
       right = right.colRange(start, end);
 
-      // cut off if too much height
-      int positiveTop = i < offsets.size() ? Math.max(offsets.get(i).y - verticalCrop, 0) : 0;
-      int negativeTop = i < offsets.size() ? Math.abs(Math.min(offsets.get(i).y - verticalCrop, 0)) : 0;
-      if (i < offsets.size()) {
-        System.out.printf("%d: %d/%d %s\n", i, positiveTop, negativeTop, offsets.get(i));
-      }
-      right = right.rowRange(positiveTop, Math.min(result.height(), right.height()));
-
-      // make the same height
-      Mat rightExpanded = new Mat(new Size(right.width(), result.height()), result.type());
-      right.copyTo(rightExpanded.rowRange(positiveTop, right.rows() + positiveTop));
-
       // concatenate them side by side
-      hconcat(Arrays.asList(result, rightExpanded), result);
+      hconcat(Arrays.asList(result, right), result);
     }
 
     saveMat(outputFolder, result, "result");
