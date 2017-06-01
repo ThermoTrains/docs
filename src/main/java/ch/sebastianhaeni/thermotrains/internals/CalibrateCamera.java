@@ -26,7 +26,7 @@ public class CalibrateCamera {
   public static void performCheckerboardCalibration(double squareSize, String inputFolder, String outputFolder)
     throws FileNotFoundException {
 
-    List<Path> inputFiles = new ArrayList<>(FileUtil.getFiles(inputFolder, "**.jpg"));
+    List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
 
     // interior number of corners
     Size patternSize = new Size(8, 5);

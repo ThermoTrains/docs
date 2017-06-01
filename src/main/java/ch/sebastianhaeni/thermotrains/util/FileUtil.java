@@ -6,16 +6,20 @@ import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
-import java.util.Collection;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.opencv.imgcodecs.Imgcodecs.imwrite;
 
 public class FileUtil {
-  public static Collection<Path> getFiles(String inputCheckerboardFrameFolder, String globPattern) {
-    LinkedBlockingDeque<Path> inputFiles = new LinkedBlockingDeque<>();
+  public static List<Path> getFiles(String inputFolder, String globPattern) {
+    List<Path> inputFiles = new ArrayList<>();
     PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + globPattern);
-    File folder = new File(inputCheckerboardFrameFolder);
+    File folder = new File(inputFolder);
+
+    if (folder.listFiles() == null) {
+      throw new IllegalStateException("Cannot read files from folder: " + inputFolder);
+    }
 
     for (File file : folder.listFiles()) {
       if (matcher.matches(file.toPath())) {

@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.List;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.calib3d.Calib3d.getOptimalNewCameraMatrix;
@@ -44,7 +45,7 @@ public class Undistort {
       false);
 
     int i = 0;
-    Collection<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
+    List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
 
     for (Path inputFile : inputFiles) {
       Mat img = imread(inputFile.toString());

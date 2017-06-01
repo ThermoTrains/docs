@@ -17,28 +17,9 @@ import static org.opencv.imgproc.Imgproc.*;
 
 public class TrainStitcher {
 
-  private static class Offset {
-    int x;
-    int y;
-
-    Offset(int x, int y) {
-      this.x = x;
-      this.y = y;
-    }
-
-    @Override
-    public String toString() {
-      return MoreObjects.toStringHelper(this)
-        .add("x", x)
-        .add("y", y)
-        .toString();
-    }
-  }
-
   public static void stitchTrain(String inputFolder, String outputFolder) {
 
-    ArrayList<Path> inputFiles = new ArrayList<>(FileUtil.getFiles(inputFolder, "**.jpg"));
-
+    List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
     List<Offset> offsets = new ArrayList<>();
 
     for (int i = 0; i < inputFiles.size() - 1; i++) {
@@ -100,5 +81,23 @@ public class TrainStitcher {
 
   private static int getTemplateOffset(Mat mat) {
     return (mat.width() / 2) - 100;
+  }
+
+  private static class Offset {
+    int x;
+    int y;
+
+    Offset(int x, int y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    @Override
+    public String toString() {
+      return MoreObjects.toStringHelper(this)
+        .add("x", x)
+        .add("y", y)
+        .toString();
+    }
   }
 }

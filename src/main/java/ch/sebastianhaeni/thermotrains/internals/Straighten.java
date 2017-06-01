@@ -7,7 +7,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.nio.file.Path;
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.DoubleStream;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
@@ -18,7 +18,7 @@ public class Straighten {
 
   public static void straighten(String inputFolder, String outputFolder) {
     int i = 0;
-    Collection<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
+    List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
 
     for (Path inputFile : inputFiles) {
       Mat img = imread(inputFile.toString());

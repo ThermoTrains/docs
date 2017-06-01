@@ -26,7 +26,7 @@ public class MotionCrop {
     int kernelSize = 3 * 2;
     blur(background, background, new Size(kernelSize, kernelSize));
 
-    List<Path> inputFiles = new ArrayList<>(FileUtil.getFiles(inputFolder, "**.jpg"));
+    List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
 
     Map<Integer, BBox> bboxes = new HashMap<>();
 
@@ -88,19 +88,19 @@ public class MotionCrop {
     absdiff(background, gray, diff);
     threshold(diff, t, 40.0, 255.0, Imgproc.THRESH_BINARY);
 
-    // dilate the threshold image to fill in holes
+    // erode to get rid of small dots
     int dilationSize = 10;
-    int erodeSize = 50;
-    Mat dilationElement = getStructuringElement(MORPH_ELLIPSE,
+    Mat erodeElement = getStructuringElement(MORPH_ELLIPSE,
       new Size(2 * dilationSize + 1, 2 * dilationSize + 1),
       new Point(dilationSize, dilationSize));
+    erode(t, t, erodeElement);
 
-    // erode to get uniformly rounded contours
-    Mat erodeElement = getStructuringElement(MORPH_ELLIPSE,
+    // dilate the threshold image to fill in holes
+    int erodeSize = 50;
+    Mat dilateElement = getStructuringElement(MORPH_ELLIPSE,
       new Size(2 * erodeSize + 1, 2 * erodeSize + 1),
       new Point(erodeSize, erodeSize));
-    erode(t, t, dilationElement);
-    dilate(t, t, erodeElement);
+    dilate(t, t, dilateElement);
 
     // find contours
     List<MatOfPoint> contours = new ArrayList<>();
