@@ -5,12 +5,13 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
-import java.io.File;
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 
-import static org.opencv.imgcodecs.Imgcodecs.imwrite;
+public final class ExtractFrames {
+  private ExtractFrames() {
+  }
 
-public class ExtractFrames {
-  public static void extractFrames(String inputVideoFilename, int framesToExtract, String outputFolder) {
+  public static void extractFrames(int framesToExtract, String inputVideoFilename, String outputFolder) {
     VideoCapture capture = new VideoCapture();
 
     if (!capture.open(inputVideoFilename)) {
@@ -35,11 +36,7 @@ public class ExtractFrames {
         continue;
       }
 
-      String filename = "Frame " + ++frameCounter + ".jpg";
-
-      File file = new File(outputFolder, filename);
-      imwrite(file.getAbsolutePath(), frame);
-      System.out.println("saved " + file.getAbsolutePath());
+      saveMat(outputFolder, frame, ++frameCounter);
     }
   }
 }

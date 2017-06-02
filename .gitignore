@@ -1,12 +1,13 @@
 # IDE specifics
 .idea/
 *.iml
-.vs/
 
 # Dependencies
 node_modules/
 
 # Build artifacts
+
+## Java artifacts
 build/
 target/
 
