@@ -1,0 +1,96 @@
+<section style="text-align: left">
+  <p>Binary Space Partitioning</p>
+  <p>Orthogonale Bereichsuche</p>
+  <p class="fragment highlight-blue">Windowing</p>
+</section>
+
+<section>
+  <h2>Windowing</h2>
+</section>
+
+<section>
+  <img src="images/windowing-query.png">
+  <small class="source">Source: http://slideplayer.com/slide/3288943/</small>
+</section>
+
+<section>
+  <h3>Interval Tree</h3>
+</section>
+
+<section>
+  <img src="images/intervals.png">
+</section>
+
+<section>
+  <pre><code data-trim data-noescape>
+class Interval { int start; int end; }
+
+class Node {
+  int value;
+  SortedIntervals mid;
+  Node left;
+  Node right;
+}
+
+class SortedIntervals {
+  SortedSet&lt;Interval&gt; startpoints;
+  SortedSet&lt;Interval&gt; endpoints;
+}
+  </code></pre>
+</section>
+
+<section>
+  <pre><code data-trim data-noescape>
+Node buildIntervalTree(Set&lt;Interval&gt; intervals) {
+  Node node = new Node();
+  <span class="fragment highlight-current-blue">int endMedian = calcEndpointMedian(intervals);</span>
+  <span class="fragment highlight-current-blue">{left, mid, right} = classify(intervals, endMedian);</span>
+
+  node.value = endMedian;
+  node.mid = mid;
+  <span class="fragment highlight-current-blue">node.left = buildIntervalTree(left);
+  node.right = buildIntervalTree(right);</span>
+
+  return node;
+}
+  </code></pre>
+</section>
+
+<section>
+  <h4>Intervalle einfügen und entfernen</h4>
+  <img src="images/interval-tree-deletion.png">
+  <small class="source">Source: <a href="https://en.wikipedia.org/wiki/Interval_tree">Wikipedia Interval Tree</a></small>
+</section>
+
+
+<section>
+  <h3>R-Tree</h3>
+</section>
+
+<section>
+  <img src="images/r-tree.png" style="background: white">
+  <small class="source">Source: <a href="https://en.wikipedia.org/wiki/R-tree">Wikipedia R Tree</a></small>
+</section>
+
+<section>
+  <ul>
+    <li>Teilbäume werden in Pages gespeichert</li>
+    <li>Nodes können mehr als 2 Children haben</li>
+    <li>Jedes Rectangle umschliesst die Children Rectangle</li>
+  </ul>
+</section>
+
+<section>
+  <h4>Einfügen in R Tree</h4>
+  <ol>
+    <li>Bewerte Children-Rectangle (Heuristik)</li>
+    <li>Gehe zu 1. solange keine Leaf erreicht wurde</li>
+    <li>Einfügen
+      <ol>
+        <li>Ist das Leaf voll muss die Node aufgeteilt werden</li>
+        <li>Ist die darüberliegende Node voll muss auch diese aufgeteilt werden</li>
+        <li>...</li>
+      </ol>
+    </li>
+  </ol>
+</section>

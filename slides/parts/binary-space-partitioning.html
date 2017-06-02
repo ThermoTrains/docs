@@ -1,0 +1,185 @@
+<section style="text-align: left">
+  <p class="fragment highlight-blue">Binary Space Partitioning</p>
+  <p>Orthogonale Bereichsuche</p>
+  <p>Windowing</p>
+</section>
+
+<section>
+  <h2>Binary Space Partitioning</h2>
+</section>
+
+<section>
+  <h3>Painter's Algorithm</h3>
+</section>
+
+<section>
+  <img src="images/painter-scene.png">
+</section>
+
+<section>
+  <ol>
+    <li>sortiere alle Objekte an der z-Koordinate</li>
+    <li>zeichne Objekte der Reihenfolge nach</li>
+  </ol>
+</section>
+
+<section>
+  <video src="images/painters.mp4" controls></video>
+</section>
+
+<section>
+  <ol>
+    <li>sortiere alle Objekte an der z-Koordinate</li>
+    <li class="fragment">erkenne Überschneidungen
+      <ul style="list-style-type: none">
+        <li class="fragment">2.1 unterteile ein Objekt in zwei Flächen</li>
+        <li class="fragment">2.1 gehe zu 1.</li>
+      </ul>
+    </li>
+    <li>zeichne Objekte der Reihenfolge nach</li>
+  </ol>
+</section>
+
+<section>
+  <img src="images/bsp-tree-cut.png">
+</section>
+
+<section>
+  <h3>BSP Tree</h3>
+</section>
+
+<section>
+  <h4>Konstruktion</h4>
+  <ol>
+    <li>Eine Ebene auswählen</li>
+    <li>Unterteile die Menge an Polygonen in der Ebene</li>
+    <li>Fahre rekursiv mit beiden Halbebenen fort</li>
+  </ol>
+</section>
+
+<section>
+  <svg width="600px" height="600px">
+    <polygon points="200,50 250,190 160,150" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+    <polygon points="260,80 280,190 350,210" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+    <polygon points="550,450 450,400 425,300 500,350" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+    <polygon points="100,450 180,300 165,500 80,550" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+    <polygon points="200,250 250,300 350,500 300,450 200,550" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+
+    <line class="fragment" x1="0" y1="230" x2="600" y2="230" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+    <line class="fragment" x1="230" y1="230" x2="600" y2="600" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+    <line class="fragment" x1="240" y1="0" x2="265" y2="230" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+    <line class="fragment" x1="400" y1="400" x2="0" y2="520" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+    <line class="fragment" x1="190" y1="462" x2="185" y2="230" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+    <line class="fragment" x1="190" y1="462" x2="185" y2="600" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+  </svg>
+</section>
+
+<section>
+  <svg width="600px" height="600px">
+    <polygon points="200,50 250,190 160,150" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+    <polygon points="260,80 280,190 350,210" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+    <polygon points="550,450 450,400 425,300 500,350" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+    <polygon points="100,450 180,300 165,500 80,550" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+    <polygon points="200,250 250,300 350,500 300,450 200,550" style="fill:#ddd;stroke:#333;stroke-width:1"></polygon>
+
+    <line class="fragment" x1="0" y1="230" x2="600" y2="230" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+    <line class="fragment" x1="230" y1="230" x2="600" y2="600" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+    <line class="fragment" x1="240" y1="0" x2="265" y2="230" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+    <line class="fragment" x1="530" y1="530" x2="0" y2="580" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+    <line class="fragment" x1="190" y1="560" x2="185" y2="230" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+  </svg>
+</section>
+
+<section>
+  <img src="images/bsp-tree.png" width="80%">
+</section>
+
+<section>
+  <pre><code>class BspTreeNode {
+  Plane partition;
+  List&lt;Polygon&gt; polygons = new ArrayList&lt;&gt;();
+  BspTreeNode front;
+  BspTreeNode back;
+}</code></pre>
+</section>
+
+<section>
+  <pre><code data-trim data-noescape>
+void buildBspTree(BspTreeNode node, List&lt;Polygon&gt; polygons) {
+  ...
+  polygons.forEach(polygon -> {
+    <span class="fragment highlight-current-blue">switch(classify(polygon, node.partition)) {</span>
+    <span class="fragment highlight-current-blue">case COINCIDENT:  node.polygons.add(polygon);      break;</span>
+    <span class="fragment highlight-current-blue">case IN_BACK_OF:  backlist.add(polygon);           break;</span>
+    <span class="fragment highlight-current-blue">case IN_FRONT_OF: frontlist.add(polygon);          break;</span>
+    <span class="fragment highlight-current-blue">case SPANNING:    split = split(polygon, tree.partition);
+                      backlist.add(split.getLeft());
+                      frontlist.add(split.getRight());</span>
+    }
+  });
+  ...
+}
+</code></pre>
+</section>
+
+<section>
+  <h4>Wahl der Teilebene</h4>
+  <ul>
+    <li>
+      Abhängig von Use Case
+      <ul>
+        <li>An Polygonachsen ausgerichtet</li>
+        <li>An Koordinatenachse ausgerichtet</li>
+      </ul>
+    </li>
+    <li>Ziele:
+      <ul>
+        <li>Baum balancieren</li>
+        <li>Schnitte minimieren</li>
+      </ul>
+    </li>
+  </ul>
+  <p class="fragment">Balance &larr;&rarr; Schnitte</p>
+</section>
+
+<section>
+  <h4>Stoppbedingung</h4>
+  <ul>
+    <li>maximale Fragment Anzahl bei Leaf</li>
+    <li>sobald jedes Polygon in einem Leaf ist</li>
+    <li>maximale Baumtiefe erreicht</li>
+    <li>...</li>
+  </ul>
+</section>
+
+<section>
+  <h4>Suche</h4>
+</section>
+
+<section>
+  <pre><code data-trim data-noescape>
+switch(classify(v, node.partition) {
+  case IN_BACK_OF:
+    renderPolygons(node.front.polygons);
+    renderPolygons(node.polygons);
+    renderPolygons(node.back.polygons); break;
+  case IN_FRONT_OF:
+    renderPolygons(node.getBack.polygons);
+    renderPolygons(node.polygons);
+    renderPolygons(node.getFront.polygons); break;
+  case COINCIDENT:
+    renderPolygons(node.front.polygons);
+    renderPolygons(node.back.polygons); break;
+}
+  </code></pre>
+</section>
+
+<section>
+  <h4>Dynamik</h4>
+  <ul>
+    <li>nicht geeignet</li>
+    <li>Wird beim Laden des Levels berechnet</li>
+  </ul>
+
+  <p class="fragment">Einfügen und Neuberechnung haben die selbe Zeitkomplexität von O(n<sup>3</sup>)</p>
+</section>

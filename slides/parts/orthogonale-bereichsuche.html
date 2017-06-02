@@ -1,0 +1,159 @@
+<section style="text-align: left">
+  <p>Binary Space Partitioning</p>
+  <p class="fragment highlight-blue">Orthogonale Bereichsuche</p>
+  <p>Windowing</p>
+</section>
+
+<section>
+  <h2>Orthogonale Bereichsuche</h2>
+</section>
+
+<section>
+  <table>
+    <thead>
+    <tr>
+      <th colspan="4">Employee</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Birthday</td>
+      <td>Salary</td>
+      <td>Kids</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <pre><code data-trim>
+    SELECT * FROM Employee WHERE
+      Salary > 3000 AND
+      Salary < 4000
+  </code></pre>
+
+  <svg width="600px" height="600px">
+    <line x1="0" y1="230" x2="600" y2="230" style="stroke: rgb(255,255,255); stroke-width: 2"></line>
+    <text x="0" y="220" fill="white" font-size="20px">0 CHF</text>
+    <text x="600" y="220" fill="white" text-anchor="end" font-size="20px">6'000 CHF</text>
+
+    <g class="fragment">
+      <line x1="300" y1="230" x2="400" y2="230" style="stroke: rgb(255,0,0); stroke-width: 2"></line>
+      <text x="300" y="220" fill="white" text-anchor="end" font-size="15px">3'000 CHF</text>
+      <text x="400" y="220" fill="white" font-size="15px">4'000 CHF</text>
+    </g>
+  </svg>
+</section>
+
+<section>
+  <pre><code data-trim>
+    SELECT * FROM Employee WHERE
+      Salary > 3000 AND
+      Salary < 4000 AND
+      Birthday > '01-01-1950' AND
+      Birthday < '01-01-1960'
+  </code></pre>
+  <div class="fragment">
+    <img src="images/database-search.png">
+    <small class="source">Source: Computational Geometry - Algorithms and Applications, 3rd Edition Mark de Berg,
+      Otfried Cheong,
+      Marc van Kreveld, Mark Overmars
+    </small>
+  </div>
+</section>
+
+<section>
+  <pre><code data-trim>
+    SELECT * FROM Employee WHERE
+      Salary > 3000 AND
+      Salary < 4000 AND
+      Birthday > '01-01-1950' AND
+      Birthday < '01-01-1960' AND
+      Kids >= 2 AND
+      Kids <= 4
+  </code></pre>
+  <div class="fragment">
+    <img src="images/database-search-3d.png">
+    <small class="source">Source: Computational Geometry - Algorithms and Applications, 3rd Edition Mark de Berg,
+      Otfried Cheong,
+      Marc van Kreveld, Mark Overmars
+    </small>
+  </div>
+</section>
+
+<section>
+  <h3>Kd Tree</h3>
+</section>
+
+<section>
+  <canvas id="kdtree-space" width="450px" height="600px" style="border: 1px solid #333; float: left"></canvas>
+  <canvas id="kdtree-tree" width="450px" height="600px" style="border: 1px solid #333"></canvas>
+  <script src="js/kdtree/reveal-connect.js" type="module"></script>
+
+  <div class="fragment" data-point data-x="136" data-y="383"></div>
+  <div class="fragment" data-point data-x="388" data-y="311"></div>
+  <div class="fragment" data-point data-x="245" data-y="101"></div>
+  <div class="fragment" data-point data-x="430" data-y="490"></div>
+  <div class="fragment" data-point data-x="298" data-y="210"></div>
+  <div class="fragment" data-point data-x="50" data-y="550"></div>
+</section>
+
+<section>
+  <iframe src="demos/kdtree.html" width="1350px" height="650px"></iframe>
+</section>
+
+<section>
+  <pre><code data-trim>
+class Node {
+  Split split;
+  Point point;
+  Node above;
+  Node below;
+}
+
+class Split {
+  boolean even;
+  float coordinate;
+}
+  </code></pre>
+</section>
+
+<section>
+  <pre><code data-trim data-noescape>
+Node buildKdTree(List&lt;Point&gt; points, int depth) {
+  <span class="fragment highlight-current-blue">if(points.size() == 0)
+    return null;</span>
+  <span class="fragment highlight-current-blue">if(points.size() == 1)
+    return new Node(points.get(0));</span>
+
+  <span class="fragment highlight-current-blue">boolean even = depth % 2 == 0;
+    {split, pointsAbove, pointsBelow} = split(points, even);</span>
+
+  <span class="fragment highlight-current-blue">Node nodeAbove = buildKdTree(pointsAbove, depth + 1);
+  Node nodeBelow = buildKdTree(pointsBelow, depth + 1);</span>
+
+  return new Node(split, nodeAbove, noveBelow);
+}
+  </code></pre>
+</section>
+
+<section>
+  <h4>Punkte hinzufügen</h4>
+
+  <ul>
+    <li>nicht alle Punkte müssen aufgeteilt werden</li>
+    <li>je mehr Punkte desto unbalancierter ist der Baum</li>
+    <li>Rotationsmethode ist nicht anwendbar</li>
+  </ul>
+</section>
+
+<section>
+  <h4>Punkte entfernen</h4>
+
+  <ul>
+    <li>Punkte löschen, Node stehen lassen</li>
+    <li>Teilbaum neuberechnen</li>
+    <li>Ersatz suchen</li>
+  </ul>
+</section>

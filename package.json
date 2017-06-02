@@ -1,0 +1,48 @@
+{
+  "name": "thermo-trains",
+  "version": "0.0.1",
+  "description": "Documentation of a study of train deficiencies",
+  "scripts": {
+    "start": "npm run docs",
+    "docs": "node util/open.js http://localhost:3000 && npm run serve:docs",
+    "serve:docs": "gulp serve:docs",
+    "slides": "node util/open.js http://localhost:3000 && npm run serve:slides",
+    "serve:slides": "gulp serve:slides",
+    "build": "gulp && npm run build:docs:pdf && node util/open.js ./build/docs/thermotrains.pdf",
+    "build:docs": "npm run build:docs:html && npm run build:docs:pdf && node util/open.js ./build/docs/thermotrains.pdf",
+    "build:docs:html": "gulp docs",
+    "build:docs:pdf": "prince --javascript build/docs/index.html -o build/docs/thermotrains.pdf",
+    "build:slides": "gulp slides"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebastianhaeni/space-partitioning.git"
+  },
+  "author": {
+    "name": "Sebastian Häni",
+    "email": "haeni.sebastian@gmail.com",
+    "url": "https://sebastianhaeni.ch"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/sebastianhaeni/space-partitioning/issues"
+  },
+  "homepage": "https://github.com/sebastianhaeni/space-partitioning#readme",
+  "dependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-live-server": "0.0.30",
+    "gulp-nunjucks-render": "^2.0.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-util": "^3.0.8",
+    "jquery": "1.11.2",
+    "moment": "^2.17.1",
+    "normalize.css": "^5.0.0",
+    "nunjucks": "^3.0.0",
+    "reveal.js": "^3.5.0",
+    "run-sequence": "^1.2.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
