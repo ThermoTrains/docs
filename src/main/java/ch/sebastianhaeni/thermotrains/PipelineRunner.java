@@ -32,6 +32,7 @@ public final class PipelineRunner {
       "target/3-distorted"
     ));
     runStep(4, () -> Undistort.undistortImages(
+      "target/2-calibration-found/calibration.json",
       "target/3-distorted",
       "target/4-undistorted"
     ));
