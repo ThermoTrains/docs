@@ -21,6 +21,7 @@ import ch.sebastianhaeni.thermotrains.serialization.Calibration;
 import ch.sebastianhaeni.thermotrains.serialization.MatSerialization;
 import ch.sebastianhaeni.thermotrains.util.FileUtil;
 
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.getFile;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.calib3d.Calib3d.CALIB_CB_ADAPTIVE_THRESH;
@@ -43,6 +44,7 @@ public final class CalibrateCamera {
 
   public static void performCheckerboardCalibration(double squareSize, String inputFolder, String outputFolder)
     throws FileNotFoundException {
+    emptyFolder(outputFolder);
 
     List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
 

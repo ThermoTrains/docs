@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static ch.sebastianhaeni.thermotrains.util.Util.median;
 import static org.opencv.core.Core.absdiff;
@@ -23,6 +24,8 @@ public final class MotionCrop {
   }
 
   public static void cropToMotion(String inputFolder, String outputFolder) {
+    emptyFolder(outputFolder);
+
     File fBackground = new File(inputFolder, "0001.jpg");
 
     Mat background = imread(fBackground.toPath().toString());

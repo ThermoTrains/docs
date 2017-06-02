@@ -17,6 +17,7 @@ import ch.sebastianhaeni.thermotrains.serialization.Calibration;
 import ch.sebastianhaeni.thermotrains.serialization.MatSerialization;
 import ch.sebastianhaeni.thermotrains.util.FileUtil;
 
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.calib3d.Calib3d.getOptimalNewCameraMatrix;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
@@ -29,6 +30,7 @@ public final class Undistort {
 
   public static void undistortImages(String calibrationJsonFilename, String inputFolder, String outputFolder)
     throws IOException {
+    emptyFolder(outputFolder);
 
     Gson gson = new GsonBuilder()
       .registerTypeAdapter(Mat.class, new MatSerialization())

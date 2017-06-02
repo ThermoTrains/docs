@@ -10,6 +10,7 @@ import org.opencv.core.Size;
 
 import ch.sebastianhaeni.thermotrains.util.Util;
 
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.getFiles;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.core.Core.inRange;
@@ -25,6 +26,8 @@ public final class CarCut {
   }
 
   public static void cut(String inputFolder, String outputFolder) {
+    emptyFolder(outputFolder);
+
     List<Path> files = getFiles(inputFolder, "**result.jpg");
     Mat img = imread(files.get(0).toString());
 

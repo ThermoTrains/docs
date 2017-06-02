@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.DoubleStream;
 
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.*;
@@ -20,6 +21,8 @@ public final class Straighten {
   }
 
   public static void straighten(String inputFolder, String outputFolder) {
+    emptyFolder(outputFolder);
+
     int i = 0;
     List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
 

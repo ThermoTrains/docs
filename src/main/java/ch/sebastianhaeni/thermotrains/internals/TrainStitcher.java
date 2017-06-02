@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.core.Core.*;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
@@ -21,6 +22,7 @@ public final class TrainStitcher {
   }
 
   public static void stitchTrain(String inputFolder, String outputFolder) {
+    emptyFolder(outputFolder);
 
     List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
     List<Offset> offsets = new ArrayList<>();

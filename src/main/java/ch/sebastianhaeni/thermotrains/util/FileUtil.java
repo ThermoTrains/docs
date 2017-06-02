@@ -20,11 +20,12 @@ public final class FileUtil {
     PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + globPattern);
     File folder = new File(inputFolder);
 
-    if (folder.listFiles() == null) {
+    File[] files = folder.listFiles();
+    if (files == null) {
       throw new IllegalStateException("Cannot read files from folder: " + inputFolder);
     }
 
-    for (File file : folder.listFiles()) {
+    for (File file : files) {
       if (matcher.matches(file.toPath())) {
         inputFiles.add(file.toPath());
       }
@@ -57,5 +58,18 @@ public final class FileUtil {
     }
 
     return new File(outputFolder, filename);
+  }
+
+  public static void emptyFolder(String folder) {
+    File dir = new File(folder);
+
+    File[] files = dir.listFiles();
+    if (files == null) {
+      throw new IllegalStateException("Cannot read files from folder: " + folder);
+    }
+
+    for (File file : files) {
+      file.delete();
+    }
   }
 }
