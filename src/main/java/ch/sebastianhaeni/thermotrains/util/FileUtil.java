@@ -1,7 +1,5 @@
 package ch.sebastianhaeni.thermotrains.util;
 
-import org.opencv.core.Mat;
-
 import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -9,9 +7,14 @@ import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opencv.core.Mat;
+
 import static org.opencv.imgcodecs.Imgcodecs.imwrite;
 
-public class FileUtil {
+public final class FileUtil {
+  private FileUtil() {
+  }
+
   public static List<Path> getFiles(String inputFolder, String globPattern) {
     List<Path> inputFiles = new ArrayList<>();
     PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + globPattern);

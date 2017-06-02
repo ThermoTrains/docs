@@ -7,7 +7,10 @@ import org.opencv.videoio.Videoio;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 
-public class ExtractFrames {
+public final class ExtractFrames {
+  private ExtractFrames() {
+  }
+
   public static void extractFrames(int framesToExtract, String inputVideoFilename, String outputFolder) {
     VideoCapture capture = new VideoCapture();
 

@@ -4,10 +4,13 @@ import org.opencv.core.Mat;
 
 import java.util.Collection;
 
-public class Stitching {
+public final class Stitching {
 
   static {
     System.loadLibrary("stitching");
+  }
+
+  private Stitching() {
   }
 
   private static native int stitch(long[] images, long pano);

@@ -14,7 +14,10 @@ import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.*;
 
-public class Straighten {
+public final class Straighten {
+
+  private Straighten() {
+  }
 
   public static void straighten(String inputFolder, String outputFolder) {
     int i = 0;

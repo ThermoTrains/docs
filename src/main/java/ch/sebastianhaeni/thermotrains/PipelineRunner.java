@@ -4,13 +4,16 @@ import ch.sebastianhaeni.thermotrains.internals.*;
 import ch.sebastianhaeni.thermotrains.util.Procedure;
 import org.opencv.core.Core;
 
-public class PipelineRunner {
+public final class PipelineRunner {
   static {
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
   }
 
-  private static final int START_STEP = 9;
+  private static final int START_STEP = 4;
   private static final int STOP_STEP = 9;
+
+  private PipelineRunner() {
+  }
 
   public static void main(String[] args) {
     runStep(1, () -> ExtractFrames.extractFrames(
@@ -29,7 +32,6 @@ public class PipelineRunner {
       "target/3-distorted"
     ));
     runStep(4, () -> Undistort.undistortImages(
-      "target/calibration-found/calibration.json",
       "target/3-distorted",
       "target/4-undistorted"
     ));
@@ -55,7 +57,7 @@ public class PipelineRunner {
     ));
   }
 
-  private static void runStep(int step, Procedure procedure) {
+  private static void runStep(int step, Procedure<?> procedure) {
     if (START_STEP > step || STOP_STEP < step) {
       return;
     }

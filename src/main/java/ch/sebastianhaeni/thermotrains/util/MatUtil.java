@@ -3,7 +3,10 @@ package ch.sebastianhaeni.thermotrains.util;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
-public class MatUtil {
+public final class MatUtil {
+
+  private MatUtil() {
+  }
 
   public static Mat crop(Mat mat, int topMargin, int rightMargin, int bottomMargin, int leftMargin) {
     Rect roi = new Rect(

@@ -1,36 +1,41 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
-import ch.sebastianhaeni.thermotrains.serialization.Calibration;
-import ch.sebastianhaeni.thermotrains.serialization.MatSerialization;
-import ch.sebastianhaeni.thermotrains.util.FileUtil;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.opencv.core.Mat;
-import org.opencv.core.Rect;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.List;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import ch.sebastianhaeni.thermotrains.serialization.Calibration;
+import ch.sebastianhaeni.thermotrains.serialization.MatSerialization;
+import ch.sebastianhaeni.thermotrains.util.FileUtil;
+
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.getFile;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.calib3d.Calib3d.getOptimalNewCameraMatrix;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.undistort;
 
-public class Undistort {
+public final class Undistort {
 
-  public static void undistortImages(String calibrationJsonFilename, String inputFolder, String outputFolder)
+  private Undistort() {
+  }
+
+  public static void undistortImages(String inputFolder, String outputFolder)
     throws IOException {
 
     Gson gson = new GsonBuilder()
       .registerTypeAdapter(Mat.class, new MatSerialization())
       .create();
 
-    String fileString = new String(Files.readAllBytes(Paths.get(calibrationJsonFilename)), StandardCharsets.UTF_8);
+    Path path = getFile(outputFolder, "**calibration.json").toPath();
+    String fileString = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
     Calibration calibration = gson.fromJson(fileString, Calibration.class);
 
     Rect roi = new Rect();

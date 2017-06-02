@@ -1,18 +1,29 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
-import org.opencv.core.*;
-
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
+
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+
+import ch.sebastianhaeni.thermotrains.util.Util;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.getFiles;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.core.Core.inRange;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
-import static org.opencv.imgproc.Imgproc.*;
+import static org.opencv.imgproc.Imgproc.COLOR_BGR2HSV;
+import static org.opencv.imgproc.Imgproc.MORPH_ELLIPSE;
+import static org.opencv.imgproc.Imgproc.cvtColor;
+import static org.opencv.imgproc.Imgproc.erode;
+import static org.opencv.imgproc.Imgproc.getStructuringElement;
 
-public class CarCut {
+public final class CarCut {
+  private CarCut() {
+  }
+
   public static void cut(String inputFolder, String outputFolder) {
     List<Path> files = getFiles(inputFolder, "**result.jpg");
     Mat img = imread(files.get(0).toString());
@@ -34,8 +45,7 @@ public class CarCut {
 
     erode(dst, dst, dilationElement);
 
-    Mat hist = new Mat(new Size(dst.cols(), 1), CvType.CV_8UC1);
-    double[] histArray = new double[dst.cols()];
+    int[] hist = new int[dst.cols()];
 
     for (int i = 0; i < dst.cols(); i++) {
 
@@ -47,28 +57,27 @@ public class CarCut {
         }
       }
 
-      hist.put(0, i, withinRange);
-      histArray[i] = withinRange;
+      hist[i] = withinRange;
     }
 
-    double median = median(histArray);
+    double median = Util.median(hist);
 
     // find peaks
-    for (int i = 0; i < histArray.length; i++) {
-      if (histArray[i] < median * 3.0) {
-        histArray[i] = 0.0;
+    for (int i = 0; i < hist.length; i++) {
+      if (hist[i] < median * 3.0) {
+        hist[i] = 0;
       } else {
-        histArray[i] = 1.0;
+        hist[i] = 1;
       }
 
       // remove plateau
-      plateau(histArray, i);
+      plateau(hist, i);
     }
 
     int prev = 0;
     int i = 0;
-    for (int x = 0; x < histArray.length; x++) {
-      if (histArray[x] == 0.0) {
+    for (int x = 0; x < hist.length; x++) {
+      if (hist[x] == 0.0) {
         continue;
       }
 
@@ -83,28 +92,17 @@ public class CarCut {
     }
   }
 
-  private static void plateau(double[] histArray, int i) {
+  private static void plateau(int[] arr, int i) {
     int minDist = 500;
-    if (histArray[i] != 1.0) {
+    if (arr[i] != 1) {
       return;
     }
 
     for (int j = Math.max(i - minDist, 0); j < i; j++) {
-      if (histArray[j] == 1.0) {
-        histArray[j] = 0.0;
+      if (arr[j] == 1) {
+        arr[j] = 0;
         return;
       }
     }
-  }
-
-  private static double median(double[] numArray) {
-    double[] clone = numArray.clone();
-    Arrays.sort(clone);
-
-    if (clone.length % 2 == 0) {
-      return (clone[clone.length / 2] + clone[clone.length / 2 - 1]) / 2;
-    }
-
-    return clone[clone.length / 2];
   }
 }

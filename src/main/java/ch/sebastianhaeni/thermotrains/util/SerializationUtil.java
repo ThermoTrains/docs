@@ -1,5 +1,6 @@
 package ch.sebastianhaeni.thermotrains.util;
 
+import com.google.common.base.Charsets;
 import com.google.gson.JsonObject;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -8,6 +9,9 @@ import java.nio.*;
 import java.util.Base64;
 
 public final class SerializationUtil {
+
+  private SerializationUtil() {
+  }
 
   public static JsonObject matToJson(Mat mat) {
     JsonObject obj = new JsonObject();
@@ -35,19 +39,19 @@ public final class SerializationUtil {
     if (type == CvType.CV_32S || type == CvType.CV_32SC2 || type == CvType.CV_32SC3 || type == CvType.CV_16S) {
       int[] data = new int[cols * rows * elemSize];
       mat.get(0, 0, data);
-      dataString = new String(encoder.encode(toByteArray(data)));
+      dataString = new String(encoder.encode(toByteArray(data)), Charsets.US_ASCII);
     } else if (type == CvType.CV_32F || type == CvType.CV_32FC2) {
       float[] data = new float[cols * rows * elemSize];
       mat.get(0, 0, data);
-      dataString = new String(encoder.encode(toByteArray(data)));
+      dataString = new String(encoder.encode(toByteArray(data)), Charsets.US_ASCII);
     } else if (type == CvType.CV_64F || type == CvType.CV_64FC2) {
       double[] data = new double[cols * rows * elemSize];
       mat.get(0, 0, data);
-      dataString = new String(encoder.encode(toByteArray(data)));
+      dataString = new String(encoder.encode(toByteArray(data)), Charsets.US_ASCII);
     } else if (type == CvType.CV_8U) {
       byte[] data = new byte[cols * rows * elemSize];
       mat.get(0, 0, data);
-      dataString = new String(encoder.encode(data));
+      dataString = new String(encoder.encode(data), Charsets.US_ASCII);
     } else {
       throw new UnsupportedOperationException("unknown type");
     }
@@ -67,16 +71,16 @@ public final class SerializationUtil {
     Base64.Decoder decoder = Base64.getDecoder();
 
     if (type == CvType.CV_32S || type == CvType.CV_32SC2 || type == CvType.CV_32SC3 || type == CvType.CV_16S) {
-      int[] data = toIntArray(decoder.decode(dataString.getBytes()));
+      int[] data = toIntArray(decoder.decode(dataString.getBytes(Charsets.US_ASCII)));
       mat.put(0, 0, data);
     } else if (type == CvType.CV_32F || type == CvType.CV_32FC2) {
-      float[] data = toFloatArray(decoder.decode(dataString.getBytes()));
+      float[] data = toFloatArray(decoder.decode(dataString.getBytes(Charsets.US_ASCII)));
       mat.put(0, 0, data);
     } else if (type == CvType.CV_64F || type == CvType.CV_64FC2) {
-      double[] data = toDoubleArray(decoder.decode(dataString.getBytes()));
+      double[] data = toDoubleArray(decoder.decode(dataString.getBytes(Charsets.US_ASCII)));
       mat.put(0, 0, data);
     } else if (type == CvType.CV_8U) {
-      byte[] data = decoder.decode(dataString.getBytes());
+      byte[] data = decoder.decode(dataString.getBytes(Charsets.US_ASCII));
       mat.put(0, 0, data);
     } else {
       throw new UnsupportedOperationException("unknown type");

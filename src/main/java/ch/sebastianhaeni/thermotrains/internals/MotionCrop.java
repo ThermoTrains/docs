@@ -13,11 +13,15 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
+import static ch.sebastianhaeni.thermotrains.util.Util.median;
 import static org.opencv.core.Core.absdiff;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.*;
 
-public class MotionCrop {
+public final class MotionCrop {
+  private MotionCrop() {
+  }
+
   public static void cropToMotion(String inputFolder, String outputFolder) {
     File fBackground = new File(inputFolder, "0001.jpg");
 
@@ -63,15 +67,6 @@ public class MotionCrop {
       img = crop(img, medianBox);
 
       saveMat(outputFolder, img, i);
-    }
-  }
-
-  private static int median(int[] m) {
-    int middle = m.length / 2;
-    if (m.length % 2 == 1) {
-      return m[middle];
-    } else {
-      return (m[middle - 1] + m[middle]) / 2;
     }
   }
 

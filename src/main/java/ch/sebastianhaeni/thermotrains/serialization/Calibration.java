@@ -1,12 +1,11 @@
 package ch.sebastianhaeni.thermotrains.serialization;
 
+import java.util.List;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 
-import java.io.Serializable;
-import java.util.List;
-
-public class Calibration implements Serializable {
+public class Calibration {
   private final Mat cameraMatrix;
   private final Mat distCoeffs;
   private final Size imageSize;

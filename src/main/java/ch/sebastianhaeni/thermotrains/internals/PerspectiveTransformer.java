@@ -13,7 +13,10 @@ import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.getPerspectiveTransform;
 import static org.opencv.imgproc.Imgproc.warpPerspective;
 
-public class PerspectiveTransformer {
+public final class PerspectiveTransformer {
+
+  private PerspectiveTransformer() {
+  }
 
   public static void transform(String inputFolder, String outputFolder) {
 
