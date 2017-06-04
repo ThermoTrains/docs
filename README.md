@@ -1,5 +1,5 @@
-# Thermo Trains
-[![Build Status](https://travis-ci.com/sebastianhaeni/thermotrains.svg?token=qgj44e18REfhtFnW25Z2&branch=master)](https://travis-ci.com/sebastianhaeni/thermotrains)
+# Thermo Trains [![Build Status](https://travis-ci.com/sebastianhaeni/thermotrains.svg?token=qgj44e18REfhtFnW25Z2&branch=master)](https://travis-ci.com/sebastianhaeni/thermotrains)
+
 Automatic detection of isolation deficiencies on rolling trains
 
 ## Computer Vision Pipeline
@@ -16,11 +16,12 @@ Docs and slides are in German.
 
 ### Getting started
 
-1. Install [PrinceXML](https://www.princexml.com/)
-2. `npm install`
+1. Install [PrinceXML](https://www.princexml.com)
+2. Install [Node.js](https://nodejs.org/en)
+3. `npm install`
 
 ### Useful commands
 
 * serve docs: `npm run docs`
 * serve slides: `npm run slides`
-* create pdf: `npm run build`
+* create PDF file: `npm run build`
