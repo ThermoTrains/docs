@@ -1,6 +1,5 @@
 # Thermo Trains
-[![Build Status](https://travis-ci.org/sebastianhaeni/thermotrains.svg?branch=master)](https://travis-ci.org/sebastianhaeni/thermotrains)
-
+[![Build Status](https://travis-ci.com/sebastianhaeni/thermotrains.svg?token=qgj44e18REfhtFnW25Z2&branch=master)](https://travis-ci.com/sebastianhaeni/thermotrains)
 Automatic detection of isolation deficiencies on rolling trains
 
 ## Computer Vision Pipeline
