@@ -1,5 +1,6 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
+import ch.sebastianhaeni.thermotrains.util.Direction;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
@@ -19,7 +20,7 @@ public final class Rectify {
     // nop
   }
 
-  public static void transform(String inputFolder, String outputFolder) {
+  public static void transform(Direction direction, String inputFolder, String outputFolder) {
     emptyFolder(outputFolder);
 
     // TODO figure out the corner points of the train and write them to src
@@ -65,10 +66,21 @@ public final class Rectify {
       Path path = files.get(i);
 
       Mat img = imread(path.toString());
-      flip(img, img, 1);
+
+      if (direction == Direction.REVERSE) {
+        // flip hard coded matrix
+        // TODO remove when automatic
+        flip(img, img, 1);
+      }
+
       Mat out = new Mat();
       warpPerspective(img, out, perspectiveTransform, new Size(img.width(), img.height()));
-      flip(out, out, 1);
+
+      if (direction == Direction.REVERSE) {
+        // flip back hard coded matrix
+        // TODO remove when automatic
+        flip(out, out, 1);
+      }
 
       saveMat(outputFolder, out, i);
     }

@@ -96,7 +96,14 @@ public final class FileUtil {
    */
   public static void emptyFolder(@Nonnull String folder) {
 
-    File[] files = Optional.ofNullable(new File(folder).listFiles())
+    File folderFile = new File(folder);
+
+    if (!folderFile.exists()) {
+      // folder doesn't exist, nothing to clear
+      return;
+    }
+
+    File[] files = Optional.ofNullable(folderFile.listFiles())
       .orElseThrow(() -> new IllegalStateException("Cannot read files from folder: " + folder));
 
     Arrays.stream(files)

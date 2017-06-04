@@ -67,14 +67,10 @@ public final class Straighten {
   }
 
   /**
-   * Calculates the gradient angle of a line.
+   * Leaves only pixels where train tracks are. The rest is set to white.
    */
-  private static double calculateAngle(double x1, double y1, double x2, double y2) {
-    double angle = Math.toDegrees(Math.atan2(x2 - x1, y2 - y1)) - 90;
-    // Keep angle between 0 and 360
-    angle = angle + Math.ceil(-angle / 360) * 360;
-
-    return angle;
+  private static void maskTrainTracks(Mat srcGray) {
+    threshold(srcGray, srcGray, 40, 255, THRESH_BINARY);
   }
 
   /**
@@ -93,17 +89,13 @@ public final class Straighten {
   }
 
   /**
-   * Leaves only pixels where train tracks are. The rest is set to white.
+   * Calculates the gradient angle of a line.
    */
-  private static void maskTrainTracks(Mat srcGray) {
-    // TODO this could possibly be done using the threshold function from OpenCV
-    for (int j = 0; j < srcGray.rows(); j++) {
-      for (int i = 0; i < srcGray.cols(); i++) {
-        int value = (int) srcGray.get(j, i)[0];
-        if (value > 40) {
-          srcGray.put(j, i, 255);
-        }
-      }
-    }
+  private static double calculateAngle(double x1, double y1, double x2, double y2) {
+    double angle = Math.toDegrees(Math.atan2(x2 - x1, y2 - y1)) - 90;
+    // Keep angle between 0 and 360
+    angle = angle + Math.ceil(-angle / 360) * 360;
+
+    return angle;
   }
 }

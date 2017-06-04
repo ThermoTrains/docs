@@ -6,12 +6,10 @@ import org.apache.logging.log4j.Logger;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
@@ -46,16 +44,17 @@ public final class MotionCrop {
     for (int i = 0; i < inputFiles.size(); i++) {
       Path inputFile = inputFiles.get(i);
       Mat img = imread(inputFile.toString());
-      BBox boundingBox = findBoundingBox(img, background);
+      Optional<BBox> boundingBox = findBoundingBox(img, background);
 
-      if (boundingBox == null) {
+      if (!boundingBox.isPresent()) {
+        LOG.info("Found little to no motion on {}", inputFile);
         continue;
       }
 
-      LOG.info("Scanning {}", inputFile);
+      LOG.info("Found motion in {}", inputFile);
 
       // save to disk
-      bboxes.put(i, boundingBox);
+      bboxes.put(i, boundingBox.get());
     }
 
     // get median bounding box
@@ -68,6 +67,7 @@ public final class MotionCrop {
     for (int i = 0; i < inputFiles.size(); i++) {
 
       if (!bboxes.containsKey(i)) {
+        // if the key is not present, we found no motion in this file
         continue;
       }
 
@@ -79,7 +79,8 @@ public final class MotionCrop {
     }
   }
 
-  private static BBox findBoundingBox(Mat source, Mat background) {
+  @Nonnull
+  private static Optional<BBox> findBoundingBox(@Nonnull Mat source, @Nonnull Mat background) {
     Mat dst = new Mat();
     source.copyTo(dst);
     Mat gray = new Mat();
@@ -113,7 +114,7 @@ public final class MotionCrop {
 
     if (contours.isEmpty()) {
       // no contours, so we purge
-      return null;
+      return Optional.empty();
     }
 
     MatOfPoint largestContour = contours.get(0);
@@ -131,22 +132,31 @@ public final class MotionCrop {
       // - it's the start of the train
       // - it's the end of the train
       // - a bird flew over the empty background
-      return null;
+      return Optional.empty();
     }
 
-    return bbox;
+    return Optional.of(bbox);
   }
 
+  /**
+   * Crops the {@link Mat} to the bounding box.
+   */
   private static Mat crop(Mat mat, BBox bbox) {
     return new Mat(mat, new Rect(bbox.left, bbox.top, bbox.right - bbox.left, bbox.bottom - bbox.top));
   }
 
-  private static class BBox {
-    int top, bottom, left, right;
-  }
-
+  /**
+   * Returns a stream of contour points with the given index.
+   */
   private static IntStream streamCoordinates(MatOfPoint contour, int index) {
     return IntStream.rangeClosed(0, contour.rows() - 1)
       .map(i -> (int) contour.get(i, 0)[index]);
+  }
+
+  /**
+   * Bounding box with top, bottom, left and right.
+   */
+  private static class BBox {
+    int top, bottom, left, right;
   }
 }

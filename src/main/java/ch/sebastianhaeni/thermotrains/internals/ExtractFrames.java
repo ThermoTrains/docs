@@ -1,6 +1,7 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
 
+import ch.sebastianhaeni.thermotrains.util.Direction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opencv.core.Mat;
@@ -20,11 +21,6 @@ public final class ExtractFrames {
 
   private ExtractFrames() {
     // nop
-  }
-
-  public enum Direction {
-    REVERSE,
-    FORWARD
   }
 
   public static void extractFrames(int framesToExtract, Direction direction, String inputVideoFilename, String outputFolder) {

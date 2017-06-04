@@ -6,17 +6,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opencv.core.Core;
 
-import static ch.sebastianhaeni.thermotrains.internals.ExtractFrames.Direction.FORWARD;
+import static ch.sebastianhaeni.thermotrains.util.Direction.FORWARD;
 
 public final class PipelineRunner {
   static {
     // load OpenCV native library
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
   }
+
   private static final Logger LOG = LogManager.getLogger(PipelineRunner.class);
 
-  private static final int START_STEP = 3;
-  private static final int STOP_STEP = 9;
+  private static final int START_STEP = 5;
+  private static final int STOP_STEP = 5;
 
   private PipelineRunner() {
     // nop
@@ -54,6 +55,7 @@ public final class PipelineRunner {
       "target/6-cropped"
     ));
     runStep(7, () -> Rectify.transform(
+      FORWARD,
       "target/6-cropped",
       "target/7-rectified"
     ));
