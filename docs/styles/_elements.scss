@@ -32,9 +32,14 @@ dl {
 
 p,
 li,
+dl,
 table,
 pre code {
   page-break-inside: avoid;
+}
+
+.nobr {
+  white-space: nowrap;
 }
 
 pre code.long {
@@ -53,78 +58,80 @@ a {
   text-decoration: none;
 }
 
-table {
-  border-collapse: collapse;
-  margin-bottom: 10px;
-}
-
 img.icon {
   vertical-align: -0.2em;
 }
 
-table.full {
-  width: 100%;
-}
+table {
+  border-collapse: collapse;
+  margin-bottom: 10px;
 
-table .col-twenty {
-  width: 20%;
-}
+  &.full {
+    width: 100%;
+  }
 
-table .col-fourty {
-  width: 40%;
-}
+  .col-twenty {
+    width: 20%;
+  }
 
-table .col-fifty {
-  width: 50%;
-}
+  .col-fourty {
+    width: 40%;
+  }
 
-table td,
-table th {
-  padding: 0.4em 0.5em;
-  border: 1px solid #ddd;
-  font-size: 0.85em;
-  text-align: left;
-  vertical-align: top;
-}
+  .col-fifty {
+    width: 50%;
+  }
 
-table.table-extended td,
-table.table-extended th {
-  padding: 0.2em 0.8em;
-}
+  td,
+  th {
+    padding: 0.4em 0.5em;
+    border: 1px solid #ddd;
+    font-size: 0.85em;
+    text-align: left;
+    vertical-align: top;
+  }
 
-table td.level-1 {
-  padding-left: 1.8em;
-}
+  td {
+    &.level-1 {
+      padding-left: 1.8em;
+    }
 
-table td.level-2 {
-  padding-left: 3.1em;
-}
+    &.level-2 {
+      padding-left: 3.1em;
+    }
 
-table td.level-3 {
-  padding-left: 4.4em;
-}
+    &.level-3 {
+      padding-left: 4.4em;
+    }
+  }
 
-table p {
-  margin-top: 0;
-  padding-left: 0;
-}
+  .table-extended td,
+  .table-extended th {
+    padding: 0.2em 0.8em;
+  }
 
-table p:last-child {
-  margin-bottom: 0;
-}
+  p {
+    margin-top: 0;
+    padding-left: 0;
 
-table ul {
-  margin: 0;
-  padding-left: 16px;
-  list-style-type: square;
-}
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 
-table ul li {
-  padding-left: 0;
-}
+  ul {
+    margin: 0;
+    padding-left: 16px;
+    list-style-type: square;
 
-table .even td {
-  background-color: #f5f5f5;
+    li {
+      padding-left: 0;
+    }
+  }
+
+  .even td {
+    background-color: #f5f5f5;
+  }
 }
 
 code {
@@ -146,23 +153,27 @@ pre code {
 figure {
   margin: 0;
   text-align: center;
-}
 
-figure.full {
-  padding-left: 0;
-}
+  &.full {
+    padding-left: 0;
+  }
 
-figure img {
-  max-width: 100%;
-}
+  img {
+    max-width: 100%;
+  }
 
-figure pre {
-  text-align: left;
-}
+  pre {
+    text-align: left;
+  }
 
-figure figcaption {
-  page-break-before: avoid;
-  font-size: 0.75em;
+  figcaption, .source {
+    page-break-before: avoid;
+    font-size: 0.75em;
+  }
+
+  table {
+    margin: 0 auto 10px;
+  }
 }
 
 dt {

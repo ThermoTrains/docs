@@ -1,7 +1,7 @@
 {
   "name": "thermo-trains",
   "version": "0.0.1",
-  "description": "Documentation of a study of train deficiencies",
+  "description": "Study of train isolation deficiencies",
   "scripts": {
     "start": "npm run docs",
     "docs": "node util/open.js http://localhost:3000 && npm run serve:docs",
@@ -16,19 +16,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sebastianhaeni/space-partitioning.git"
+    "url": "git+https://github.com/sebastianhaeni/thermotrains.git"
   },
   "author": {
     "name": "Sebastian Häni",
     "email": "haeni.sebastian@gmail.com",
     "url": "https://sebastianhaeni.ch"
   },
+  "contributors": [
+    {
+      "name": "Raphael Laubscher",
+      "email": "raphael.laubscher@gmail.com",
+      "url": "http://raeffu.me"
+    }
+  ],
   "license": "UNLICENSED",
   "private": true,
   "bugs": {
-    "url": "https://github.com/sebastianhaeni/space-partitioning/issues"
+    "url": "https://github.com/sebastianhaeni/thermotrains/issues"
   },
-  "homepage": "https://github.com/sebastianhaeni/space-partitioning#readme",
+  "homepage": "https://github.com/sebastianhaeni/thermotrains#readme",
   "dependencies": {
     "del": "^2.2.2",
     "gulp": "^3.9.1",
@@ -38,7 +45,7 @@
     "gulp-util": "^3.0.8",
     "jquery": "1.11.2",
     "moment": "^2.17.1",
-    "normalize.css": "^5.0.0",
+    "normalize.css": "^7.0.0",
     "nunjucks": "^3.0.0",
     "reveal.js": "^3.5.0",
     "run-sequence": "^1.2.2",

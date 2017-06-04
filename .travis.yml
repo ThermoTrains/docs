@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "7"
+before_script:
+  - npm install
+script: gulp
+deploy:
+  provider: pages
+  local_dir: build
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+  on:
+    branch: master

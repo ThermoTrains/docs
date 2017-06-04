@@ -22,7 +22,7 @@ table th a[href^="#ref-"]:before {
   font-weight: normal;
 }
 
-figcaption a[href^="#ref-"]:before {
+figure a[href^="#ref-"]:before {
   font-size: 1em;
   text-align: left;
 }
@@ -41,16 +41,23 @@ a[href^="#ref-"]:after {
 
 .reference-item {
   text-align: left;
-}
 
-.retreived {
-  white-space: nowrap;
-
-  &:before {
-    content: '(abgerufen am ';
+  a {
+    display: block;
   }
 
-  &:after {
-    content: ')';
+  .retrieved {
+    white-space: nowrap;
+    font-size: 0.75em;
+    display: block;
+
+    &:before {
+      content: '(abgerufen am ';
+    }
+
+    &:after {
+      content: ')';
+    }
   }
+
 }

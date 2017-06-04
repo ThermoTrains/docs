@@ -7,7 +7,6 @@ function getCommandLine() {
     case 'darwin':
       return 'open';
     case 'win32':
-      return 'start';
     case 'win64':
       return 'start';
     default:

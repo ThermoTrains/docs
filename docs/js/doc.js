@@ -55,7 +55,7 @@
       var id = 'figure-' + i;
 
       figure.attr('id', id);
-      caption.prepend('<span>Fig. ' + (i + 1) + ' </span>');
+      caption.prepend('<span>Fig. ' + (i + 1) + ': </span>');
 
       var li = $('<li>');
       var a = $('<a>').attr('href', '#' + id).text(caption.text());

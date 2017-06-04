@@ -8,7 +8,7 @@
     margin: 4em 3em 6em 3em;
   }
 
-  a {
+  a[href] {
     color: $palette-primary;
   }
 
@@ -17,13 +17,16 @@
     height: auto;
   }
 
-  .front .cover {
-    margin-bottom: 1em;
+  .front {
+    .cover {
+      margin-bottom: 1em;
+    }
   }
 
   .chapter {
     border-top: 1px solid #ddd;
     margin-bottom: 2em;
+    padding-top: 2em;
   }
 
   pre code {
@@ -58,12 +61,19 @@
   h3.nonr,
   h4,
   p,
+  dl,
   figure,
   figure.full,
   #figures li,
-  #toc > li {
+  #toc > li,
+  #toc .toc-nr {
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  #toc .toc-nr,
+  #toc .toc-title {
+    font-size: 1.5em;
   }
 
   h1 {
@@ -88,5 +98,9 @@
   *[id^="ref-"] {
     display: block;
     overflow: scroll;
+  }
+
+  .front table {
+    margin: 20px;
   }
 }
