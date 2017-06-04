@@ -2,19 +2,24 @@ package ch.sebastianhaeni.thermotrains;
 
 import ch.sebastianhaeni.thermotrains.internals.*;
 import ch.sebastianhaeni.thermotrains.util.Procedure;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.opencv.core.Core;
 
 import static ch.sebastianhaeni.thermotrains.internals.ExtractFrames.Direction.FORWARD;
 
 public final class PipelineRunner {
   static {
+    // load OpenCV native library
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
   }
+  private static final Logger LOG = LogManager.getLogger(PipelineRunner.class);
 
   private static final int START_STEP = 3;
   private static final int STOP_STEP = 9;
 
   private PipelineRunner() {
+    // nop
   }
 
   public static void main(String[] args) {
@@ -48,17 +53,17 @@ public final class PipelineRunner {
       "target/5-straightened",
       "target/6-cropped"
     ));
-    runStep(7, () -> PerspectiveTransformer.transform(
+    runStep(7, () -> Rectify.transform(
       "target/6-cropped",
-      "target/7-transformed"
+      "target/7-rectified"
     ));
     runStep(8, () -> TrainStitcher.stitchTrain(
-      "target/7-transformed",
+      "target/7-rectified",
       "target/8-stitched"
     ));
-    runStep(9, () -> CarCut.cut(
+    runStep(9, () -> SplitTrain.cut(
       "target/8-stitched",
-      "target/9-car-cut"
+      "target/9-final"
     ));
   }
 
@@ -67,7 +72,7 @@ public final class PipelineRunner {
       return;
     }
 
-    System.out.printf("\n\nRunning step %d\n", step);
+    LOG.info("Running step {}", step);
 
     try {
       procedure.run();

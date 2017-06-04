@@ -1,5 +1,6 @@
 package ch.sebastianhaeni.thermotrains.util;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 /**
@@ -7,13 +8,11 @@ import java.util.Arrays;
  */
 public final class MathUtil {
 
-  public static final double RAD2DEG = 180.0f / Math.PI;
-
   private MathUtil() {
     // nop
   }
 
-  public static int median(int[] numArray) {
+  public static int median(@Nonnull int[] numArray) {
     int[] clone = numArray.clone();
     Arrays.sort(clone);
 
@@ -22,5 +21,9 @@ public final class MathUtil {
     }
 
     return clone[clone.length / 2];
+  }
+
+  public static final class Constants {
+    public static final double RAD2DEG = 180.0f / Math.PI;
   }
 }

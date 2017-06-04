@@ -1,23 +1,22 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
-import java.nio.file.Path;
-import java.util.List;
-
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 
-import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
-import static ch.sebastianhaeni.thermotrains.util.FileUtil.getFiles;
-import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
+import java.nio.file.Path;
+import java.util.List;
+
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.*;
 import static org.opencv.core.Core.flip;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.getPerspectiveTransform;
 import static org.opencv.imgproc.Imgproc.warpPerspective;
 
-public final class PerspectiveTransformer {
+public final class Rectify {
 
-  private PerspectiveTransformer() {
+  private Rectify() {
+    // nop
   }
 
   public static void transform(String inputFolder, String outputFolder) {

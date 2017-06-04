@@ -18,6 +18,7 @@ import static org.opencv.imgproc.Imgproc.*;
 public final class Straighten {
 
   private Straighten() {
+    // nop
   }
 
   public static void straighten(String inputFolder, String outputFolder) {
@@ -66,7 +67,7 @@ public final class Straighten {
   }
 
   /**
-   * Calculates the gradient angle a line.
+   * Calculates the gradient angle of a line.
    */
   private static double calculateAngle(double x1, double y1, double x2, double y2) {
     double angle = Math.toDegrees(Math.atan2(x2 - x1, y2 - y1)) - 90;

@@ -1,6 +1,8 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
 import ch.sebastianhaeni.thermotrains.util.FileUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -20,7 +22,11 @@ import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.*;
 
 public final class MotionCrop {
+
+  private static final Logger LOG = LogManager.getLogger(MotionCrop.class);
+
   private MotionCrop() {
+    // nop
   }
 
   public static void cropToMotion(String inputFolder, String outputFolder) {
@@ -46,7 +52,7 @@ public final class MotionCrop {
         continue;
       }
 
-      System.out.printf("Scanning %s\n", inputFile);
+      LOG.info("Scanning {}", inputFile);
 
       // save to disk
       bboxes.put(i, boundingBox);

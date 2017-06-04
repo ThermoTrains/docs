@@ -1,19 +1,25 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
 
-import java.util.function.Function;
-import java.util.function.Predicate;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
+
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static org.opencv.core.Core.flip;
 
 public final class ExtractFrames {
+
+  private static final Logger LOG = LogManager.getLogger(ExtractFrames.class);
+
   private ExtractFrames() {
+    // nop
   }
 
   public enum Direction {
@@ -47,7 +53,7 @@ public final class ExtractFrames {
       Mat frame = new Mat();
       boolean success = capture.read(frame);
       if (!success) {
-        System.out.println("Cannot read frame " + i);
+        LOG.warn("Cannot read frame {}", i);
         continue;
       }
 

@@ -14,8 +14,10 @@ import static org.opencv.core.Core.inRange;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.*;
 
-public final class CarCut {
-  private CarCut() {
+public final class SplitTrain {
+
+  private SplitTrain() {
+    // nop
   }
 
   public static void cut(String inputFolder, String outputFolder) {

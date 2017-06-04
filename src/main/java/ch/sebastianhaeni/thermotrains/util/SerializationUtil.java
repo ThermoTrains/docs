@@ -12,6 +12,7 @@ import java.util.Base64;
  * MathUtil functions for serialization.
  */
 public final class SerializationUtil {
+
   private SerializationUtil() {
     // nop
   }
@@ -23,8 +24,7 @@ public final class SerializationUtil {
     JsonObject obj = new JsonObject();
 
     if (!mat.isContinuous()) {
-      System.out.println("Mat not continuous.");
-      return null;
+      throw new IllegalArgumentException("Mat is not continuous");
     }
 
     int cols = mat.cols();
@@ -61,6 +61,7 @@ public final class SerializationUtil {
     } else {
       throw new UnsupportedOperationException("unknown type");
     }
+
     obj.addProperty("data", dataString);
 
     return obj;
@@ -104,6 +105,7 @@ public final class SerializationUtil {
       .asIntBuffer();
     int[] array = new int[intBuf.remaining()];
     intBuf.get(array);
+
     return array;
   }
 
@@ -113,6 +115,7 @@ public final class SerializationUtil {
       .asFloatBuffer();
     float[] array = new float[floatBuffer.remaining()];
     floatBuffer.get(array);
+
     return array;
   }
 
@@ -122,6 +125,7 @@ public final class SerializationUtil {
       .asDoubleBuffer();
     double[] array = new double[doubleBuffer.remaining()];
     doubleBuffer.get(array);
+
     return array;
   }
 
