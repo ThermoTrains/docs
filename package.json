@@ -36,6 +36,9 @@
     "url": "https://github.com/sebastianhaeni/thermotrains/issues"
   },
   "homepage": "https://github.com/sebastianhaeni/thermotrains#readme",
+  "engines": {
+    "node": ">= 5.0.0"
+  },
   "dependencies": {
     "del": "^2.2.2",
     "gulp": "^3.9.1",
