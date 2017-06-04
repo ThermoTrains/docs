@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
-import static ch.sebastianhaeni.thermotrains.util.Util.median;
+import static ch.sebastianhaeni.thermotrains.util.MathUtil.median;
 import static org.opencv.core.Core.absdiff;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.*;

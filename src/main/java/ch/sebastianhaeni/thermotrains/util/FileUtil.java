@@ -1,5 +1,7 @@
 package ch.sebastianhaeni.thermotrains.util;
 
+import org.opencv.core.Mat;
+
 import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -7,14 +9,19 @@ import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencv.core.Mat;
-
 import static org.opencv.imgcodecs.Imgcodecs.imwrite;
 
+/**
+ * MathUtil functions to handle files.
+ */
 public final class FileUtil {
   private FileUtil() {
+    // nop
   }
 
+  /**
+   * Get a list of files in the folder matching the pattern.
+   */
   public static List<Path> getFiles(String inputFolder, String globPattern) {
     List<Path> inputFiles = new ArrayList<>();
     PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + globPattern);
@@ -34,6 +41,9 @@ public final class FileUtil {
     return inputFiles;
   }
 
+  /**
+   * Saves the {@link Mat} to the folder with the formatted integer index.
+   */
   public static void saveMat(String outputFolder, Mat mat, int index) {
     String filename = String.format("%04d.jpg", index);
     File file = getFile(outputFolder, filename);
@@ -41,12 +51,18 @@ public final class FileUtil {
     System.out.printf("saved %s\n", file.getAbsolutePath());
   }
 
+  /**
+   * Saves the {@link Mat} to the folder with the given filename. The extension .jpg is automatically added.
+   */
   public static void saveMat(String outputFolder, Mat mat, String filename) {
     File file = getFile(outputFolder, filename + ".jpg");
     imwrite(file.getAbsolutePath(), mat);
     System.out.printf("saved %s\n", file.getAbsolutePath());
   }
 
+  /**
+   * Gets the file reference to the given file. If the folder it should be in, doesn't exist yet, it will be created.
+   */
   public static File getFile(String outputFolder, String filename) {
     File folder = new File(outputFolder);
 
@@ -60,6 +76,9 @@ public final class FileUtil {
     return new File(outputFolder, filename);
   }
 
+  /**
+   * Clears the given folder of any content.
+   */
   public static void emptyFolder(String folder) {
     File dir = new File(folder);
 
@@ -69,7 +88,9 @@ public final class FileUtil {
     }
 
     for (File file : files) {
-      file.delete();
+      if (!file.delete()) {
+        throw new IllegalStateException("Could not delete file: " + file.toString());
+      }
     }
   }
 }

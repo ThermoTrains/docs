@@ -1,25 +1,18 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
-import java.nio.file.Path;
-import java.util.List;
-
+import ch.sebastianhaeni.thermotrains.util.MathUtil;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 
-import ch.sebastianhaeni.thermotrains.util.Util;
+import java.nio.file.Path;
+import java.util.List;
 
-import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
-import static ch.sebastianhaeni.thermotrains.util.FileUtil.getFiles;
-import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.*;
 import static org.opencv.core.Core.inRange;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
-import static org.opencv.imgproc.Imgproc.COLOR_BGR2HSV;
-import static org.opencv.imgproc.Imgproc.MORPH_ELLIPSE;
-import static org.opencv.imgproc.Imgproc.cvtColor;
-import static org.opencv.imgproc.Imgproc.erode;
-import static org.opencv.imgproc.Imgproc.getStructuringElement;
+import static org.opencv.imgproc.Imgproc.*;
 
 public final class CarCut {
   private CarCut() {
@@ -63,7 +56,7 @@ public final class CarCut {
       hist[i] = withinRange;
     }
 
-    double median = Util.median(hist);
+    double median = MathUtil.median(hist);
 
     // find peaks
     for (int i = 0; i < hist.length; i++) {

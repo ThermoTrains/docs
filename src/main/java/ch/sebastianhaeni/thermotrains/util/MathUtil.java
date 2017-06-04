@@ -1,9 +1,16 @@
 package ch.sebastianhaeni.thermotrains.util;
+
 import java.util.Arrays;
 
-public final class Util {
+/**
+ * Util functions for common math problems that are not in a library.
+ */
+public final class MathUtil {
 
-  private Util() {
+  public static final double RAD2DEG = 180.0f / Math.PI;
+
+  private MathUtil() {
+    // nop
   }
 
   public static int median(int[] numArray) {

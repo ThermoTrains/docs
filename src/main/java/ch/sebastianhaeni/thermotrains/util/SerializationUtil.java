@@ -8,11 +8,17 @@ import org.opencv.core.Mat;
 import java.nio.*;
 import java.util.Base64;
 
+/**
+ * MathUtil functions for serialization.
+ */
 public final class SerializationUtil {
-
   private SerializationUtil() {
+    // nop
   }
 
+  /**
+   * Serialize the given {@link Mat} to a JSON object.
+   */
   public static JsonObject matToJson(Mat mat) {
     JsonObject obj = new JsonObject();
 
@@ -60,6 +66,9 @@ public final class SerializationUtil {
     return obj;
   }
 
+  /**
+   * Deserialize the JSON object into a {@link Mat} object.
+   */
   public static Mat matFromJson(JsonObject json) {
     int rows = json.get("rows").getAsInt();
     int cols = json.get("cols").getAsInt();

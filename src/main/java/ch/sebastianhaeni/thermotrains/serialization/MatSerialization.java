@@ -8,6 +8,9 @@ import java.lang.reflect.Type;
 import static ch.sebastianhaeni.thermotrains.util.SerializationUtil.matFromJson;
 import static ch.sebastianhaeni.thermotrains.util.SerializationUtil.matToJson;
 
+/**
+ * Serializes {@link Mat} with GSON.
+ */
 public class MatSerialization implements JsonSerializer<Mat>, JsonDeserializer<Mat> {
   @Override
   public JsonElement serialize(Mat src, Type type, JsonSerializationContext context) {

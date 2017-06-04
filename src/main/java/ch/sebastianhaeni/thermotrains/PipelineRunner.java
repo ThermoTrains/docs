@@ -4,7 +4,6 @@ import ch.sebastianhaeni.thermotrains.internals.*;
 import ch.sebastianhaeni.thermotrains.util.Procedure;
 import org.opencv.core.Core;
 
-import static ch.sebastianhaeni.thermotrains.internals.ExtractFrames.Direction.REVERSE;
 import static ch.sebastianhaeni.thermotrains.internals.ExtractFrames.Direction.FORWARD;
 
 public final class PipelineRunner {
@@ -12,7 +11,7 @@ public final class PipelineRunner {
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
   }
 
-  private static final int START_STEP = 7;
+  private static final int START_STEP = 3;
   private static final int STOP_STEP = 9;
 
   private PipelineRunner() {
@@ -32,8 +31,8 @@ public final class PipelineRunner {
     ));
     runStep(3, () -> ExtractFrames.extractFrames(
       150,
-      REVERSE,
-      "samples/distorted/gopro-moving-train-3.mp4",
+      FORWARD,
+      "samples/distorted/gopro-moving-train-1.mp4",
       "target/3-distorted"
     ));
     runStep(4, () -> Undistort.undistortImages(
@@ -68,7 +67,7 @@ public final class PipelineRunner {
       return;
     }
 
-    System.out.println("Running step " + step);
+    System.out.printf("\n\nRunning step %d\n", step);
 
     try {
       procedure.run();

@@ -1,10 +1,14 @@
 package ch.sebastianhaeni.thermotrains.serialization;
 
-import java.util.List;
-
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 
+import java.util.List;
+
+/**
+ * This class represents the camera calibration settings used to undistort images. To serialize it with GSON, you can
+ * use {@link MatSerialization}.
+ */
 public class Calibration {
   private final Mat cameraMatrix;
   private final Mat distCoeffs;
