@@ -25,10 +25,31 @@ public final class ExtractFrames {
   }
 
   public static void extractFrames(
-    int framesToExtract,
-    @Nonnull Direction direction,
     @Nonnull String inputVideoFilename,
     @Nonnull String outputFolder) {
+
+    extractFrames(inputVideoFilename, outputFolder, Direction.FORWARD, 50);
+  }
+
+  static void extractFrames(
+    @Nonnull String inputVideoFilename,
+    @Nonnull String outputFolder,
+    @Nonnull Direction direction,
+    int framesToExtract) {
+
+    extractFrames(inputVideoFilename, outputFolder, direction, framesToExtract, 1);
+  }
+
+  /**
+   * Extract n frames in a direction from an input file. The lengthFactor gets multiplied with the video length and only
+   * the frames from start this amount of frames will be considered.
+   */
+  static void extractFrames(
+    @Nonnull String inputVideoFilename,
+    @Nonnull String outputFolder,
+    @Nonnull Direction direction,
+    int framesToExtract,
+    double lengthFactor) {
 
     emptyFolder(outputFolder);
 
@@ -38,7 +59,7 @@ public final class ExtractFrames {
       throw new IllegalStateException("Cannot open the video file");
     }
 
-    int frameCount = (int) capture.get(Videoio.CAP_PROP_FRAME_COUNT);
+    int frameCount = (int) (capture.get(Videoio.CAP_PROP_FRAME_COUNT) * lengthFactor);
     int frameCounter = 0;
 
     Predicate<Integer> termination = direction == Direction.FORWARD ?

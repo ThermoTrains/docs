@@ -61,7 +61,7 @@ public final class Rectify {
     Mat w = img.clone();
 
     // give it a good blur
-    GaussianBlur(w, w, w.size(), 4);
+    GaussianBlur(w, w, new Size(0, 0), 4);
 
     // get value from HSV
     cvtColor(w, w, COLOR_BGR2HSV);

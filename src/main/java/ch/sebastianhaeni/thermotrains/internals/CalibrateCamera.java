@@ -28,17 +28,16 @@ public final class CalibrateCamera {
 
   private static final Logger LOG = LogManager.getLogger(CalibrateCamera.class);
   private static final Size PATTERN_SIZE = new Size(8, 5);
+  private static final double SQUARE_SIZE = 29;
 
   private CalibrateCamera() {
     // nop
   }
 
   public static void performCheckerboardCalibration(
-    double squareSize,
     @Nonnull String inputFolder,
     @Nonnull String outputFolder)
     throws FileNotFoundException {
-
     emptyFolder(outputFolder);
 
     List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
@@ -48,7 +47,7 @@ public final class CalibrateCamera {
 
     for (double y = PATTERN_SIZE.height - 1; y >= 0; --y) {
       for (double x = 0; x < PATTERN_SIZE.width; ++x) {
-        Point3 point3 = new Point3(x * squareSize, y * squareSize, 0);
+        Point3 point3 = new Point3(x * SQUARE_SIZE, y * SQUARE_SIZE, 0);
         objectPointList.add(point3);
       }
     }

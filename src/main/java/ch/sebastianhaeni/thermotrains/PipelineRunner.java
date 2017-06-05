@@ -8,8 +8,6 @@ import org.opencv.core.Core;
 
 import javax.annotation.Nonnull;
 
-import static ch.sebastianhaeni.thermotrains.util.Direction.FORWARD;
-
 public final class PipelineRunner {
   static {
     // load OpenCV native library
@@ -18,7 +16,7 @@ public final class PipelineRunner {
 
   private static final Logger LOG = LogManager.getLogger(PipelineRunner.class);
 
-  private static final int START_STEP = 9;
+  private static final int START_STEP = 7;
   private static final int STOP_STEP = 9;
 
   private PipelineRunner() {
@@ -27,19 +25,14 @@ public final class PipelineRunner {
 
   public static void main(@Nonnull String[] args) {
     runStep(1, () -> ExtractFrames.extractFrames(
-      50,
-      FORWARD,
       "samples/calibration/gopro-checkerboard.mp4",
       "target/1-calibration"
     ));
     runStep(2, () -> CalibrateCamera.performCheckerboardCalibration(
-      29,
       "target/1-calibration",
       "target/2-calibration-found"
     ));
-    runStep(3, () -> ExtractFrames.extractFrames(
-      150,
-      FORWARD,
+    runStep(3, () -> PrepareTrainFrames.prepare(
       "samples/distorted/gopro-moving-train-1.mp4",
       "target/3-distorted"
     ));
