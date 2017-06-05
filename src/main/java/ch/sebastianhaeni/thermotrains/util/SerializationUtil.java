@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
+import javax.annotation.Nonnull;
 import java.nio.*;
 import java.util.Base64;
 
@@ -20,7 +21,8 @@ public final class SerializationUtil {
   /**
    * Serialize the given {@link Mat} to a JSON object.
    */
-  public static JsonObject matToJson(Mat mat) {
+  @Nonnull
+  public static JsonObject matToJson(@Nonnull Mat mat) {
     JsonObject obj = new JsonObject();
 
     if (!mat.isContinuous()) {
@@ -70,7 +72,8 @@ public final class SerializationUtil {
   /**
    * Deserialize the JSON object into a {@link Mat} object.
    */
-  public static Mat matFromJson(JsonObject json) {
+  @Nonnull
+  public static Mat matFromJson(@Nonnull JsonObject json) {
     int rows = json.get("rows").getAsInt();
     int cols = json.get("cols").getAsInt();
     int type = json.get("type").getAsInt();
@@ -99,7 +102,8 @@ public final class SerializationUtil {
     return mat;
   }
 
-  private static int[] toIntArray(byte[] data) {
+  @Nonnull
+  private static int[] toIntArray(@Nonnull byte[] data) {
     IntBuffer intBuf = ByteBuffer.wrap(data)
       .order(ByteOrder.BIG_ENDIAN)
       .asIntBuffer();
@@ -109,7 +113,8 @@ public final class SerializationUtil {
     return array;
   }
 
-  private static float[] toFloatArray(byte[] data) {
+  @Nonnull
+  private static float[] toFloatArray(@Nonnull byte[] data) {
     FloatBuffer floatBuffer = ByteBuffer.wrap(data)
       .order(ByteOrder.BIG_ENDIAN)
       .asFloatBuffer();
@@ -119,7 +124,8 @@ public final class SerializationUtil {
     return array;
   }
 
-  private static double[] toDoubleArray(byte[] data) {
+  @Nonnull
+  private static double[] toDoubleArray(@Nonnull byte[] data) {
     DoubleBuffer doubleBuffer = ByteBuffer.wrap(data)
       .order(ByteOrder.BIG_ENDIAN)
       .asDoubleBuffer();
@@ -129,7 +135,8 @@ public final class SerializationUtil {
     return array;
   }
 
-  private static byte[] toByteArray(double[] data) {
+  @Nonnull
+  private static byte[] toByteArray(@Nonnull double[] data) {
     ByteBuffer byteBuffer = ByteBuffer.allocate(data.length * Double.BYTES);
     DoubleBuffer doubleBuffer = byteBuffer.asDoubleBuffer();
     doubleBuffer.put(data);
@@ -137,7 +144,8 @@ public final class SerializationUtil {
     return byteBuffer.array();
   }
 
-  private static byte[] toByteArray(float[] data) {
+  @Nonnull
+  private static byte[] toByteArray(@Nonnull float[] data) {
     ByteBuffer byteBuffer = ByteBuffer.allocate(data.length * Float.BYTES);
     FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
     floatBuffer.put(data);
@@ -145,7 +153,8 @@ public final class SerializationUtil {
     return byteBuffer.array();
   }
 
-  private static byte[] toByteArray(int[] data) {
+  @Nonnull
+  private static byte[] toByteArray(@Nonnull int[] data) {
     ByteBuffer byteBuffer = ByteBuffer.allocate(data.length * Integer.BYTES);
     IntBuffer intBuffer = byteBuffer.asIntBuffer();
     intBuffer.put(data);

@@ -8,6 +8,7 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
+import javax.annotation.Nonnull;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -23,8 +24,14 @@ public final class ExtractFrames {
     // nop
   }
 
-  public static void extractFrames(int framesToExtract, Direction direction, String inputVideoFilename, String outputFolder) {
+  public static void extractFrames(
+    int framesToExtract,
+    @Nonnull Direction direction,
+    @Nonnull String inputVideoFilename,
+    @Nonnull String outputFolder) {
+
     emptyFolder(outputFolder);
+
     VideoCapture capture = new VideoCapture();
 
     if (!capture.open(inputVideoFilename)) {

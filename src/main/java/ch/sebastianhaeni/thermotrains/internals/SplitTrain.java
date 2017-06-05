@@ -6,6 +6,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 
+import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -16,11 +17,13 @@ import static org.opencv.imgproc.Imgproc.*;
 
 public final class SplitTrain {
 
+  private static final int MIN_DIST = 500;
+
   private SplitTrain() {
     // nop
   }
 
-  public static void cut(String inputFolder, String outputFolder) {
+  public static void cut(@Nonnull String inputFolder, @Nonnull String outputFolder) {
     emptyFolder(outputFolder);
 
     List<Path> files = getFiles(inputFolder, "**result.jpg");
@@ -90,13 +93,16 @@ public final class SplitTrain {
     }
   }
 
-  private static void plateau(int[] arr, int i) {
-    int minDist = 500;
+  /**
+   * Removes the plateau by flattening every element that is 1 before the current one in a fixed distance.
+   */
+  private static void plateau(@Nonnull int[] arr, int i) {
+    // TODO the for loop is not necessary
     if (arr[i] != 1) {
       return;
     }
 
-    for (int j = Math.max(i - minDist, 0); j < i; j++) {
+    for (int j = Math.max(i - MIN_DIST, 0); j < i; j++) {
       if (arr[j] == 1) {
         arr[j] = 0;
         return;

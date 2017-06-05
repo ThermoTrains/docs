@@ -27,7 +27,7 @@ public final class MotionCrop {
     // nop
   }
 
-  public static void cropToMotion(String inputFolder, String outputFolder) {
+  public static void cropToMotion(@Nonnull String inputFolder, @Nonnull String outputFolder) {
     emptyFolder(outputFolder);
 
     File fBackground = new File(inputFolder, "0001.jpg");
@@ -141,14 +141,16 @@ public final class MotionCrop {
   /**
    * Crops the {@link Mat} to the bounding box.
    */
-  private static Mat crop(Mat mat, BBox bbox) {
+  @Nonnull
+  private static Mat crop(@Nonnull Mat mat, @Nonnull BBox bbox) {
     return new Mat(mat, new Rect(bbox.left, bbox.top, bbox.right - bbox.left, bbox.bottom - bbox.top));
   }
 
   /**
    * Returns a stream of contour points with the given index.
    */
-  private static IntStream streamCoordinates(MatOfPoint contour, int index) {
+  @Nonnull
+  private static IntStream streamCoordinates(@Nonnull MatOfPoint contour, int index) {
     return IntStream.rangeClosed(0, contour.rows() - 1)
       .map(i -> (int) contour.get(i, 0)[index]);
   }

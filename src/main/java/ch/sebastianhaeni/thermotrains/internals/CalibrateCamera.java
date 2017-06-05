@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opencv.core.*;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -32,8 +33,12 @@ public final class CalibrateCamera {
     // nop
   }
 
-  public static void performCheckerboardCalibration(double squareSize, String inputFolder, String outputFolder)
+  public static void performCheckerboardCalibration(
+    double squareSize,
+    @Nonnull String inputFolder,
+    @Nonnull String outputFolder)
     throws FileNotFoundException {
+
     emptyFolder(outputFolder);
 
     List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
@@ -108,7 +113,7 @@ public final class CalibrateCamera {
     out.close();
   }
 
-  private static double calcFov(Mat cameraMatrix) {
+  private static double calcFov(@Nonnull Mat cameraMatrix) {
     double fy = cameraMatrix.get(1, 1)[0];
     double cy = cameraMatrix.get(1, 2)[0];
     double fovRad = 2 * Math.atan2(cy, fy);

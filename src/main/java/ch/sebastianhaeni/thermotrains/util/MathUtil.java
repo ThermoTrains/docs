@@ -23,7 +23,7 @@ public final class MathUtil {
     return clone[clone.length / 2];
   }
 
-  public static final class Constants {
-    public static final double RAD2DEG = 180.0f / Math.PI;
+  public interface Constants {
+    double RAD2DEG = 180.0f / Math.PI;
   }
 }

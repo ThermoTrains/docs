@@ -6,6 +6,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.DoubleStream;
@@ -23,7 +24,7 @@ public final class Straighten {
     // nop
   }
 
-  public static void straighten(String inputFolder, String outputFolder) {
+  public static void straighten(@Nonnull String inputFolder, @Nonnull String outputFolder) {
     emptyFolder(outputFolder);
 
     int i = 0;
@@ -39,7 +40,7 @@ public final class Straighten {
     }
   }
 
-  private static void straighten(Mat source, Mat destination) {
+  private static void straighten(@Nonnull Mat source, @Nonnull Mat destination) {
     Mat srcGray = new Mat();
 
     // convert to gray scale
@@ -71,14 +72,15 @@ public final class Straighten {
   /**
    * Leaves only pixels where train tracks are. The rest is set to white.
    */
-  private static void maskTrainTracks(Mat srcGray) {
+  private static void maskTrainTracks(@Nonnull Mat srcGray) {
     threshold(srcGray, srcGray, TRACK_THRESH, 255, THRESH_BINARY);
   }
 
   /**
    * Finds lines with hough in the image.
    */
-  private static Mat findLines(Mat srcGray) {
+  @Nonnull
+  private static Mat findLines(@Nonnull Mat srcGray) {
     Mat edges = new Mat();
     Mat lines = new Mat();
     int kernelSize = 3 * 2;

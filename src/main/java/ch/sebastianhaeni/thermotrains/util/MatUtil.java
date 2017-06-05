@@ -3,8 +3,10 @@ package ch.sebastianhaeni.thermotrains.util;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
+import javax.annotation.Nonnull;
+
 /**
- * MathUtil functions to handle {@link Mat} objects.
+ * Util functions to handle {@link Mat} objects.
  */
 public final class MatUtil {
   private MatUtil() {
@@ -14,7 +16,8 @@ public final class MatUtil {
   /**
    * Crops the given {@link Mat} by the given margins.
    */
-  public static Mat crop(Mat mat, int topMargin, int rightMargin, int bottomMargin, int leftMargin) {
+  @Nonnull
+  public static Mat crop(@Nonnull Mat mat, int topMargin, int rightMargin, int bottomMargin, int leftMargin) {
     Rect roi = new Rect(
       leftMargin,
       topMargin,

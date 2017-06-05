@@ -2,9 +2,12 @@ package ch.sebastianhaeni.thermotrains.internals;
 
 import ch.sebastianhaeni.thermotrains.util.FileUtil;
 import ch.sebastianhaeni.thermotrains.util.MatUtil;
-import com.google.common.base.MoreObjects;
-import org.opencv.core.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 
+import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +22,10 @@ import static org.opencv.imgproc.Imgproc.*;
 public final class TrainStitcher {
 
   private TrainStitcher() {
+    // nop
   }
 
-  public static void stitchTrain(String inputFolder, String outputFolder) {
+  public static void stitchTrain(@Nonnull String inputFolder, @Nonnull String outputFolder) {
     emptyFolder(outputFolder);
 
     List<Path> inputFiles = FileUtil.getFiles(inputFolder, "**.jpg");
@@ -79,12 +83,16 @@ public final class TrainStitcher {
 
   private static final int verticalCrop = 100;
 
-  private static Mat createTemplate(Mat mat) {
+  /**
+   * Creates the template used to match against the other picture.
+   */
+  @Nonnull
+  private static Mat createTemplate(@Nonnull Mat mat) {
     int margin = getTemplateOffset(mat);
     return MatUtil.crop(mat, verticalCrop, margin, verticalCrop, margin);
   }
 
-  private static int getTemplateOffset(Mat mat) {
+  private static int getTemplateOffset(@Nonnull Mat mat) {
     return (mat.width() / 2) - 100;
   }
 
@@ -95,14 +103,6 @@ public final class TrainStitcher {
     Offset(int x, int y) {
       this.x = x;
       this.y = y;
-    }
-
-    @Override
-    public String toString() {
-      return MoreObjects.toStringHelper(this)
-        .add("x", x)
-        .add("y", y)
-        .toString();
     }
   }
 }

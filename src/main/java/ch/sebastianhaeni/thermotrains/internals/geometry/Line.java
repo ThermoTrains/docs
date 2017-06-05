@@ -6,10 +6,12 @@ import javax.annotation.Nonnull;
 
 public class Line {
 
+  @Nonnull
   private Point p1;
+  @Nonnull
   private Point p2;
 
-  public Line(Point p1, Point p2) {
+  public Line(@Nonnull Point p1, @Nonnull Point p2) {
     // add the point that is most left on the x axis as p1
     if (p1.x < p2.x) {
       this.p1 = p1;
@@ -77,19 +79,21 @@ public class Line {
     return absoluteInclination / (p2.x - p1.x);
   }
 
+  @Nonnull
   public Point getP1() {
     return p1;
   }
 
-  public void setP1(Point p1) {
+  public void setP1(@Nonnull Point p1) {
     this.p1 = p1;
   }
 
+  @Nonnull
   public Point getP2() {
     return p2;
   }
 
-  public void setP2(Point p2) {
+  public void setP2(@Nonnull Point p2) {
     this.p2 = p2;
   }
 }

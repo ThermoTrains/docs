@@ -31,6 +31,7 @@ public final class FileUtil {
   /**
    * Get a list of files in the folder matching the pattern.
    */
+  @Nonnull
   public static List<Path> getFiles(@Nonnull String inputFolder, @Nonnull String globPattern) {
     PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + globPattern);
     File folder = new File(inputFolder);
@@ -56,7 +57,7 @@ public final class FileUtil {
   /**
    * Saves the {@link Mat} to the folder with the formatted integer index.
    */
-  public static void saveMat(String outputFolder, Mat mat, int index) {
+  public static void saveMat(@Nonnull String outputFolder, @Nonnull Mat mat, int index) {
     String filename = String.format("%04d.jpg", index);
     File file = getFile(outputFolder, filename);
     imwrite(file.getAbsolutePath(), mat);
@@ -67,7 +68,7 @@ public final class FileUtil {
   /**
    * Saves the {@link Mat} to the folder with the given filename. The extension .jpg is automatically added.
    */
-  public static void saveMat(String outputFolder, Mat mat, String filename) {
+  public static void saveMat(@Nonnull String outputFolder, @Nonnull Mat mat, @Nonnull String filename) {
     File file = getFile(outputFolder, filename + ".jpg");
     imwrite(file.getAbsolutePath(), mat);
 
@@ -77,7 +78,8 @@ public final class FileUtil {
   /**
    * Gets the file reference to the given file. If the folder it should be in, doesn't exist yet, it will be created.
    */
-  public static File getFile(String outputFolder, String filename) {
+  @Nonnull
+  public static File getFile(@Nonnull String outputFolder, @Nonnull String filename) {
     File folder = new File(outputFolder);
 
     if (!folder.exists()) {

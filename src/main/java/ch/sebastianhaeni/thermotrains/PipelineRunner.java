@@ -6,6 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opencv.core.Core;
 
+import javax.annotation.Nonnull;
+
 import static ch.sebastianhaeni.thermotrains.util.Direction.FORWARD;
 
 public final class PipelineRunner {
@@ -16,14 +18,14 @@ public final class PipelineRunner {
 
   private static final Logger LOG = LogManager.getLogger(PipelineRunner.class);
 
-  private static final int START_STEP = 7;
+  private static final int START_STEP = 9;
   private static final int STOP_STEP = 9;
 
   private PipelineRunner() {
     // nop
   }
 
-  public static void main(String[] args) {
+  public static void main(@Nonnull String[] args) {
     runStep(1, () -> ExtractFrames.extractFrames(
       50,
       FORWARD,
@@ -68,7 +70,7 @@ public final class PipelineRunner {
     ));
   }
 
-  private static void runStep(int step, Procedure<?> procedure) {
+  private static void runStep(int step, @Nonnull Procedure<?> procedure) {
     if (START_STEP > step || STOP_STEP < step) {
       return;
     }
