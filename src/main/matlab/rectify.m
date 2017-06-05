@@ -45,11 +45,11 @@ function rectify()
 
         for x = 1:gwidth
             hist = zeros(gheight-10,1);
-            for i = 10:gheight-1
-                top = im(1:gheight-1,x);
-                bottom = im(2:gheight,x);
-                diff = top(i-9:i)-bottom(i-9:i);
+            top = im(1:gheight-1,x);
+            bottom = im(2:gheight,x);
                 
+            for i = 10:gheight-1
+                diff = top(i-9:i)-bottom(i-9:i);
                 hist(i) = mean(diff);
             end
             [~, idx] = max(hist);

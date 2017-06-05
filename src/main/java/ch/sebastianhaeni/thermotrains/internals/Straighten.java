@@ -17,6 +17,8 @@ import static org.opencv.imgproc.Imgproc.*;
 
 public final class Straighten {
 
+  private static final int TRACK_THRESH = 40;
+
   private Straighten() {
     // nop
   }
@@ -70,7 +72,7 @@ public final class Straighten {
    * Leaves only pixels where train tracks are. The rest is set to white.
    */
   private static void maskTrainTracks(Mat srcGray) {
-    threshold(srcGray, srcGray, 40, 255, THRESH_BINARY);
+    threshold(srcGray, srcGray, TRACK_THRESH, 255, THRESH_BINARY);
   }
 
   /**
