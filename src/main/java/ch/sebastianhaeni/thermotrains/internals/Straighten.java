@@ -19,6 +19,11 @@ import static org.opencv.imgproc.Imgproc.*;
 public final class Straighten {
 
   private static final int TRACK_THRESH = 40;
+  private static final int THRESHOLD_1 = 10;
+  private static final int THRESHOLD_2 = 70;
+  private static final int HOUGH_THRESHOLD = 400;
+  private static final double MIN_LINE_LENGTH = 300.0;
+  private static final double MAX_LINE_GAP = 20.0;
 
   private Straighten() {
     // nop
@@ -86,8 +91,8 @@ public final class Straighten {
     int kernelSize = 3 * 2;
 
     blur(srcGray, srcGray, new Size(kernelSize, kernelSize));
-    Canny(srcGray, edges, 10, 70);
-    HoughLinesP(edges, lines, 1.0, Math.PI / 180, 400, 300.0, 20.0);
+    Canny(srcGray, edges, THRESHOLD_1, THRESHOLD_2);
+    HoughLinesP(edges, lines, 1.0, Math.PI / 180, HOUGH_THRESHOLD, MIN_LINE_LENGTH, MAX_LINE_GAP);
 
     return lines;
   }

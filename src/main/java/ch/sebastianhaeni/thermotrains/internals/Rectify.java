@@ -22,6 +22,9 @@ import static org.opencv.imgproc.Imgproc.*;
 public final class Rectify {
 
   private static final int FREQUENCY_RESOLUTION = 2;
+  private static final int LINE_THRESHOLD = 50;
+  private static final double MIN_LINE_LENGTH = 50.0;
+  private static final double MAX_LINE_GAP = 30.0;
 
   private Rectify() {
     // nop
@@ -88,7 +91,7 @@ public final class Rectify {
   private static Line getLine(@Nonnull Mat src) {
     Mat lines = findMaxYFrequency(src);
 
-    HoughLinesP(lines, lines, 1.0, Math.PI / 180, 50, 50.0, 30.0);
+    HoughLinesP(lines, lines, 1.0, Math.PI / 180, LINE_THRESHOLD, MIN_LINE_LENGTH, MAX_LINE_GAP);
 
     checkState(lines.rows() > 0, "Didn't find at least 1 line, cannot create bounding box");
 

@@ -17,7 +17,9 @@ import static org.opencv.imgproc.Imgproc.*;
 
 public final class SplitTrain {
 
-  private static final int MIN_DIST = 500;
+  private static final int MIN_CAR_LENGTH_IN_PX = 400;
+  private static final double PEAK_THRESHOLD = 3.0;
+  private static final int DILATION_SIZE = 10;
 
   private SplitTrain() {
     // nop
@@ -39,10 +41,9 @@ public final class SplitTrain {
     inRange(img, lower, upper, dst);
 
     // dilate the threshold image to fill in holes
-    int dilationSize = 10;
     Mat dilationElement = getStructuringElement(MORPH_ELLIPSE,
-      new Size(2 * dilationSize + 1, 2 * dilationSize + 1),
-      new Point(dilationSize, dilationSize));
+      new Size(2 * DILATION_SIZE + 1, 2 * DILATION_SIZE + 1),
+      new Point(DILATION_SIZE, DILATION_SIZE));
 
     erode(dst, dst, dilationElement);
 
@@ -64,15 +65,19 @@ public final class SplitTrain {
     double median = MathUtil.median(hist);
 
     // find peaks
+    int lastPeak = -1;
     for (int i = 0; i < hist.length; i++) {
-      if (hist[i] < median * 3.0) {
+      if (hist[i] < median * PEAK_THRESHOLD) {
         hist[i] = 0;
       } else {
         hist[i] = 1;
-      }
 
-      // remove plateau
-      plateau(hist, i);
+        // Removes the plateau by flattening every element that is 1 before the current one in a fixed distance.
+        if (lastPeak >= 0 && lastPeak + MIN_CAR_LENGTH_IN_PX > i) {
+          hist[lastPeak] = 0;
+        }
+        lastPeak = i;
+      }
     }
 
     int prev = 0;
@@ -82,7 +87,7 @@ public final class SplitTrain {
         continue;
       }
 
-      if (x - prev < 400) {
+      if (x - prev < MIN_CAR_LENGTH_IN_PX) {
         prev = x;
         continue;
       }
@@ -90,23 +95,6 @@ public final class SplitTrain {
       Mat car = img.colRange(prev, x);
       prev = x;
       saveMat(outputFolder, car, ++i);
-    }
-  }
-
-  /**
-   * Removes the plateau by flattening every element that is 1 before the current one in a fixed distance.
-   */
-  private static void plateau(@Nonnull int[] arr, int i) {
-    // TODO the for loop is not necessary
-    if (arr[i] != 1) {
-      return;
-    }
-
-    for (int j = Math.max(i - MIN_DIST, 0); j < i; j++) {
-      if (arr[j] == 1) {
-        arr[j] = 0;
-        return;
-      }
     }
   }
 }
