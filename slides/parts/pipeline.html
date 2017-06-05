@@ -2,7 +2,8 @@
   <h2>Image processing pipeline</h2>
 </section>
 
-<section data-background-video="images/gopro-moving-train-1.mp4">
+<section data-background-video="images/gopro-moving-train-1.mp4"
+         data-background-video-muted>
   <h3 class="fragment fade-out">Input</h3>
 </section>
 
@@ -12,7 +13,23 @@
 </section>
 
 <section>
-  <h3>Kalibrieren</h3>
+  <ol>
+    <li class="fragment highlight-current-blue">Kalibration</li>
+    <li>Fahrtrichtung erkennen</li>
+    <li>Entzerren</li>
+    <li>Alignieren</li>
+    <li>Zug ausschneiden</li>
+    <li>Stitching</li>
+    <li>Unterteilung</li>
+  </ol>
+</section>
+
+<section data-background-video="images/gopro-checkerboard.mp4" data-background-video-muted>
+  <h3 class="fragment fade-out">Input</h3>
+</section>
+
+<section>
+  <h3>Kalibration</h3>
   <img src="images/calibration_1.jpg" width="45%">
   <img src="images/calibration_2.jpg" width="45%">
   <img src="images/calibration_3.jpg" width="45%">
@@ -20,37 +37,89 @@
 </section>
 
 <section>
-  <h3>Entzerren</h3>
-  <img src="https://www.mathworks.com/help/vision/ref/cameracalibrator_radial.png">
+  <ol>
+    <li>Kalibration</li>
+    <li class="fragment highlight-current-blue">Fahrtrichtung erkennen</li>
+    <li>Entzerren</li>
+    <li>Alignieren</li>
+    <li>Zug ausschneiden</li>
+    <li>Stitching</li>
+    <li>Unterteilung</li>
+  </ol>
+</section>
+
+<section>
+  <h3>Fahrtrichtung erkennen</h3>
+  <!-- TODO animation with contours -->
+</section>
+
+<section>
+  <ol>
+    <li>Kalibration</li>
+    <li>Fahrtrichtung erkennen</li>
+    <li class="fragment highlight-current-blue">Entzerren</li>
+    <li>Alignieren</li>
+    <li>Zug ausschneiden</li>
+    <li>Stitching</li>
+    <li>Unterteilung</li>
+  </ol>
 </section>
 
 <section>
   <h3>Entzerren</h3>
-  <img src="images/distorted.jpg" width="45%">
+  <img src="images/distorted.jpg" width="45%"><br>
   <img src="images/undistorted.jpg" width="45%">
+</section>
+
+<section>
+  <ol>
+    <li>Kalibration</li>
+    <li>Fahrtrichtung erkennen</li>
+    <li>Entzerren</li>
+    <li class="fragment highlight-current-blue">Alignieren</li>
+    <li>Zug ausschneiden</li>
+    <li>Stitching</li>
+    <li>Unterteilung</li>
+  </ol>
 </section>
 
 <section>
   <h3>Alignieren</h3>
-  <img src="images/undistorted.jpg" width="45%">
+  <img src="images/undistorted.jpg" width="45%"><br>
   <img src="images/straighten.jpg" width="45%">
+  <!-- TODO show samples with mask, lines -->
+</section>
+
+<section>
+  <ol>
+    <li>Kalibration</li>
+    <li>Fahrtrichtung erkennen</li>
+    <li>Entzerren</li>
+    <li>Alignieren</li>
+    <li class="fragment highlight-current-blue">Zug ausschneiden</li>
+    <li>Stitching</li>
+    <li>Unterteilung</li>
+  </ol>
 </section>
 
 <section>
   <h3>Zuschneiden</h3>
   <img src="images/straighten.jpg" width="45%">
   <img src="images/cropped.jpg" width="45%">
+  <!-- TODO find better example, show contour image, dilation, erosion -->
 </section>
 
 <section>
   <h3>Recktifizieren</h3>
   <img src="images/cropped.jpg" width="45%">
   <img src="images/rectified.jpg" width="45%">
+  <!-- TODO -->
 </section>
 
 <section>
   <h3>Stitching</h3>
   <img src="images/pano.jpg">
+  <!-- TODO -->
 </section>
 
 <section>

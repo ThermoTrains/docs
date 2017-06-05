@@ -18,7 +18,7 @@ gulp.task('default', ['root', 'docs', 'slides']);
 
 gulp.task('root', () => gulp.src('index.html').pipe(gulp.dest('build')));
 gulp.task('docs', () => runSequence('clean:docs', ['docs:nunjucks', 'docs:js', 'docs:style', 'docs:images', 'docs:deps']));
-gulp.task('slides', () => runSequence('clean:slides', ['slides:nunjucks', 'slides:js', 'slides:style', 'slides:images', 'slides:deps', 'slides:demos']));
+gulp.task('slides', () => runSequence('clean:slides', ['slides:nunjucks', 'slides:js', 'slides:style', 'slides:images', 'slides:deps']));
 
 gulp.task('clean', ['clean:docs', 'clean:slides']);
 gulp.task('clean:docs', () => del(['build/docs/**/*']));
@@ -121,11 +121,6 @@ gulp.task('slides:images', () => {
     .pipe(gulp.dest('build/slides/images'));
 });
 
-gulp.task('slides:demos', () => {
-  gulp.src('slides/demos/**/*.*')
-    .pipe(gulp.dest('build/slides/demos'));
-});
-
 gulp.task('serve:slides', ['slides'], () => {
   const server = gls.static('build/slides', 3000);
   server.start();
@@ -142,8 +137,5 @@ gulp.task('serve:slides', ['slides'], () => {
   });
   gulp.watch('slides/images/**/*.{png,jpg,gif,svg,mp4}', (file) => {
     runSequence('slides:images', () => server.notify.apply(server, [file]));
-  });
-  gulp.watch('slides/demos/**/*.*', (file) => {
-    runSequence('slides:demos', () => server.notify.apply(server, [file]));
   });
 });
