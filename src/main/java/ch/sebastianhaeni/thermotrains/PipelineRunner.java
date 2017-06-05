@@ -8,6 +8,13 @@ import org.opencv.core.Core;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Runs through the pipeline from {@code START_STEP} to {@code STOP_STEP}.
+ * If {@code START_STEP} is > 1, then the input artifacts have to be present already.
+ * Right now the pipeline pipes results with files.
+ *
+ * TODO piping without resorting to the file system should be supported
+ */
 public final class PipelineRunner {
   static {
     // load OpenCV native library
@@ -16,7 +23,7 @@ public final class PipelineRunner {
 
   private static final Logger LOG = LogManager.getLogger(PipelineRunner.class);
 
-  private static final int START_STEP = 7;
+  private static final int START_STEP = 9;
   private static final int STOP_STEP = 9;
 
   private PipelineRunner() {

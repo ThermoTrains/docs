@@ -2,6 +2,7 @@ package ch.sebastianhaeni.thermotrains.internals;
 
 import ch.sebastianhaeni.thermotrains.internals.geometry.BoundingBox;
 import ch.sebastianhaeni.thermotrains.internals.geometry.Line;
+import ch.sebastianhaeni.thermotrains.util.MathUtil;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -10,7 +11,11 @@ import org.opencv.core.Size;
 import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
+import java.util.stream.Collectors;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.*;
 import static ch.sebastianhaeni.thermotrains.util.MatUtil.crop;
@@ -19,6 +24,9 @@ import static org.opencv.core.Core.*;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 import static org.opencv.imgproc.Imgproc.*;
 
+/**
+ * Tries to find the train contour and rectifies it.
+ */
 public final class Rectify {
 
   private static final int FREQUENCY_RESOLUTION = 2;
@@ -30,25 +38,30 @@ public final class Rectify {
     // nop
   }
 
+  /**
+   * Find the train contour and rectify it.
+   */
   public static void transform(@Nonnull String inputFolder, @Nonnull String outputFolder) {
     emptyFolder(outputFolder);
 
     List<Path> files = getFiles(inputFolder, "**.jpg");
 
+    List<BoundingBox> polygons = files.stream()
+      .map(file -> imread(file.toString()))
+      .map(Rectify::findBoundingBox)
+      .collect(Collectors.toList());
+
+    BoundingBox median = getMedianBox(polygons);
+    BoundingBox rectangle = rectifyBox(median);
+    Mat perspectiveTransform = getPerspectiveTransform(median.getMat(), rectangle.getMat());
+
     for (int i = 0; i < files.size(); i++) {
-      Path path = files.get(i);
+      Mat img = imread(files.get(i).toString());
 
-      Mat img = imread(path.toString());
+      // apply matrix
+      warpPerspective(img, img, perspectiveTransform, new Size(img.width(), img.height()));
 
-      BoundingBox polygon = findBoundingBox(img);
-      BoundingBox rectangle = rectifyBox(polygon);
-
-      Mat perspectiveTransform = getPerspectiveTransform(polygon.getMat(), rectangle.getMat());
-
-      Mat out = new Mat();
-      warpPerspective(img, out, perspectiveTransform, new Size(img.width(), img.height()));
-
-      saveMat(outputFolder, out, i);
+      saveMat(outputFolder, img, i);
     }
   }
 
@@ -130,6 +143,38 @@ public final class Rectify {
     }
 
     return output;
+  }
+
+  @Nonnull
+  private static BoundingBox getMedianBox(@Nonnull List<BoundingBox> polygons) {
+
+    Point topLeft = medianPoint(polygons, BoundingBox::getTopLeft);
+    Point topRight = medianPoint(polygons, BoundingBox::getTopRight);
+    Point bottomLeft = medianPoint(polygons, BoundingBox::getBottomLeft);
+    Point bottomRight = medianPoint(polygons, BoundingBox::getBottomRight);
+
+    return new BoundingBox(topLeft, topRight, bottomRight, bottomLeft);
+  }
+
+  @Nonnull
+  private static Point medianPoint(@Nonnull Collection<BoundingBox> polygons,
+                                   @Nonnull Function<BoundingBox, Point> mapper) {
+
+    double x = median(polygons, polygon -> mapper.apply(polygon).x);
+    double y = median(polygons, polygon -> mapper.apply(polygon).y);
+
+    return new Point(x, y);
+  }
+
+  private static double median(@Nonnull Collection<BoundingBox> polygons,
+                               @Nonnull ToDoubleFunction<? super BoundingBox> mapper) {
+
+    Double[] values = polygons.stream()
+      .mapToDouble(mapper)
+      .boxed()
+      .toArray(Double[]::new);
+
+    return MathUtil.median(values);
   }
 
   /**

@@ -11,6 +11,7 @@ import org.opencv.imgproc.Imgproc;
 import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
@@ -53,10 +54,10 @@ public final class MotionCrop {
 
     // get median bounding box
     MarginBox medianBox = new MarginBox();
-    medianBox.setTop(median(bboxes.values().stream().mapToInt(MarginBox::getTop).toArray()));
-    medianBox.setBottom(median(bboxes.values().stream().mapToInt(MarginBox::getBottom).toArray()));
-    medianBox.setLeft(median(bboxes.values().stream().mapToInt(MarginBox::getLeft).toArray()));
-    medianBox.setRight(median(bboxes.values().stream().mapToInt(MarginBox::getRight).toArray()));
+    medianBox.setTop(getMedian(bboxes.values(), MarginBox::getTop));
+    medianBox.setBottom(getMedian(bboxes.values(), MarginBox::getBottom));
+    medianBox.setLeft(getMedian(bboxes.values(), MarginBox::getLeft));
+    medianBox.setRight(getMedian(bboxes.values(), MarginBox::getRight));
 
     for (int i = 0; i < inputFiles.size(); i++) {
 
@@ -71,6 +72,15 @@ public final class MotionCrop {
 
       saveMat(outputFolder, img, i);
     }
+  }
+
+  private static int getMedian(@Nonnull Collection<MarginBox> boxes, @Nonnull ToIntFunction<MarginBox> mapper) {
+    Integer[] numArray = boxes.stream()
+      .mapToInt(mapper)
+      .boxed()
+      .toArray(Integer[]::new);
+
+    return median(numArray);
   }
 
   @Nonnull
