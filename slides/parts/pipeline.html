@@ -2,130 +2,100 @@
   <h2>Image processing pipeline</h2>
 </section>
 
-<section data-background-video="images/gopro-moving-train-1.mp4"
+<section data-background-video="images/pipeline/gopro-moving-train-1.mp4"
          data-background-video-muted>
   <h3 class="fragment fade-out">Input</h3>
 </section>
 
 <section>
   <h3>Output</h3>
-  <img src="images/pano.jpg">
+  <img src="images/pipeline/pano.jpg">
 </section>
 
 <section>
   <ol>
-    <li class="fragment highlight-current-blue">Kalibration</li>
-    <li>Fahrtrichtung erkennen</li>
-    <li>Entzerren</li>
-    <li>Alignieren</li>
-    <li>Zug ausschneiden</li>
-    <li>Stitching</li>
-    <li>Unterteilung</li>
+    <li class="fragment">Kalibration</li>
+    <li class="fragment">Fahrtrichtung erkennen</li>
+    <li class="fragment">Entzerren</li>
+    <li class="fragment">Ausrichten</li>
+    <li class="fragment">Zug ausschneiden</li>
+    <li class="fragment">Recktifizieren</li>
+    <li class="fragment">Stitching</li>
+    <li class="fragment">Unterteilung</li>
+    <li class="fragment">Profit!</li>
   </ol>
 </section>
 
-<section data-background-video="images/gopro-checkerboard.mp4" data-background-video-muted>
-  <h3 class="fragment fade-out">Input</h3>
+<section data-background-video="images/pipeline/gopro-checkerboard.mp4" data-background-video-muted>
+  <h3 class="fragment fade-out">Kalibration</h3>
 </section>
+<section data-background-image="images/pipeline/calibration.jpg"></section>
 
-<section>
-  <h3>Kalibration</h3>
-  <img src="images/calibration_1.jpg" width="45%">
-  <img src="images/calibration_2.jpg" width="45%">
-  <img src="images/calibration_3.jpg" width="45%">
-  <img src="images/calibration_4.jpg" width="45%">
+
+<section data-background-image="images/pipeline/frames.jpg"></section>
+
+
+<section data-background-image="images/pipeline/motion/1-bg.jpg">
+  <h3 class="fragment fade-out">Fahrtrichtung erkennen</h3>
 </section>
-
-<section>
-  <ol>
-    <li>Kalibration</li>
-    <li class="fragment highlight-current-blue">Fahrtrichtung erkennen</li>
-    <li>Entzerren</li>
-    <li>Alignieren</li>
-    <li>Zug ausschneiden</li>
-    <li>Stitching</li>
-    <li>Unterteilung</li>
-  </ol>
-</section>
-
-<section>
+<section data-background-image="images/pipeline/motion/2-gray.jpg"></section>
+<section data-background-image="images/pipeline/motion/3-diff.jpg"></section>
+<section data-background-image="images/pipeline/motion/4-thresh.jpg"></section>
+<section data-background-image="images/pipeline/motion/5-erode.jpg"></section>
+<section data-background-image="images/pipeline/motion/6-dilate.jpg"></section>
+<section data-background-image="images/pipeline/motion/7-contours.jpg"></section>
+<section data-background-image="images/pipeline/motion/contour-train-entering.jpg">
   <h3>Fahrtrichtung erkennen</h3>
-  <!-- TODO animation with contours -->
 </section>
 
-<section>
-  <ol>
-    <li>Kalibration</li>
-    <li>Fahrtrichtung erkennen</li>
-    <li class="fragment highlight-current-blue">Entzerren</li>
-    <li>Alignieren</li>
-    <li>Zug ausschneiden</li>
-    <li>Stitching</li>
-    <li>Unterteilung</li>
-  </ol>
+
+<section data-background-image="images/pipeline/distorted.jpg">
+  <h3 class="fragment fade-out">Entzerren</h3>
+</section>
+<section data-background-image="images/pipeline/undistort/undistorted.jpg"></section>
+
+
+<section data-background-image="images/pipeline/undistort/undistorted.jpg">
+  <h3 class="fragment fade-out">Ausrichten</h3>
+</section>
+<section data-background-image="images/pipeline/straighten/masked.jpg"></section>
+<section data-background-image="images/pipeline/straighten/lines.jpg"></section>
+<section data-background-image="images/pipeline/straighten/straight.jpg"></section>
+
+
+<section data-background-image="images/pipeline/cropped.jpg" data-background-size="contain">
+  <h3 class="fragment fade-out">Zuschneiden</h3>
 </section>
 
-<section>
-  <h3>Entzerren</h3>
-  <img src="images/distorted.jpg" width="45%"><br>
-  <img src="images/undistorted.jpg" width="45%">
-</section>
 
-<section>
-  <ol>
-    <li>Kalibration</li>
-    <li>Fahrtrichtung erkennen</li>
-    <li>Entzerren</li>
-    <li class="fragment highlight-current-blue">Alignieren</li>
-    <li>Zug ausschneiden</li>
-    <li>Stitching</li>
-    <li>Unterteilung</li>
-  </ol>
-</section>
-
-<section>
-  <h3>Alignieren</h3>
-  <img src="images/undistorted.jpg" width="45%"><br>
-  <img src="images/straighten.jpg" width="45%">
-  <!-- TODO show samples with mask, lines -->
-</section>
-
-<section>
-  <ol>
-    <li>Kalibration</li>
-    <li>Fahrtrichtung erkennen</li>
-    <li>Entzerren</li>
-    <li>Alignieren</li>
-    <li class="fragment highlight-current-blue">Zug ausschneiden</li>
-    <li>Stitching</li>
-    <li>Unterteilung</li>
-  </ol>
-</section>
-
-<section>
-  <h3>Zuschneiden</h3>
-  <img src="images/straighten.jpg" width="45%">
-  <img src="images/cropped.jpg" width="45%">
-  <!-- TODO find better example, show contour image, dilation, erosion -->
-</section>
-
-<section>
+<section data-background-image="images/pipeline/rectify/value.jpg" data-background-size="contain">
   <h3>Recktifizieren</h3>
-  <img src="images/cropped.jpg" width="45%">
-  <img src="images/rectified.jpg" width="45%">
-  <!-- TODO -->
 </section>
+<section data-background-image="images/pipeline/rectify/upper.jpg" data-background-size="contain"></section>
+<section data-background-image="images/pipeline/rectify/lower.jpg" data-background-size="contain"></section>
+<section data-background-image="images/pipeline/rectify/lines.jpg" data-background-size="contain"></section>
+<section data-background-image="images/pipeline/rectify/upper-line.jpg" data-background-size="contain"></section>
+<section data-background-image="images/pipeline/rectify/rectified.jpg" data-background-size="contain"></section>
+
 
 <section>
   <h3>Stitching</h3>
-  <img src="images/pano.jpg">
-  <!-- TODO -->
+  <img src="images/pipeline/stitch/template.jpg">
 </section>
+<section data-background-image="images/pipeline/stitch/match.jpg" data-background-size="contain"></section>
+<section data-background-image="images/pipeline/pano.jpg" data-background-size="contain"></section>
+<section data-background-image="images/pipeline/pano.jpg"></section>
+
 
 <section>
   <h3>Wagons ausschneiden</h3>
-  <img src="images/wagon_1.jpg" width="45%">
-  <img src="images/wagon_2.jpg" width="45%">
-  <img src="images/wagon_3.jpg" width="45%">
-  <img src="images/wagon_4.jpg" width="45%">
+  <img src="images/pipeline/pano.jpg" width="70%">
+  <img src="images/pipeline/split/split-histogram.jpg" width="70%">
+</section>
+
+<section>
+  <img src="images/pipeline/split/wagon_1.jpg" width="45%">
+  <img src="images/pipeline/split/wagon_2.jpg" width="45%">
+  <img src="images/pipeline/split/wagon_3.jpg" width="45%">
+  <img src="images/pipeline/split/wagon_4.jpg" width="45%">
 </section>
