@@ -3,7 +3,8 @@
 </section>
 
 <section data-background-video="images/pipeline/gopro-moving-train-1.mp4"
-         data-background-video-muted>
+         data-background-video-muted
+         data-background-video-loop>
   <h3 class="fragment fade-out">Input</h3>
 </section>
 
@@ -12,27 +13,25 @@
   <img src="images/pipeline/pano.jpg">
 </section>
 
-<section>
-  <ol>
-    <li class="fragment">Kalibration</li>
-    <li class="fragment">Fahrtrichtung erkennen</li>
-    <li class="fragment">Entzerren</li>
-    <li class="fragment">Ausrichten</li>
-    <li class="fragment">Zug ausschneiden</li>
-    <li class="fragment">Recktifizieren</li>
-    <li class="fragment">Stitching</li>
-    <li class="fragment">Unterteilung</li>
-    <li class="fragment">Profit!</li>
-  </ol>
+<section data-background-image="images/pipeline/diagram.png"
+         data-background-size="80%"></section>
+
+<section data-background-image="images/pipeline/frames.jpg">
+  <h3 class="fragment fade-out" style="color: #333; background: rgba(255,255,255,.5);">Frames extrahieren</h3>
 </section>
 
-<section data-background-video="images/pipeline/gopro-checkerboard.mp4" data-background-video-muted>
+
+<section data-background-video="images/pipeline/calibration/gopro-checkerboard.mp4"
+         data-background-video-muted
+         data-background-video-loop>
   <h3 class="fragment fade-out">Kalibration</h3>
 </section>
-<section data-background-image="images/pipeline/calibration.jpg"></section>
-
-
-<section data-background-image="images/pipeline/frames.jpg"></section>
+<section data-background-image="images/pipeline/calibration/cal1.jpg"
+         data-background-size="contain"></section>
+<section data-background-image="images/pipeline/calibration/cal2.jpg"
+         data-background-size="contain"></section>
+<section data-background-image="images/pipeline/calibration/cal3.jpg"
+         data-background-size="contain"></section>
 
 
 <section data-background-image="images/pipeline/motion/1-bg.jpg">
@@ -72,9 +71,11 @@
   <h3>Recktifizieren</h3>
 </section>
 <section data-background-image="images/pipeline/rectify/upper.jpg" data-background-size="contain"></section>
-<section data-background-image="images/pipeline/rectify/lower.jpg" data-background-size="contain"></section>
 <section data-background-image="images/pipeline/rectify/lines.jpg" data-background-size="contain"></section>
 <section data-background-image="images/pipeline/rectify/upper-line.jpg" data-background-size="contain"></section>
+<section data-background-image="images/pipeline/rectify/lower.jpg" data-background-size="contain"></section>
+<section data-background-image="images/pipeline/rectify/lower-line.jpg" data-background-size="contain"></section>
+<section data-background-image="images/pipeline/rectify/unrectified.jpg" data-background-size="contain"></section>
 <section data-background-image="images/pipeline/rectify/rectified.jpg" data-background-size="contain"></section>
 
 
