@@ -3,12 +3,51 @@
   <h2 class="break nonr">Abstract</h2>
 
   <p>
-    Die Abteilung des SBB Personenverkehrs möchte bis 2020 im Rahmen ihres
-    Energieeinsparungsprojekts 600 Gigawatt einsparen. Eine Massnahme daraus ist,
-    Schienenfahrzeuge automatisch auf fehlerhafte Isolationen zu prüfen. Durch die
-    Bedingungen, denen die Materialien im täglichen Verkehr ausgesetzt sind, kommt es vor, dass
+    Die Abteilung des SBB Personenverkehrs möchte bis 2025 im Rahmen ihres
+    Energieeinsparungsprojekts 600 GWh Strom einsparen. Das AKW Mühleberg produziert im Vergleich dazu knapp 3000 GWh pro Jahr.
+    Das Energie- und direkt damit verbundene Kosteneinsparungspotential ist dementsprechen enorm.
+    Eine Massnahme aus diesem Projekt ist, Schienenfahrzeuge automatisch auf fehlerhafte Isolationen zu prüfen.
+    Durch die Bedingungen, denen die Materialien im täglichen Verkehr ausgesetzt sind, kommt es vor, dass
     sich Isolationsteile vor allem im Dachbereich lösen oder aufgrund von Materialfehlern oder
     Wasser- und Feuchtigkeitseintritt Schaden nehmen und zerfallen.
+  </p>
+  <p>
+    Ziel des Projektes im Endausbau ist das automatische Erkennen von fehlerhaften Zügen.
+    Ein fehlerhafter Zug soll mit detaillierten Informationen (Zug X, n-ter Wagon von vorne, betroffener Bereich, etc.)
+    an ein Servicecenter gemeldet werden. Über eine Wartung des Zuges kann anschliessend entschieden werden.
+  </p>
+  <p>
+    Im Projekt 2, welches die erste Phase unseres Projektes bildet, ist das Ziel einerseits eine Machbarkeitsabklärung
+    und andererseits die Evaluation einer Wärmebildkamera. Die Machbarkeitsstudie beinhaltet das Schärfen der Problemstellung,
+    einen Prototypen der Bildverarbeitungspipeline und eine Standortevaluation für die Aufnahmen.
+  </p>
+  <p>
+    Mit Hilfe einer Wärmebildkamera sollen die Fahrzeuge auf Wärmeverlust untersucht werden.
+    So werden defekte Wärmebrücken und Isolationen sichtbar. Mit einer zu entwicklenden Bildverarbeitungspipeline
+    werden die Aufnahmen analysiert und klassifiziert.
+  </p>
+  <p>
+    Als Resultat des Projekts 2 liegt nun ein positivier Machbarkeitsentscheid, eine evaluierte Kamera und der Prototyp
+    der Bildverarbeitungspipeline vor.
+  </p>
+  <p>
+    Bei der Disskusion mit Spezialisten der SBB, sowie mit Thermographie-Experten sind bisher keine unüberwindbaren
+    Probleme aufgetaucht, die eine Weiterführung des Projekts verhindern würden. Da aber noch keine Wärmebildaufnahmen
+    von defekten Zugen existieren, bleibt ein Risiko für die Machbarkeit bestehen. Mit der Evaluation der FLIR A65
+    Wärmebildkamera, konnten wir erfolgreich eine geeignete Kamera finden. Sie lässt sich
+    über das Netwerk bedienen und verfügt über ein grosses Field of View (FOV). Damit können die fehlenden Bilder geschossen werden.
+    Weiter haben wir erfolgreich das Erstellen eines Panoramabildes aus einer Videoaufnahme heraus mit unserer Image Processing Pipeline
+    realisiert. Dies ist der erste wichtige Schritt unserer Bildanalysesoftware.
+  </p>
+  <img src="images/pano.jpg" width="700px">
+  <p>
+    In der 2. Phase des Projektes, die wir in unserer Bachelorarbeit absolvieren, widmen wir uns folgenden Themen:
+    <ul>
+      <li>Testbilder sammeln (Positiv / Negativ Bilder)</li>
+      <li>Klassifizierung in defekte und funktioniernde Züge</li>
+      <li>Ausbau der Image Processing Pipeline</li>
+      <li>Anbindung an SBB Infrastruktur</li>
+    </ul>
   </p>
 
 </div>
