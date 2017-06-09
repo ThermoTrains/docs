@@ -5,3 +5,27 @@
     color: #777;
   }
 }
+
+.reveal .pano-scroll {
+  position: absolute;
+  top: -74px;
+  display: block;
+  height: 100vh;
+  width: 12133px;
+  max-width: none;
+  max-height: none;
+  z-index: -1;
+  animation: move 60s ease infinite;
+}
+
+@keyframes move {
+  0% {
+    transform: translate(-10500px, 0);
+  }
+  50% {
+    transform: translate(-500px, 0);
+  }
+  100% {
+    transform: translate(-10500px, 0);
+  }
+}
