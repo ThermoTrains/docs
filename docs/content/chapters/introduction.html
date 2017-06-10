@@ -1,4 +1,4 @@
-<div class="chapter">
+ <div class="chapter">
   <h2 class="break">Einleitung</h2>
 
   <h3>Ausgangslage</h3>
@@ -88,7 +88,9 @@
     uns nicht auf einzelen Bereiche einzuschränken.
   </p>
 
-  <img src="images/sbb_ic2000.png" width="700px">
+  <p>
+    <img src="images/sbb_ic2000.png" width="700">
+  </p>
 
   <p>
     Das obige Bild zeigt gut, wie ein intakter Zug auf einer Thermographie aussieht. Die auffallenden roten
@@ -96,14 +98,23 @@
     Weitere auffallende Wärmebrücken sehen wir im Bereich der Notausstiegfenster und natürlich der Lüftungsschlitze.
     Folgende Bilder zeigen diese Stellen noch genauer.
   </p>
-  <img src="images/sbb_ic2000_2.png" width="700px">
 
   <p>
-    Solche Erkenntisse, wie wir sie aus obigen Testaufnahmen gewinnen konnten sind wichtig um später normal
+    <img src="images/sbb_ic2000_2.png" width="700">
+  </p>
+
+  <p>
+    Solche Erkenntisse, wie wir sie aus obigen Testaufnahmen gewinnen konnten, sind wichtig um später normal
     auftretende Wärmebrücken von ungewollten Wärmebrücken unterscheiden zu können. Aufgrund der fehlenden Testbilder
     konnten wir uns aber wie erwähnt noch nicht weiter mit der Klassifizierung beschäftigen. Deshalb haben wir uns
     in dieser Phase mit dem Erstellen des Zugpanoramas beschäftigt, was im Kapitel "Image Processing Pipeline"
     beschrieben ist.
+  </p>
+
+  <p>
+    TODO
+    Die Erkennung von Schäden am Zug ist nur die halbe Miete. Ein geeigneter Standort für die Aufnahmen muss ebenfalls
+    gefunden werden. Es sollen möglichst viele Züge erfasst werden.
   </p>
 
   <h3>Einarbeitung</h3>
@@ -111,13 +122,11 @@
   <h4>Probeaufnahmen</h4>
 
   <p>
-    Die Aufnahmen mit der FLIR SC620 haben gezeigt, dass die Videos noch zu wünschen übrig lassen.
-    Einige erste Erkenntnisse:
+    Die Aufnahmen mit der FLIR SC620 haben gezeigt, dass die Videos noch zu wünschen übrig lassen:
     <ul>
       <li>
         Bei zu schnellen Zügen sind die Aufnahmen auf Grund der Sensorauslesegeschwindigkeit der Kamera verzerrt.
-        Die Kamera liest die Pixel von unten nach oben aus.
-        Die High Speed Variante über Firewire haben wir noch nicht getestet.
+        Die Kamera liest die Pixel von oben nach unten aus (Rolling-Shutter-Effekt).
       </li>
       <li>
         Der Bild-Auslöser reagiert mit ca. 3 Sekunden Verzögerung.
@@ -143,6 +152,10 @@
         Bei unseren Aufnahmen von der Seite waren zwei reflektierte Masten auf den Zügen zu erkennen.
       </li>
     </ul>
+  </p>
+
+  <p>
+    <img src="images/testaufnahmen.png" width="700"/>
   </p>
 
 </div>
