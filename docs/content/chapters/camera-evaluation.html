@@ -17,7 +17,8 @@
         <td>Field Of View (FOV)</td>
         <td>
           Die Kamera muss ein genügend grosses FOV besitzen. Der Zug soll in der Höhe komplett auf das Bild
-          passen. Wir gehen davon aus, dass wir die Kamera in min. 5 Metern Entfernung vom Zug aufstellen können.
+          passen. Der IC2000 ist ca. 4m hoch. Wir gehen davon aus, dass wir die Kamera in min. 5 Metern Entfernung
+          vom Zug aufstellen können.
         </td>
       </tr>
       <tr>
@@ -25,7 +26,7 @@
         <td>Auflösung</td>
         <td>
           Je höher die Auflösung desto besser lässen sich die Aufnahmen bearbeiten und analysieren. Die Auflösung von
-          Infrarotkamera sind Technologiebedingt klein, deshalb sollte eine grösst mögliche Auflösung gewählt werden.
+          Infrarotkamera sind technologiebedingt klein, deshalb sollte eine grösst mögliche Auflösung gewählt werden.
         </td>
       </tr>
       <tr>
@@ -58,11 +59,17 @@
   </table>
 
   <p>
-    Quelle: <a href="http://flir.custhelp.com/app/utils/fl_fovCalc/pn/75013-0101/ret_url/%252Fapp%252Ffl_download_datasheets%252Fid%252F13">FLIR FOV Calculator</a>
+    Ein wichtiger Punkt ist das Field Of View oder zu Deutsch das Sichtfeld. Es muss sichergestellt sein,
+    dass der gesamte Zug der Höhe nach auf das Bild passt. Der FOV-Winkel schränkt daher die Aufnahmedistanz ein.
+    Auf der unten abgebildeten Grafik sieht man die Pyramide, die das Sichtfeld der Kamera aufspannt. Der Öffnungswinkel
+    entspricht dem FOV-Winkel. In der Tabelle unten sind die Dimensionen des Sichtfeldes bei Aufnahmen aus verschiedenen
+    Distanzen aufgelistet. Um den Zug von unten nach oben zu Erfassen, muss man mit der Kamera von FLIR also min. 5m
+    entfernt sein.
   </p>
 
   <p>
     <img src="images/FOV_Ax5.png">
+    Quelle: <a href="http://flir.custhelp.com/app/utils/fl_fovCalc/pn/75013-0101/ret_url/%252Fapp%252Ffl_download_datasheets%252Fid%252F13">FLIR FOV Calculator</a>
   </p>
 
   <p>
@@ -176,7 +183,7 @@
     Die meisten Vorteile bieteten auf jeden Fall die gekühlten Kameras. Sie haben einen höheren Auslesetakt, eine bessere
     Auflösung und messen die Temperatur auf bis zu 20mK genau (im Gegensatz zu 50mK). Die ungekühlten Kamers dagegen sind
     viel preiswerter und weniger aufwendig in der Bedienung und Wartung. Für den Preis einer gekühlten Kamera, könnte man
-    gleich mehrere ungekühlte Kameras anschaffen. Was natürlich von Vorteil ist wenn man die gesammte Flotte der SBB
+    gleich mehrere ungekühlte Kameras anschaffen. Was natürlich von Vorteil ist, wenn man die gesammte Flotte der SBB
     thermographisch analysieren will.
   </p>
 
@@ -206,8 +213,10 @@
   <h3>Evaluierte Kamera</h3>
 
   <p>
-    Schlussendlich haben wir zwei passende Kameras gefunden. Aufgrund des Budgets kamen keine gekühlten Kameras
-    in Frage.
+    Schlussendlich haben wir zwei passende Kameras gefunden. Da der Markt nicht sehr gross ist und wir unsere
+    Anforderungen ziemliech genau kannten, war die engere Auswahl schnell getroffen. Auch die beiden Experten, die uns
+    bei der Evaluation unterstützt haben, schlugen ähnliche Modelle vor.
+    Aufgrund des Budgets kamen keine gekühlten Kameras in Frage.
   </p>
 
   <table style="margin: auto;">

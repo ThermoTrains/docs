@@ -85,7 +85,7 @@
     Betriebsbedingungen wie Heizung / Kühlung simulieren.<br>
     Weil es an diversen Orten Wärmebrücken geben kann und nicht klar ist wie sich verrutschte Isolationen und
     Wassereinbrücke auf einer Thermographie äussern, haben wir beschlossen den ganzen Zug zu analysieren und
-    uns nicht auf einzelen Bereiche einzuschränken.
+    uns nicht auf einzelne Bereiche einzuschränken.
   </p>
 
   <p>
@@ -112,12 +112,14 @@
   </p>
 
   <p>
-    TODO
     Die Erkennung von Schäden am Zug ist nur die halbe Miete. Ein geeigneter Standort für die Aufnahmen muss ebenfalls
-    gefunden werden. Es sollen möglichst viele Züge erfasst werden.
+    gefunden werden. Es sollen möglichst viele Züge erfasst werden. Dies bedingt einen oder mehrere zentrale Standorte,
+    an denen möglichst jeder Zug einmal vorbeifährt. Der Aufnahmeort sollte zudem ein Streckenabschnitt sein, an welchem
+    die Züge nicht schneller als 30km/h fahren. Diese Einschrankung ist durch die Technologie der IR-Kameras gegeben.
+    Genauere Erläuterungen finden sich im Kapitel "Evaluation Kamera".
   </p>
 
-  <h3>Einarbeitung</h3>
+  <h3>Machbarkeitsanalyse</h3>
 
   <h4>Probeaufnahmen</h4>
 
@@ -156,6 +158,28 @@
 
   <p>
     <img src="images/testaufnahmen.png" width="700"/>
+  </p>
+
+  <h4>Mögliche Aufnahmestandorte</h4>
+
+  <p>
+    Als möglichen Aufnahemstandort eignen sich die Waschanlagen der SBB, welche unter anderem in Zürich, Basel und Genf
+    stationiert sind. Die Waschstrassen eignen sich aus folgenden Gründen:
+    <ul>
+      <li>
+        <strong>Züge fahren langsam.</strong> Die Aufnahmen mit der IR-Kamera drohen also nicht zu verschmieren
+        und wir erhalten scharfe Bilder.
+      </li>
+      <li>
+        <strong>Kontrollierte Bedingungen:</strong> Da sich die Anlagen drinnen befinden könnnen wir von konstanten
+        Bedingungen was Licht, Temperatur etc. angeht ausgehen.
+      </li>
+      <li>
+        <strong>Identifizierung der Wagons:</strong> Alle Züge resp. sogar jeder Wagon ist mit einem RFID-Chip
+        austestattet. In der Waschanlage wird dieser ausgelesen. Somit wäre die Identifikation der einzelnen Wagons
+        sehr einfach.
+      </li>
+    </ul>
   </p>
 
 </div>
