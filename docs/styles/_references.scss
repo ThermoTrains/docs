@@ -60,4 +60,23 @@ a[href^="#ref-"]:after {
     }
   }
 
+  .state {
+    white-space: nowrap;
+    font-size: 0.75em;
+    display: block;
+
+    &:before {
+      content: '(Stand: ';
+    }
+
+    &:after {
+      content: ')';
+    }
+  }
+
+  .sub-title {
+    display: block;
+    font-size: 0.9em;
+  }
+
 }
