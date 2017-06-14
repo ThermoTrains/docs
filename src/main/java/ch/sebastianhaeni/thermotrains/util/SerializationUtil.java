@@ -1,16 +1,21 @@
 package ch.sebastianhaeni.thermotrains.util;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.Base64;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.base.Charsets;
 import com.google.gson.JsonObject;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
-import javax.annotation.Nonnull;
-import java.nio.*;
-import java.util.Base64;
-
 /**
- * MathUtil functions for serialization.
+ * Util functions for serialization.
  */
 public final class SerializationUtil {
 

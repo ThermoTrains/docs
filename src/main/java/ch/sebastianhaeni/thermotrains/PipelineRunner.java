@@ -1,12 +1,20 @@
 package ch.sebastianhaeni.thermotrains;
 
-import ch.sebastianhaeni.thermotrains.internals.*;
+import javax.annotation.Nonnull;
+
+import ch.sebastianhaeni.thermotrains.internals.CalibrateCamera;
+import ch.sebastianhaeni.thermotrains.internals.ExtractFrames;
+import ch.sebastianhaeni.thermotrains.internals.MotionCrop;
+import ch.sebastianhaeni.thermotrains.internals.PrepareTrainFrames;
+import ch.sebastianhaeni.thermotrains.internals.Rectify;
+import ch.sebastianhaeni.thermotrains.internals.SplitTrain;
+import ch.sebastianhaeni.thermotrains.internals.Straighten;
+import ch.sebastianhaeni.thermotrains.internals.TrainStitcher;
+import ch.sebastianhaeni.thermotrains.internals.Undistort;
 import ch.sebastianhaeni.thermotrains.util.Procedure;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opencv.core.Core;
-
-import javax.annotation.Nonnull;
 
 /**
  * Runs through the pipeline from {@code START_STEP} to {@code STOP_STEP}.

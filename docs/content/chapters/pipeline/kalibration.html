@@ -1,1 +1,67 @@
 <h3>Kamerakalibration</h3>
+
+<ul>
+  <li><b>In:</b> Schachbrett Frames</li>
+  <li><b>Out:</b> JSON Datei mit Kalibrationsdaten</li>
+</ul>
+
+<p>
+  Die Kalibration der Kamera lösen wir mithilfe eines Schachbretts. Die gut findbaren Eckpunkte zwischen den Kacheln
+  bieten ein optimales Muster dazu. In der Tag gibt es von OpenCV auch die Methode aussagekräfigem Namen
+  <code>findChessboardCorners(...)</code> welche die Eckpunkte findet. Vorgeben muss man die Anzahl Kacheln in Höhe
+  sowie Breite.
+</p>
+
+<figure>
+  <img src="images/pipeline/calibration.jpg">
+  <figcaption>Gefundenes Schachbrett Muster</figcaption>
+</figure>
+
+<p>
+  Wir brauchen nun viele Testbilder aus verschiedenen Blickwinkeln auf das Schachbrett. Je nachdem ist die Verzerrung
+  der Kamera unten, oben, links oder rechts anders. Wir fügen sämtliche gefundenen Punkte in eine Liste ein. Nebenbei
+  führen wir eine ideale Liste in der die Punkte korrekt ausgerichtet sind. Die Methode
+  <code>calibrateCamera(...)</code>
+  findet dann die Kameramatrix mithilfe der zwei Listen. Weil wir wissen wie gross die Kacheln sind in Millimeter,
+  können wir auch die vertikale Field of View ausrechnen. Mit unseren GoPro Aufnahmen errechnenen wir 34.1° mit einem
+  Fehlerwert (RMS) von 0.277. Der echte Wert wäre eigentlich bei 37.2° gemäss der <a href="#ref-gopro-spec">GoPro
+  Spezifikation</a>.
+</p>
+
+<p>
+  Die gefundenen Daten serialisieren wir in eine JSON Datei. Um das zu realisieren mussten wir aber zuerst noch den
+  Code zur Serliasierung von OpenCV <code>Mat</code> Objekten schreiben, was sich als mühsame Arbeit herausgestellt hat.
+</p>
+
+<figure>
+<pre><code>{
+  "cameraMatrix": { "rows": 3, "cols": 3, "type": 6, "data": "..."},
+  "distCoeffs": { "rows": 5, "cols": 1, "type": 6, "data": "..."},
+  "imageSize": { "width": 1920.0, "height": 1080.0},
+  "rvecs": [...]
+  "tvecs": [...]
+}</code></pre>
+  <figcaption>Serialisierte Kalibrationsdaten</figcaption>
+</figure>
+
+<p>
+  Der obige Ausschnitt aus der Datei zeigt den Aufbau. Zur Herausfindung des Kameramodells werden die Rotation und
+  Translation Vektoren jedoch nicht gebraucht. Weil sie jedoch später einmal hilfreich sein könnten, serialisieren wir
+  sie trotzdem.
+</p>
+
+<h4>Entzerren</h4>
+
+<p>
+  Die zuvor serialisierten Daten können wir nun einlesen und die optimale Kameramatrix berechnen. OpenCV bietet dazu
+  die Methode <code>getOptimalNewCameraMatrix(...)</code> an welche die Kameramatrix berechnet. Die einzelnen Frames
+  können dann mit der Methode <code>undistort(...)</code> entzerrt werden. Durch das entzerren werden jedoch schwarze
+  Ränder hinzugefügt. Wir schneiden diese Ränder anschliessend noch ab.
+</p>
+
+
+<p id="ref-gopro-spec" class="reference-item">
+  <span class="ref">GoPro Hero 5 FOV</span>
+  <a href="https://gopro.com/help/articles/Question_Answer/HERO5-Black-Field-of-View-FOV-Information" target="_blank">https://gopro.com/help/articles/Question_Answer/HERO5-Black-Field-of-View-FOV-Information</a>
+  <span class="retrieved">14. Juni 2017</span>
+</p>
