@@ -1,1 +1,17 @@
 <h3>Fahrtrichtung erkennen</h3>
+
+<ul>
+  <li><b>In:</b> Zug Frames</li>
+  <li><b>Out:</b> Forwärts oder Rückwärts</li>
+</ul>
+
+<p>
+  Während der Zug gerade ins Bild hereinfährt nimmt die Bounding Box nicht die ganze Breite des zur verfügung stehenden
+  Platzes ein. Durch den Verlauf der Konturkoordinaten über mehrere Frames können wir feststellen ob sich die
+  Bounding Box von links nach rechts oder von rechts nach links bewegt hat.
+</p>
+
+<figure class="affix">
+  <img src="images/pipeline/motion/contour-train-entering.jpg">
+  <figcaption>Einfahrender Zug</figcaption>
+</figure>

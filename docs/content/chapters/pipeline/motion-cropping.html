@@ -1,1 +1,90 @@
 <h3>Motion Cropping</h3>
+
+<ul>
+  <li><b>In:</b> Zug Frames</li>
+  <li><b>Out:</b> Bounding Boxes pro Frames in der sich der Zug befindet</li>
+</ul>
+
+<p>
+  Unter Motion Cropping verstehen wir ein Frame auf den sich bewegenden Teil zuzuschneiden. Im Fall unseres Zuges
+  heisst das, dass der Zug schön ausgeschnitten wird weil er sich durch das Bild bewegt. Motion Cropping brauchen wir
+  in zwei Schritten in der Pipeline. Zum einen erkennen wir damit die Bewegungsrichtung des Zuges um die Frames in
+  normalisierte Form zu extrahieren. Zum anderen zum wortwörtlichen Motion Cropping.
+</p>
+
+<ul>
+  <li>
+    <b>Schritt 1: Hintergrund vorbereiten</b><br>
+    Wir konvertieren ein Bild auf welchem nur der Hintergrund, also kein Zug ist, in ein Graustufenbild. Dieses
+    verunschärfen wir mit einem Boxfilter und einer Kernelgrösse von 6. Ein Gaussfilter würde in diesem Fall nicht
+    viel bringen ausser mehr Performance fressen.
+  </li>
+</ul>
+
+<figure class="affix">
+  <img src="images/pipeline/motion/1-bg.jpg">
+  <figcaption>Vorbereitetes Hintergrundbild</figcaption>
+</figure>
+
+<ul>
+  <li>
+    <b>Schritt 2: Absolute Differenz</b><br>
+    In dem wir das vorbereitete Hintergrundbild von einem Graustufenbild mit einem Zug abziehen und die absoluten
+    Werte davon nehmen erhalten wir ein neues Bild auf welchem grosse Unterschieder heller sind. Als je weisser, desto
+    grösser ist der Unterschied.
+  </li>
+</ul>
+
+<figure class="affix">
+  <img src="images/pipeline/motion/2-gray.jpg">
+  <figcaption>Bewegender Zug</figcaption>
+</figure>
+
+<figure class="affix">
+  <img src="images/pipeline/motion/3-diff.jpg">
+  <figcaption>Absolute Differenz</figcaption>
+</figure>
+
+<ul>
+  <li>
+    <b>Schritt 3: Binarisieren</b><br>
+    Das Differenzbild binarisieren wir mit einem Threshold von 40. Auf diesen Wert kamen wir stichprobeartig.
+  </li>
+</ul>
+
+<figure class="affix">
+  <img src="images/pipeline/motion/4-thresh.jpg">
+  <figcaption>Binariserter bewegender Zug</figcaption>
+</figure>
+
+<ul>
+  <li>
+    <b>Schritt 4: Erodieren und Dilatieren</b><br>
+    Über das binarisierte Bild lassen wir nun eine Erosion und eine anschliessen Dilatation laufen. Dies entfern
+    kleine weisse Flächen und schliesst kleine schwarze Löcher. Was wir als Ergebnis sehen ist die Fläche des Zuges.
+  </li>
+</ul>
+
+<figure class="affix">
+  <img src="images/pipeline/motion/6-dilate.jpg">
+  <figcaption>Binariserter bewegender Zug</figcaption>
+</figure>
+
+<ul>
+  <li>
+    <b>Schritt 5: Kontur finden</b><br>
+    Mithilfe der OpenCV Methode <code>findContours(...)</code> können wir nun von dieser Fläche die Kontur finden.
+  </li>
+</ul>
+
+<figure class="affix">
+  <img src="images/pipeline/motion/7-contours.jpg">
+  <figcaption>Kontur des bewegenden Zuges</figcaption>
+</figure>
+
+<p>
+  Nun haben wir die Kontur des Zuges. Daraus bauen wir eine rechteckige Bounding Box zusammen. Wenn die Breite der
+  Bounding Box im Vergleich mit der Breite des Frames nicht einen gewissen Anteil einimmt, verwerfen wir die Kontur.
+  Bei der Findung der Fahrtrichtung muss die Kontur 10% der Breite einnehmen. Wenn wir den Zug zuschneiden muss es
+  90% sein.
+</p>

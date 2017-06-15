@@ -1,1 +1,71 @@
 <h3>Wagons ausschneiden</h3>
+
+<ul>
+  <li><b>In:</b> Zug Panorama</li>
+  <li><b>Out:</b> Pro Wagon ein Bild</li>
+</ul>
+
+<p>
+  Als letztes möchten wir aus dem Panorama die einzelnen Wagons ausschneiden so, dass wir pro Wagon ein Bild haben.
+  Unsere Analyse hat ergeben, dass die Übergänge der Wagons jeweils sehr viele dunkle Pixel aufweisen. Mit dieser
+  Erkenntnis haben wir folgendes Verfahren entwickelt.
+</p>
+
+<p>
+  Wir schränken das Panorama Bild auf Pixel ein die zwischen <code>RGB(0,0,140)</code> und <code>RGB(255,255,255)</code>
+  sind. Danach führen wir eine Dilatation durch um Löcher zu füllen und eine Erosion um kleine Objekte zu entfernen.
+  Anschliessend bauen wir ein Histogram über die Spalten auf welches die Anzahl der überlebenen Pixel aufsummiert.
+  Das Resultat wird durch das folgende Diagramm dargestellt.
+</p>
+
+<figure class="affix">
+  <img src="images/pipeline/split/split-histogram.jpg">
+  <figcaption>Histogram über dunkle Pixel in Spalten</figcaption>
+</figure>
+
+<p>
+  Man kann sich vorstellen, dass dies das Panorama Bild darstellt. Dort wo wir Peaks finden, sind Zugübergänge. Der
+  folgende Algorithmus zeigt wie die Peaks gefunden werden. Ein wichtiger Faktor spielt dabei die Mindestlänge eines
+  Wagons in Pixel. Dadurch werden auch gleich die Peaks am Anfang und Ende eliminiert.
+</p>
+
+<figure>
+  <pre><code>int lastPeak = -1;
+for (int i = 0; i < hist.length; i++) {
+  if (hist[i] < median * PEAK_THRESHOLD) {
+    hist[i] = 0;
+    continue;
+  }
+
+  hist[i] = 1;
+
+  // Removes the plateau by flattening every element
+  // that is 1 before the current one in a fixed distance.
+  if (lastPeak >= 0 && lastPeak + MIN_CAR_LENGTH_IN_PX > i)
+    hist[lastPeak] = 0;
+
+  lastPeak = i;
+}</code></pre>
+  <figcaption>Algorithmus: Find Peaks</figcaption>
+</figure>
+
+<p>
+  Das Resultat sieht so aus:
+</p>
+
+<figure>
+  <img src="images/pipeline/split/wagon_1.jpg">
+  <figcaption>Wagon 1</figcaption>
+</figure>
+<figure>
+  <img src="images/pipeline/split/wagon_2.jpg">
+  <figcaption>Wagon 2</figcaption>
+</figure>
+<figure>
+  <img src="images/pipeline/split/wagon_3.jpg">
+  <figcaption>Wagon 3</figcaption>
+</figure>
+<figure>
+  <img src="images/pipeline/split/wagon_4.jpg">
+  <figcaption>Wagon 4</figcaption>
+</figure>

@@ -1,1 +1,46 @@
 <h3>Achsen ausrichten</h3>
+
+<ul>
+  <li><b>In:</b> Entzerrte Zug Frames</li>
+  <li><b>Out:</b> An Gleis ausgerichtete Frames</li>
+</ul>
+
+<p>
+  Das Ziel dieses Schritts ist es die Fehleranfälligkeit der nachfolgenden Schritte zu vermindern. Wenn wir das nicht
+  machen würden hätten wir beim Recktifizieren eine viel höhere Fehlerquote. Ausserdem könnten wir nicht das
+  vereinfachte Verfahren zum Stitching verwenden.
+</p>
+
+<ul>
+  <li>
+    <b>Schritt 1: Binarisieren</b><br>
+    Wir konvertieren das Frame zu einem Graustufenbild und binarisieren es mit einem Threshold von 40. Dies lässt
+    dunkle Pixel als weiss erscheinen und hellere Pixel als schwarz.
+  </li>
+</ul>
+
+<figure class="affix">
+  <img src="images/pipeline/straighten/masked.jpg">
+  <figcaption>Dunkle Pixel Threshold</figcaption>
+</figure>
+
+<ul>
+  <li>
+    <b>Schritt 2: Linien finden</b><br>
+    In diesem Bild probieren wir nun die starken Linien zu finden. Dies tun wir im Hough Raum. OpenCV bietet dazu die
+    Methode <code>HoughLinesP(...)</code>. Vorher verunschärfen wir das Bild jedoch noch und lassen den Canny
+    Algorithmus die Kanten finden. Auch für den Canny Algrithmus gibts in OpenCV ein Methode <code>Canny(...)</code>.
+    Der Hough Methode geben wir noch an wie lange die Linien mindestens sein sollen und wie gross die Lücken
+    dazwischen sein dürfen.
+  </li>
+</ul>
+
+<figure class="affix">
+  <img src="images/pipeline/straighten/lines.jpg">
+  <figcaption>Gleislinien</figcaption>
+</figure>
+
+<p>
+  Von den Linien berechnen wir dann die Steigung und somit den Winkel. Die gefundenen Winkel mitteln wir und rotieren
+  dann das Bild um diesen Winkel zurück. Somit ist das Bild den Gleisen ausgerichtet.
+</p>
