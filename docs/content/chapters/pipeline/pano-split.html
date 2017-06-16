@@ -8,13 +8,15 @@
 <p>
   Als letztes möchten wir aus dem Panorama die einzelnen Wagons ausschneiden so, dass wir pro Wagon ein Bild haben.
   Unsere Analyse hat ergeben, dass die Übergänge der Wagons jeweils sehr viele dunkle Pixel aufweisen. Mit dieser
-  Erkenntnis haben wir folgendes Verfahren entwickelt.
+  Erkenntnis haben wir folgendes Verfahren entwickelt. Sollte sich dieses Verfahren nicht für Infrarot Bilder eignen,
+  könnten wir alternativ für die Zugtypen die wir untertstützen möchten die Übergänge als Templates erfassen. Und
+  dieses würden wir dann versuchen im Panorama zu finden.
 </p>
 
 <p>
   Wir schränken das Panorama Bild auf Pixel ein die zwischen <code>RGB(0,0,140)</code> und <code>RGB(255,255,255)</code>
   sind. Danach führen wir eine Dilatation durch um Löcher zu füllen und eine Erosion um kleine Objekte zu entfernen.
-  Anschliessend bauen wir ein Histogram über die Spalten auf welches die Anzahl der überlebenen Pixel aufsummiert.
+  Anschliessend bauen wir ein Histogram über die Spalten auf welches die Anzahl der überlebenend Pixel aufsummiert.
   Das Resultat wird durch das folgende Diagramm dargestellt.
 </p>
 
@@ -24,7 +26,7 @@
 </figure>
 
 <p>
-  Man kann sich vorstellen, dass dies das Panorama Bild darstellt. Dort wo wir Peaks finden, sind Zugübergänge. Der
+  Man kann sich vorstellen, dass dies das Panorama Bild überdeckt. Dort wo wir Peaks finden, sind Zugübergänge. Der
   folgende Algorithmus zeigt wie die Peaks gefunden werden. Ein wichtiger Faktor spielt dabei die Mindestlänge eines
   Wagons in Pixel. Dadurch werden auch gleich die Peaks am Anfang und Ende eliminiert.
 </p>

@@ -7,7 +7,7 @@
 
 
 <p>
-  Die Recktifizierung oder räumliche Entzerrung des Zuges hat sich als äussert schwierig herausgestellt. Nach vielen
+  Die Recktifizierung oder räumliche Entzerrung des Zuges hat sich als äusserst schwierig herausgestellt. Nach vielen
   Versuchen sind wir auf ein Verfahren gestossen welches im Grunde zwar simpel ist, aber trotzdem brauchbare
   Resultate erzeugt. Das Verfahren ist nicht perfekt und recktifiziert nicht gleichmässig.
 </p>
@@ -20,7 +20,7 @@
 </p>
 
 <p>
-  Des weiteren arbeiten mir mit dem V-Kanal (Value) von HSV. Um die obere und untere Kante zu finden unterteilen wir das
+  Folgend arbeiten mir mit dem V-Kanal (Value) von HSV. Um die obere und untere Kante zu finden, unterteilen wir das
   Bild erst einmal um die Wahrscheinlichkeit des Erfolgs zu erhöhen. Die obere Zugkante ist im oberen Drittel und die
   untere im unteren Drittel. In den beiden Ausschnitten suchen wir nun die maximale Frequenz in Y Richtung. Das
   heisst wir wollen pro Spalte im Bild ein weisses Pixel. Diese finden wir mit einer Art vereinfachtem Sobel-Filter
@@ -56,12 +56,12 @@
 
 <figure class="affix">
   <img src="images/pipeline/rectify/rectified.jpg">
-  <figcaption>Unterer Teil des Zuges</figcaption>
+  <figcaption>Recktifizierter Zug</figcaption>
 </figure>
 
 <p>
   Die Erfahrung hat gezeigt das ca. 80% der Bilder aus unseren Testdaten ein genügendes Resultat erzeugen. Jedoch
   brauchen wir jedes Bild. Wir nehmen an, dass wir die selbe Transformationsmatrix für jedes Bild brauchen können.
-  Deshalb bilden wir von allen verzerrten Vierecken eine Median-Viereck mit welchem wir die Matrix berechnen welche
-  wir schlussendlich verwenden um die Bilder zu recktifizieren.
+  Deshalb bilden wir von allen verzerrten Vierecken den Median mit welchem wir die Matrix berechnen welche wir
+  schlussendlich verwenden um die Bilder zu recktifizieren.
 </p>

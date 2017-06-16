@@ -7,7 +7,7 @@
 
 <p>
   Die Kalibration der Kamera lösen wir mithilfe eines Schachbretts. Die gut findbaren Eckpunkte zwischen den Kacheln
-  bieten ein optimales Muster dazu. In der Tag gibt es von OpenCV auch die Methode aussagekräfigem Namen
+  bieten ein optimales Muster dazu. In der Tat gibt es von OpenCV auch die Methode mit einem aussagekräfigem Namen
   <code>findChessboardCorners(...)</code> welche die Eckpunkte findet. Vorgeben muss man die Anzahl Kacheln in Höhe
   sowie Breite.
 </p>
@@ -22,15 +22,16 @@
   der Kamera unten, oben, links oder rechts anders. Wir fügen sämtliche gefundenen Punkte in eine Liste ein. Nebenbei
   führen wir eine ideale Liste in der die Punkte korrekt ausgerichtet sind. Die Methode
   <code>calibrateCamera(...)</code>
-  findet dann die Kameramatrix mithilfe der zwei Listen. Weil wir wissen wie gross die Kacheln sind in Millimeter,
-  können wir auch die vertikale Field of View ausrechnen. Mit unseren GoPro Aufnahmen errechnenen wir 34.1° mit einem
-  Fehlerwert (RMS) von 0.277. Der echte Wert wäre eigentlich bei 37.2° gemäss der <a href="#ref-gopro-spec">GoPro
-  Spezifikation</a>.
+  findet dann die Kameramatrix mithilfe der zwei Listen. Weil wir wissen wie gross die Kacheln in Millimeter sind,
+  können wir auch die Field of View ausrechnen. Mit unseren GoPro Aufnahmen errechnenen wir ein vertikale Sichtfeld von
+  34.1° mit einem Fehlerwert (RMS) von 0.277. Der echte Wert wäre eigentlich bei 37.2° gemäss der <a
+  href="#ref-gopro-spec">GoPro Hero 5 Spezifikation</a>.
 </p>
 
 <p>
   Die gefundenen Daten serialisieren wir in eine JSON Datei. Um das zu realisieren mussten wir aber zuerst noch den
-  Code zur Serliasierung von OpenCV <code>Mat</code> Objekten schreiben, was sich als mühsame Arbeit herausgestellt hat.
+  Code zur Serialisierung von OpenCV <code>Mat</code> Objekten schreiben, was sich als mühsame Arbeit herausgestellt
+  hat.
 </p>
 
 <figure>
@@ -44,7 +45,7 @@
   <figcaption>Serialisierte Kalibrationsdaten</figcaption>
 </figure>
 
-<p>
+<p class="affix">
   Der obige Ausschnitt aus der Datei zeigt den Aufbau. Zur Herausfindung des Kameramodells werden die Rotation und
   Translation Vektoren jedoch nicht gebraucht. Weil sie jedoch später einmal hilfreich sein könnten, serialisieren wir
   sie trotzdem.

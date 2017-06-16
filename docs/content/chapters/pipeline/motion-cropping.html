@@ -9,7 +9,7 @@
   Unter Motion Cropping verstehen wir ein Frame auf den sich bewegenden Teil zuzuschneiden. Im Fall unseres Zuges
   heisst das, dass der Zug schön ausgeschnitten wird weil er sich durch das Bild bewegt. Motion Cropping brauchen wir
   in zwei Schritten in der Pipeline. Zum einen erkennen wir damit die Bewegungsrichtung des Zuges um die Frames in
-  normalisierte Form zu extrahieren. Zum anderen zum wortwörtlichen Motion Cropping.
+  normalisierter Form zu extrahieren. Zum anderen zum wortwörtlichen Motion Cropping.
 </p>
 
 <ul>
@@ -30,7 +30,7 @@
   <li>
     <b>Schritt 2: Absolute Differenz</b><br>
     In dem wir das vorbereitete Hintergrundbild von einem Graustufenbild mit einem Zug abziehen und die absoluten
-    Werte davon nehmen erhalten wir ein neues Bild auf welchem grosse Unterschieder heller sind. Als je weisser, desto
+    Werte davon nehmen, erhalten wir ein neues Bild auf welchem grosse Unterschiede heller sind. Also je weisser, desto
     grösser ist der Unterschied.
   </li>
 </ul>
@@ -60,7 +60,7 @@
 <ul>
   <li>
     <b>Schritt 4: Erodieren und Dilatieren</b><br>
-    Über das binarisierte Bild lassen wir nun eine Erosion und eine anschliessen Dilatation laufen. Dies entfern
+    Über das binarisierte Bild lassen wir nun eine Erosion und eine anschliessende Dilatation laufen. Dies entfernt
     kleine weisse Flächen und schliesst kleine schwarze Löcher. Was wir als Ergebnis sehen ist die Fläche des Zuges.
   </li>
 </ul>
@@ -83,8 +83,7 @@
 </figure>
 
 <p>
-  Nun haben wir die Kontur des Zuges. Daraus bauen wir eine rechteckige Bounding Box zusammen. Wenn die Breite der
-  Bounding Box im Vergleich mit der Breite des Frames nicht einen gewissen Anteil einimmt, verwerfen wir die Kontur.
-  Bei der Findung der Fahrtrichtung muss die Kontur 10% der Breite einnehmen. Wenn wir den Zug zuschneiden muss es
-  90% sein.
+  Nun haben wir die Kontur des Zuges. Daraus bauen wir ein Viereck zusammen. Wenn die Breite der Bounding Box im
+  Vergleich mit der Breite des Frames nicht einen gewissen Anteil einimmt, verwerfen wir die Kontur. Bei der Findung der
+  Fahrtrichtung muss die Kontur 10% der Breite einnehmen. Wenn wir den Zug zuschneiden muss es 90% sein.
 </p>

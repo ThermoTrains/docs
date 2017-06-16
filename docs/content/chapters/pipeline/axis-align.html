@@ -6,8 +6,8 @@
 </ul>
 
 <p>
-  Das Ziel dieses Schritts ist es die Fehleranfälligkeit der nachfolgenden Schritte zu vermindern. Wenn wir das nicht
-  machen würden hätten wir beim Recktifizieren eine viel höhere Fehlerquote. Ausserdem könnten wir nicht das
+  Das Ziel dieses Schritts ist es die Fehleranfälligkeit der nachfolgenden Schritte zu vermindern. Würden wir das
+  nicht machen hätten wir beim Recktifizieren eine viel höhere Fehlerquote. Ausserdem könnten wir nicht das
   vereinfachte Verfahren zum Stitching verwenden.
 </p>
 
@@ -15,7 +15,7 @@
   <li>
     <b>Schritt 1: Binarisieren</b><br>
     Wir konvertieren das Frame zu einem Graustufenbild und binarisieren es mit einem Threshold von 40. Dies lässt
-    dunkle Pixel als weiss erscheinen und hellere Pixel als schwarz.
+    dunkle Pixel als schwarz erscheinen und hellere Pixel als weiss.
   </li>
 </ul>
 
@@ -30,7 +30,7 @@
     In diesem Bild probieren wir nun die starken Linien zu finden. Dies tun wir im Hough Raum. OpenCV bietet dazu die
     Methode <code>HoughLinesP(...)</code>. Vorher verunschärfen wir das Bild jedoch noch und lassen den Canny
     Algorithmus die Kanten finden. Auch für den Canny Algrithmus gibts in OpenCV ein Methode <code>Canny(...)</code>.
-    Der Hough Methode geben wir noch an wie lange die Linien mindestens sein sollen und wie gross die Lücken
+    Der Hough-Methode geben wir noch an wie lange die Linien mindestens sein sollen und wie gross die Lücken
     dazwischen sein dürfen.
   </li>
 </ul>

@@ -1,5 +1,12 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import ch.sebastianhaeni.thermotrains.util.FileUtil;
 import ch.sebastianhaeni.thermotrains.util.MatUtil;
 import org.opencv.core.Core;
@@ -7,19 +14,20 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 
-import javax.annotation.Nonnull;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
-import static org.opencv.core.Core.*;
+import static org.opencv.core.Core.NORM_MINMAX;
+import static org.opencv.core.Core.hconcat;
+import static org.opencv.core.Core.minMaxLoc;
+import static org.opencv.core.Core.normalize;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
-import static org.opencv.imgproc.Imgproc.*;
+import static org.opencv.imgproc.Imgproc.TM_SQDIFF_NORMED;
+import static org.opencv.imgproc.Imgproc.matchTemplate;
+import static org.opencv.imgproc.Imgproc.rectangle;
 
 public final class TrainStitcher {
+
+  private static final int VERTICAL_CROP = 100;
 
   private TrainStitcher() {
     // nop
@@ -44,7 +52,8 @@ public final class TrainStitcher {
       // Localizing the best match with minMaxLoc
       Core.MinMaxLocResult minMaxLocResult = minMaxLoc(result);
 
-      // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+      // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the
+      // better
       Point matchLoc = minMaxLocResult.minLoc;
 
       // Show me what you got
@@ -81,15 +90,13 @@ public final class TrainStitcher {
     saveMat(outputFolder, result, "result");
   }
 
-  private static final int verticalCrop = 100;
-
   /**
    * Creates the template used to match against the other picture.
    */
   @Nonnull
   private static Mat createTemplate(@Nonnull Mat mat) {
     int margin = getTemplateOffset(mat);
-    return MatUtil.crop(mat, verticalCrop, margin, verticalCrop, margin);
+    return MatUtil.crop(mat, VERTICAL_CROP, margin, VERTICAL_CROP, margin);
   }
 
   private static int getTemplateOffset(@Nonnull Mat mat) {
