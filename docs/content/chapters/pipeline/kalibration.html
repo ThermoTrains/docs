@@ -6,9 +6,9 @@
 </ul>
 
 <p>
-  Die Kalibration der Kamera lösen wir mithilfe eines Schachbretts. Die gut findbaren Eckpunkte zwischen den Kacheln
-  bieten ein optimales Muster dazu. In der Tat gibt es von OpenCV auch die Methode mit einem aussagekräftigem Namen
-  <code>findChessboardCorners(...)</code> welche die Eckpunkte findet. Vorgeben muss man die Anzahl Kacheln in Höhe
+  Die Kalibration der Kamera lösen wir mithilfe eines Schachbretts. Die gut zu detektierenden Eckpunkte zwischen den Kacheln
+  sind ein ideales Muster. In der Tat gibt es von OpenCV auch die Methode mit aussagekräfigem Namen
+  <code>findChessboardCorners(...)</code>, welche die Eckpunkte findet. Vorgeben muss man die Anzahl Kacheln in Höhe
   sowie Breite.
 </p>
 
@@ -20,7 +20,7 @@
 <p>
   Wir brauchen nun viele Testbilder aus verschiedenen Blickwinkeln auf das Schachbrett. Je nachdem ist die Verzerrung
   der Kamera unten, oben, links oder rechts anders. Wir fügen sämtliche gefundenen Punkte in eine Liste ein. Nebenbei
-  führen wir eine ideale Liste in der die Punkte korrekt ausgerichtet sind. Die Methode
+  führen wir eine ideale Liste, in der die Punkte korrekt ausgerichtet sind. Die Methode
   <code>calibrateCamera(...)</code>
   findet dann die Kameramatrix mithilfe der zwei Listen. Weil wir wissen wie gross die Kacheln in Millimeter sind,
   können wir auch die Field of View ausrechnen. Mit unseren GoPro Aufnahmen berechneten wir ein vertikales Sichtfeld von
@@ -46,8 +46,8 @@
 </figure>
 
 <p class="affix">
-  Der obige Ausschnitt aus der Datei zeigt den Aufbau. Zur Herausfindung des Kameramodells werden die Rotation und
-  Translation Vektoren jedoch nicht gebraucht. Weil sie jedoch später einmal hilfreich sein könnten, serialisieren wir
+  Der obige Ausschnitt aus der Datei zeigt den Aufbau. Zur Bestimmung des Kameramodells werden die Rotations- und
+  Translations-Vektoren jedoch nicht gebraucht. Weil sie jedoch später einmal hilfreich sein könnten, serialisieren wir
   sie trotzdem.
 </p>
 
@@ -55,11 +55,10 @@
 
 <p>
   Die zuvor serialisierten Daten können wir nun einlesen und die optimale Kameramatrix berechnen. OpenCV bietet dazu
-  die Methode <code>getOptimalNewCameraMatrix(...)</code> an welche die Kameramatrix berechnet. Die einzelnen Frames
-  können dann mit der Methode <code>undistort(...)</code> entzerrt werden. Durch das entzerren werden jedoch schwarze
+  die Methode <code>getOptimalNewCameraMatrix(...)</code> an, welche die Kameramatrix berechnet. Die einzelnen Frames
+  lassen sich dann mit der Methode <code>undistort(...)</code> entzerren. Durch das Entzerren werden jedoch schwarze
   Ränder hinzugefügt. Wir schneiden diese Ränder anschliessend noch ab.
 </p>
-
 
 <p id="ref-gopro-spec" class="reference-item">
   <span class="ref">GoPro Hero 5 FOV</span>

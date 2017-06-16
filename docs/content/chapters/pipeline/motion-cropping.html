@@ -7,7 +7,7 @@
 
 <p>
   Unter Motion Cropping verstehen wir ein Frame auf den sich bewegenden Teil zuzuschneiden. Im Fall unseres Zuges
-  heisst das, dass der Zug schön ausgeschnitten wird weil er sich durch das Bild bewegt. Motion Cropping brauchen wir
+  heisst das, dass der Zug schön ausgeschnitten wird, weil er sich durch das Bild bewegt. Motion Cropping brauchen wir
   in zwei Schritten in der Pipeline. Zum einen erkennen wir damit die Bewegungsrichtung des Zuges um die Frames in
   normalisierter Form zu extrahieren. Zum anderen zum wortwörtlichen Motion Cropping.
 </p>
@@ -17,7 +17,7 @@
     <b>Schritt 1: Hintergrund vorbereiten</b><br>
     Wir konvertieren ein Bild auf welchem nur der Hintergrund, also kein Zug ist, in ein Graustufenbild. Dieses
     verunschärfen wir mit einem Boxfilter und einer Kernelgrösse von 6. Ein Gaussfilter würde in diesem Fall nicht
-    viel bringen ausser mehr Performance fressen.
+    viel bringen ausser Performanceeinbussen.
   </li>
 </ul>
 
@@ -30,7 +30,7 @@
   <li>
     <b>Schritt 2: Absolute Differenz</b><br>
     In dem wir das vorbereitete Hintergrundbild von einem Graustufenbild mit einem Zug abziehen und die absoluten
-    Werte davon nehmen, erhalten wir ein neues Bild auf welchem grosse Unterschiede heller sind. Also je weisser, desto
+    Werte davon nehmen, erhalten wir ein neues Bild, auf welchem grosse Unterschiede heller sind. Also je weisser, desto
     grösser ist der Unterschied.
   </li>
 </ul>
@@ -48,7 +48,7 @@
 <ul>
   <li>
     <b>Schritt 3: Binarisieren</b><br>
-    Das Differenzbild binarisieren wir mit einem Threshold von 40. Auf diesen Wert kamen wir stichprobeartig.
+    Das Differenzbild binarisieren wir mit einem Threshold von 40. Auf diesen Wert kamen wir stichprobenartig.
   </li>
 </ul>
 
@@ -61,7 +61,7 @@
   <li>
     <b>Schritt 4: Erodieren und Dilatieren</b><br>
     Über das binarisierte Bild lassen wir nun eine Erosion und eine anschliessende Dilatation laufen. Dies entfernt
-    kleine weisse Flächen und schliesst kleine schwarze Löcher. Was wir als Ergebnis sehen ist die Fläche des Zuges.
+    kleine weisse Flächen und schliesst kleine schwarze Löcher. Was wir als Ergebnis sehen, ist die Fläche des Zuges.
   </li>
 </ul>
 

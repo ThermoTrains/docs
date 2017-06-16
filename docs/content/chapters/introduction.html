@@ -17,7 +17,7 @@
   <p>
     Ziel des Projektes im Endausbau ist das automatische Erkennen von fehlerhaften Zügen. Ein fehlerhafter Zug soll mit
     detaillierten Informationen (Zug X, n-ter Wagon von vorne, betroffener Bereich, etc.) an ein Servicecenter gemeldet
-    werden. Über eine Wartung des Zuges kann anschliessend entschieden werden.
+    werden. Über eine Wartung des Zuges kann man anschliessend entschieden.
   </p>
 
   <h3>Projektidee</h3>
@@ -33,7 +33,7 @@
   <ol>
     <li>
       <strong>Machbarkeit klären:</strong>​ Die Machbarkeit des Vorhabens ist nicht gegeben. Im Projekt 2 stellen wir
-      abschliessend fest, ob das Projekt mit der heutigen Hardware, Umgebung, Prozessen realisierbar ist.
+      abschliessend fest, ob das Projekt mit der heutigen Hardware, Umgebung und Prozessen realisierbar ist.
     </li>
     <li>
       <strong>Evaluation Hardware:</strong>​ Wir finden die nötige Hardware und haben abschliessend festgestellt, ob sie
@@ -82,24 +82,32 @@
   <h3>Problemstellung</h3>
 
   <p>
+    Die Thermographie-Analysen werden sich auf den IC2000 (Doppelstock-Züge) beschränken. Dies ist eine sinnvolle
+    Einschränkung, denn es gibt diverse Zugsmodelle. Ausserdem ist der IC2000 in der Mitte seines Lebenszyklus,
+    d.h. es werden sukzessive grosse Revisionen an diesen Modellen durchgeführt. Während einer solchen Revision tauscht
+    man dann idealerweise auch die detektierten fehlerhaten Isolationen aus.
+  </p>
+
+  <p>
     Wie bereits erwähnt können verrutschte Isolationsmatten und Wassereinbruch Gründe für Wärmeverlust sein.
     Jedoch gibt es auch viele andere Wärmebrücken, wie auf der Abbildung unten gut sichtbar ist. Die folgenden Bilder
     sind bei einem Test der SBB in der <a href="#ref-sbb-thermography">Klimakammer Olten</a> entstanden. In dieser
     Klimakammer können verschiedene Aussenbedingungen simuliert werden. Ausserdem kann das Fahrzeug auch eingeschaltet
     werden und somit die Betriebsbedingungen wie Heizung / Kühlung simulieren.<br>
-    Weil es an diversen Orten Wärmebrücken geben kann und nicht klar ist wie sich verrutschte Isolationen und
-    Wassereinbrüche auf einer Thermographie äussern, haben wir beschlossen den ganzen Zug zu analysieren und
+    Weil es an diversen Orten Wärmebrücken geben kann und nicht klar ist, wie sich verrutschte Isolationen und
+    Wassereinbrücke auf einer Thermographie äussern, haben wir beschlossen den ganzen Zug zu analysieren und
     uns nicht auf einzelne Bereiche einzuschränken.
   </p>
 
   <figure class="full">
     <img src="images/sbb_ic2000.png">
     <figcaption>Thermographie Test SBB</figcaption>
+    <span class="source">Quelle: <a href="#ref-flir-thermal">Thermographie SBB</a></span>
   </figure>
 
   <p class="affix">
     Das obige Bild zeigt gut, wie ein intakter Zug auf einer Thermographie aussieht. Die auffallenden roten
-    Flächen auf beiden Seiten der Türe sind die Stahlträgers des Wagons, durch die auch die Warmluft geführt wird.
+    Flächen auf beiden Seiten der Türe sind die Stahlträger des Wagons, durch die auch die Warmluft geführt wird.
     Weitere auffallende Wärmebrücken sehen wir im Bereich der Notausstiegfenster und natürlich der Lüftungsschlitze.
     Folgende Bilder zeigen diese Stellen noch genauer.
   </p>
@@ -107,16 +115,19 @@
   <figure>
     <img src="images/aircon.png">
     <figcaption>Zuluftkanal (Klimaanlage)</figcaption>
+    <span class="source">Quelle: <a href="#ref-flir-thermal">Thermographie SBB</a></span>
   </figure>
 
   <figure>
     <img src="images/window.png">
     <figcaption>Notausstiegsfenster</figcaption>
+    <span class="source">Quelle: <a href="#ref-flir-thermal">Thermographie SBB</a></span>
   </figure>
 
   <figure>
     <img src="images/ventilation.png">
     <figcaption>Lüftungsschlitze</figcaption>
+    <span class="source">Quelle: <a href="#ref-flir-thermal">Thermographie SBB</a></span>
   </figure>
 
   <p>
@@ -140,7 +151,8 @@
   <h4>Probeaufnahmen</h4>
 
   <p>
-    Die Aufnahmen mit der FLIR SC620 haben gezeigt, dass die Videos noch zu wünschen übriglassen:
+    Die Aufnahmen mit der FLIR SC620 (altes Modell, von der BFH zur Verfügung gestellt) haben gezeigt,
+    dass die Videos noch zu wünschen übrig lassen:
   </p>
 
   <ul>

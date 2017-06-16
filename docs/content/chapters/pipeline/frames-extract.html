@@ -7,15 +7,15 @@
 
 <p>
   Dieser Schritt erhält die Videodatei und extrahiert einzelne Frames daraus und speichert diese als <code>jpg</code>
-  Datei ab. Der Richtungsparameter bestimmt ob die Frames beginnend am Start oder am Ende des Videos extrahiert
-  werden sollen. Dies ist hilfreich um den ein Video eines Zuges so zu transformieren, dass er aus einer anderen
-  Richtung einfährt. Der Längefaktor bestimmt wieviel der Länge des Videos berücksichtigt werden soll. Dies ist
-  hilfreich, wenn nicht alle Frames benötigt werden um zum Beispiel zu testen aus welcher Richtung der Zug kommt.
+  Datei ab. Der Richtungsparameter bestimmt, ob die Frames beginnend am Start oder am Ende des Videos extrahiert
+  werden sollen. Dies ist hilfreich, um ein Video eines Zuges so zu transformieren, dass er aus einer anderen
+  Richtung einfährt. Der Längefaktor bestimmt, wieviel der Länge des Videos berücksichtigt wird. Dies ist
+  hilfreich, wenn nicht alle Frames benötigt werden. Zum Beispiel um die Fahrtrichtung des Zuges zu bestimmen.
 </p>
 
 <p>
   Momentan genügt es uns in regelmässigen Abständen Frames zu extrahieren. Sollten wir in Zukunft bessere Qualität in
-  den Bildern brauchen können wir den Algorithmus dahin optimieren, dass er nur <a href="#ref-video-compression">I-
+  den Bildern brauchen, können wir den Algorithmus dahin optimieren, dass er nur <a href="#ref-video-compression">I-
   oder B-Frames</a> des Videos extrahiert.
 </p>
 

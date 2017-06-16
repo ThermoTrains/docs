@@ -1,10 +1,10 @@
 <h3>Übersicht</h3>
 
 <p>
-  In diesem Kapitel wird die von uns entwickelte Verarbeitungspipeline erläutert. Der Input der Pipeline ist ein Video
-  eines vorbeifahrenden Zuges. Das Endartefakt der Pipeline ist pro Zugwagon ein Bild welches den Wagon in einer nahezu
+  In diesem Kapitel wird die von uns entwickelte Vearbeitungspipeline erläutert. Der Input der Pipeline ist ein Video
+  eines vorbeifahrenden Zuges. Das Endartefakt der Pipeline ist pro Zugwagon ein Bild, welches den Wagon in einer nahezu
   orthografischen Projektion oder anders gesagt einer Planansicht darstellt. Ausserdem sollen unnötige Bildausschnitte
-  entfernt werden wie Himmel oder Boden.
+  wie Himmel oder Boden entfernt werden.
 </p>
 
 <figure class="full">
@@ -14,31 +14,29 @@
 
 <p>
   Artefakte in Form von <code>mp4</code> oder <code>jpg</code> Dateien sind rechteckig dargestellt. Die
-  Processingschritte haben runde Ecken. Wie man erkennt dienen ein Video eines Schachbretts und eines Zuges als
-  Eingabeartefakte. Wovon das Schachbrettvideo genutzt wird um das Kameramodell abzubilden welches dann genutzt wird
-  zur Entzerrung des Zug-Videos. Sind alle Schritte durchlaufen ergibt sich ein Panoramabild des Zuges. Ausserdem gibt
-  es pro Wagon ein Bild welches auf den Wagon genau zugeschnitten ist.
+  Processingschritte haben runde Ecken. Wie man erkennt, dienen ein Video eines Schachbretts und das eines Zuges als
+  Eingabeartefakte. Davon wird das Schachbrettvideo genutzt, um das Kameramodell abzubilden. Das Resultat wird wiederum
+  zur Entzerrung des Zug-Videos genutzt. Sind alle Schritte durchlaufen, ergibt sich ein Panoramabild des Zuges. Aussderm gibt
+  es pro Wagon ein Bild, welches auf den Wagon genau zugeschnitten ist.
 </p>
 
 <h4>Implementation</h4>
 
 <p>
-  Die Pipeline haben wir mit Java und <a href="#ref-opencv">OpenCV</a> entwickelt. Zur Verifikation und zum Prototyping
-  der von uns gewählten Verfahren haben wir zudem Matlab angewendet.
+  Die Pipeline haben wir mit Java und <a href="#ref-opencv">OpenCV</a> entwickelt. Zur Verfikation und zum Prototyping
+  der von uns gewählten Verfahren, haben wir zudem Matlab angewendet.
 </p>
 
 <p>
   Es war uns von Anfang an klar, dass unsere Pipeline mindestens vier Schritte hat. Das hat sich dann ausgeweitet auf
   neun Schritte. Die Software ist so designt, dass Schritte der Pipeline fast unabhängig voneinander entwickelt
   und getestet werden können. Der Grundbaustein der Pipeline ist der <code>PipelineRunner</code>. In ihm wird
-  konfiguriert welche Schritte in der aktuellen Ausführung durchgeführt werden sollen. Jeder Schritt hat mindestens
-  ein Eingabeartefakt und mindestens ein Ausgabeartefakt. Die Daten können so von einem Schritt in den nächsten
-  gepipet werden. Dabei werden die Artefakte serialisiert auf der Festplatte abgelegt. In aller Regel sind das
-  <code>jpg</code> Dateien. Folglich muss nicht immer die ganze Pipeline durchlaufen werden um nur eine kleine
-  Änderung an einem Schritt getestet werden muss. Im <code>PipelineRunner</code> kann eingestellt werden welches der
-  Start- und welches der Endschritt ist, der durchgeführt werden soll. Das ermöglicht eine sehr flexible Arbeitsweise.
-  In Zukunft ist klar, um einen produktiven Einsatz der Software zu unterstützen dürfen die Artefakte nicht als <code>jpg</code>
-  zwischen gespeichert werden. Dies sollte jedoch ohne grossen Aufwand lösbar sein.
+  konfiguriert, welche Schritte auszuführen sind. Jeder Schritt hat mindestens ein Eingabeartefakt und mindestens ein Ausgabeartefakt.
+  Die Daten lassen sich so von einem Schritt in den nächsten pipen. Dabei werden die Artefakte serialisiert auf der Festplatte abgelegt.
+  In aller Regel sind das <code>jpg</code> Dateien. Folglich muss nicht immer die ganze Pipeline durchlaufen werden, um nur eine kleine
+  Änderung an einem Schritt zu testen. Start- und Endschritt lassen sich im <code>PipelineRunner</code> einstellen.
+  Das ermöglicht eine sehr flexible Arbeitsweise. In Zukunft ist klar, um einen produktiven Einsatz der Software zu unterstützen,
+  dürfen die Artefakte nicht als <code>jpg</code> zwischen gespeichert werden. Dies sollte jedoch ohne grossen Aufwand lösbar sein.
 </p>
 
 <p>
@@ -50,4 +48,3 @@
   <a href="http://opencv.org" target="_blank">http://opencv.org</a>
   <span class="retrieved">15. Juni 2017</span>
 </p>
-

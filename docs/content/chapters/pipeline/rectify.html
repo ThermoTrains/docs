@@ -8,22 +8,22 @@
 
 <p>
   Die Recktifizierung oder räumliche Entzerrung des Zuges hat sich als äusserst schwierig herausgestellt. Nach vielen
-  Versuchen sind wir auf ein Verfahren gestossen welches im Grunde zwar simpel ist, aber trotzdem brauchbare
+  Versuchen sind wir auf ein Verfahren gestossen, welches im Grunde zwar simpel ist, aber trotzdem brauchbare
   Resultate erzeugt. Das Verfahren ist nicht perfekt und recktifiziert nicht gleichmässig.
 </p>
 
 <p>
   Die Idee ist die obere und untere Kante des Zuges zu finden. Dies in der Annahme, dass diese gerade verlaufen
   müssten. Mit den zwei Geraden spannen wir ein Viereck auf. Dieses verzerrte Viereck geben mir mit einem Rechteck in
-  die OpenCV Methode <code>getPerspectiveTransform(...)</code> und erhalten so die Matrix mit welcher wir die Bilder
+  die OpenCV Methode <code>getPerspectiveTransform(...)</code> und erhalten so die Matrix, mit welcher wir die Bilder
   recktifizieren können.
 </p>
 
 <p>
-  Folgend arbeiten mir mit dem V-Kanal (Value) von HSV. Um die obere und untere Kante zu finden, unterteilen wir das
+  Folgend arbeiten wir mit dem V-Kanal (Value) von HSV. Um die obere und untere Kante zu finden, unterteilen wir das
   Bild erst einmal um die Wahrscheinlichkeit des Erfolgs zu erhöhen. Die obere Zugkante ist im oberen Drittel und die
   untere im unteren Drittel. In den beiden Ausschnitten suchen wir nun die maximale Frequenz in Y Richtung. Das
-  heisst wir wollen pro Spalte im Bild ein weisses Pixel. Diese finden wir mit einer Art vereinfachtem Sobel-Filter
+  heisst, wir wollen pro Spalte im Bild ein weisses Pixel. Diese finden wir mit einer Art vereinfachtem Sobel-Filter,
   der nur in eine Richtung agiert. Wir nehmen den Ausschnitt und verschieben ihn um ein Pixel nach unten. Dann bilden
   wir die absolute Differenz des Verschobenen und des Originals. Anschliessend suchen wir in jeder Spalte das
   Maximum, setzen es auf das Maximum (255) und alle übrigen auf das Minimum (0).
@@ -47,11 +47,11 @@
 </figure>
 
 <p>
-  In den so erzeugten Bildern verwenden wir wieder den Hough Raum um die Linie zu finden. Diese Linie erweitern wir
-  dann, dass sie die ganze Bildbreite überspannt weil nicht in jedem Bild die gesamte Zuglänge erkannt wird. Dies
-  kann zum Beispiel bei Wagonübergängen oder Stromabnehmern der Fall sein. Nun haben wir mit den Start- und
-  Endpunkten der oberen und unteren Linie ein Viereck das wir aufziehen können. Wie bereits beschrieben können wir
-  dadurch eine Transformationsmatrix errechnen die das Bild recktifiziert.
+  In den so erzeugten Bildern verwenden wir wieder die Hough Transformation um die Linie zu finden. Diese Linie erweitern wir
+  dann, so dass sie die ganze Bildbreite überspannt. Dies weil nicht in jedem Bild die gesamte Zuglänge erkannt wird. Das
+  ist zum Beispiel bei Wagonübergängen oder Stromabnehmern der Fall. Nun haben wir mit den Start- und
+  Endpunkten der oberen und unteren Linie ein Viereck, das wir aufziehen können. Wie bereits beschrieben, lässt sich
+  dadurch eine Transformationsmatrix errechnen, die das Bild recktifiziert.
 </p>
 
 <figure class="affix">
@@ -62,6 +62,6 @@
 <p>
   Die Erfahrung hat gezeigt das ca. 80% der Bilder aus unseren Testdaten ein genügendes Resultat erzeugen. Jedoch
   brauchen wir jedes Bild. Wir nehmen an, dass wir die selbe Transformationsmatrix für jedes Bild brauchen können.
-  Deshalb bilden wir von allen verzerrten Vierecken den Median mit welchem wir die Matrix berechnen welche wir
-  schlussendlich verwenden um die Bilder zu recktifizieren.
+  Deshalb bilden wir von allen verzerrten Vierecken den Median. Daraus berechnen wir die Matrix, um die Bilder
+  schlussendlich zu recktifizieren.
 </p>

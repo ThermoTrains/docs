@@ -6,8 +6,8 @@
 </ul>
 
 <p>
-  Das Ziel dieses Schritts ist es die Fehleranfälligkeit der nachfolgenden Schritte zu vermindern. Würden wir das
-  nicht machen hätten wir beim Recktifizieren eine viel höhere Fehlerquote. Ausserdem könnten wir nicht das
+  Das Ziel dieses Schritts ist es, die Fehleranfälligkeit der nachfolgenden Schritte zu vermindern. Würden wir das
+  nicht machen, hätten wir beim Recktifizieren eine viel höhere Fehlerquote. Ausserdem könnten wir nicht das
   vereinfachte Verfahren zum Stitching verwenden.
 </p>
 
@@ -29,8 +29,8 @@
     <b>Schritt 2: Linien finden</b><br>
     In diesem Bild probieren wir nun die starken Linien zu finden. Dies tun wir im Hough Raum. OpenCV bietet dazu die
     Methode <code>HoughLinesP(...)</code>. Vorher verunschärfen wir das Bild jedoch noch und lassen den Canny
-    Algorithmus die Kanten finden. Auch für den Canny Algorithmus gibt es in OpenCV ein Methode <code>Canny(...)</code>.
-    Der Hough-Methode geben wir noch an wie lange die Linien mindestens sein sollen und wie gross die Lücken
+    Algorithmus die Kanten finden. Auch für den Canny Algorithmus gibt es in OpenCV eine Methode <code>Canny(...)</code>.
+    Der Hough-Methode geben wir noch an, wie lange die Linien mindestens sein sollen und wie gross die Lücken
     dazwischen sein dürfen.
   </li>
 </ul>
@@ -42,5 +42,5 @@
 
 <p>
   Von den Linien berechnen wir dann die Steigung und somit den Winkel. Die gefundenen Winkel mitteln wir und rotieren
-  dann das Bild um diesen Winkel zurück. Somit ist das Bild den Gleisen ausgerichtet.
+  dann das Bild um diesen Winkel zurück. Somit ist das Bild an den Gleisen ausgerichtet.
 </p>
