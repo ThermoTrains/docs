@@ -70,6 +70,13 @@ table {
     width: 100%;
   }
 
+  &.right {
+    td,
+    th {
+      text-align: right;
+    }
+  }
+
   .col-twenty {
     width: 20%;
   }

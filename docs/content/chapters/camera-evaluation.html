@@ -3,60 +3,63 @@
 
   <h3>Anforderungen</h3>
 
-  <table>
-    <thead>
-    <tr>
-      <th>Nr.</th>
-      <th>Name</th>
-      <th>Beschreibung</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>1</td>
-      <td>Field Of View (FOV)</td>
-      <td>
-        Die Kamera muss ein genügend grosses FOV besitzen. Der Zug soll in der Höhe komplett auf das Bild
-        passen. Der IC2000 ist ca. 4m hoch. Wir gehen davon aus, dass wir die Kamera mind. 5 Meter entfernt vom Zug
-        aufstellen können.
-      </td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Auflösung</td>
-      <td>
-        Je höher die Auflösung desto besser lassen sich die Aufnahmen bearbeiten und analysieren. Die Auflösung von
-        Infrarotkamera sind technologiebedingt klein, deshalb sollte eine grösstmögliche Auflösung gewählt werden.
-      </td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Automatisierbar</td>
-      <td>
-        Die Kamera muss automatisierbar sein, d.h. sie muss per API gesteuert und ausgelesen werden können.
-        Ein Netzwerkanschluss ist wünschenswert, so kann die Kamera einfach remote gesteuert werden.
-      </td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>Framerate</td>
-      <td>
-        Die Framerate muss genügend gross sein, um ausreichend Bilder des vorbeifahrenden Zuges aufzunehmen.
-        Zwei aufeinander folgende Frames sollten sich dabei zu min. 25% überlappen, um ein Stitching zu ermöglichen.
-        Bis zu einer Geschwindigkeit von 30km/h soll dies möglich sein. Die Limitierung auf 30km/h rührt von der
-        Trägheit des Detektionsmaterials her (bei Microbolometer).
-      </td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>Preis</td>
-      <td>
-        Die SBB übernimmt die Kosten für die Anschaffung und Wartung der Kamera. Deshalb müssen die Kosten im
-        Rahmen des Budget der SBB liegen.
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <figure>
+    <table>
+      <thead>
+      <tr>
+        <th>Nr.</th>
+        <th>Name</th>
+        <th>Beschreibung</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>1</td>
+        <td>Field Of View (FOV)</td>
+        <td>
+          Die Kamera muss ein genügend grosses FOV besitzen. Der Zug soll in der Höhe komplett auf das Bild
+          passen. Der IC2000 ist ca. 4m hoch. Wir gehen davon aus, dass wir die Kamera mind. 5 Meter entfernt vom Zug
+          aufstellen können.
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Auflösung</td>
+        <td>
+          Je höher die Auflösung desto besser lassen sich die Aufnahmen bearbeiten und analysieren. Die Auflösung von
+          Infrarotkamera sind technologiebedingt klein, deshalb sollte eine grösstmögliche Auflösung gewählt werden.
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Automatisierbar</td>
+        <td>
+          Die Kamera muss automatisierbar sein, d.h. sie muss per API gesteuert und ausgelesen werden können.
+          Ein Netzwerkanschluss ist wünschenswert, so kann die Kamera einfach remote gesteuert werden.
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Framerate</td>
+        <td>
+          Die Framerate muss genügend gross sein, um ausreichend Bilder des vorbeifahrenden Zuges aufzunehmen.
+          Zwei aufeinander folgende Frames sollten sich dabei zu min. 25% überlappen, um ein Stitching zu ermöglichen.
+          Bis zu einer Geschwindigkeit von 30km/h soll dies möglich sein. Die Limitierung auf 30km/h rührt von der
+          Trägheit des Detektionsmaterials her (bei Microbolometer).
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Preis</td>
+        <td>
+          Die SBB übernimmt die Kosten für die Anschaffung und Wartung der Kamera. Deshalb müssen die Kosten im
+          Rahmen des Budget der SBB liegen.
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <figcaption>Kameraanforderungen</figcaption>
+  </figure>
 
   <p>
     Ein wichtiger Punkt ist das Field Of View oder zu Deutsch das Sichtfeld. Es muss sichergestellt sein,
@@ -82,73 +85,74 @@
     <li>Distance to target</li>
   </ol>
 
-  <table>
-    <thead>
-    <tr style="font-weight:bold">
-      <th width="10%" style="text-align:left;">Distance</th>
-      <th width="10%" style="text-align:right;">2.00m</th>
-      <th width="10%" style="text-align:right;">4.00m</th>
-      <th width="10%" style="text-align:right;">5.00m</th>
-      <th width="10%" style="text-align:right;">6.00m</th>
-      <th width="10%" style="text-align:right;">8.00m</th>
-      <th width="10%" style="text-align:right;">10.00m</th>
-    </tr>
-    </thead>
+  <figure>
+    <table class="right">
+      <thead>
+      <tr style="font-weight:bold;">
+        <th style="text-align:left;">Distance</th>
+        <th>2.00m</th>
+        <th>4.00m</th>
+        <th>5.00m</th>
+        <th>6.00m</th>
+        <th>8.00m</th>
+        <th>10.00m</th>
+      </tr>
+      </thead>
 
-    <tbody>
-    <tr>
-      <td width="10%" style="text-align:left;">HFOV</td>
-      <td width="10%" style="text-align:right;">1.67m</td>
-      <td width="10%" style="text-align:right;">3.35m</td>
-      <td width="10%" style="text-align:right;">4.18m</td>
-      <td width="10%" style="text-align:right;">5.02m</td>
-      <td width="10%" style="text-align:right;">6.70m</td>
-      <td width="10%" style="text-align:right;">8.37m</td>
-    </tr>
+      <tbody>
+      <tr>
+        <td style="text-align:left;">HFOV</td>
+        <td>1.67m</td>
+        <td>3.35m</td>
+        <td>4.18m</td>
+        <td>5.02m</td>
+        <td>6.70m</td>
+        <td>8.37m</td>
+      </tr>
 
-    <tr>
-      <td width="10%" style="text-align:left;">VFOV</td>
-      <td width="10%" style="text-align:right;">1.34m</td>
-      <td width="10%" style="text-align:right;">2.68m</td>
-      <td width="10%" style="text-align:right;">3.35m</td>
-      <td width="10%" style="text-align:right;">4.02m</td>
-      <td width="10%" style="text-align:right;">5.36m</td>
-      <td width="10%" style="text-align:right;">6.70m</td>
-    </tr>
+      <tr>
+        <td style="text-align:left;">VFOV</td>
+        <td>1.34m</td>
+        <td>2.68m</td>
+        <td>3.35m</td>
+        <td>4.02m</td>
+        <td>5.36m</td>
+        <td>6.70m</td>
+      </tr>
 
-    <tr>
-      <td width="10%" style="text-align:left;">DOF near</td>
-      <td width="10%" style="text-align:right;">1.36m</td>
-      <td width="10%" style="text-align:right;">2.07m</td>
-      <td width="10%" style="text-align:right;">2.32m</td>
-      <td width="10%" style="text-align:right;">2.51m</td>
-      <td width="10%" style="text-align:right;">2.80m</td>
-      <td width="10%" style="text-align:right;">3.02m</td>
-    </tr>
+      <tr>
+        <td style="text-align:left;">DOF near</td>
+        <td>1.36m</td>
+        <td>2.07m</td>
+        <td>2.32m</td>
+        <td>2.51m</td>
+        <td>2.80m</td>
+        <td>3.02m</td>
+      </tr>
 
-    <tr>
-      <td width="10%" style="text-align:left;">DOF far</td>
-      <td width="10%" style="text-align:right;">3.72m</td>
-      <td width="10%" style="text-align:right;">51.4m</td>
-      <td width="10%" style="text-align:right;">Infinity</td>
-      <td width="10%" style="text-align:right;">Infinity</td>
-      <td width="10%" style="text-align:right;">Infinity</td>
-      <td width="10%" style="text-align:right;">Infinity</td>
-    </tr>
+      <tr>
+        <td style="text-align:left;">DOF far</td>
+        <td>3.72m</td>
+        <td>51.4m</td>
+        <td>Infinity</td>
+        <td>Infinity</td>
+        <td>Infinity</td>
+        <td>Infinity</td>
+      </tr>
 
-    <tr>
-      <td width="10%" style="text-align:left;">IFOV</td>
-      <td width="10%" style="text-align:right;">2.62mm</td>
-      <td width="10%" style="text-align:right;">5.23mm</td>
-      <td width="10%" style="text-align:right;">6.54mm</td>
-      <td width="10%" style="text-align:right;">7.85mm</td>
-      <td width="10%" style="text-align:right;">10.46mm</td>
-      <td width="10%" style="text-align:right;">13.08mm</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <span class="source">Quelle: <a href="#ref-fov-calculator">FLIR FOV Calculator</a></span>
+      <tr>
+        <td style="text-align:left;">IFOV</td>
+        <td>2.62mm</td>
+        <td>5.23mm</td>
+        <td>6.54mm</td>
+        <td>7.85mm</td>
+        <td>10.46mm</td>
+        <td>13.08mm</td>
+      </tr>
+      </tbody>
+    </table>
+    <figcaption><a href="#ref-fov-calculator">FLIR FOV Calculator</a></figcaption>
+  </figure>
 
   <h3>Sensortypen</h3>
 
@@ -156,7 +160,7 @@
     Es gibt zwei Infrarot-Sensortypen:
   </p>
 
-  <ul>
+  <ul class="affix">
     <li>
       <strong>Microbolometer:</strong><br>
       Wird auch ungekühlte IR-Kamera genannt. Sie bilden das untere Preissegment (100 - 50k CHF).
@@ -197,7 +201,7 @@
     Neben den verschiedenen Sensoren unterscheiden man auch noch thermale und thermographische Kameras:
   </p>
 
-  <ul>
+  <ul class="affix">
     <li>
       <strong>Thermal:</strong><br>
       Zeigt Temperaturunterschiede nur relativ an. Kann also keine absoluten Temperaturwerte messen.
@@ -235,38 +239,41 @@
     keine gekühlten Kameras in Frage.
   </p>
 
-  <table style="margin: auto;">
-    <thead>
-    <tr>
-      <th></th>
-      <th>FLIR A65</th>
-      <th>Optris PI 640</th>
-    </tr>
-    </thead>
+  <figure>
+    <table>
+      <thead>
+      <tr>
+        <th></th>
+        <th>FLIR A65</th>
+        <th>Optris PI 640</th>
+      </tr>
+      </thead>
 
-    <tbody>
-    <tr>
-      <th>Auflösung</th>
-      <td>640 x 512px</td>
-      <td>640 x 480px</td>
-    </tr>
-    <tr>
-      <th>Field Of View</th>
-      <td>45&deg;</td>
-      <td>45&deg;</td>
-    </tr>
-    <tr>
-      <th>Framerate</th>
-      <td>30 Hz</td>
-      <td>32 Hz</td>
-    </tr>
-    <tr>
-      <th>Preis</th>
-      <td>8'359.85 CHF</td>
-      <td>7'462.80 USD</td>
-    </tr>
-    </tbody>
-  </table>
+      <tbody>
+      <tr>
+        <th>Auflösung</th>
+        <td>640 x 512px</td>
+        <td>640 x 480px</td>
+      </tr>
+      <tr>
+        <th>Field Of View</th>
+        <td>45&deg;</td>
+        <td>45&deg;</td>
+      </tr>
+      <tr>
+        <th>Framerate</th>
+        <td>30 Hz</td>
+        <td>32 Hz</td>
+      </tr>
+      <tr>
+        <th>Preis</th>
+        <td>8'359.85 CHF</td>
+        <td>7'462.80 USD</td>
+      </tr>
+      </tbody>
+    </table>
+    <figcaption>FLIR A65 vs. Optris PI 640</figcaption>
+  </figure>
 
   <p>
     Wie aus der Tabelle ersichtlich unterscheiden sich die beiden Modelle in den wichtigsten Punkten nicht gross.
