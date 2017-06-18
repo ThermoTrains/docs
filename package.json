@@ -1,6 +1,6 @@
 {
   "name": "thermo-trains",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Study of train isolation deficiencies",
   "scripts": {
     "start": "npm run docs",
