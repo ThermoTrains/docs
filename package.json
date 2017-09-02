@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/sebastianhaeni/thermotrains#readme",
   "engines": {
-    "npm": ">= 5.0.0"
+    "npm": "^5.4.0"
   },
   "dependencies": {
     "del": "^2.2.2",
