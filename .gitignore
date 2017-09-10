@@ -1,14 +1,20 @@
 # IDE specifics
 .idea/
+.vs/
 *.iml
+*.user
 
 # Dependencies
 node_modules/
+packages/
 
 # Build artifacts
 build/
 target/
+bin/
+obj/
 
 # Temp files
 *.log
 *.asv
+*.cache
