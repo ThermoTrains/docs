@@ -62,7 +62,7 @@ Automatic detection of isolation deficiencies on rolling trains
   #### Pub commands
   
   * `publish cmd:capture:start <timestamp>` Start capturing
-  * `publish cmd:capture:stop <timestamp>` Stop capturing and send the gathered artifacts `upload`
+  * `publish cmd:capture:stop <timestamp>` Stop capturing and send the artifacts via `cmd:delivery:upload`
   * `publish cmd:delivery:upload <file>` Uploads the file to a remote server
 
 </details>
