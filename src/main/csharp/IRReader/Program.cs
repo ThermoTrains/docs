@@ -1,41 +1,116 @@
-using log4net;
-using StackExchange.Redis;
 using System;
+using System.Configuration;
+using System.IO.Compression;
 using System.Reflection;
+using Flir.Atlas.Live.Device;
+using Flir.Atlas.Live.Discovery;
+using log4net;
+using SebastianHaeni.ThermoBox.Common;
 
 namespace SebastianHaeni.ThermoBox.IRReader
 {
-  class Program
-  {
-    private const string redistHost = "localhost";
-    private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-    static void Main(string[] args)
+    class Program
     {
-      log.Info($"Connecting to redis on {redistHost}");
+        private static readonly string REDIS_HOST = ConfigurationManager.AppSettings["REDIS_HOST"];
+        private static readonly string CAMERA_NAME = ConfigurationManager.AppSettings["CAMERA_NAME"];
+        private static readonly string RECORDINGS_FOLDER = ConfigurationManager.AppSettings["RECORDINGS_FOLDER"];
 
-      ConnectionMultiplexer redis;
-      try
-      {
-        redis = ConnectionMultiplexer.Connect(redistHost);
-      }
-      catch (RedisConnectionException ex)
-      {
-        log.Error("unable to connect", ex);
-        return;
-      }
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static Discovery discovery;
+        private static Camera camera;
+        private static string currentRecordingDirectory;
 
-      log.Info("Connected to redis");
-      log.Info("Subscribing to cmd:capture:start");
+        static void Main(string[] args)
+        {
+            InitCameraDiscovery();
+            StartComponent();
+        }
 
-      var sub = redis.GetSubscriber();
-      sub.Subscribe(Commands.CaptureStart, (channel, message) =>
-      {
-        Console.WriteLine(message);
-      });
+        private static void InitCameraDiscovery()
+        {
+            discovery = new Discovery();
+            discovery.DeviceFound += Discovery_DeviceFound;
+            discovery.DeviceLost += Discovery_DeviceLost;
+            discovery.DeviceError += Discovery_DeviceError;
 
-      // prevent exit until Ctrl + C
-      while (Console.ReadLine() != null) { }
+            log.Info("Discovering cameras");
+            var cameras = discovery.Start(10);
+
+            if (cameras.Count == 0)
+            {
+                log.Error("Could not find any camera");
+                Environment.Exit(1);
+            }
+
+            if (camera == null)
+            {
+                var emulator = cameras.Find(c => c.Name.Equals("Camera Emulator"));
+                if (emulator != null)
+                {
+                    log.Warn("Fallback to emulator camera");
+                    ConnectCamera(new CameraDeviceInfo(emulator));
+                    return;
+                }
+            }
+
+            log.Error("Could not find a camera");
+            Environment.Exit(1);
+        }
+
+        private static void Discovery_DeviceFound(object sender, CameraDeviceInfoEventArgs e)
+        {
+            if (e.CameraDevice.Name.Contains(CAMERA_NAME))
+            {
+                log.Info($"Connecting to camera: {e.CameraDevice.Name}");
+                ConnectCamera(new CameraDeviceInfo(e.CameraDevice));
+
+                return;
+            }
+
+            log.Info($"Found unknown camera {e.CameraDevice.Name} => Ignoring");
+        }
+
+        private static void ConnectCamera(CameraDeviceInfo info)
+        {
+            camera = new ThermalCamera();
+            camera.Connect(info);
+        }
+
+        private static void Discovery_DeviceLost(object sender, CameraDeviceInfoEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void Discovery_DeviceError(object sender, DeviceErrorEventArgs e)
+        {
+            log.Error($"Device Error: {e.ErrorMessage}");
+        }
+
+        private static void StartComponent()
+        {
+            ThermoBoxComponent
+                .Init()
+                .Host(REDIS_HOST)
+                .Subscription(Commands.CaptureStart, (channel, message) =>
+                {
+                    log.Info($"Starting capture with id {message}");
+                    currentRecordingDirectory = $@"{RECORDINGS_FOLDER}\{message}";
+                    camera.Recorder.Start($@"{currentRecordingDirectory}\FLIR Recording.seq");
+                })
+                .Subscription(Commands.CaptureStop, (channel, message) =>
+                {
+                    log.Info($"Stopping capture");
+                    camera.Recorder.Stop();
+
+                    // Zipping the file as it's a non compressed format and compression rates of 50 - 80% can be achieved
+                    var zipFilename = $@"{currentRecordingDirectory}.zip";
+                    log.Info($"Zipping {currentRecordingDirectory}");
+                    ZipFile.CreateFromDirectory(currentRecordingDirectory, zipFilename);
+
+                    // Send publish command with the zip file
+                    PubSub.Publish(Commands.Upload, zipFilename);
+                })
+                .Run();
+        }
     }
-  }
 }

@@ -43,7 +43,7 @@ Automatic detection of isolation deficiencies on rolling trains
   ### Prerequisites
   
   * Visual Studio
-  * [FLIR Atlas SDK](http://flir.custhelp.com/app/devResources/fl_devResources) (needs registration)
+  * [FLIR Atlas 5 SDK](http://flir.custhelp.com/app/devResources/fl_devResources) (needs registration)
   * Docker (to easily create a redis instance)
   
   ### Redis
@@ -58,8 +58,8 @@ Automatic detection of isolation deficiencies on rolling trains
   
   #### Pub commands
   
-  * `publish cmd:capture:start <timestamp>` Tells subscribers to start capturing
-  * `publish cmd:capture:stop <timestamp>` Tells subscribers to stop capturing and send the gathered artifacts to either `zip` or `send`
-  * `publish cmd:delivery:send <file>` Uploads the file to a remote server
+  * `publish cmd:capture:start <timestamp>` Start capturing
+  * `publish cmd:capture:stop <timestamp>` Stop capturing and send the gathered artifacts `upload`
+  * `publish cmd:delivery:upload <file>` Uploads the file to a remote server
 
 </details>

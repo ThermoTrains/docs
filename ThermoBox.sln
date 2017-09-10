@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFIDReader", "src\main\csha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader", "src\main\csharp\Uploader\Uploader.csproj", "{0925FAFD-9919-45D3-84F5-0068445070AA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readers", "Readers", "{73445814-2BF4-48EC-B3B5-000BCF1039B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9F8C0AE7-5DF6-4423-B46D-972D386900BC} = {73445814-2BF4-48EC-B3B5-000BCF1039B1}
+		{4265245D-FDD8-4F19-A6BC-B5F518530F4C} = {73445814-2BF4-48EC-B3B5-000BCF1039B1}
+		{109BB75C-1871-4B17-883C-1208269C0C5D} = {73445814-2BF4-48EC-B3B5-000BCF1039B1}
+		{83115A5F-45DA-4746-B1D6-88C6635C6C9C} = {73445814-2BF4-48EC-B3B5-000BCF1039B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28A70028-07D1-45E5-A773-D143F77AFDC3}
