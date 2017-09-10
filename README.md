@@ -43,7 +43,10 @@ Automatic detection of isolation deficiencies on rolling trains
   ### Prerequisites
   
   * Visual Studio
-  * [FLIR Atlas 5 SDK](http://flir.custhelp.com/app/devResources/fl_devResources) (needs registration)
+  * [FLIR Atlas SDK 5.0](http://flir.custhelp.com/app/devResources/fl_devResources) (needs registration)
+    * also install the following from that page:
+    * Bonjour: 64-bit
+    * Pleora: 64-bit
   * Docker (to easily create a redis instance)
   
   ### Redis
