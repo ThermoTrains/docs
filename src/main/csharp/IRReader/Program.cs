@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO.Compression;
 using System.Reflection;
@@ -17,6 +19,7 @@ namespace SebastianHaeni.ThermoBox.IRReader
 
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static Discovery discovery;
+        private static List<CameraDeviceInfo> foundCameras = new List<CameraDeviceInfo>();
         private static Camera camera;
         private static string currentRecordingDirectory;
 
@@ -34,23 +37,19 @@ namespace SebastianHaeni.ThermoBox.IRReader
             discovery.DeviceError += Discovery_DeviceError;
 
             log.Info("Discovering cameras");
-            var cameras = discovery.Start(10);
+            discovery.Start(10);
 
-            if (cameras.Count == 0)
+            if (camera != null)
             {
-                log.Error("Could not find any camera");
-                Environment.Exit(1);
+                return;
             }
 
-            if (camera == null)
+            var emulator = foundCameras.Find(c => c.Name.Equals("Camera Emulator"));
+            if (emulator != null)
             {
-                var emulator = cameras.Find(c => c.Name.Equals("Camera Emulator"));
-                if (emulator != null)
-                {
-                    log.Warn("Fallback to emulator camera");
-                    ConnectCamera(new CameraDeviceInfo(emulator));
-                    return;
-                }
+                log.Warn("Fallback to emulator camera");
+                ConnectCamera(new CameraDeviceInfo(emulator));
+                return;
             }
 
             log.Error("Could not find a camera");
@@ -59,6 +58,8 @@ namespace SebastianHaeni.ThermoBox.IRReader
 
         private static void Discovery_DeviceFound(object sender, CameraDeviceInfoEventArgs e)
         {
+            foundCameras.Add(e.CameraDevice);
+
             if (e.CameraDevice.Name.Contains(CAMERA_NAME))
             {
                 log.Info($"Connecting to camera: {e.CameraDevice.Name}");
@@ -66,14 +67,13 @@ namespace SebastianHaeni.ThermoBox.IRReader
 
                 return;
             }
-
-            log.Info($"Found unknown camera {e.CameraDevice.Name} => Ignoring");
         }
 
         private static void ConnectCamera(CameraDeviceInfo info)
         {
             camera = new ThermalCamera();
             camera.Connect(info);
+            discovery.Stop();
         }
 
         private static void Discovery_DeviceLost(object sender, CameraDeviceInfoEventArgs e)
