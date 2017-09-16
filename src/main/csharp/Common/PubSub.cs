@@ -7,11 +7,16 @@ namespace SebastianHaeni.ThermoBox.Common
 {
     public class PubSub
     {
-        private const string redistHost = "localhost";
+        private string redisHost;
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static ConnectionMultiplexer redis = null;
 
-        private static ConnectionMultiplexer Redis
+        public PubSub(string redisHost)
+        {
+            this.redisHost = redisHost;
+        }
+
+        private ConnectionMultiplexer Redis
         {
             get
             {
@@ -20,11 +25,11 @@ namespace SebastianHaeni.ThermoBox.Common
                     return redis;
                 }
 
-                log.Info($"Connecting to redis on {redistHost}");
+                log.Info($"Connecting to redis on {redisHost}");
 
                 try
                 {
-                    redis = ConnectionMultiplexer.Connect(redistHost);
+                    redis = ConnectionMultiplexer.Connect(redisHost);
                 }
                 catch (RedisConnectionException ex)
                 {
@@ -38,7 +43,7 @@ namespace SebastianHaeni.ThermoBox.Common
             }
         }
 
-        public static void Subscribe(string channel, Action<string, string> handler)
+        public void Subscribe(string channel, Action<string, string> handler)
         {
             var sub = Redis.GetSubscriber();
 
@@ -51,7 +56,7 @@ namespace SebastianHaeni.ThermoBox.Common
             });
         }
 
-        public static void Publish(string channel, string message)
+        public void Publish(string channel, string message)
         {
             var sub = Redis.GetSubscriber();
 
