@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Configuration;
+using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using Flir.Atlas.Live.Device;
 using Flir.Atlas.Live.Discovery;
+using Flir.Atlas.Live.Recorder;
+using Flir.Atlas.Live.Remote;
 using log4net;
 using SebastianHaeni.ThermoBox.Common;
 
@@ -15,7 +17,7 @@ namespace SebastianHaeni.ThermoBox.IRReader
     {
         private static readonly string REDIS_HOST = ConfigurationManager.AppSettings["REDIS_HOST"];
         private static readonly string CAMERA_NAME = ConfigurationManager.AppSettings["CAMERA_NAME"];
-        private static readonly string RECORDINGS_FOLDER = ConfigurationManager.AppSettings["RECORDINGS_FOLDER"];
+        private static readonly string RECORDINGS_FOLDER = ConfigurationManager.AppSettings["IR_RECORDINGS_FOLDER"];
 
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static Discovery discovery;
@@ -33,7 +35,6 @@ namespace SebastianHaeni.ThermoBox.IRReader
         {
             discovery = new Discovery();
             discovery.DeviceFound += Discovery_DeviceFound;
-            discovery.DeviceLost += Discovery_DeviceLost;
             discovery.DeviceError += Discovery_DeviceError;
 
             log.Info("Discovering cameras");
@@ -64,8 +65,6 @@ namespace SebastianHaeni.ThermoBox.IRReader
             {
                 log.Info($"Connecting to camera: {e.CameraDevice.Name}");
                 ConnectCamera(new CameraDeviceInfo(e.CameraDevice));
-
-                return;
             }
         }
 
@@ -74,11 +73,6 @@ namespace SebastianHaeni.ThermoBox.IRReader
             camera = new ThermalCamera();
             camera.Connect(info);
             discovery.Stop();
-        }
-
-        private static void Discovery_DeviceLost(object sender, CameraDeviceInfoEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private static void Discovery_DeviceError(object sender, DeviceErrorEventArgs e)
@@ -91,26 +85,103 @@ namespace SebastianHaeni.ThermoBox.IRReader
             ThermoBoxComponent
                 .Init()
                 .Host(REDIS_HOST)
-                .Subscription(Commands.CaptureStart, (channel, message) =>
-                {
-                    log.Info($"Starting capture with id {message}");
-                    currentRecordingDirectory = $@"{RECORDINGS_FOLDER}\{message}";
-                    camera.Recorder.Start($@"{currentRecordingDirectory}\FLIR Recording.seq");
-                })
-                .Subscription(Commands.CaptureStop, (channel, message) =>
-                {
-                    log.Info($"Stopping capture");
-                    camera.Recorder.Stop();
-
-                    // Zipping the file as it's a non compressed format and compression rates of 50 - 80% can be achieved
-                    var zipFilename = $@"{currentRecordingDirectory}.zip";
-                    log.Info($"Zipping {currentRecordingDirectory}");
-                    ZipFile.CreateFromDirectory(currentRecordingDirectory, zipFilename);
-
-                    // Send publish command with the zip file
-                    PubSub.Publish(Commands.Upload, zipFilename);
-                })
+                .Subscription(Commands.CaptureStart, (channel, message) => StartCapture(message))
+                .Subscription(Commands.CaptureStop, (channel, message) => StopCapture())
+                .Subscription(Commands.CaptureAbort, (channel, message) => AbortCapture())
                 .Run();
+        }
+
+        private static void StartCapture(string message)
+        {
+            if (camera.Recorder.Status != RecorderState.Stopped)
+            {
+                log.Warn($"Cannot start recording. Current state is {camera.Recorder.Status}");
+                return;
+            }
+
+            // ensuring the recordings directory exists
+            DirectoryInfo recordingDirectory = new DirectoryInfo(RECORDINGS_FOLDER);
+            if (!recordingDirectory.Exists)
+            {
+                recordingDirectory.Create();
+            }
+
+            log.Info($"Starting capture with id {message}");
+            currentRecordingDirectory = $@"{RECORDINGS_FOLDER}\{message}";
+
+            Retry(() => camera.Recorder.Start($@"{currentRecordingDirectory}\FLIR Recording.seq"));
+        }
+
+        private static void StopCapture()
+        {
+            if (camera.Recorder.Status != RecorderState.Recording)
+            {
+                log.Warn($"Cannot stop recording. Current state is {camera.Recorder.Status}");
+                return;
+            }
+
+            log.Info($"Stopping capture");
+            Retry(() => camera.Recorder.Stop());
+            log.Info($"Recorded {camera.Recorder.FrameCount} frames");
+
+            // Zipping the file as it's a non compressed format and compression rates of 50 - 80% can be achieved
+            var zipFilename = $@"{currentRecordingDirectory}.zip";
+            log.Info($"Zipping directory {currentRecordingDirectory} to {zipFilename}");
+
+            if (File.Exists(zipFilename))
+            {
+                log.Warn($"File {zipFilename} already exists, overwriting it");
+                File.Delete(zipFilename);
+            }
+
+            ZipFile.CreateFromDirectory(currentRecordingDirectory, zipFilename);
+
+            // Deleting source artifact (that one that's uncompressed on the disk)
+            new DirectoryInfo(currentRecordingDirectory).Delete(true);
+
+            // Send publish command with the zip file
+            PubSub.Publish(Commands.Upload, zipFilename);
+        }
+
+        private static void AbortCapture()
+        {
+            if (camera.Recorder.Status == RecorderState.Stopped)
+            {
+                log.Warn($"Cannot stop recording. It is already stopped");
+                return;
+            }
+
+            log.Info($"Aborting capture");
+            Retry(() => camera.Recorder.Stop());
+
+            // Deleting generated artifact
+            new DirectoryInfo(currentRecordingDirectory).Delete(true);
+        }
+
+        /// <summary>
+        /// Tries to execute an action. If an exception is thrown, it tries again until a threshold is reached.
+        /// </summary>
+        /// <param name="action">Action with potential exception thrown</param>
+        private static void Retry(Action action)
+        {
+            int tries = 0;
+            int MAX_TRIES = 5;
+
+            while (tries < MAX_TRIES)
+            {
+                try
+                {
+                    action.Invoke();
+                    return;
+                }
+                catch (CommandFailedException ex)
+                {
+                    tries++;
+                    log.Warn($"Error executing camera command (try {tries} of {MAX_TRIES})", ex);
+                }
+            }
+
+            log.Error($"Could not execute command after {tries} tries.");
         }
     }
 }
