@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRReader", "src\main\csharp\IRReader\IRReader.csproj", "{9F8C0AE7-5DF6-4423-B46D-972D386900BC}"
 EndProject
@@ -16,6 +16,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uploader", "src\main\csharp\Uploader\Uploader.csproj", "{0925FAFD-9919-45D3-84F5-0068445070AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readers", "Readers", "{73445814-2BF4-48EC-B3B5-000BCF1039B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{84F3A347-3FDB-479A-92A9-9898DD06ECF6}"
+	ProjectSection(SolutionItems) = preProject
+		src\main\csharp\Config\App.config = src\main\csharp\Config\App.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

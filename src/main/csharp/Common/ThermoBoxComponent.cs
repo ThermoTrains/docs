@@ -43,11 +43,12 @@ namespace SebastianHaeni.ThermoBox.Common
                 PubSub.Subscribe(key, subscriptions[key]);
             }
 
+            PubSub.Subscribe(Commands.Kill, (channel, message) => Environment.Exit(0));
+
             // prevent exit until Ctrl-C
             while (Console.ReadLine() != null) { }
 
             log.Info("Shutting down");
         }
-
     }
 }

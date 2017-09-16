@@ -59,8 +59,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
+    <None Include="..\Config\App.config">
+      <Link>App.config</Link>
     </None>
     <None Include="FLIR.Atlas.x64.bat" />
     <None Include="packages.config">
