@@ -40,9 +40,9 @@
     "npm": "^5.4.0"
   },
   "dependencies": {
-    "del": "^2.2.2",
+    "del": "^3.0.0",
     "gulp": "^3.9.1",
-    "gulp-live-server": "0.0.30",
+    "gulp-live-server": "0.0.31",
     "gulp-nunjucks-render": "^2.0.0",
     "gulp-sass": "^3.1.0",
     "gulp-util": "^3.0.8",
@@ -52,7 +52,7 @@
     "nunjucks": "^3.0.0",
     "opn-cli": "^3.1.0",
     "reveal.js": "^3.5.0",
-    "run-sequence": "^1.2.2",
+    "run-sequence": "^2.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }
