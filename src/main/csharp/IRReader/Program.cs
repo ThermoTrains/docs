@@ -1,3 +1,5 @@
+using SebastianHaeni.ThermoBox.IRReader.Recorder;
+
 namespace SebastianHaeni.ThermoBox.IRReader
 {
     class Program

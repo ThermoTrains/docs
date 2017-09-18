@@ -7,7 +7,7 @@ using Flir.Atlas.Live.Device;
 using Flir.Atlas.Live.Discovery;
 using log4net;
 
-namespace SebastianHaeni.ThermoBox.IRReader
+namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 {
     class CameraDiscover
     {
@@ -16,17 +16,17 @@ namespace SebastianHaeni.ThermoBox.IRReader
 
         private static Discovery discovery;
         private static List<CameraDeviceInfo> foundCameras = new List<CameraDeviceInfo>();
-        private static Camera camera;
+        private static ThermalGigabitCamera camera;
 
-        private static TaskCompletionSource<Camera> correctCameraFound = new TaskCompletionSource<Camera>();
+        private static TaskCompletionSource<ThermalGigabitCamera> correctCameraFound = new TaskCompletionSource<ThermalGigabitCamera>();
 
-        public async static Task<Camera> InitCameraDiscovery()
+        public async static Task<ThermalGigabitCamera> InitCameraDiscovery()
         {
             // return when correct camera found or await discovery period, if still not found use emulator
             return await Task.WhenAny(correctCameraFound.Task, DiscoverAndFallback()).Result;
         }
 
-        private static Task<Camera> DiscoverAndFallback()
+        private static Task<ThermalGigabitCamera> DiscoverAndFallback()
         {
             return Task.Run(() =>
             {
@@ -72,7 +72,7 @@ namespace SebastianHaeni.ThermoBox.IRReader
             log.Info("Stopping discovery");
             discovery.Stop();
             log.Info($"Connecting to camera: {info.Name}");
-            camera = new ThermalCamera();
+            camera = new ThermalGigabitCamera();
             camera.Connect(info);
             correctCameraFound.SetResult(camera);
         }

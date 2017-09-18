@@ -34,6 +34,8 @@ namespace SebastianHaeni.ThermoBox.Common
                 catch (RedisConnectionException ex)
                 {
                     log.Error("unable to connect", ex);
+                    Environment.Exit(1);
+
                     return null;
                 }
 
