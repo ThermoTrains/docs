@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{84F3A3
 		src\main\csharp\Config\App.config = src\main\csharp\Config\App.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\test\csharp\Test\Test.csproj", "{4E86F038-1070-4846-8B2C-1F2D922770EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{0925FAFD-9919-45D3-84F5-0068445070AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0925FAFD-9919-45D3-84F5-0068445070AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0925FAFD-9919-45D3-84F5-0068445070AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E86F038-1070-4846-8B2C-1F2D922770EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E86F038-1070-4846-8B2C-1F2D922770EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E86F038-1070-4846-8B2C-1F2D922770EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E86F038-1070-4846-8B2C-1F2D922770EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
