@@ -66,6 +66,9 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             // The default setting of NUC intervals is 4 minutes. So in case the recording is longer than 4
             // minutes, the camera will NUC itself and the video will have a short freeze.
 
+            // It is possible to disable automatic NUCing but it is handy to have it while testing. The NUC
+            // while recording might improve data quality. It is not planned to record for longer than a minute anyway.
+
             // The NUC consumes about 0.5 seconds. The recording will start right after. In case this starting
             // delay is too long we maybe have to consider other techniques to calibrate the camera while not recording.
             camera.DeviceControl.SetDeviceParameter("NUCAction", GenICamType.Command);

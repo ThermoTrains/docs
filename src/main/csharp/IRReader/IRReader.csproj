@@ -18,10 +18,13 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>
+    </NoWarn>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -59,7 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compression\Class1.cs" />
     <Compile Include="Recorder\CameraDiscover.cs" />
     <Compile Include="DeviceParameters\DeviceParameter.cs" />
     <Compile Include="DeviceParameters\DeviceParameters.cs" />
@@ -71,7 +73,6 @@
     <None Include="..\Config\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include="FLIR.Atlas.x86.bat" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -89,7 +90,7 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)FLIR.Atlas.x86.bat" "$(TargetDir)"
+    <PreBuildEvent>"$(SolutionDir)src\main\resources\FLIR.Atlas.x86.bat" "$(TargetDir)"
 </PreBuildEvent>
   </PropertyGroup>
 </Project>
