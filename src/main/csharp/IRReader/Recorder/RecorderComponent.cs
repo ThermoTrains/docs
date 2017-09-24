@@ -20,7 +20,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
     class RecorderComponent : ThermoBoxComponent
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static readonly string RECORDINGS_FOLDER = ConfigurationManager.AppSettings["IR_RECORDINGS_FOLDER"];
+        private static readonly string CAPTURE_FOLDER = ConfigurationManager.AppSettings["CAPTURE_FOLDER"];
 
         private ThermalGigabitCamera camera;
         private static string currentRecording;
@@ -83,14 +83,14 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             camera.DeviceControl.SetDeviceParameter("NUCAction", GenICamType.Command);
 
             // ensuring the recordings directory exists
-            DirectoryInfo recordingDirectory = new DirectoryInfo(RECORDINGS_FOLDER);
+            DirectoryInfo recordingDirectory = new DirectoryInfo(CAPTURE_FOLDER);
             if (!recordingDirectory.Exists)
             {
                 recordingDirectory.Create();
             }
 
             log.Info($"Starting capture with id {message}");
-            currentRecording = $@"{RECORDINGS_FOLDER}\{message}";
+            currentRecording = $@"{CAPTURE_FOLDER}\{message}";
 
             Retry(() => camera.Recorder.Start(FlirVideoFileName), () => camera.Recorder.Status == RecorderState.Recording);
         }
