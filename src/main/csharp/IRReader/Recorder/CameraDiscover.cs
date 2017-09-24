@@ -35,7 +35,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
                 discovery.DeviceError += Discovery_DeviceError;
 
                 log.Info("Discovering cameras");
-                discovery.Start(10); // this call is blocking
+                discovery.Start(5); // this call is blocking
 
                 if (camera != null)
                 {

@@ -3,39 +3,47 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Flir.Atlas.Image;
 using Flir.Atlas.Image.Interfaces;
+using log4net;
 using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace SebastianHaeni.ThermoBox.Common.Compression
+namespace SebastianHaeni.ThermoBox.IRCompressor
 {
     public class IRSensorDataCompression
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static void Compress(string sourceFile, string outputVideoFile)
         {
-            var thermalImage = new ThermalImageFile(sourceFile);
-            var compression = VideoWriter.Fourcc('H', '2', '6', '4');
-            int fps = (int)thermalImage.ThermalSequencePlayer.FrameRate;
+            log.Info($"Compressing {sourceFile} with H.264 to {outputVideoFile}");
 
-            var videoWriter = new VideoWriter(outputVideoFile, compression, fps, thermalImage.Size, false);
-
-            for (var i = 0; i < thermalImage.ThermalSequencePlayer.Count(); i++)
+            using (var thermalImage = new ThermalImageFile(sourceFile))
             {
-                thermalImage.ThermalSequencePlayer.Next();
-                Image<Gray, ushort> image = GetSignalImage(thermalImage);
+                var compression = VideoWriter.Fourcc('H', '2', '6', '4');
+                int fps = (int)thermalImage.ThermalSequencePlayer.FrameRate;
 
-                // this makes the picture eye friendly but looses the signal data
-                CvInvoke.Normalize(image, image, 0, ushort.MaxValue, NormType.MinMax);
+                using (var videoWriter = new VideoWriter(outputVideoFile, compression, fps, thermalImage.Size, false))
+                {
+                    // loop through every frame and transform it to fit into video
+                    for (var i = 0; i < thermalImage.ThermalSequencePlayer.Count(); i++)
+                    {
+                        thermalImage.ThermalSequencePlayer.Next();
+                        Image<Gray, ushort> image16 = GetSignalImage(thermalImage);
 
-                // Loosing precision, but there is no video codec supporting 16 bit grayscale :(
-                var image8 = image.ConvertScale<byte>(1 / 256f, 0);
+                        // this makes the picture eye friendly but looses the signal data
+                        // TODO normalize with the same known parameters for every frame
+                        CvInvoke.Normalize(image16, image16, 0, ushort.MaxValue, NormType.MinMax);
 
-                //image.Save($@"..\..\..\..\..\..\samples\thermal\out\{i}.png");
-                videoWriter.Write(image8.Mat);
+                        // Loosing precision, but there is no open video codec supporting 16 bit grayscale :(
+                        var image8 = image16.ConvertScale<byte>(1 / 256f, 0);
+
+                        videoWriter.Write(image8.Mat);
+                    }
+                }
             }
 
-            // recreate thermal image by using reference image and replacing signal value
-            //image.ImageProcessing.ReplaceSignalValues(b);
-            //image.Save(@"..\..\..\..\..\..\samples\thermal\replaced-pixels.jpg");
+            // TODO emit compression parameters file to reconstruct original file (normalization parameters) and publish it to upload
         }
 
         private static Image<Gray, ushort> GetSignalImage(ThermalImageFile thermalImage)

@@ -1,7 +1,6 @@
 using System;
 using System.Configuration;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -13,7 +12,8 @@ using log4net;
 using Newtonsoft.Json;
 using SebastianHaeni.ThermoBox.Common;
 using SebastianHaeni.ThermoBox.IRReader.DeviceParameters;
-using SebastianHaeni.ThermoBox.Common.Compression;
+using System.Collections.Generic;
+using Flir.Atlas.Image;
 
 namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 {
@@ -23,13 +23,13 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         private static readonly string RECORDINGS_FOLDER = ConfigurationManager.AppSettings["IR_RECORDINGS_FOLDER"];
 
         private ThermalGigabitCamera camera;
-        private static string currentRecordingDirectory;
+        private static string currentRecording;
 
         private string FlirVideoFileName
         {
             get
             {
-                return $@"{currentRecordingDirectory}\Recording.seq";
+                return $@"{currentRecording}-Recording.seq";
             }
         }
 
@@ -90,7 +90,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             }
 
             log.Info($"Starting capture with id {message}");
-            currentRecordingDirectory = $@"{RECORDINGS_FOLDER}\{message}";
+            currentRecording = $@"{RECORDINGS_FOLDER}\{message}";
 
             Retry(() => camera.Recorder.Start(FlirVideoFileName), () => camera.Recorder.Status == RecorderState.Recording);
         }
@@ -101,8 +101,8 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         /// </summary>
         private void StopCapture()
         {
-            // copy this as a new recording might start while we're finishing this one
-            var artifactDirectory = currentRecordingDirectory;
+            // Copy this as a new recording might start while we're finishing this one.
+            var currentRecordingFilename = currentRecording;
 
             if (camera.Recorder.Status != RecorderState.Recording)
             {
@@ -114,57 +114,57 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             Retry(() => camera.Recorder.Stop(), () => camera.Recorder.Status == RecorderState.Stopped);
             log.Info($"Recorded {camera.Recorder.FrameCount} frames");
 
-            CreateDeviceParamsFiles(artifactDirectory);
+            // Extract first frame as reference frame and upload it.
+            ExtractFirstFrame(currentRecordingFilename);
 
-            string outputVideoFile = $@"{currentRecordingDirectory}\Recording.mp4";
-            log.Info($"Compressing FLIR video with h.264 to {outputVideoFile}");
-            IRSensorDataCompression.Compress(FlirVideoFileName, outputVideoFile);
+            // Upload device param file.
+            CreateDeviceParamsFiles(currentRecordingFilename);
 
-            log.Info($"Deleting original file {FlirVideoFileName}");
-            File.Delete(FlirVideoFileName);
+            // Forwarding FLIR video to compress it.
+            Publish(Commands.Compress, currentRecordingFilename);
+        }
 
-            var zipFilename = CreateZip(artifactDirectory);
-
-            // Deleting source artifact (that one that's uncompressed on the disk)
-            new DirectoryInfo(artifactDirectory).Delete(true);
-
-            // Send publish command with the zip file
-            Publish(Commands.Upload, zipFilename);
+        /// <summary>
+        /// Extracts the first frame of the video as a reference. This reference image will be used to recreate the original
+        /// FLIR sequence file.
+        /// </summary>
+        /// <param name="sourceFile"></param>
+        private void ExtractFirstFrame(string sourceFile)
+        {
+            using (var thermalImage = new ThermalImageFile(sourceFile))
+            {
+                string filename = $"{sourceFile}.jpg";
+                thermalImage.SaveSnapshot(filename);
+                Publish(Commands.Upload, filename);
+            }
         }
 
         /// <summary>
         /// Fetching and writing all device params to JSON (around 319 params are available on the FLIR A65).
         /// </summary>
-        /// <param name="artifactDirectory"></param>
-        private void CreateDeviceParamsFiles(string artifactDirectory)
+        /// <param name="sourceFile"></param>
+        private void CreateDeviceParamsFiles(string sourceFile)
         {
-            var deviceParams = camera.DeviceControl.GetDeviceParameters();
+            List<GenICamParameter> deviceParams;
+            try
+            {
+                deviceParams = camera.DeviceControl.GetDeviceParameters();
+            }
+            catch (CommandFailedException ex)
+            {
+                log.Error("Could not load device parameters from camera. Always fails if using emulator.", ex);
+                return;
+            }
+
             var mappedValues = (from param in deviceParams
                                 where DeviceParameter.HasValue(param)
                                 select new DeviceParameter(param));
 
             var json = JsonConvert.SerializeObject(new DeviceParameters.DeviceParameters() { Parameters = mappedValues }, Formatting.Indented);
-            File.WriteAllText($@"{artifactDirectory}\DeviceParams.json", json);
-        }
+            string deviceParamFile = $@"{sourceFile}-DeviceParams.json";
+            File.WriteAllText(deviceParamFile, json);
 
-        /// <summary>
-        /// Zipping the file as it's a non compressed format and compression rates of 50 - 80% can be achieved.
-        /// </summary>
-        /// <param name="artifactDirectory"></param>
-        /// <returns></returns>
-        private static string CreateZip(string artifactDirectory)
-        {
-            var zipFilename = $@"{artifactDirectory}.zip";
-            log.Info($"Zipping directory {artifactDirectory} to {zipFilename}");
-
-            if (File.Exists(zipFilename))
-            {
-                log.Warn($"File {zipFilename} already exists, overwriting it");
-                File.Delete(zipFilename);
-            }
-
-            ZipFile.CreateFromDirectory(artifactDirectory, zipFilename);
-            return zipFilename;
+            Publish(Commands.Upload, deviceParamFile);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             Retry(() => camera.Recorder.Stop(), () => camera.Recorder.Status == RecorderState.Stopped);
 
             // Deleting generated artifact
-            new DirectoryInfo(currentRecordingDirectory).Delete(true);
+            new DirectoryInfo(currentRecording).Delete(true);
         }
 
         /// <summary>
@@ -205,8 +205,12 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
                     {
                         return;
                     }
+                    else
+                    {
+                        throw new Exception("Camera state was not as expected");
+                    }
                 }
-                catch (CommandFailedException ex)
+                catch (Exception ex)
                 {
                     log.Warn($"Exception while executing camera command", ex);
                 }

@@ -1,8 +1,8 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SebastianHaeni.ThermoBox.Common.Compression;
+using SebastianHaeni.ThermoBox.IRCompressor;
 
-namespace SebastianHaeni.ThermoBox.IRReader.Compression
+namespace SebastianHaeni.ThermoBox.Delivery.IRCompression
 {
     [TestClass]
     public class IRSensorCompressionTest
