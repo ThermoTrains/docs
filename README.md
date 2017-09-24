@@ -53,11 +53,11 @@ Automatic detection of isolation deficiencies on rolling trains
   
   To create a local redis instance, use the following command:
   
-  `docker run -p 6379:6379 --name thermobox-redis -d redis`
+    docker run -p 6379:6379 --name thermobox-redis -d redis
   
   To connect to it and execute commands, use the following command:
   
-  `docker run -it --link thermobox-redis:redis --rm redis redis-cli -h redis -p 6379`
+    docker run -it --link thermobox-redis:redis --rm redis redis-cli -h redis -p 6379
   
   #### Pub commands
   

@@ -10,16 +10,13 @@ namespace SebastianHaeni.ThermoBox.Common.Compression
 {
     public class IRSensorDataCompression
     {
-        public static void Compress()
+        public static void Compress(string sourceFile, string outputVideoFile)
         {
-            var thermalImage = new ThermalImageFile(@"..\..\..\..\..\..\samples\thermal\book.seq");
-
-            string fileName = $@"..\..\..\..\..\..\samples\thermal\test.mp4";
+            var thermalImage = new ThermalImageFile(sourceFile);
             var compression = VideoWriter.Fourcc('H', '2', '6', '4');
-            //var compression = VideoWriter.Fourcc('Y', 'U', 'V', '9');
             int fps = (int)thermalImage.ThermalSequencePlayer.FrameRate;
 
-            var videoWriter = new VideoWriter(fileName, compression, fps, thermalImage.Size, false);
+            var videoWriter = new VideoWriter(outputVideoFile, compression, fps, thermalImage.Size, false);
 
             for (var i = 0; i < thermalImage.ThermalSequencePlayer.Count(); i++)
             {

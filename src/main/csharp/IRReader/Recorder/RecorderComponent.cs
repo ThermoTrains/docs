@@ -13,6 +13,7 @@ using log4net;
 using Newtonsoft.Json;
 using SebastianHaeni.ThermoBox.Common;
 using SebastianHaeni.ThermoBox.IRReader.DeviceParameters;
+using SebastianHaeni.ThermoBox.Common.Compression;
 
 namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 {
@@ -23,6 +24,14 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 
         private ThermalGigabitCamera camera;
         private static string currentRecordingDirectory;
+
+        private string FlirVideoFileName
+        {
+            get
+            {
+                return $@"{currentRecordingDirectory}\Recording.seq";
+            }
+        }
 
         public RecorderComponent(ThermalGigabitCamera camera) : base()
         {
@@ -83,7 +92,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             log.Info($"Starting capture with id {message}");
             currentRecordingDirectory = $@"{RECORDINGS_FOLDER}\{message}";
 
-            Retry(() => camera.Recorder.Start($@"{currentRecordingDirectory}\Recording.seq"), () => camera.Recorder.Status == RecorderState.Recording);
+            Retry(() => camera.Recorder.Start(FlirVideoFileName), () => camera.Recorder.Status == RecorderState.Recording);
         }
 
         /// <summary>
@@ -106,7 +115,15 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             log.Info($"Recorded {camera.Recorder.FrameCount} frames");
 
             CreateDeviceParamsFiles(artifactDirectory);
-            string zipFilename = CreateZip(artifactDirectory);
+
+            string outputVideoFile = $@"{currentRecordingDirectory}\Recording.mp4";
+            log.Info($"Compressing FLIR video with h.264 to {outputVideoFile}");
+            IRSensorDataCompression.Compress(FlirVideoFileName, outputVideoFile);
+
+            log.Info($"Deleting original file {FlirVideoFileName}");
+            File.Delete(FlirVideoFileName);
+
+            var zipFilename = CreateZip(artifactDirectory);
 
             // Deleting source artifact (that one that's uncompressed on the disk)
             new DirectoryInfo(artifactDirectory).Delete(true);

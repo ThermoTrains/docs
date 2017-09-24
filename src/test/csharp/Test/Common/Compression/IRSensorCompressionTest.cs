@@ -10,7 +10,9 @@ namespace SebastianHaeni.ThermoBox.IRReader.Compression
         [TestMethod]
         public void TestCompress()
         {
-            IRSensorDataCompression.Compress();
+            IRSensorDataCompression.Compress(
+                @"..\..\..\..\..\..\samples\thermal\book.seq",
+                $@"..\..\..\..\..\..\samples\thermal\book.mp4");
         }
     }
 }
