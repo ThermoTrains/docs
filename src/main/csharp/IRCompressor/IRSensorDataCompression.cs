@@ -5,6 +5,7 @@ using Flir.Atlas.Image;
 using Flir.Atlas.Image.Interfaces;
 using log4net;
 using System;
+using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -23,27 +24,58 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
                 var compression = VideoWriter.Fourcc('H', '2', '6', '4');
                 int fps = (int)thermalImage.ThermalSequencePlayer.FrameRate;
 
+                var minValue = double.MaxValue;
+                var maxValue = double.MinValue;
+                double scale = 0;
+
                 using (var videoWriter = new VideoWriter(outputVideoFile, compression, fps, thermalImage.Size, false))
                 {
-                    // loop through every frame and transform it to fit into video
+                    var convertedImages = new Image<Gray, ushort>[thermalImage.ThermalSequencePlayer.Count()];
+
+                    // loop through every frame, grab image and calculate min and max values
                     for (var i = 0; i < thermalImage.ThermalSequencePlayer.Count(); i++)
                     {
                         thermalImage.ThermalSequencePlayer.Next();
-                        Image<Gray, ushort> image16 = GetSignalImage(thermalImage);
 
-                        // this makes the picture eye friendly but looses the signal data
-                        // TODO normalize with the same known parameters for every frame
-                        CvInvoke.Normalize(image16, image16, 0, ushort.MaxValue, NormType.MinMax);
+                        convertedImages[i] = GetSignalImage(thermalImage);
+
+                        convertedImages[i].Mat.MinMax(out double[] minValues, out double[] maxValues, out Point[] minLocations, out Point[] maxLocations);
+
+                        if (minValues[0] < minValue)
+                        {
+                            minValue = minValues[0];
+                        }
+
+                        if (maxValues[0] > maxValue)
+                        {
+                            maxValue = maxValues[0];
+                        }
+                    }
+
+                    scale = 256f / (maxValue - minValue);
+
+                    var formatedScalePercent = ((1 - scale) * 100).ToString("N");
+                    log.Info($"Precision loss: {formatedScalePercent}%");
+
+                    // Scale images and write them into a video
+                    for (var i = 0; i < thermalImage.ThermalSequencePlayer.Count(); i++)
+                    {
+                        // Floor values to min value (img * 1 + img * 0 - minValue)
+                        var normalized = convertedImages[i].AddWeighted(convertedImages[i], 1, 0, -minValue);
 
                         // Loosing precision, but there is no open video codec supporting 16 bit grayscale :(
-                        var image8 = image16.ConvertScale<byte>(1 / 256f, 0);
+                        // Scaling values down to our established value span as a factor of 256
+                        var image8 = normalized.ConvertScale<byte>(scale, 0);
 
                         videoWriter.Write(image8.Mat);
                     }
                 }
-            }
 
-            // TODO emit compression parameters file to reconstruct original file (normalization parameters) and publish it to upload
+                // Add compression parameters to file as metadata.
+                var tagFile = TagLib.File.Create(outputVideoFile);
+                tagFile.Tag.Comment = $"{minValue};{scale}";
+                tagFile.Save();
+            }
         }
 
         private static Image<Gray, ushort> GetSignalImage(ThermalImageFile thermalImage)
