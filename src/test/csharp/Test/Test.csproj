@@ -68,6 +68,10 @@
       <Project>{308451F1-52CF-4360-9107-0BA13603878B}</Project>
       <Name>IRCompressor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\main\csharp\IRDecompressor\IRDecompressor.csproj">
+      <Project>{63807994-f8f2-4adf-9bea-6da559566fbc}</Project>
+      <Name>IRDecompressor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\main\csharp\IRReader\IRReader.csproj">
       <Project>{9f8c0ae7-5df6-4423-b46d-972d386900bc}</Project>
       <Name>IRReader</Name>

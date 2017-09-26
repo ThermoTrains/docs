@@ -36,7 +36,6 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
                     for (var i = 0; i < thermalImage.ThermalSequencePlayer.Count(); i++)
                     {
                         thermalImage.ThermalSequencePlayer.Next();
-
                         convertedImages[i] = GetSignalImage(thermalImage);
 
                         convertedImages[i].Mat.MinMax(out double[] minValues, out double[] maxValues, out Point[] minLocations, out Point[] maxLocations);
@@ -72,10 +71,15 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
                 }
 
                 // Add compression parameters to file as metadata.
-                var tagFile = TagLib.File.Create(outputVideoFile);
-                tagFile.Tag.Comment = $"{minValue};{scale}";
-                tagFile.Save();
+                AddCompressionParameters(outputVideoFile, minValue, scale);
             }
+        }
+
+        private static void AddCompressionParameters(string outputVideoFile, double minValue, double scale)
+        {
+            var tagFile = TagLib.File.Create(outputVideoFile);
+            tagFile.Tag.Comment = $"{minValue}/{scale}";
+            tagFile.Save();
         }
 
         private static Image<Gray, ushort> GetSignalImage(ThermalImageFile thermalImage)
