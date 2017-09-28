@@ -16,11 +16,13 @@ namespace SebastianHaeni.ThermoBox.IRDecompressor
             {
                 using (var capture = new VideoCapture(sourceFile))
                 {
-                    Image<Gray, byte> frame = null;
+                    Mat mat = null;
                     var i = 0;
 
-                    while ((frame = capture.QueryFrame().ToImage<Gray, byte>()) != null)
+                    while ((mat = capture.QueryFrame()) != null)
                     {
+                        Image<Gray, byte> frame = mat.ToImage<Gray, byte>();
+
                         // Multiply and shift values
                         var denormalized = frame.ConvertScale<ushort>(inverseScale, minValue);
 
