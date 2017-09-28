@@ -5,7 +5,6 @@ using Flir.Atlas.Image;
 using Flir.Atlas.Image.Interfaces;
 using log4net;
 using System;
-using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -38,16 +37,14 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
                         thermalImage.ThermalSequencePlayer.Next();
                         convertedImages[i] = GetSignalImage(thermalImage);
 
-                        convertedImages[i].Mat.MinMax(out double[] minValues, out double[] maxValues, out Point[] minLocations, out Point[] maxLocations);
-
-                        if (minValues[0] < minValue)
+                        if (thermalImage.MinSignalValue < minValue)
                         {
-                            minValue = minValues[0];
+                            minValue = thermalImage.MinSignalValue;
                         }
 
-                        if (maxValues[0] > maxValue)
+                        if (thermalImage.MaxSignalValue > maxValue)
                         {
-                            maxValue = maxValues[0];
+                            maxValue = thermalImage.MaxSignalValue;
                         }
                     }
 
@@ -82,7 +79,7 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
             tagFile.Save();
         }
 
-        private static Image<Gray, ushort> GetSignalImage(ThermalImageFile thermalImage)
+        private static Image<Gray, ushort> GetSignalImage(ThermalImage thermalImage)
         {
             IPixels pixels = thermalImage.ImageProcessing.GetPixels();
 
