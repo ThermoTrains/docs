@@ -29,14 +29,11 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
 
                 using (var videoWriter = new VideoWriter(outputVideoFile, compression, fps, thermalImage.Size, false))
                 {
-                    var convertedImages = new Image<Gray, ushort>[thermalImage.ThermalSequencePlayer.Count()];
-
-                    // loop through every frame, grab image and calculate min and max values
+                    // loop through every frame and calculate min and max values
                     for (var i = 0; i < thermalImage.ThermalSequencePlayer.Count(); i++)
                     {
                         thermalImage.ThermalSequencePlayer.Next();
-                        convertedImages[i] = GetSignalImage(thermalImage);
-
+                        
                         if (thermalImage.MinSignalValue < minValue)
                         {
                             minValue = thermalImage.MinSignalValue;
@@ -53,11 +50,16 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
                     var formatedScalePercent = ((1 - scale) * 100).ToString("N");
                     log.Info($"Precision loss: {formatedScalePercent}%");
 
+                    thermalImage.ThermalSequencePlayer.First();
+
                     // Scale images and write them into a video
                     for (var i = 0; i < thermalImage.ThermalSequencePlayer.Count(); i++)
                     {
+                        thermalImage.ThermalSequencePlayer.Next();
+                        var image = GetSignalImage(thermalImage);
+
                         // Floor values to min value (img * 1 + img * 0 - minValue)
-                        var normalized = convertedImages[i].AddWeighted(convertedImages[i], 1, 0, -minValue);
+                        var normalized = image.AddWeighted(image, 1, 0, -minValue);
 
                         // Loosing precision, but there is no open video codec supporting 16 bit grayscale :(
                         // Scaling values down to our established value span as a factor of 256
