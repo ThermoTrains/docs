@@ -2,9 +2,9 @@ using SebastianHaeni.ThermoBox.TemperatureReader.Temper;
 
 namespace SebastianHaeni.ThermoBox.TemperatureReader
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             var temper = new TemperDiscover().DiscoverTemper().GetAwaiter().GetResult();
             new TemperComponent(temper).Run();

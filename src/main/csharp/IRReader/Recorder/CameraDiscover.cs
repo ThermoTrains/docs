@@ -9,48 +9,48 @@ using log4net;
 
 namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 {
-    class CameraDiscover
+    internal static class CameraDiscover
     {
-        private static readonly string CAMERA_NAME = ConfigurationManager.AppSettings["CAMERA_NAME"];
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly string CameraName = ConfigurationManager.AppSettings["CAMERA_NAME"];
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static Discovery discovery;
-        private static List<CameraDeviceInfo> foundCameras = new List<CameraDeviceInfo>();
-        private static ThermalGigabitCamera camera;
+        private static readonly List<CameraDeviceInfo> FoundCameras = new List<CameraDeviceInfo>();
+        private static Discovery _discovery;
+        private static ThermalGigabitCamera _camera;
 
-        private static TaskCompletionSource<ThermalGigabitCamera> correctCameraFound = new TaskCompletionSource<ThermalGigabitCamera>();
+        private static readonly TaskCompletionSource<ThermalGigabitCamera> CorrectCameraFound = new TaskCompletionSource<ThermalGigabitCamera>();
 
-        public async static Task<ThermalGigabitCamera> InitCameraDiscovery()
+        public static async Task<ThermalGigabitCamera> InitCameraDiscovery()
         {
             // return when correct camera found or await discovery period, if still not found use emulator
-            return await Task.WhenAny(correctCameraFound.Task, DiscoverAndFallback()).Result;
+            return await Task.WhenAny(CorrectCameraFound.Task, DiscoverAndFallback()).Result;
         }
 
         private static Task<ThermalGigabitCamera> DiscoverAndFallback()
         {
             return Task.Run(() =>
             {
-                discovery = new Discovery();
-                discovery.DeviceFound += Discovery_DeviceFound;
-                discovery.DeviceError += Discovery_DeviceError;
+                _discovery = new Discovery();
+                _discovery.DeviceFound += Discovery_DeviceFound;
+                _discovery.DeviceError += Discovery_DeviceError;
 
-                log.Info("Discovering cameras");
-                discovery.Start(5); // this call is blocking
+                Log.Info("Discovering cameras");
+                _discovery.Start(5); // this call is blocking
 
-                if (camera != null)
+                if (_camera != null)
                 {
-                    return camera;
+                    return _camera;
                 }
 
-                var emulator = foundCameras.Find(c => c.Name.Equals("Camera Emulator"));
+                var emulator = FoundCameras.Find(c => c.Name.Equals("Camera Emulator"));
                 if (emulator != null)
                 {
-                    log.Warn("Fallback to emulator camera");
+                    Log.Warn("Fallback to emulator camera");
                     ConnectCamera(new CameraDeviceInfo(emulator));
-                    return camera;
+                    return _camera;
                 }
 
-                log.Error("Could not find a camera");
+                Log.Error("Could not find a camera");
                 Environment.Exit(1);
 
                 return null; // doesn't matter but makes the compiler happy
@@ -59,9 +59,9 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 
         private static void Discovery_DeviceFound(object sender, CameraDeviceInfoEventArgs e)
         {
-            foundCameras.Add(e.CameraDevice);
+            FoundCameras.Add(e.CameraDevice);
 
-            if (e.CameraDevice.Name.Contains(CAMERA_NAME))
+            if (e.CameraDevice.Name.Contains(CameraName))
             {
                 ConnectCamera(new CameraDeviceInfo(e.CameraDevice));
             }
@@ -69,17 +69,17 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 
         private static void ConnectCamera(CameraDeviceInfo info)
         {
-            log.Info("Stopping discovery");
-            discovery.Stop();
-            log.Info($"Connecting to camera: {info.Name}");
-            camera = new ThermalGigabitCamera();
-            camera.Connect(info);
-            correctCameraFound.SetResult(camera);
+            Log.Info("Stopping discovery");
+            _discovery.Stop();
+            Log.Info($"Connecting to camera: {info.Name}");
+            _camera = new ThermalGigabitCamera();
+            _camera.Connect(info);
+            CorrectCameraFound.SetResult(_camera);
         }
 
         private static void Discovery_DeviceError(object sender, DeviceErrorEventArgs e)
         {
-            log.Error($"Device Error: {e.ErrorMessage}");
+            Log.Error($"Device Error: {e.ErrorMessage}");
         }
     }
 }

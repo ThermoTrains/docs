@@ -1,14 +1,15 @@
 using System;
+using System.Globalization;
 using Flir.Atlas.Live.Device;
 
 namespace SebastianHaeni.ThermoBox.IRReader.DeviceParameters
 {
     [Serializable]
-    class DeviceParameter
+    internal class DeviceParameter
     {
-        public String Name { get; private set; }
-        public String Description { get; private set; }
-        public String Value { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public string Value { get; private set; }
 
         public DeviceParameter(GenICamParameter param)
         {
@@ -22,39 +23,28 @@ namespace SebastianHaeni.ThermoBox.IRReader.DeviceParameters
             return !(param is GenICamCommand);
         }
 
-        private string ParseValue(GenICamParameter param)
+        private static string ParseValue(GenICamParameter param)
         {
             // Who came up with this? And why did nobody like Pleora or FLIR wrap this in a library?
 
-            if (param is GenICamInteger)
+            switch (param)
             {
-                return GetValueSafe(param as GenICamInteger, (p) => p.Value.ToString());
-            }
-
-            if (param is GenICamBoolean)
-            {
-                return GetValueSafe(param as GenICamBoolean, (p) => p.Value.ToString());
-            }
-
-            if (param is GenICamString)
-            {
-                return GetValueSafe(param as GenICamString, (p) => p.Value);
-            }
-
-            if (param is GenICamFloat)
-            {
-                return GetValueSafe(param as GenICamFloat, (p) => p.Value.ToString());
-            }
-
-            if (param is GenICamEnum)
-            {
-                return GetValueSafe(param as GenICamEnum, (p) => p.Value.ToString());
+                case GenICamInteger _:
+                    return GetValueSafe(param as GenICamInteger, (p) => p.Value.ToString());
+                case GenICamBoolean _:
+                    return GetValueSafe(param as GenICamBoolean, (p) => p.Value.ToString());
+                case GenICamString _:
+                    return GetValueSafe(param as GenICamString, (p) => p.Value);
+                case GenICamFloat _:
+                    return GetValueSafe(param as GenICamFloat, (p) => p.Value.ToString(CultureInfo.InvariantCulture));
+                case GenICamEnum _:
+                    return GetValueSafe(param as GenICamEnum, (p) => p.Value.ToString());
             }
 
             throw new InvalidOperationException("Cannot get value of parameter without value");
         }
 
-        private string GetValueSafe<T>(T param, Func<T, string> unsafeGetter)
+        private static string GetValueSafe<T>(T param, Func<T, string> unsafeGetter)
         {
             // Exceptions can be thrown any time. This API is so great...
             try

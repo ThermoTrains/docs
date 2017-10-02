@@ -10,51 +10,42 @@ using Flir.Atlas.Live.Recorder;
 using Flir.Atlas.Live.Remote;
 using log4net;
 using Newtonsoft.Json;
-using SebastianHaeni.ThermoBox.Common;
 using SebastianHaeni.ThermoBox.IRReader.DeviceParameters;
 using System.Collections.Generic;
 using Flir.Atlas.Image;
+using SebastianHaeni.ThermoBox.Common.Component;
 
 namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 {
-    class RecorderComponent : ThermoBoxComponent
+    internal class RecorderComponent : ThermoBoxComponent
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static readonly string CAPTURE_FOLDER = ConfigurationManager.AppSettings["CAPTURE_FOLDER"];
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly string CaptureFolder = ConfigurationManager.AppSettings["CAPTURE_FOLDER"];
 
-        private ThermalGigabitCamera camera;
-        private static string currentRecording;
+        private readonly ThermalGigabitCamera _camera;
+        private static string _currentRecording;
 
-        private string FlirVideoFileName
+        private static string FlirVideoFileName => $@"{_currentRecording}-Recording.seq";
+
+        public RecorderComponent(ThermalGigabitCamera camera)
         {
-            get
-            {
-                return $@"{currentRecording}-Recording.seq";
-            }
-        }
-
-        public RecorderComponent(ThermalGigabitCamera camera) : base()
-        {
-            this.camera = camera;
+            _camera = camera;
             camera.ConnectionStatusChanged += ConnectionStatusChanged;
+
+            Subscription(Commands.CaptureStart, (channel, message) => StartCapture(message));
+            Subscription(Commands.CaptureStop, (channel, message) => StopCapture());
+            Subscription(Commands.CaptureAbort, (channel, message) => AbortCapture());
         }
 
-        private void ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private static void ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
             if (e.Status == ConnectionStatus.Connected)
             {
                 return;
             }
 
-            log.Error("Lost connection to camera => Exiting");
+            Log.Error("Lost connection to camera => Exiting");
             Environment.Exit(1);
-        }
-
-        protected override void Configure()
-        {
-            Subscription(Commands.CaptureStart, (channel, message) => StartCapture(message));
-            Subscription(Commands.CaptureStop, (channel, message) => StopCapture());
-            Subscription(Commands.CaptureAbort, (channel, message) => AbortCapture());
         }
 
         /// <summary>
@@ -63,9 +54,9 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         /// <param name="message"></param>
         private void StartCapture(string message)
         {
-            if (camera.Recorder.Status != RecorderState.Stopped)
+            if (_camera.Recorder.Status != RecorderState.Stopped)
             {
-                log.Warn($"Cannot start recording. Current state is {camera.Recorder.Status}");
+                Log.Warn($"Cannot start recording. Current state is {_camera.Recorder.Status}");
                 return;
             }
 
@@ -80,19 +71,48 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 
             // The NUC consumes about 0.5 seconds. The recording will start right after. In case this starting
             // delay is too long we maybe have to consider other techniques to calibrate the camera while not recording.
-            camera.DeviceControl.SetDeviceParameter("NUCAction", GenICamType.Command);
+            _camera.DeviceControl.SetDeviceParameter("NUCAction", GenICamType.Command);
 
             // ensuring the recordings directory exists
-            DirectoryInfo recordingDirectory = new DirectoryInfo(CAPTURE_FOLDER);
+            var recordingDirectory = new DirectoryInfo(CaptureFolder);
             if (!recordingDirectory.Exists)
             {
                 recordingDirectory.Create();
             }
 
-            log.Info($"Starting capture with id {message}");
-            currentRecording = $@"{CAPTURE_FOLDER}\{message}";
+            Log.Info($"Starting capture with id {message}");
+            _currentRecording = $@"{CaptureFolder}\{message}";
 
-            Retry(() => camera.Recorder.Start(FlirVideoFileName), () => camera.Recorder.Status == RecorderState.Recording);
+            Retry(() => _camera.Recorder.Start(FlirVideoFileName),
+                () => _camera.Recorder.Status == RecorderState.Recording);
+
+            // TODO the following is a test
+            Thread.Sleep(10);
+            Retry(() => _camera.Recorder.Stop(), () => _camera.Recorder.Status == RecorderState.Stopped);
+
+            var image = new ThermalImageFile(FlirVideoFileName);
+            Log.Info($"Frames: {image.ThermalSequencePlayer.Count()}");
+
+            var thirtyseven = new ushort[512 * 640];
+            for (var i = 0; i < thirtyseven.Length; i++)
+            {
+                thirtyseven[i] = 38;
+            }
+
+            var frame = 0;
+            do
+            {
+                //image.EnterLock();
+
+                Log.Info($"Manipulating frame {++frame}");
+                Log.Info($"{image.ImageProcessing.GetPixelsArray()[0, 0]}");
+                image.ImageProcessing.ReplaceSignalValues(thirtyseven);
+                Log.Info($"{image.ImageProcessing.GetPixelsArray()[0, 0]}");
+
+                //image.ExitLock();
+            } while (image.ThermalSequencePlayer.Next());
+
+            image.Save();
         }
 
         /// <summary>
@@ -102,17 +122,17 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         private void StopCapture()
         {
             // Copy this as a new recording might start while we're finishing this one.
-            var currentRecordingFilename = currentRecording;
+            var currentRecordingFilename = _currentRecording;
 
-            if (camera.Recorder.Status != RecorderState.Recording)
+            if (_camera.Recorder.Status != RecorderState.Recording)
             {
-                log.Warn($"Cannot stop recording. Current state is {camera.Recorder.Status}");
+                Log.Warn($"Cannot stop recording. Current state is {_camera.Recorder.Status}");
                 return;
             }
 
-            log.Info($"Stopping capture");
-            Retry(() => camera.Recorder.Stop(), () => camera.Recorder.Status == RecorderState.Stopped);
-            log.Info($"Recorded {camera.Recorder.FrameCount} frames");
+            Log.Info("Stopping capture");
+            Retry(() => _camera.Recorder.Stop(), () => _camera.Recorder.Status == RecorderState.Stopped);
+            Log.Info($"Recorded {_camera.Recorder.FrameCount} frames");
 
             // Extract first frame as reference frame and upload it.
             ExtractFirstFrame(currentRecordingFilename);
@@ -133,7 +153,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         {
             using (var thermalImage = new ThermalImageFile(sourceFile))
             {
-                string filename = $"{sourceFile}.jpg";
+                var filename = $"{sourceFile}.jpg";
                 thermalImage.SaveSnapshot(filename);
                 Publish(Commands.Upload, filename);
             }
@@ -148,20 +168,24 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             List<GenICamParameter> deviceParams;
             try
             {
-                deviceParams = camera.DeviceControl.GetDeviceParameters();
+                deviceParams = _camera.DeviceControl.GetDeviceParameters();
             }
             catch (CommandFailedException ex)
             {
-                log.Error("Could not load device parameters from camera. Always fails if using emulator.", ex);
+                Log.Error("Could not load device parameters from camera. Always fails if using emulator.", ex);
                 return;
             }
 
-            var mappedValues = (from param in deviceParams
-                                where DeviceParameter.HasValue(param)
-                                select new DeviceParameter(param));
+            var mappedValues = from param in deviceParams
+                where DeviceParameter.HasValue(param)
+                select new DeviceParameter(param);
 
-            var json = JsonConvert.SerializeObject(new DeviceParameters.DeviceParameters() { Parameters = mappedValues }, Formatting.Indented);
-            string deviceParamFile = $@"{sourceFile}-DeviceParams.json";
+            var json = JsonConvert.SerializeObject(new DeviceParameters.DeviceParameters
+                {
+                    Parameters = mappedValues
+                },
+                Formatting.Indented);
+            var deviceParamFile = $@"{sourceFile}-DeviceParams.json";
             File.WriteAllText(deviceParamFile, json);
 
             Publish(Commands.Upload, deviceParamFile);
@@ -172,17 +196,17 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         /// </summary>
         private void AbortCapture()
         {
-            if (camera.Recorder.Status == RecorderState.Stopped)
+            if (_camera.Recorder.Status == RecorderState.Stopped)
             {
-                log.Warn($"Cannot stop recording. It is already stopped");
+                Log.Warn("Cannot stop recording. It is already stopped");
                 return;
             }
 
-            log.Info($"Aborting capture");
-            Retry(() => camera.Recorder.Stop(), () => camera.Recorder.Status == RecorderState.Stopped);
+            Log.Info("Aborting capture");
+            Retry(() => _camera.Recorder.Stop(), () => _camera.Recorder.Status == RecorderState.Stopped);
 
             // Deleting generated artifact
-            new DirectoryInfo(currentRecording).Delete(true);
+            new DirectoryInfo(_currentRecording).Delete(true);
         }
 
         /// <summary>
@@ -192,10 +216,10 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         /// <param name="testSuccess">Function to test the success of the action</param>
         private static void Retry(Action action, Func<bool> testSuccess)
         {
-            int tries = 0;
-            int MAX_TRIES = 5;
+            var tries = 0;
+            const int maxTries = 5;
 
-            while (tries < MAX_TRIES)
+            while (tries < maxTries)
             {
                 try
                 {
@@ -205,22 +229,20 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
                     {
                         return;
                     }
-                    else
-                    {
-                        throw new Exception("Camera state was not as expected");
-                    }
+
+                    throw new Exception("Camera state was not as expected");
                 }
                 catch (Exception ex)
                 {
-                    log.Warn($"Exception while executing camera command", ex);
+                    Log.Warn("Exception while executing camera command", ex);
                 }
 
                 tries++;
-                log.Warn($"Failed executing camera command (try {tries} of {MAX_TRIES})");
+                Log.Warn($"Failed executing camera command (try {tries} of {maxTries})");
                 Thread.Sleep(10);
             }
 
-            log.Error($"Could not execute command after {tries} tries.");
+            Log.Error($"Could not execute command after {tries} tries.");
         }
     }
 }

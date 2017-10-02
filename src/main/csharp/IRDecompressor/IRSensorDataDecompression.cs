@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SebastianHaeni.ThermoBox.IRDecompressor
 {
-    public class IRSensorDataDecompression
+    public static class IRSensorDataDecompression
     {
         public static void Decompress(string sourceFile, string snapshot, string outputFile)
         {
@@ -16,12 +16,12 @@ namespace SebastianHaeni.ThermoBox.IRDecompressor
             {
                 using (var capture = new VideoCapture(sourceFile))
                 {
-                    Mat mat = null;
+                    Mat mat;
                     var i = 0;
 
                     while ((mat = capture.QueryFrame()) != null)
                     {
-                        Image<Gray, byte> frame = mat.ToImage<Gray, byte>();
+                        var frame = mat.ToImage<Gray, byte>();
 
                         // Multiply and shift values
                         var denormalized = frame.ConvertScale<ushort>(inverseScale, minValue);
@@ -31,7 +31,7 @@ namespace SebastianHaeni.ThermoBox.IRDecompressor
 
                         snapshotImage.EnterLock();
                         snapshotImage.ImageProcessing.ReplaceSignalValues(data);
-                        snapshotImage.SaveSnapshot($@"..\..\..\..\..\..\..\samples\thermal\frames\{++i}.jpg");
+                        snapshotImage.SaveSnapshot($@"{++i}.jpg");
                         snapshotImage.ExitLock();
                     }
                 }

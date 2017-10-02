@@ -2,9 +2,9 @@ using SebastianHaeni.ThermoBox.IRReader.Recorder;
 
 namespace SebastianHaeni.ThermoBox.IRReader
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             var camera = CameraDiscover.InitCameraDiscovery().GetAwaiter().GetResult();
             new RecorderComponent(camera).Run();

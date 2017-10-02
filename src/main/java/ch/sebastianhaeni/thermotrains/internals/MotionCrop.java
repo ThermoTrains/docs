@@ -1,25 +1,43 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.ToIntFunction;
+import java.util.stream.IntStream;
+
+import javax.annotation.Nonnull;
+
 import ch.sebastianhaeni.thermotrains.internals.geometry.MarginBox;
 import ch.sebastianhaeni.thermotrains.util.FileUtil;
 import ch.sebastianhaeni.thermotrains.util.MatUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.opencv.core.*;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-
-import javax.annotation.Nonnull;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.function.ToIntFunction;
-import java.util.stream.IntStream;
 
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
 import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static ch.sebastianhaeni.thermotrains.util.MathUtil.median;
 import static org.opencv.core.Core.absdiff;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
-import static org.opencv.imgproc.Imgproc.*;
+import static org.opencv.imgproc.Imgproc.CHAIN_APPROX_SIMPLE;
+import static org.opencv.imgproc.Imgproc.MORPH_ELLIPSE;
+import static org.opencv.imgproc.Imgproc.RETR_EXTERNAL;
+import static org.opencv.imgproc.Imgproc.cvtColor;
+import static org.opencv.imgproc.Imgproc.dilate;
+import static org.opencv.imgproc.Imgproc.erode;
+import static org.opencv.imgproc.Imgproc.findContours;
+import static org.opencv.imgproc.Imgproc.getStructuringElement;
+import static org.opencv.imgproc.Imgproc.threshold;
 
 public final class MotionCrop {
 
@@ -104,10 +122,10 @@ public final class MotionCrop {
     erode(t, t, erodeElement);
 
     // dilate the threshold image to fill in holes
-    int dliateSize = 50;
+    int dilateSize = 50;
     Mat dilateElement = getStructuringElement(MORPH_ELLIPSE,
-      new Size(2 * dliateSize + 1, 2 * dliateSize + 1),
-      new Point(dliateSize, dliateSize));
+      new Size(2 * dilateSize + 1, 2 * dilateSize + 1),
+      new Point(dilateSize, dilateSize));
     dilate(t, t, dilateElement); // TODO this seems to be hogging the CPU hard, is there a way around this?
 
     // find contours

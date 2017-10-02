@@ -1,71 +1,70 @@
 using log4net;
-using SebastianHaeni.ThermoBox.Common;
 using System;
 using System.Reflection;
 using HidLibrary;
 using System.IO;
 using System.Configuration;
+using SebastianHaeni.ThermoBox.Common.Component;
 
 namespace SebastianHaeni.ThermoBox.TemperatureReader.Temper
 {
-    class TemperComponent : ThermoBoxComponent
+    internal class TemperComponent : ThermoBoxComponent
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static readonly byte[] temp = { 0x01, 0x80, 0x33, 0x01, 0x00, 0x00, 0x00, 0x00 }; // TODO extract these into a separate class
-        private static double CalibrationOffset = -1.70;
-        private static double CalibrationScale = 1;
-        private static readonly string CAPTURE_FOLDER = ConfigurationManager.AppSettings["CAPTURE_FOLDER"];
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private const double CalibrationOffset = -1.70;
+        private const double CalibrationScale = 1;
+        private static readonly string CaptureFolder = ConfigurationManager.AppSettings["CAPTURE_FOLDER"];
 
-        private HidDevice control;
-        private HidDevice bulk;
+        private readonly HidDevice _bulk;
 
         public TemperComponent((HidDevice control, HidDevice bulk) temper)
         {
-            control = temper.control;
-            bulk = temper.bulk;
+            _bulk = temper.bulk;
+
+            Subscription(Commands.CaptureStart, (channel, message) => { ReadTemperature(message); });
         }
 
-        protected override void Configure()
+        private void ReadTemperature(string message)
         {
-            Subscription(Commands.CaptureStart, (channel, message) =>
+            if (!_bulk.IsOpen)
             {
-                if (!bulk.IsOpen)
+                Log.Error("Bulk interface is not open");
+                Environment.Exit(1);
+            }
+
+            var outData = _bulk.CreateReport();
+            outData.ReportId = 0x00;
+            outData.Data = TemperCommands.Temp;
+            _bulk.WriteReport(outData);
+
+            while (outData.ReadStatus == HidDeviceData.ReadStatus.NoDataRead)
+            {
+                // query data
+            }
+
+            _bulk.ReadReport((report) =>
+            {
+                var rawReading = (report.Data[3] & 0xFF) + (report.Data[2] << 8);
+
+                var temperatureCelsius = (CalibrationScale * (rawReading * (125.0 / 32000.0))) + CalibrationOffset;
+                Log.Info($"Read {temperatureCelsius}°C from device");
+
+                // ensuring the recordings directory exists
+                var recordingDirectory = new DirectoryInfo(CaptureFolder);
+                if (!recordingDirectory.Exists)
                 {
-                    log.Error("Bulk interface is not open");
-                    Environment.Exit(1);
+                    recordingDirectory.Create();
                 }
 
-                var outData = bulk.CreateReport();
-                outData.ReportId = 0x00;
-                outData.Data = temp;
-                bulk.WriteReport(outData);
+                var filename = $@"{CaptureFolder}\{message}-temperature.txt";
 
-                while (outData.ReadStatus == HidDeviceData.ReadStatus.NoDataRead) ;
+                var file = new StreamWriter(filename);
+                file.WriteLine(temperatureCelsius);
+                file.Close();
 
-                bulk.ReadReport((report) =>
-                {
-                    int RawReading = (report.Data[3] & 0xFF) + (report.Data[2] << 8);
+                Log.Info($"Written temperature to {filename}");
 
-                    double temperatureCelsius = (CalibrationScale * (RawReading * (125.0 / 32000.0))) + CalibrationOffset;
-                    log.Info($"Read {temperatureCelsius}°C from device");
-
-                    // ensuring the recordings directory exists
-                    DirectoryInfo recordingDirectory = new DirectoryInfo(CAPTURE_FOLDER);
-                    if (!recordingDirectory.Exists)
-                    {
-                        recordingDirectory.Create();
-                    }
-
-                    var filename = $@"{CAPTURE_FOLDER}\{message}-temperature.txt";
-
-                    StreamWriter file = new StreamWriter(filename);
-                    file.WriteLine(temperatureCelsius);
-                    file.Close();
-
-                    log.Info($"Written temperature to {filename}");
-
-                    Publish(Commands.Upload, filename);
-                });
+                Publish(Commands.Upload, filename);
             });
         }
     }

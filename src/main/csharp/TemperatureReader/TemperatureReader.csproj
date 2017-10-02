@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Temper\TemperCommands.cs" />
     <Compile Include="Temper\TemperComponent.cs" />
     <Compile Include="Temper\TemperDiscover.cs" />
   </ItemGroup>
