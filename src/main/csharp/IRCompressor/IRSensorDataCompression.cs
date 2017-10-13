@@ -17,7 +17,13 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static void Compress(string sourceFile, string outputVideoFile)
+        public enum Mode
+        {
+            Train,
+            Other
+        }
+
+        public static void Compress(string sourceFile, string outputVideoFile, Mode mode)
         {
             Log.Info($"Compressing {sourceFile} with H.264 to {outputVideoFile}");
 
@@ -27,7 +33,9 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
                 var (minValue, maxValue) = FindMinMaxValues(thermalImage);
 
                 // Find bounding box of moving train
-                var boundingBoxes = FindTrainBoundingBoxes(thermalImage, maxValue, minValue);
+                var boundingBoxes = mode == Mode.Train
+                    ? FindTrainBoundingBoxes(thermalImage, maxValue, minValue)
+                    : new List<(int index, Rectangle rect)>();
 
                 // Find min and max within the train bounds
                 var (minTrain, maxTrain) = boundingBoxes.Count > 0

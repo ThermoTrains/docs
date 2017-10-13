@@ -13,11 +13,10 @@ namespace Test.Delivery.IRCompressor
             const string sourceFile = @"Resources\book.seq";
             const string compressedVideo = @"book.mp4";
 
-            IRSensorDataCompression.Compress(sourceFile, compressedVideo);
+            IRSensorDataCompression.Compress(sourceFile, compressedVideo, IRSensorDataCompression.Mode.Other);
             Assert.IsTrue(File.Exists(compressedVideo), "file is created");
             Assert.IsTrue(new FileInfo(compressedVideo).Length > 0, "file size is greater than 0");
         }
-
 
         [TestMethod]
         public void TestCompressFastTrain()
@@ -25,7 +24,7 @@ namespace Test.Delivery.IRCompressor
             const string sourceFile = @"Resources\fast-train.seq";
             const string compressedVideo = @"fast-train.mp4";
 
-            IRSensorDataCompression.Compress(sourceFile, compressedVideo);
+            IRSensorDataCompression.Compress(sourceFile, compressedVideo, IRSensorDataCompression.Mode.Other);
             Assert.IsTrue(File.Exists(compressedVideo), "file is created");
             Assert.IsTrue(new FileInfo(compressedVideo).Length > 0, "file size is greater than 0");
         }
