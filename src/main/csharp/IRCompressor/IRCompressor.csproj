@@ -68,6 +68,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Config\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="CompressorComponent.cs" />
     <Compile Include="IRSensorDataCompression.cs" />
     <Compile Include="Motion\MotionFinder.cs" />

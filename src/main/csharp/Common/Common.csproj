@@ -64,6 +64,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Config\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Component\Commands.cs" />
     <Compile Include="Util\MathUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{84F3A347-3FDB-479A-92A9-9898DD06ECF6}"
 	ProjectSection(SolutionItems) = preProject
 		src\main\csharp\Config\App.config = src\main\csharp\Config\App.config
+		src\main\csharp\Config\SharedAssemblyInfo.cs = src\main\csharp\Config\SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\test\csharp\Test\Test.csproj", "{4E86F038-1070-4846-8B2C-1F2D922770EB}"
@@ -32,44 +33,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRDecompressor", "src\main\
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Ax64 = Debug|x64
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9F8C0AE7-5DF6-4423-B46D-972D386900BC}.Debug|x64.ActiveCfg = Debug|x64
-		{9F8C0AE7-5DF6-4423-B46D-972D386900BC}.Debug|x64.Build.0 = Debug|x64
 		{9F8C0AE7-5DF6-4423-B46D-972D386900BC}.Release|x64.ActiveCfg = Release|x64
 		{9F8C0AE7-5DF6-4423-B46D-972D386900BC}.Release|x64.Build.0 = Release|x64
-		{71942C30-4552-481C-8D34-F8E6E5C414DB}.Debug|x64.ActiveCfg = Debug|x64
-		{71942C30-4552-481C-8D34-F8E6E5C414DB}.Debug|x64.Build.0 = Debug|x64
 		{71942C30-4552-481C-8D34-F8E6E5C414DB}.Release|x64.ActiveCfg = Release|x64
 		{71942C30-4552-481C-8D34-F8E6E5C414DB}.Release|x64.Build.0 = Release|x64
-		{4265245D-FDD8-4F19-A6BC-B5F518530F4C}.Debug|x64.ActiveCfg = Debug|x64
-		{4265245D-FDD8-4F19-A6BC-B5F518530F4C}.Debug|x64.Build.0 = Debug|x64
 		{4265245D-FDD8-4F19-A6BC-B5F518530F4C}.Release|x64.ActiveCfg = Release|x64
 		{4265245D-FDD8-4F19-A6BC-B5F518530F4C}.Release|x64.Build.0 = Release|x64
-		{109BB75C-1871-4B17-883C-1208269C0C5D}.Debug|x64.ActiveCfg = Debug|x64
-		{109BB75C-1871-4B17-883C-1208269C0C5D}.Debug|x64.Build.0 = Debug|x64
 		{109BB75C-1871-4B17-883C-1208269C0C5D}.Release|x64.ActiveCfg = Release|x64
 		{109BB75C-1871-4B17-883C-1208269C0C5D}.Release|x64.Build.0 = Release|x64
-		{83115A5F-45DA-4746-B1D6-88C6635C6C9C}.Debug|x64.ActiveCfg = Debug|x64
-		{83115A5F-45DA-4746-B1D6-88C6635C6C9C}.Debug|x64.Build.0 = Debug|x64
 		{83115A5F-45DA-4746-B1D6-88C6635C6C9C}.Release|x64.ActiveCfg = Release|x64
 		{83115A5F-45DA-4746-B1D6-88C6635C6C9C}.Release|x64.Build.0 = Release|x64
-		{0925FAFD-9919-45D3-84F5-0068445070AA}.Debug|x64.ActiveCfg = Debug|x64
-		{0925FAFD-9919-45D3-84F5-0068445070AA}.Debug|x64.Build.0 = Debug|x64
 		{0925FAFD-9919-45D3-84F5-0068445070AA}.Release|x64.ActiveCfg = Release|x64
 		{0925FAFD-9919-45D3-84F5-0068445070AA}.Release|x64.Build.0 = Release|x64
-		{4E86F038-1070-4846-8B2C-1F2D922770EB}.Debug|x64.ActiveCfg = Debug|x64
-		{4E86F038-1070-4846-8B2C-1F2D922770EB}.Debug|x64.Build.0 = Debug|x64
 		{4E86F038-1070-4846-8B2C-1F2D922770EB}.Release|x64.ActiveCfg = Release|x64
 		{4E86F038-1070-4846-8B2C-1F2D922770EB}.Release|x64.Build.0 = Release|x64
-		{308451F1-52CF-4360-9107-0BA13603878B}.Debug|x64.ActiveCfg = Debug|x64
-		{308451F1-52CF-4360-9107-0BA13603878B}.Debug|x64.Build.0 = Debug|x64
 		{308451F1-52CF-4360-9107-0BA13603878B}.Release|x64.ActiveCfg = Release|x64
 		{308451F1-52CF-4360-9107-0BA13603878B}.Release|x64.Build.0 = Release|x64
-		{63807994-F8F2-4ADF-9BEA-6DA559566FBC}.Debug|x64.ActiveCfg = Debug|x64
-		{63807994-F8F2-4ADF-9BEA-6DA559566FBC}.Debug|x64.Build.0 = Debug|x64
 		{63807994-F8F2-4ADF-9BEA-6DA559566FBC}.Release|x64.ActiveCfg = Release|x64
 		{63807994-F8F2-4ADF-9BEA-6DA559566FBC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
