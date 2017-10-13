@@ -1,15 +1,5 @@
 package ch.sebastianhaeni.thermotrains.internals;
 
-import ch.sebastianhaeni.thermotrains.serialization.Calibration;
-import ch.sebastianhaeni.thermotrains.serialization.MatSerialization;
-import ch.sebastianhaeni.thermotrains.util.FileUtil;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.opencv.core.*;
-
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -17,12 +7,36 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ch.sebastianhaeni.thermotrains.util.FileUtil.*;
+import javax.annotation.Nonnull;
+
+import ch.sebastianhaeni.thermotrains.serialization.Calibration;
+import ch.sebastianhaeni.thermotrains.serialization.MatSerialization;
+import ch.sebastianhaeni.thermotrains.util.FileUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.MatOfPoint3f;
+import org.opencv.core.Point3;
+import org.opencv.core.Size;
+import org.opencv.core.TermCriteria;
+
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.emptyFolder;
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.getFile;
+import static ch.sebastianhaeni.thermotrains.util.FileUtil.saveMat;
 import static ch.sebastianhaeni.thermotrains.util.MathUtil.Constants.RAD2DEG;
-import static org.opencv.calib3d.Calib3d.*;
+import static org.opencv.calib3d.Calib3d.CALIB_CB_ADAPTIVE_THRESH;
+import static org.opencv.calib3d.Calib3d.CALIB_CB_NORMALIZE_IMAGE;
+import static org.opencv.calib3d.Calib3d.calibrateCamera;
+import static org.opencv.calib3d.Calib3d.drawChessboardCorners;
+import static org.opencv.calib3d.Calib3d.findChessboardCorners;
 import static org.opencv.core.CvType.CV_64F;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
-import static org.opencv.imgproc.Imgproc.*;
+import static org.opencv.imgproc.Imgproc.COLOR_BGR2GRAY;
+import static org.opencv.imgproc.Imgproc.cornerSubPix;
+import static org.opencv.imgproc.Imgproc.cvtColor;
 
 public final class CalibrateCamera {
 
@@ -86,6 +100,11 @@ public final class CalibrateCamera {
 
       imagePoints.add(corners);
       objectPoints.add(objectPoint);
+    }
+
+    if (imagePoints.isEmpty()) {
+      LOG.error("Could not find any checkerboards. Aborting");
+      return;
     }
 
     Mat cameraMatrix = new Mat(3, 3, CV_64F);
