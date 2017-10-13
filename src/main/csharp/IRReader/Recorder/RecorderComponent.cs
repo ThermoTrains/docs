@@ -85,34 +85,6 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 
             Retry(() => _camera.Recorder.Start(FlirVideoFileName),
                 () => _camera.Recorder.Status == RecorderState.Recording);
-
-            // TODO the following is a test
-            Thread.Sleep(10);
-            Retry(() => _camera.Recorder.Stop(), () => _camera.Recorder.Status == RecorderState.Stopped);
-
-            var image = new ThermalImageFile(FlirVideoFileName);
-            Log.Info($"Frames: {image.ThermalSequencePlayer.Count()}");
-
-            var thirtyseven = new ushort[512 * 640];
-            for (var i = 0; i < thirtyseven.Length; i++)
-            {
-                thirtyseven[i] = 38;
-            }
-
-            var frame = 0;
-            do
-            {
-                //image.EnterLock();
-
-                Log.Info($"Manipulating frame {++frame}");
-                Log.Info($"{image.ImageProcessing.GetPixelsArray()[0, 0]}");
-                image.ImageProcessing.ReplaceSignalValues(thirtyseven);
-                Log.Info($"{image.ImageProcessing.GetPixelsArray()[0, 0]}");
-
-                //image.ExitLock();
-            } while (image.ThermalSequencePlayer.Next());
-
-            image.Save();
         }
 
         /// <summary>
@@ -121,7 +93,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         /// </summary>
         private void StopCapture()
         {
-            // Copy this as a new recording might start while we're finishing this one.
+            // Copy this because a new recording might start while we're finishing this one.
             var currentRecordingFilename = _currentRecording;
 
             if (_camera.Recorder.Status != RecorderState.Recording)
@@ -135,7 +107,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             Log.Info($"Recorded {_camera.Recorder.FrameCount} frames");
 
             // Extract first frame as reference frame and upload it.
-            ExtractFirstFrame(currentRecordingFilename);
+            ExtractSnapshot(FlirVideoFileName);
 
             // Upload device param file.
             CreateDeviceParamsFiles(currentRecordingFilename);
@@ -145,11 +117,11 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         }
 
         /// <summary>
-        /// Extracts the first frame of the video as a reference. This reference image will be used to recreate the original
-        /// FLIR sequence file.
+        /// Extracts the first frame of the video as a reference. This reference image will be used as a safety net
+        /// in case something goes wrong with the compression or decompression. In the future this step may be removed.
         /// </summary>
         /// <param name="sourceFile"></param>
-        private void ExtractFirstFrame(string sourceFile)
+        private void ExtractSnapshot(string sourceFile)
         {
             using (var thermalImage = new ThermalImageFile(sourceFile))
             {

@@ -1,43 +1,57 @@
+using System;
+using System.IO;
 using Emgu.CV;
 using Emgu.CV.Structure;
-using Flir.Atlas.Image;
 using System.Linq;
 
 namespace SebastianHaeni.ThermoBox.IRDecompressor
 {
     public static class IRSensorDataDecompression
     {
-        public static void Decompress(string sourceFile, string snapshot, string outputFile)
+        public static void Decompress(string sourceFile, string outputFile)
         {
             (var minValue, var scale) = GetCompressionParameters(sourceFile);
+
+            // inverse the scale because now we're decompressing
             var inverseScale = 1 / scale;
 
-            using (var snapshotImage = new ThermalImageFile(snapshot))
+            using (var capture = new VideoCapture(sourceFile))
             {
-                using (var capture = new VideoCapture(sourceFile))
+                var frameHeader = File.ReadAllBytes(@"Resources\flir-seq-frame-header");
+                var binaryWriter = new BinaryWriter(new FileStream(outputFile, FileMode.Create));
+
+                Mat mat;
+
+                while ((mat = capture.QueryFrame()) != null)
                 {
-                    Mat mat;
-                    var i = 0;
+                    var frame = mat.ToImage<Gray, byte>();
 
-                    while ((mat = capture.QueryFrame()) != null)
-                    {
-                        var frame = mat.ToImage<Gray, byte>();
+                    // Write static header containing EXIF information
+                    // notable information data in that header:
+                    // - image resolution (640*512)
+                    // - emissivity (1)
+                    // - frame rate (30)
+                    // - and lots more, use exiftool and pass the frame header file to see all
+                    binaryWriter.Write(frameHeader);
 
-                        // Multiply and shift values
-                        var denormalized = frame.ConvertScale<ushort>(inverseScale, minValue);
+                    // Multiply and shift values
+                    var denormalized = frame.ConvertScale<ushort>(inverseScale, minValue);
 
-                        // Flatten data
-                        var data = denormalized.Data.Cast<ushort>().ToArray();
+                    // Flatten data
+                    var data = denormalized.Data.Cast<ushort>().ToArray();
 
-                        snapshotImage.EnterLock();
-                        snapshotImage.ImageProcessing.ReplaceSignalValues(data);
-                        snapshotImage.SaveSnapshot($@"{++i}.jpg");
-                        snapshotImage.ExitLock();
-                    }
+                    // Write image data
+                    var bytes = data.SelectMany(BitConverter.GetBytes).ToArray();
+                    binaryWriter.Write(bytes);
                 }
             }
         }
 
+        /// <summary>
+        /// Extracts parameters used to compress the file.
+        /// </summary>
+        /// <param name="sourceFile"></param>
+        /// <returns></returns>
         private static (double minValue, double scale) GetCompressionParameters(string sourceFile)
         {
             var tagFile = TagLib.File.Create(sourceFile);

@@ -80,6 +80,9 @@
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
+    <None Include="Resources\flir-seq-frame-header">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
