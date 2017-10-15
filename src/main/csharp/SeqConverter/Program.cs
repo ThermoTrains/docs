@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using SebastianHaeni.ThermoBox.IRCompressor;
 using SebastianHaeni.ThermoBox.IRDecompressor;
@@ -36,9 +37,9 @@ namespace SeqConverter
             return input != null && Path.GetExtension(input).ToLowerInvariant().Equals(".mp4");
         }
 
-        private static (string input, string output, IRSensorDataCompression.Mode mode) ParseArguments(string[] args)
+        private static (string input, string output, IRSensorDataCompression.Mode mode) ParseArguments(IReadOnlyList<string> args)
         {
-            if (args.Length != 2 && args.Length != 3)
+            if (args.Count != 2 && args.Count != 3)
             {
                 Console.WriteLine(@"Usage:
 seqconverter <input> <output> [mode]
@@ -59,7 +60,7 @@ Available modes:
             var output = args[1];
             var mode = IRSensorDataCompression.Mode.Other;
 
-            if (args.Length == 3)
+            if (args.Count == 3)
             {
                 Enum.TryParse(args[2], out mode);
             }
