@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRCompressor", "src\main\cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRDecompressor", "src\main\csharp\IRDecompressor\IRDecompressor.csproj", "{63807994-F8F2-4ADF-9BEA-6DA559566FBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeqConverter", "SeqConverter\SeqConverter.csproj", "{9F045547-5FB2-4C3D-B6FE-8C43D7E31116}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeqConverter", "src\main\csharp\SeqConverter\SeqConverter.csproj", "{9F045547-5FB2-4C3D-B6FE-8C43D7E31116}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

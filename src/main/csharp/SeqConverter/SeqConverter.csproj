@@ -48,24 +48,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\src\main\csharp\Config\SharedAssemblyInfo.cs">
+    <Compile Include="..\Config\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\src\main\csharp\Config\App.config">
+    <None Include="..\Config\App.config">
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\main\csharp\IRCompressor\IRCompressor.csproj">
+    <ProjectReference Include="..\IRCompressor\IRCompressor.csproj">
       <Project>{308451F1-52CF-4360-9107-0BA13603878B}</Project>
       <Name>IRCompressor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\main\csharp\IRDecompressor\IRDecompressor.csproj">
+    <ProjectReference Include="..\IRDecompressor\IRDecompressor.csproj">
       <Project>{63807994-F8F2-4ADF-9BEA-6DA559566FBC}</Project>
       <Name>IRDecompressor</Name>
     </ProjectReference>
