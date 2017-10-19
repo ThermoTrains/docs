@@ -4,6 +4,45 @@
   <h3>Einleitung</h3>
   <h3>Thermobox</h3>
   <h4>Hardware</h4>
+
+  <h5>RFID Reader</h5>
+  <p>
+    Alle Waggons der SBB sind mit einem RFID Chip ausgestettet, über den sie eindeutig identifizierbar sind. Ein detektierter Schaden könnte somit
+    eindeutig einem Waggon oder Zug zugeordnet werden. Der Einsatz eines RFID Readers ist also wünschenswert.
+  </p>
+  <p>
+    Eine erste Idee war den RFID Reader auch als Trigger für die Aufnahme mit den Kameras einzusetzen. Dies haben wir aber schnell verworfen,
+    da man mit einem Reader nur Züge aus einer Richtung erkennen kann. Um die Aufnahme zu starten benutzen wir die Farbkamera die laufend eine
+    Bewegungsdetektion macht.
+  </p>
+  <p>
+    <b>Anforderungen</b>
+    <ul>
+      <li>Extern anschliessbar an Thermobox</li>
+      <li>Outdoor tauglich</li>
+      <li>Auslesen von Zügen die mit max. 30km/h fahren</li>
+      <li>Brauchbare API / unterstützte Protokolle für die Anbindung an Thermobox SW</li>
+    </ul>
+  </p>
+  <p>
+    Die SBB hat bereits RFID Reader im Einsatz, z.B. in den Waschstrassen. Wir haben deshalb beim Hersteller Vilant AG nachgefragt,
+    ob sie uns bei unserem Projekt unterstützen und wir einen RFID Reader kaufen können. Vilant bietet RFID Reader für professionelle
+    Anwendungen in der Industrie wie bsp. in Lagern, Logistikzentren und eben auch im Bahnsektor. Die Produktpalette ersterckt sich von
+    Handlesegeräten bis Hochleistungsleser die Züge bei voller Geschwindigkeit auslesen können. Das richtige Produkt für unsere Zwecke
+    war also vorhanden. Nach einem ersten Gespräch mit Vilant wurde uns ein Testgerät inklusive Unterstütztung durch Entwickeler in Aussicht gestellt.
+    Die SBB war aufgrund andere Projekte auch an einem Kauf eines Readers interessiert, deshalb haben wir auch eine Offertanfrage gestellt.
+    Leider hat Vilant nie auf unsere Anfragen mit konkreten Ergebnissen reagiert, sondern uns immer wieder auf später vertröstet und noch nicht einmal
+    eine Offerte erstellt. Wir haben eine letzte Deadline für die gewünschte Offerte und einen Workshop mit Testgerät gestellt, welche Vilant verstreichen liess.
+    Deshalb haben wir uns entschieden die Zusammenarbeit abzubrechen und den RFID Reader vorerst nicht weiter zu berücksichtigen im Projekt.
+  </p>
+  <p>
+    Es ist Schade haben wir viel Zeit in die Abklärungen für einen RFID Reader gesteckt ohne Resultat. Für das erwähnte Projekt der SBB, das auch einen RFID Reader benötigt,
+    wird derzeit bei einem anderen Anbieter eine Offerte eingeholt. Evtl. ergibt sich da etwas. Auf jeden Fall ist unsere Software so gebaut, dass weitere Sensoren problemlos
+    eingebungen werden können. Zudem ist unser Aufnahmestandort an einer Waschstrasse, in welchen alle RFID-Chips der Waggons ausgelesen werden. Möglicherweise kann man die
+    Daten aus der Waschstrasse mit unseren Aufnahmen matchen (z.B. über Timestamps). Dies verfolgen wir momentan aber nicht aktiv weiter und fokussieren uns auf die Aufnahmen und
+    deren Analyse.
+  </p>
+
   <h4>Software</h4>
   <h3>Aufnahmestandorte</h3>
   <h3>Testaufbau</h3>
