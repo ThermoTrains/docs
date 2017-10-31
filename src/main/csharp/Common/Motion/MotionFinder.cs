@@ -1,27 +1,26 @@
+using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 using Emgu.CV.Util;
-using System.Drawing;
 using SebastianHaeni.ThermoBox.Common.Util;
 
-namespace SebastianHaeni.ThermoBox.IRCompressor.Motion
+namespace SebastianHaeni.ThermoBox.Common.Motion
 {
-    public class MotionFinder<TColor, TDepth>
-        where TColor : struct, IColor
+    public class MotionFinder<TDepth>
         where TDepth : new()
     {
-        private readonly Image<TColor, TDepth> _background;
+        private readonly Image<Gray, TDepth> _background;
 
-        public MotionFinder(Image<TColor, TDepth> background)
+        public MotionFinder(Image<Gray, TDepth> background)
         {
             _background = background;
         }
 
         public Rectangle? FindBoundingBox(
-            Image<TColor, TDepth> source,
-            TColor threshold,
-            TColor maxValue,
-            double minWidthFactor = .7)
+            Image<Gray, TDepth> source,
+            Gray threshold,
+            Gray maxValue)
         {
             // compute absolute diff between current frame and first frame
             var diff = _background.AbsDiff(source);
@@ -30,7 +29,7 @@ namespace SebastianHaeni.ThermoBox.IRCompressor.Motion
             var t = diff.ThresholdBinary(threshold, maxValue);
 
             // erode to get rid of small dots
-            t = t.Erode(3);
+            t = t.Erode(8);
 
             // dilate the threshold image to fill in holes
             t = t.Dilate(8);
@@ -47,17 +46,7 @@ namespace SebastianHaeni.ThermoBox.IRCompressor.Motion
             }
 
             // create bounding box of all contours
-            var bbox = MathUtil.GetMedianRectangle(contours);
-
-            if (bbox.Width < (source.Size.Width * minWidthFactor))
-            {
-                // => the motion area covers not almost the whole width
-                // this can be due by one the following reasons
-                // - it's the start of the train
-                // - it's the end of the train
-                // - a bird flew over the empty background
-                return null;
-            }
+            var bbox = MathUtil.GetMaxRectangle(contours);
 
             return bbox;
         }

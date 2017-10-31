@@ -9,7 +9,7 @@ namespace SebastianHaeni.ThermoBox.Common.Util
 {
     public static class MathUtil
     {
-        public static Rectangle GetMedianRectangle(VectorOfVectorOfPoint contours)
+        public static Rectangle GetMaxRectangle(VectorOfVectorOfPoint contours)
         {
             var rectangles = new List<Rectangle>();
             for (var i = 0; i < contours.Size; i++)
@@ -25,12 +25,15 @@ namespace SebastianHaeni.ThermoBox.Common.Util
         {
             var enumerable = rectangles as Rectangle[] ?? rectangles.ToArray();
 
+            var x = enumerable.Select(r => r.X).Min();
+            var y = enumerable.Select(r => r.Y).Min();
+
             return new Rectangle
             {
-                X = enumerable.Select(r => r.X).Min(),
-                Y = enumerable.Select(r => r.Y).Min(),
-                Width = enumerable.Select(r => r.Width).Max(),
-                Height = enumerable.Select(r => r.Height).Max(),
+                X = x,
+                Y = y,
+                Width = enumerable.Select(r => r.X + r.Width).Max() - x,
+                Height = enumerable.Select(r => r.Y + r.Height).Max() - y
             };
         }
 

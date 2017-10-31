@@ -29,8 +29,7 @@ namespace Test.Common.Util
         [TestMethod]
         public void TestGetMedianRectangleEmpty()
         {
-            Assert.AreEqual(new Rectangle(0, 0, 0, 0),
-                MathUtil.GetMedianRectangle(new List<Rectangle>()));
+            Assert.AreEqual(new Rectangle(0, 0, 0, 0), MathUtil.GetMedianRectangle(new List<Rectangle>()));
         }
 
         [TestMethod]

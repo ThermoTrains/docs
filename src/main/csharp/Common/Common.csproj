@@ -68,6 +68,13 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Component\Commands.cs" />
+    <Compile Include="Motion\EntryDetector.cs" />
+    <Compile Include="Motion\DetectorExtensions.cs" />
+    <Compile Include="Motion\Evaluator.cs" />
+    <Compile Include="Motion\MotionFinder.cs" />
+    <Compile Include="Motion\NextStates.cs" />
+    <Compile Include="Motion\DetectorState.cs" />
+    <Compile Include="Util\DebugUtil.cs" />
     <Compile Include="Util\MathUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Component\PubSub.cs" />

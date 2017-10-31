@@ -2,13 +2,13 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using Flir.Atlas.Image;
 using log4net;
-using SebastianHaeni.ThermoBox.IRCompressor.Motion;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Linq;
+using SebastianHaeni.ThermoBox.Common.Motion;
 using SebastianHaeni.ThermoBox.Common.Util;
 
 namespace SebastianHaeni.ThermoBox.IRCompressor
@@ -118,7 +118,7 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
 
             var background = GetSignalImage(thermalImage); // the background inherently is the first frame
             var scale = 256f / (maxValue - minValue);
-            var motionFinder = new MotionFinder<Gray, byte>(ScaleDown(background, minValue, scale));
+            var motionFinder = new MotionFinder<byte>(ScaleDown(background, minValue, scale));
             var boundingBoxes = new List<(int index, Rectangle rect)>();
 
             for (var i = 0; i < thermalImage.ThermalSequencePlayer.Count(); i++)
@@ -131,10 +131,18 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
                 // TODO do not hard code thresholds
                 var bbox = motionFinder.FindBoundingBox(image8, new Gray(20.0), new Gray(255.0));
 
-                if (bbox.HasValue)
+                if (!bbox.HasValue)
                 {
-                    boundingBoxes.Add((index: i, rect: bbox.Value));
+                    continue;
                 }
+
+                if (image8.Size.Width / (float) bbox.Value.Width < .5)
+                {
+                    // train does not cover enough of the horizontal span of the image
+                    continue;
+                }
+
+                boundingBoxes.Add((index: i, rect: bbox.Value));
             }
             return boundingBoxes;
         }

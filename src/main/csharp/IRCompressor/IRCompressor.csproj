@@ -73,7 +73,6 @@
     </Compile>
     <Compile Include="CompressorComponent.cs" />
     <Compile Include="IRSensorDataCompression.cs" />
-    <Compile Include="Motion\MotionFinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

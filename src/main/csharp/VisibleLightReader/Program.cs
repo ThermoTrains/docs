@@ -11,7 +11,7 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
 
         private static void Main()
         {
-            var filter = new Dictionary<string, string> {[CameraInfoKey.FriendlyName] = "Basler acA1920-25uc"};
+            var filter = new Dictionary<string, string> { [CameraInfoKey.FriendlyName] = "Basler acA1920-25uc (22450918)" };
             using (var camera = new Camera(filter, CameraSelectionStrategy.Unambiguous))
             {
                 camera.CameraOpened += Configuration.AcquireContinuous;
