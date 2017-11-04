@@ -62,7 +62,7 @@ gulp.task('docs:images', () => {
 });
 
 gulp.task('serve:docs', ['docs'], () => {
-  const server = gls.static('build/docs', 3000);
+  const server = gls.static('build/docs', 3003);
   server.start();
 
   // Restart the server when file changes
@@ -122,7 +122,7 @@ gulp.task('slides:images', () => {
 });
 
 gulp.task('serve:slides', ['slides'], () => {
-  const server = gls.static('build/slides', 3000);
+  const server = gls.static('build/slides', 3002);
   server.start();
 
   // Restart the server when file changes
