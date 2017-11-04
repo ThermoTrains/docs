@@ -66,21 +66,3 @@ Automatic detection of isolation deficiencies on rolling trains
   * `publish cmd:delivery:upload <file>` Uploads the file to a remote server
 
 </details>
-
-
-
-
-var ravenClient = new RavenClient("https://12d3c84af15542cda18bfdef43360302:6747f6221be84816a657d00ba0262071@sentry.io/238206");
-Capturing Exceptions
-
-Call out to the client in your catch block:
-
-try
-{
-    int i2 = 0;
-    int i = 10 / i2;
-}
-catch (Exception exception)
-{
-    ravenClient.Capture(new SentryEvent(exception));
-}
