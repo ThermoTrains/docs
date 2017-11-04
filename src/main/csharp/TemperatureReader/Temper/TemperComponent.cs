@@ -42,11 +42,11 @@ namespace SebastianHaeni.ThermoBox.TemperatureReader.Temper
                 // query data
             }
 
-            _bulk.ReadReport((report) =>
+            _bulk.ReadReport(report =>
             {
                 var rawReading = (report.Data[3] & 0xFF) + (report.Data[2] << 8);
 
-                var temperatureCelsius = (CalibrationScale * (rawReading * (125.0 / 32000.0))) + CalibrationOffset;
+                var temperatureCelsius = CalibrationScale * (rawReading * (125.0 / 32000.0)) + CalibrationOffset;
                 Log.Info($"Read {temperatureCelsius}°C from device");
 
                 // ensuring the recordings directory exists

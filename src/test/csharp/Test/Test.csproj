@@ -103,10 +103,6 @@
       <Project>{9f8c0ae7-5df6-4423-b46d-972d386900bc}</Project>
       <Name>IRReader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\main\csharp\RFIDReader\RFIDReader.csproj">
-      <Project>{83115a5f-45da-4746-b1d6-88c6635c6c9c}</Project>
-      <Name>RFIDReader</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\main\csharp\TemperatureReader\TemperatureReader.csproj">
       <Project>{109bb75c-1871-4b17-883c-1208269c0c5d}</Project>
       <Name>TemperatureReader</Name>

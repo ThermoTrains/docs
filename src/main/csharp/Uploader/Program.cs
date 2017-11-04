@@ -4,6 +4,7 @@ namespace SebastianHaeni.ThermoBox.Uploader
     {
         private static void Main()
         {
+            new UploadComponent().Run();
         }
     }
 }
