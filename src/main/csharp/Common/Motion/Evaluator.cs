@@ -53,7 +53,19 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
                 lastWidth = box.Width;
             }
 
-            return GetState(indicator < 0 ? DetectorState.Exit : DetectorState.Entry);
+            var referenceCount = BoundingBoxes.Count() - 1;
+
+            if (indicator == referenceCount)
+            {
+                return GetState(DetectorState.Entry);
+            }
+
+            if (indicator == -referenceCount)
+            {
+                return GetState(DetectorState.Exit);
+            }
+
+            return GetState(DetectorState.Nothing);
         }
 
         private DetectorState GetState(DetectorState state)

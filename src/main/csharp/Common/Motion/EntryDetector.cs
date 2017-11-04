@@ -16,7 +16,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
 
             var evaluator = current.GetEvaluator(background.Size);
 
-            var threshold = new Gray(40.0);
+            var threshold = new Gray(20.0);
             var maxValue = new Gray(255.0);
 
             evaluator.BoundingBoxes = images

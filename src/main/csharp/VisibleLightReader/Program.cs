@@ -5,67 +5,85 @@ using Basler.Pylon;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using log4net;
-using SebastianHaeni.ThermoBox.Common.Util;
+using SebastianHaeni.ThermoBox.Common.Motion;
 
 namespace SebastianHaeni.ThermoBox.VisibleLightReader
 {
     internal static class Program
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        private static void OnImageGrabbed(object sender, ImageGrabbedEventArgs e)
-        {
-            // The grab result is automatically disposed when the event call back returns.
-            // The grab result can be cloned using IGrabResult.Clone if you want to keep a copy of it (not shown in this sample).
-            var grabResult = e.GrabResult;
-            // Image grabbed successfully?
-            if (grabResult.GrabSucceeded)
-            {
-                // Access the image data.
-                Log.Info($"SizeX: {grabResult.Width}");
-                Log.Info($"SizeY: {grabResult.Height}");
-                byte[] buffer = grabResult.PixelData as byte[];
-                var image = new Image<Rgb, byte>(grabResult.Width, grabResult.Height) {Bytes = buffer};
-                DebugUtil.PreviewImages(new[] {image});
-            }
-            else
-            {
-                Log.Error($"Error: {grabResult.ErrorCode} {grabResult.ErrorDescription}");
-            }
-        }
+        private const int ANALYZE_SEQUENCE_IMAGES = 4;
 
         private static void Main()
         {
             var filter =
-                new Dictionary<string, string> {[CameraInfoKey.FriendlyName] = "Basler acA1920-25uc (22450918)"};
+                new Dictionary<string, string> { [CameraInfoKey.FriendlyName] = "Basler acA1920-25uc (22450918)" };
             using (var camera = new Camera(filter, CameraSelectionStrategy.Unambiguous))
             {
+                // Set the acquisition mode to free running continuous acquisition when the camera is opened.
                 camera.CameraOpened += Configuration.AcquireContinuous;
+
+                // Open the connection to the camera device.
                 camera.Open();
 
-                // Set a handler for processing the images.
-                camera.StreamGrabber.ImageGrabbed += OnImageGrabbed;
+                camera.StreamGrabber.Start(GrabStrategy.LatestImages, GrabLoop.ProvidedByUser);
 
-                camera.StreamGrabber.Start(GrabStrategy.LatestImages, GrabLoop.ProvidedByStreamGrabber);
+                var detector = new EntryDetector();
+                var state = DetectorState.Nothing;
+                var images = new Image<Gray, byte>[ANALYZE_SEQUENCE_IMAGES];
+                Image<Gray, byte> background = null;
+                var i = 0;
 
-                // Wait for user input to trigger the camera or exit the loop.
-                // Software triggering is used to trigger the camera device.
-                char key;
-                do
+                // Grab images.
+                while (true)
                 {
-                    Console.WriteLine("Press 't' to trigger the camera or 'e' to exit.");
-
-                    key = Console.ReadKey(true).KeyChar;
-                    if ((key == 't' || key == 'T'))
+                    // Wait for an image and then retrieve it. A timeout of 5000 ms is used.
+                    IGrabResult grabResult = camera.StreamGrabber.RetrieveResult(5000, TimeoutHandling.ThrowException);
+                    using (grabResult)
                     {
-                        // Execute the software trigger. Wait up to 100 ms until the camera is ready for trigger.
-                        if (camera.WaitForFrameTriggerReady(100, TimeoutHandling.ThrowException))
+                        // Image grabbed successfully?
+                        if (grabResult.GrabSucceeded)
                         {
-                            camera.ExecuteSoftwareTrigger();
+                            // Access the image data.
+                            byte[] buffer = grabResult.PixelData as byte[];
+                            var image = new Image<Gray, byte>(grabResult.Width, grabResult.Height)
+                            {
+                                Bytes = buffer
+                            };
+
+                            if (background == null)
+                            {
+                                background = image;
+                            }
+
+                            images[i] = image;
+                            i++;
+
+                            if (i == images.Length)
+                            {
+                                i = 0;
+                                var newState = detector.Detect(background, images, state);
+
+                                if (state != newState && newState != DetectorState.Nothing)
+                                {
+                                    Log.Info($"Detected {newState}");
+                                }
+                                state = newState;
+
+                                // dispose of references to improve memory consumption
+                                for (var k = 0; k < images.Length; k++)
+                                {
+                                    images[k] = null;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error: {0} {1}", grabResult.ErrorCode, grabResult.ErrorDescription);
+                            break;
                         }
                     }
                 }
-                while (key != 'e' && key != 'E');
 
                 // Stop grabbing.
                 camera.StreamGrabber.Stop();
