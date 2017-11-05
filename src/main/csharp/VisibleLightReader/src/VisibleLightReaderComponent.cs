@@ -12,6 +12,7 @@ using SebastianHaeni.ThermoBox.Common.Component;
 using SebastianHaeni.ThermoBox.Common.Motion;
 using SebastianHaeni.ThermoBox.Common.Util;
 using Configuration = Basler.Pylon.Configuration;
+using System.IO;
 
 namespace SebastianHaeni.ThermoBox.VisibleLightReader
 {
@@ -23,6 +24,8 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
 
         private static readonly Dictionary<string, string> CameraFilter =
             new Dictionary<string, string> {[CameraInfoKey.FriendlyName] = CameraName};
+
+        private static readonly string CaptureFolder = ConfigurationManager.AppSettings["CAPTURE_FOLDER"];
 
         private readonly Camera _camera;
         private readonly Recorder _recorder;
@@ -136,19 +139,31 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                     switch (newState)
                     {
                         case DetectorState.Entry when state != newState:
-                            Log.Info("Detected train entering. Starting capture {savestamp}");
-                            Publish(Commands.CaptureStop, FileUtil.GenerateTimestampFilename());
-                            _recorder.StartRecording(FileUtil.GenerateTimestampFilename());
+                            // TODO refactor into method
+                            var savestamp = FileUtil.GenerateTimestampFilename();
+                            Log.Info($"Detected train entering. Starting capture {savestamp}");
+                            Publish(Commands.CaptureStart, savestamp);
+
+                            // ensuring the recordings directory exists
+                            var recordingDirectory = new DirectoryInfo(CaptureFolder);
+                            if (!recordingDirectory.Exists)
+                            {
+                                recordingDirectory.Create();
+                            }
+
+                            var filename = $@"{CaptureFolder}\{savestamp}-visible.avi";
+                            _recorder.StartRecording(filename);
                             break;
                         case DetectorState.Exit when state != newState:
-                            Log.Info("Train exited. Stoping capture.");
+                            // TODO refactor into method
+                            Log.Info("Train exited. Stopping capture.");
                             Publish(Commands.CaptureStop, FileUtil.GenerateTimestampFilename());
+                            _recorder.StopRecording();
                             break;
                         case DetectorState.Nothing:
+                        default:
                             // nop
                             break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
                     }
 
                     state = newState;
