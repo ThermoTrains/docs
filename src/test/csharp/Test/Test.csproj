@@ -155,8 +155,8 @@
     <Error Condition="!Exists('..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)src\main\resources\FLIR.Atlas.x64.bat" "$(TargetDir)"
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\..\..\..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets" Condition="Exists('..\..\..\..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets')" />
   <Import Project="..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.targets')" />

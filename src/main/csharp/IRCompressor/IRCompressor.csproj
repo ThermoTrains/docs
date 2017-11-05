@@ -94,11 +94,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>xcopy "$(SolutionDir)lib\openh264*.dll" "$(TargetDir)" /Y /E /D
-
-"$(SolutionDir)src\main\resources\FLIR.Atlas.x64.bat" "$(TargetDir)"
-
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\..\..\..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets" Condition="Exists('..\..\..\..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
