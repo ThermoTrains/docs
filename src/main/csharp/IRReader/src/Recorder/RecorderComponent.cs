@@ -25,7 +25,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
         private readonly ThermalGigabitCamera _camera;
         private static string _currentRecording;
 
-        private static string FlirVideoFileName => $@"{_currentRecording}-Recording.seq";
+        private static string FlirVideoFileName => $@"{_currentRecording}-IR.seq";
 
         public RecorderComponent(ThermalGigabitCamera camera)
         {
@@ -44,8 +44,14 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
                 return;
             }
 
-            Log.Error("Lost connection to camera => Exiting");
-            Environment.Exit(1);
+            if (e.Status == ConnectionStatus.Disconnected) { 
+                Log.Error("Lost connection to camera => Exiting");
+                Environment.Exit(1);
+            }
+            else
+            {
+                Log.Info($"Camera conenction status changed: {e.Status}");
+            }
         }
 
         /// <summary>
@@ -113,7 +119,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             CreateDeviceParamsFiles(currentRecordingFilename);
 
             // Forwarding FLIR video to compress it.
-            Publish(Commands.Compress, currentRecordingFilename);
+            Publish(Commands.Compress, FlirVideoFileName);
         }
 
         /// <summary>
