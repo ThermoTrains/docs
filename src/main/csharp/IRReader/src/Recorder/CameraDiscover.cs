@@ -11,7 +11,7 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
 {
     internal static class CameraDiscover
     {
-        private static readonly string CameraName = ConfigurationManager.AppSettings["CAMERA_NAME"];
+        private static readonly string CameraName = ConfigurationManager.AppSettings["IR_CAMERA_NAME"];
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static readonly List<CameraDeviceInfo> FoundCameras = new List<CameraDeviceInfo>();
