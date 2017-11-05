@@ -4,9 +4,9 @@
   "description": "Study of train isolation deficiencies",
   "scripts": {
     "start": "npm run docs",
-    "docs": "opn http://localhost:3000 && npm run serve:docs",
+    "docs": "opn http://localhost:3003 && npm run serve:docs",
     "serve:docs": "gulp serve:docs",
-    "slides": "opn http://localhost:3000 && npm run serve:slides",
+    "slides": "opn http://localhost:3002 && npm run serve:slides",
     "serve:slides": "gulp serve:slides",
     "build": "gulp && npm run build:docs:pdf && opn ./build/docs/thermotrains.pdf",
     "build:docs": "npm run build:docs:html && npm run build:docs:pdf && opn ./build/docs/thermotrains.pdf",

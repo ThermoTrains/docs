@@ -1,5 +1,5 @@
 <section>
-  <h3>Ausgangslage</h3>
+  <h2>Ausgangslage</h2>
   <ul>
     <li>
       Energieeinsparungsprojekt der SBB<br>
@@ -13,11 +13,11 @@
 </section>
 
 <section>
-  <h3>Zeitplan</h3>
+  <h2>Zeitplan</h2>
   <table>
     <tr>
       <td><b>Projekt 2</b></td>
-      <td>Machbarkeit abklären und Hardware evaluieren</td>
+      <td>Machbarkeit abklären und IR-Kamera evaluieren</td>
     </tr>
     <tr>
       <td><b>Bachelor Thesis</b></td>
@@ -27,99 +27,67 @@
 </section>
 
 <section>
-  <h3>Problemstellung</h3>
-  <img src="images/sbb_ic2000.jpg">
+  <h2>Problemstellung</h2>
+  <img src="images/sbb_ic2000.png">
 </section>
 
 <section data-background-image="images/sbb_ic2000_2.png"
          data-background-size="contain">
 </section>
 
+<section data-background-image="images/firework.gif"
+         data-background-size="contain">
+  <h2>Thermobox</h2>
+</section>
+
 <section>
-  <h3>Kameratypen</h3>
+  <h2>Anforderungen</h2>
   <ul>
-    <li>
-      Thermal<br>
-      <small>Relative Temperaturen</small>
-    </li>
-    <li>
-      Thermographisch<br>
-      <small>Absolute Temperaturen</small>
-    </li>
-  </ul>
-</section>
-
-<section data-background-video="images/thermal.mp4"
-         data-background-video-muted
-         data-background-video-loop
-         data-background-size="contain">
-  <h3 class="fragment fade-out">Thermal Kamera</h3>
-</section>
-
-<section data-background-video="images/thermography.mp4"
-         data-background-video-muted
-         data-background-video-loop
-         data-background-size="contain">
-  <h3 class="fragment fade-out">Thermografische Kamera</h3>
-</section>
-
-<section data-background-image="images/making_of.jpg"
-         data-background-size="contain">
-  <h3 class="fragment fade-out"
-      style="color: #333; background: rgba(255,255,255,.5);">Making Of</h3>
-</section>
-
-<section>
-  <h3>Sensortypen</h3>
-  <ol>
-    <li>Microbolometer</li>
-    <li>Indium Antimonide</li>
-  </ol>
-</section>
-
-<section>
-  <h3>Microbolometer</h3>
-  <ul>
-    <li>unteres Preissegment</li>
-    <li>Detektionsmaterial erwärmt sich durch Infrarotstrahlung</li>
-    <li>Auslesetakt simuliert einen Verschluss</li>
-    <li>Trägheit: schnelle Bewegungen "verschmieren"</li>
+    <li>Outdoor tauglich</li>
+    <li>Nur Stromanschluss</li>
+    <li>Autom. Aufnahme</li>
+    <li>Upload auf Server</li>
+    <li>Remotezugang</li>
+    <li>Zügen fahren max. 30km/h</li>
   </ul>
 </section>
 
 <section>
-  <h3>Indium Antimonide</h3>
-  <ul>
-    <li>Gekühlt auf bis zu 4&deg; Kelvin</li>
-    <li>oberes Preissegment</li>
-    <li>Detektiert Photonen &rarr; schnell</li>
-    <li>Anwendung auch in Armee</li>
-  </ul>
+  <img src="images/kabine_blueprint.png" width="48%">
+  <img src="images/kabine_innenleben.png" width="48%">
 </section>
 
-<section>
-  <h3>Evaluierte Kamera</h3>
-  <img src="images/camera.png">
-</section>
+<section data-background-image="images/thermobox/front_nahe.jpg" data-background-size="contain"></section>
+<section data-background-image="images/thermobox/front_ganz.jpg" data-background-size="contain"></section>
+<section data-background-image="images/thermobox/innenleben.jpg" data-background-size="contain"></section>
+<section data-background-image="images/thermobox/kameras.jpg" data-background-size="contain"></section>
 
 <section>
-  <h3>Specs</h3>
+  <h2>Specs</h2>
   <table>
     <tr>
-      <td><b>Auflösung</b></td>
-      <td>640 x 512</td>
+      <td><b>Farbkamera</b></td>
+      <td>Full HD,<br/>76° HFOV & 58° VFOV</td>
     </tr>
     <tr>
-      <td><b>FOV</b></td>
-      <td>45&deg; (13mm)</td>
+      <td><b>IR-Kamera</b></td>
+      <td>512 x 640px, 45° FOV</td>
     </tr>
     <tr>
-      <td><b>Framerate</b></td>
-      <td>30 Hz</td>
+      <td><b>Mini-PC</b></td>
+      <td>Quadcore i7 Industrie-PC, LTE-Modul</td>
     </tr>
     <tr>
-      <td><b>Preis</b></td>
-      <td>~8'000 CHF</td>
+      <td><b>Temperatursensor</b></td>
+      <td>für Aussentemperatur</td>
+    </tr>
+    <tr>
+      <td><b>Heizlüfter/Thermostat</b></td>
+      <td>Kondenzwasserbildung</td>
+    </tr>
+    <tr>
+      <td><b>Doppelwandgehäuse</b></td>
+      <td>IP55 zertifiziert</td>
     </tr>
   </table>
 </section>
