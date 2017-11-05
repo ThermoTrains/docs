@@ -69,11 +69,11 @@
     <Compile Include="..\..\..\main\csharp\Config\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Common\Motion\EntryDetectorTest.cs" />
-    <Compile Include="Common\Motion\MotionFinderTest.cs" />
-    <Compile Include="Delivery\IRCompressor\IRSensorDataCompressionTest.cs" />
-    <Compile Include="Common\Util\MathUtilTest.cs" />
-    <Compile Include="Delivery\IRDecompressor\IRSensorDataDecompressionTest.cs" />
+    <Compile Include="src\Common\Motion\EntryDetectorTest.cs" />
+    <Compile Include="src\Common\Motion\MotionFinderTest.cs" />
+    <Compile Include="src\Delivery\IRCompressor\IRSensorDataCompressionTest.cs" />
+    <Compile Include="src\Common\Util\MathUtilTest.cs" />
+    <Compile Include="src\Delivery\IRDecompressor\IRSensorDataDecompressionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

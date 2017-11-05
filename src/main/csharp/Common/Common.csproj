@@ -67,19 +67,19 @@
     <Compile Include="..\Config\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Component\Commands.cs" />
-    <Compile Include="Motion\EntryDetector.cs" />
-    <Compile Include="Motion\DetectorExtensions.cs" />
-    <Compile Include="Motion\Evaluator.cs" />
-    <Compile Include="Motion\MotionFinder.cs" />
-    <Compile Include="Motion\NextStates.cs" />
-    <Compile Include="Motion\DetectorState.cs" />
-    <Compile Include="Util\DebugUtil.cs" />
-    <Compile Include="Util\FileUtil.cs" />
-    <Compile Include="Util\MathUtil.cs" />
+    <Compile Include="src\Component\Commands.cs" />
+    <Compile Include="src\Motion\EntryDetector.cs" />
+    <Compile Include="src\Motion\DetectorExtensions.cs" />
+    <Compile Include="src\Motion\Evaluator.cs" />
+    <Compile Include="src\Motion\MotionFinder.cs" />
+    <Compile Include="src\Motion\NextStates.cs" />
+    <Compile Include="src\Motion\DetectorState.cs" />
+    <Compile Include="src\Util\DebugUtil.cs" />
+    <Compile Include="src\Util\FileUtil.cs" />
+    <Compile Include="src\Util\MathUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Component\PubSub.cs" />
-    <Compile Include="Component\ThermoBoxComponent.cs" />
+    <Compile Include="src\Component\PubSub.cs" />
+    <Compile Include="src\Component\ThermoBoxComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Config\App.config">

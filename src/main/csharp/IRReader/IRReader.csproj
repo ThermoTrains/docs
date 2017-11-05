@@ -60,12 +60,12 @@
     <Compile Include="..\Config\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Recorder\CameraDiscover.cs" />
-    <Compile Include="DeviceParameters\DeviceParameter.cs" />
-    <Compile Include="DeviceParameters\DeviceParameters.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="src\Recorder\CameraDiscover.cs" />
+    <Compile Include="src\DeviceParameters\DeviceParameter.cs" />
+    <Compile Include="src\DeviceParameters\DeviceParameters.cs" />
+    <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Recorder\RecorderComponent.cs" />
+    <Compile Include="src\Recorder\RecorderComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Config\App.config">

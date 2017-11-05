@@ -71,9 +71,9 @@
     <Compile Include="..\Config\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="CompressorComponent.cs" />
-    <Compile Include="IRSensorDataCompression.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="src\CompressorComponent.cs" />
+    <Compile Include="src\IRSensorDataCompression.cs" />
+    <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +91,7 @@
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>xcopy "$(SolutionDir)lib\openh264*.dll" "$(TargetDir)" /Y /E /D
