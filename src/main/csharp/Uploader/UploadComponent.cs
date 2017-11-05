@@ -61,10 +61,10 @@ namespace SebastianHaeni.ThermoBox.Uploader
             var fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
             sourceStream.Close();
             request.ContentLength = fileContents.Length;
-
+            
             Log.Info(
                 $"Uploading {filePath} to {_requestUriString}, " +
-                $"File Size: {FileUtil.GetSizeRepresentation(fileContents.Length)}");
+                $"File Size: {FileUtil.GetSizeRepresentation((ulong) fileContents.Length)}");
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -86,6 +86,9 @@ namespace SebastianHaeni.ThermoBox.Uploader
                 $"Status: {response.StatusDescription.Replace(Environment.NewLine, " ")}");
 
             response.Close();
+
+            Log.Info($"Moving file to recycle bin: {filePath}");
+            FileUtil.SendToTrash(filePath);
         }
     }
 }

@@ -1,7 +1,7 @@
 using log4net;
-using System.IO;
 using System.Reflection;
 using SebastianHaeni.ThermoBox.Common.Component;
+using SebastianHaeni.ThermoBox.Common.Util;
 
 namespace SebastianHaeni.ThermoBox.IRCompressor
 {
@@ -16,8 +16,8 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
                 var outputVideoFile = $"{sourceFile}.avi";
                 IRSensorDataCompression.Compress(sourceFile, outputVideoFile, IRSensorDataCompression.Mode.Train);
 
-                Log.Info($"Deleting original file {sourceFile}");
-                File.Delete(sourceFile);
+                Log.Info($"Moving file to recycle bin: {sourceFile}");
+                FileUtil.MoveToRecycleBin(sourceFile);
 
                 Publish(Commands.Upload, outputVideoFile);
             });
