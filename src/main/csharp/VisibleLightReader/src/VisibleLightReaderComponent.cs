@@ -31,12 +31,13 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
         private readonly Recorder _recorder;
         private readonly Size _size;
 
-        private readonly PixelDataConverter _converter = new PixelDataConverter()
+        private readonly PixelDataConverter _converter = new PixelDataConverter
         {
             OutputPixelFormat = PixelType.RGB8packed
         };
 
         private const int AnalyzeSequenceImages = 4;
+        private const int ErrorThreshold = 5;
 
         public VisibleLightReaderComponent()
         {
@@ -57,6 +58,10 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
 
             // Setup recorder
             _recorder = new Recorder(fps, _size, true);
+
+            // Setup subscriptions
+            Subscription(Commands.CaptureStart, (channel, filename) => StartRecording(filename));
+            Subscription(Commands.CaptureStop, (channel, filename) => StopRecording());
 
             // Start detecting asynchronously
             new Task(DetectIncomingTrains).Start();
@@ -84,6 +89,8 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             // Buffer to put debayered RGB image into (3 channels)
             var convertedBuffer = new byte[_size.Width * _size.Height * 3];
 
+            var errorCount = 0;
+
             // Grab images.
             while (true)
             {
@@ -96,6 +103,14 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                     if (!grabResult.GrabSucceeded)
                     {
                         Log.Error($"Error: {grabResult.ErrorCode} {grabResult.ErrorDescription}");
+                        errorCount++;
+
+                        if (errorCount > ErrorThreshold)
+                        {
+                            Log.Error("Too many errors. Exiting detection. Not exiting recoding.");
+                            break;
+                        }
+
                         continue;
                     }
 
@@ -139,30 +154,12 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                     switch (newState)
                     {
                         case DetectorState.Entry when state != newState:
-                            // TODO refactor into method
-                            var savestamp = FileUtil.GenerateTimestampFilename();
-                            Log.Info($"Detected train entering. Starting capture {savestamp}");
+                            var savestamp = StartRecording();
                             Publish(Commands.CaptureStart, savestamp);
-
-                            // ensuring the recordings directory exists
-                            var recordingDirectory = new DirectoryInfo(CaptureFolder);
-                            if (!recordingDirectory.Exists)
-                            {
-                                recordingDirectory.Create();
-                            }
-
-                            var filename = $@"{CaptureFolder}\{savestamp}-visible.avi";
-                            _recorder.StartRecording(filename);
                             break;
                         case DetectorState.Exit when state != newState:
-                            // TODO refactor into method
-                            Log.Info("Train exited. Stopping capture.");
+                            StopRecording();
                             Publish(Commands.CaptureStop, FileUtil.GenerateTimestampFilename());
-                            _recorder.StopRecording();
-                            break;
-                        case DetectorState.Nothing:
-                        default:
-                            // nop
                             break;
                     }
 
@@ -175,6 +172,36 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                     }
                 }
             }
+        }
+
+        private string StartRecording()
+        {
+            var savestamp = FileUtil.GenerateTimestampFilename();
+
+            return StartRecording(savestamp);
+        }
+
+        private string StartRecording(string savestamp)
+        {
+            Log.Info($"Detected train entering. Starting capture {savestamp}");
+
+            // ensuring the recordings directory exists
+            var recordingDirectory = new DirectoryInfo(CaptureFolder);
+            if (!recordingDirectory.Exists)
+            {
+                recordingDirectory.Create();
+            }
+
+            var filename = $@"{CaptureFolder}\{savestamp}-visible.avi";
+            _recorder.StartRecording(filename);
+
+            return savestamp;
+        }
+
+        private void StopRecording()
+        {
+            Log.Info("Train exited. Stopping capture.");
+            _recorder.StopRecording();
         }
 
         public void Dispose()
