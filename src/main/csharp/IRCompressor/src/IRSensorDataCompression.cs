@@ -67,21 +67,21 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
 
             thermalImage.ThermalSequencePlayer.SelectedIndex = firstFrame;
 
-            var compression = VideoWriter.Fourcc('H', '2', '6', '4');
             var fps = (int) thermalImage.ThermalSequencePlayer.FrameRate;
 
-            using (var videoWriter = new VideoWriter(outputVideoFile, compression, fps, thermalImage.Size, false))
+            var recorder = new Recorder(fps, thermalImage.Size).StartRecording(outputVideoFile);
+
+            while (thermalImage.ThermalSequencePlayer.SelectedIndex < lastFrame)
             {
-                while (thermalImage.ThermalSequencePlayer.SelectedIndex < lastFrame)
-                {
-                    var image = GetSignalImage(thermalImage);
-                    thermalImage.ThermalSequencePlayer.Next();
+                var image = GetSignalImage(thermalImage);
+                thermalImage.ThermalSequencePlayer.Next();
 
-                    var image8 = ScaleDown(image, minTrain, trainScale);
+                var image8 = ScaleDown(image, minTrain, trainScale);
 
-                    videoWriter.Write(image8.Mat);
-                }
+                recorder.Write(image8);
             }
+
+            recorder.StopRecording();
         }
 
         private static (int minValue, int maxValue) FindMinMaxValues(ThermalImageFile thermalImage)
@@ -128,8 +128,8 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
 
                 var image8 = ScaleDown(image, minValue, scale);
 
-                // TODO do not hard code thresholds
-                var bbox = motionFinder.FindBoundingBox(image8, new Gray(20.0), new Gray(255.0));
+                // TODO do not hard code threshold
+                var bbox = motionFinder.FindBoundingBox(image8, new Gray(20.0), new Gray(byte.MaxValue));
 
                 if (!bbox.HasValue)
                 {

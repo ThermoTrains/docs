@@ -80,6 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Component\PubSub.cs" />
     <Compile Include="src\Component\ThermoBoxComponent.cs" />
+    <Compile Include="src\Util\Recorder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Config\App.config">
