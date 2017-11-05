@@ -18,7 +18,7 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static readonly string CameraName = ConfigurationManager.AppSettings["IR_CAMERA_NAME"];
+        private static readonly string CameraName = ConfigurationManager.AppSettings["VISIBLE_LIGHT_CAMERA_NAME"];
 
         private static readonly Dictionary<string, string> CameraFilter =
             new Dictionary<string, string> {[CameraInfoKey.FriendlyName] = CameraName};
