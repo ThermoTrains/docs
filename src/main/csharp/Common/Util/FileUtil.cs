@@ -33,15 +33,15 @@ namespace SebastianHaeni.ThermoBox.Common.Util
         /// Moves a file into the Windows Recycle bin. Use the settings on the recycle bin
         /// to define the size limit of the recycle bin folder.
         /// </summary>
-        public static void SendToTrash(string filepath)
+        public static void MoveToRecycleBin(string filepath)
         {
             if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
             {
-                SendToTrashInternal(filepath);
+                MoveToRecycleBinInternal(filepath);
             }
             else
             {
-                var staThread = new Thread(SendToTrashInternal);
+                var staThread = new Thread(MoveToRecycleBinInternal);
                 staThread.SetApartmentState(ApartmentState.STA);
                 staThread.Start(filepath);
                 staThread.Join();
@@ -56,7 +56,7 @@ namespace SebastianHaeni.ThermoBox.Common.Util
         /// prefer not to ship other dlls as they normally need to be deployed to 
         /// the GAC. So this is easiest, although not very pretty.
         /// </summary>
-        private static void SendToTrashInternal(object filepath)
+        private static void MoveToRecycleBinInternal(object filepath)
         {
             // Reference to shell instance.
             var shell = new Shell();

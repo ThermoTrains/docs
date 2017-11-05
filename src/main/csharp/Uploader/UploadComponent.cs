@@ -88,7 +88,7 @@ namespace SebastianHaeni.ThermoBox.Uploader
             response.Close();
 
             Log.Info($"Moving file to recycle bin: {filePath}");
-            FileUtil.SendToTrash(filePath);
+            FileUtil.MoveToRecycleBin(filePath);
         }
     }
 }
