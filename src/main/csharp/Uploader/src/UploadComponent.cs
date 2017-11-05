@@ -57,20 +57,18 @@ namespace SebastianHaeni.ThermoBox.Uploader
             request.Credentials = new NetworkCredential(_username, _password);
 
             // Copy the contents of the file to the request stream.  
-            var sourceStream = new StreamReader(filePath);
-            var fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
-            sourceStream.Close();
-            request.ContentLength = fileContents.Length;
+            var sourceBytes = File.ReadAllBytes(filePath);
+            request.ContentLength = sourceBytes.Length;
             
             Log.Info(
                 $"Uploading {filePath} to {_requestUriString}, " +
-                $"File Size: {FileUtil.GetSizeRepresentation((ulong) fileContents.Length)}");
+                $"File Size: {FileUtil.GetSizeRepresentation((ulong)sourceBytes.Length)}");
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
             var requestStream = request.GetRequestStream();
-            requestStream.Write(fileContents, 0, fileContents.Length);
+            requestStream.Write(sourceBytes, 0, sourceBytes.Length);
             requestStream.Close();
 
             var response = (FtpWebResponse) request.GetResponse();
