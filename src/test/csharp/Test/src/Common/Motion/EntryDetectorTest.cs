@@ -64,6 +64,8 @@ namespace Test.Common.Motion
         public void DetectLeftExitTest()
         {
             var background = new Image<Rgb, byte>(@"Resources\train-background.jpg").Convert<Gray, byte>();
+            CvInvoke.Flip(background, background, FlipType.Horizontal);
+
             var images = Enumerable.Range(1, 4)
                 .Select(i => new Image<Rgb, byte>($@"Resources\train-{i}.jpg"))
                 .Select(image => image.Convert<Gray, byte>())

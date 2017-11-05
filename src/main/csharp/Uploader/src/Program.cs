@@ -1,10 +1,12 @@
+using SebastianHaeni.ThermoBox.Common.Component;
+
 namespace SebastianHaeni.ThermoBox.Uploader
 {
     internal static class Program
     {
         private static void Main()
         {
-            new UploadComponent().Run();
+            ComponentLauncher.Launch(() => new UploadComponent());
         }
     }
 }

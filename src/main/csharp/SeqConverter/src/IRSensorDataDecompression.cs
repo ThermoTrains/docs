@@ -1,10 +1,10 @@
 using System;
 using System.IO;
+using System.Linq;
 using Emgu.CV;
 using Emgu.CV.Structure;
-using System.Linq;
 
-namespace SebastianHaeni.ThermoBox.IRDecompressor
+namespace SebastianHaeni.ThermoBox.SeqConverter
 {
     public static class IRSensorDataDecompression
     {

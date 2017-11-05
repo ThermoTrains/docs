@@ -88,7 +88,7 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)src\main\resources\FLIR.Atlas.x64.bat" "$(TargetDir)"
+</PreBuildEvent>
   </PropertyGroup>
 </Project>

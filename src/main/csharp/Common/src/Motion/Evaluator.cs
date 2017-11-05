@@ -30,7 +30,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
             var leftBound = first.X < threshold;
             var rightBound = first.X + first.Width > _size.Width - threshold;
 
-            if (leftBound == rightBound)
+            if (!leftBound && !rightBound)
             {
                 return GetState(DetectorState.Nothing);
             }

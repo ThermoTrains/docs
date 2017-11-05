@@ -39,11 +39,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Emgu.CV.UI, Version=3.2.0.2721, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Emgu.CV.3.2.0.2721\lib\net35\Emgu.CV.UI.dll</HintPath>
+    <Reference Include="Emgu.CV.UI, Version=3.3.0.2824, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\EMGU.CV.3.3.0.2824\lib\net35\Emgu.CV.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Emgu.CV.World, Version=3.2.0.2721, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Emgu.CV.3.2.0.2721\lib\net35\Emgu.CV.World.dll</HintPath>
+    <Reference Include="Emgu.CV.World, Version=3.3.0.2824, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\EMGU.CV.3.3.0.2824\lib\net35\Emgu.CV.World.dll</HintPath>
     </Reference>
     <Reference Include="Flir.Atlas.Image">
       <HintPath>$(FLIR_Atlas5)bin\$(Platform)\Flir.Atlas.Image.dll</HintPath>
@@ -73,7 +73,7 @@
     <Compile Include="src\Common\Motion\MotionFinderTest.cs" />
     <Compile Include="src\Delivery\IRCompressor\IRSensorDataCompressionTest.cs" />
     <Compile Include="src\Common\Util\MathUtilTest.cs" />
-    <Compile Include="src\Delivery\IRDecompressor\IRSensorDataDecompressionTest.cs" />
+    <Compile Include="src\Delivery\SeqConverter\IRSensorDataDecompressionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -95,13 +95,13 @@
       <Project>{308451F1-52CF-4360-9107-0BA13603878B}</Project>
       <Name>IRCompressor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\main\csharp\IRDecompressor\IRDecompressor.csproj">
-      <Project>{63807994-f8f2-4adf-9bea-6da559566fbc}</Project>
-      <Name>IRDecompressor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\main\csharp\IRReader\IRReader.csproj">
       <Project>{9f8c0ae7-5df6-4423-b46d-972d386900bc}</Project>
       <Name>IRReader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\main\csharp\SeqConverter\SeqConverter.csproj">
+      <Project>{9F045547-5FB2-4C3D-B6FE-8C43D7E31116}</Project>
+      <Name>SeqConverter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\main\csharp\TemperatureReader\TemperatureReader.csproj">
       <Project>{109bb75c-1871-4b17-883c-1208269c0c5d}</Project>
@@ -150,14 +150,16 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.props'))" />
     <Error Condition="!Exists('..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\EMGU.CV.3.3.0.2824\build\Emgu.CV.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\EMGU.CV.3.3.0.2824\build\Emgu.CV.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>xcopy "$(SolutionDir)lib\openh264*.dll" "$(TargetDir)" /Y /E /D
+
+"$(SolutionDir)src\main\resources\FLIR.Atlas.x64.bat" "$(TargetDir)"
+</PreBuildEvent>
   </PropertyGroup>
-  <Import Project="..\..\..\..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets" Condition="Exists('..\..\..\..\packages\Emgu.CV.3.2.0.2721\build\Emgu.CV.targets')" />
   <Import Project="..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\..\..\..\packages\MSTest.TestAdapter.1.2.0\build\net45\MSTest.TestAdapter.targets')" />
+  <Import Project="..\..\..\..\packages\EMGU.CV.3.3.0.2824\build\Emgu.CV.targets" Condition="Exists('..\..\..\..\packages\EMGU.CV.3.3.0.2824\build\Emgu.CV.targets')" />
 </Project>

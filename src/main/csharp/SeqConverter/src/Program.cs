@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using SebastianHaeni.ThermoBox.IRCompressor;
-using SebastianHaeni.ThermoBox.IRDecompressor;
 
-namespace SeqConverter
+namespace SebastianHaeni.ThermoBox.SeqConverter
 {
     internal static class Program
     {

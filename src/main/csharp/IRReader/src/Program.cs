@@ -1,3 +1,4 @@
+using SebastianHaeni.ThermoBox.Common.Component;
 using SebastianHaeni.ThermoBox.IRReader.Recorder;
 
 namespace SebastianHaeni.ThermoBox.IRReader
@@ -6,8 +7,8 @@ namespace SebastianHaeni.ThermoBox.IRReader
     {
         private static void Main()
         {
-            var camera = CameraDiscover.InitCameraDiscovery().GetAwaiter().GetResult();
-            new RecorderComponent(camera).Run();
+            ComponentLauncher.Launch(() =>
+                new RecorderComponent(CameraDiscover.InitCameraDiscovery().GetAwaiter().GetResult()));
         }
     }
 }

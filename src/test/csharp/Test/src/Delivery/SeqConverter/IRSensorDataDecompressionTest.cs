@@ -1,8 +1,8 @@
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SebastianHaeni.ThermoBox.IRDecompressor;
+using SebastianHaeni.ThermoBox.SeqConverter;
 
-namespace Test.Delivery.IRDecompressor
+namespace Test.Delivery.SeqConverter
 {
     [TestClass]
     public class IRSensorDataDecompressionTest

@@ -1,3 +1,4 @@
+using SebastianHaeni.ThermoBox.Common.Component;
 using SebastianHaeni.ThermoBox.TemperatureReader.Temper;
 
 namespace SebastianHaeni.ThermoBox.TemperatureReader
@@ -6,8 +7,8 @@ namespace SebastianHaeni.ThermoBox.TemperatureReader
     {
         private static void Main()
         {
-            var temper = new TemperDiscover().DiscoverTemper().GetAwaiter().GetResult();
-            new TemperComponent(temper).Run();
+            ComponentLauncher.Launch(() =>
+                new TemperComponent(new TemperDiscover().DiscoverTemper().GetAwaiter().GetResult()));
         }
     }
 }
