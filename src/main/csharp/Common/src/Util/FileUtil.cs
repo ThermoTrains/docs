@@ -49,6 +49,15 @@ namespace SebastianHaeni.ThermoBox.Common.Util
         }
 
         /// <summary>
+        /// Generates a timestamp that can be used as a filename.
+        /// </summary>
+        /// <returns></returns>
+        public static string GenerateTimestampFilename()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd@HH-mm-ss");
+        }
+
+        /// <summary>
         /// Ugh! This runs script tasks on MTA threads but Shell32 only wants to 
         /// run on STA thread. So start a new STA thread to call new Shell, block 
         /// till it's done, then return. 

@@ -69,19 +69,18 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
 
             var fps = (int) thermalImage.ThermalSequencePlayer.FrameRate;
 
-            var recorder = new Recorder(fps, thermalImage.Size).StartRecording(outputVideoFile);
-
-            while (thermalImage.ThermalSequencePlayer.SelectedIndex < lastFrame)
+            using (var recorder = new Recorder(fps, thermalImage.Size).StartRecording(outputVideoFile))
             {
-                var image = GetSignalImage(thermalImage);
-                thermalImage.ThermalSequencePlayer.Next();
+                while (thermalImage.ThermalSequencePlayer.SelectedIndex < lastFrame)
+                {
+                    var image = GetSignalImage(thermalImage);
+                    thermalImage.ThermalSequencePlayer.Next();
 
-                var image8 = ScaleDown(image, minTrain, trainScale);
+                    var image8 = ScaleDown(image, minTrain, trainScale);
 
-                recorder.Write(image8);
+                    recorder.Write(image8);
+                }
             }
-
-            recorder.StopRecording();
         }
 
         private static (int minValue, int maxValue) FindMinMaxValues(ThermalImageFile thermalImage)

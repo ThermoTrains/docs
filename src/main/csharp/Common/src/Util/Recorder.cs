@@ -1,9 +1,10 @@
+using System;
 using System.Drawing;
 using Emgu.CV;
 
 namespace SebastianHaeni.ThermoBox.Common.Util
 {
-    public class Recorder
+    public class Recorder : IDisposable
     {
         private static readonly int Compression = VideoWriter.Fourcc('H', '2', '6', '4');
         private readonly int _fps;
@@ -38,13 +39,13 @@ namespace SebastianHaeni.ThermoBox.Common.Util
 
         public void StopRecording()
         {
-            if (_videoWriter == null)
-            {
-                return;
-            }
-
-            _videoWriter.Dispose();
+            _videoWriter?.Dispose();
             _videoWriter = null;
+        }
+
+        public void Dispose()
+        {
+            _videoWriter?.Dispose();
         }
     }
 }
