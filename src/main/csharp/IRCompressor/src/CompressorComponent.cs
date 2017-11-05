@@ -14,7 +14,7 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
             Subscription(Commands.Compress, (channel, sourceFile) =>
             {
                 var outputVideoFile = $"{sourceFile}.avi";
-                IRSensorDataCompression.Compress(sourceFile, outputVideoFile, IRSensorDataCompression.Mode.Train);
+                IRSensorDataCompression.Compress(sourceFile, outputVideoFile, IRSensorDataCompression.Mode.Other);
 
                 Log.Info($"Moving file to recycle bin: {sourceFile}");
                 FileUtil.MoveToRecycleBin(sourceFile);

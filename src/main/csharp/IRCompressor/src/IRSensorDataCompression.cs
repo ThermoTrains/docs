@@ -80,6 +80,8 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
 
                     recorder.Write(image8);
                 }
+
+                Log.Info($"Created video with {recorder.FrameCounter} frames");
             }
         }
 
