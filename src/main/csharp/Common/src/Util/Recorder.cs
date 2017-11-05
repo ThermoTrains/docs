@@ -10,12 +10,14 @@ namespace SebastianHaeni.ThermoBox.Common.Util
         private readonly int _fps;
         private readonly Size _size;
         private VideoWriter _videoWriter;
+        private bool _isColor;
         public int FrameCounter { get; private set; }
 
-        public Recorder(int fps, Size size)
+        public Recorder(int fps, Size size, bool isColor)
         {
             _fps = fps;
             _size = size;
+            _isColor = isColor;
         }
 
         public Recorder StartRecording(string filepath)
@@ -26,7 +28,7 @@ namespace SebastianHaeni.ThermoBox.Common.Util
             }
 
             FrameCounter = 0;
-            _videoWriter = new VideoWriter(filepath, Compression, _fps, _size, true);
+            _videoWriter = new VideoWriter(filepath, Compression, _fps, _size, _isColor);
 
             return this;
         }
@@ -34,11 +36,13 @@ namespace SebastianHaeni.ThermoBox.Common.Util
         public Recorder Write<TColor>(Image<TColor, byte> image)
             where TColor : struct, IColor
         {
-            if (_videoWriter != null)
+            if (_videoWriter == null)
             {
-                FrameCounter++;
-                _videoWriter.Write(image.Mat);
+                return this;
             }
+
+            FrameCounter++;
+            _videoWriter.Write(image.Mat);
 
             return this;
         }

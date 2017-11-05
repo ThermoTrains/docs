@@ -56,7 +56,7 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             _size = new Size(width, height);
 
             // Setup recorder
-            _recorder = new Recorder(fps, _size);
+            _recorder = new Recorder(fps, _size, true);
 
             // Start detecting asynchronously
             new Task(DetectIncomingTrains).Start();

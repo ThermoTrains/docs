@@ -69,7 +69,7 @@ namespace SebastianHaeni.ThermoBox.IRCompressor
 
             var fps = (int) thermalImage.ThermalSequencePlayer.FrameRate;
 
-            using (var recorder = new Recorder(fps, thermalImage.Size).StartRecording(outputVideoFile))
+            using (var recorder = new Recorder(fps, thermalImage.Size, false).StartRecording(outputVideoFile))
             {
                 while (thermalImage.ThermalSequencePlayer.SelectedIndex < lastFrame)
                 {
