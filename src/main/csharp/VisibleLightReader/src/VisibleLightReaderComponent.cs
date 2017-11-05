@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.Reflection;
+using System.Threading.Tasks;
 using Basler.Pylon;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -54,7 +55,8 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             // Setup recorder
             _recorder = new Recorder(fps, _size);
 
-            DetectIncomingTrains();
+            // Start detecting asynchronously
+            new Task(DetectIncomingTrains).Start();
         }
 
         private void DetectIncomingTrains()
