@@ -12,7 +12,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private const int NoBoundingBoxThreshold = 10;
+        private const int NoBoundingBoxThreshold = 100;
 
         private int _noBoundingBoxCount;
         private MotionFinder<byte> _motionFinder;
@@ -25,7 +25,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
 
         public EntryDetector(Image<Gray, byte> background)
         {
-            UpdateMotionFinder(background);
+            UpdateMotionFinder(background, DetectorState.Nothing);
         }
 
         public DetectorState Detect(IEnumerable<Image<Gray, byte>> images, DetectorState current)
@@ -34,7 +34,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
 
             if (_motionFinder == null)
             {
-                UpdateMotionFinder(imageArray.First());
+                UpdateMotionFinder(imageArray.First(), current);
             }
 
             var evaluator = current.GetEvaluator(imageArray.First().Size);
@@ -72,8 +72,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
                     return DetectorState.Nothing;
                 }
 
-                UpdateMotionFinder(imageArray.First());
-                _foundNothingCount = 0;
+                UpdateMotionFinder(imageArray.First(), current);
 
                 return DetectorState.Nothing;
             }
@@ -85,16 +84,23 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
                 return evaluator.Evaluate();
             }
 
-            UpdateMotionFinder(imageArray.First());
-            _noBoundingBoxCount = 0;
+            UpdateMotionFinder(imageArray.First(), current);
 
             return evaluator.Evaluate();
         }
 
-        private void UpdateMotionFinder(Image<Gray, byte> background)
+        private void UpdateMotionFinder(Image<Gray, byte> background, DetectorState currentState)
         {
-            Log.Info("(Re)initializing background");
+            if(currentState == DetectorState.Entry)
+            {
+                // do not update background as long as something has entered and not exited yet
+                return;
+            }
+
+            Log.Debug("(Re)initializing background");
             _motionFinder = new MotionFinder<byte>(background);
+            _noBoundingBoxCount = 0;
+            _foundNothingCount = 0;
         }
     }
 }
