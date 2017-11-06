@@ -36,6 +36,8 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             OutputPixelFormat = PixelType.RGB8packed
         };
 
+        private string _filename;
+
         private const int AnalyzeSequenceImages = 4;
         private const int ErrorThreshold = 5;
 
@@ -75,12 +77,10 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             var detector = new EntryDetector();
 
             // Event handlers
-            detector.TrainEnter += (sender, args) => Publish(Commands.CaptureStart, StartRecording());
+            detector.TrainEnter += (sender, args) =>
+                Publish(Commands.CaptureStart, FileUtil.GenerateTimestampFilename());
             detector.TrainExit += (sender, args) =>
-            {
-                StopRecording();
                 Publish(Commands.CaptureStop, FileUtil.GenerateTimestampFilename());
-            };
 
             // Array to contain images that will be collected until it's full and we analyze them.
             var images = new Image<Gray, byte>[AnalyzeSequenceImages];
@@ -156,16 +156,9 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             }
         }
 
-        private string StartRecording()
+        private void StartRecording(string filename)
         {
-            var savestamp = FileUtil.GenerateTimestampFilename();
-
-            return StartRecording(savestamp);
-        }
-
-        private string StartRecording(string savestamp)
-        {
-            Log.Info($"Detected train entering. Starting capture {savestamp}");
+            Log.Info($"Detected train entering. Starting capture {filename}");
 
             // ensuring the recordings directory exists
             var recordingDirectory = new DirectoryInfo(CaptureFolder);
@@ -174,16 +167,15 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                 recordingDirectory.Create();
             }
 
-            var filename = $@"{CaptureFolder}\{savestamp}-visible.avi";
-            _recorder.StartRecording(filename);
-
-            return savestamp;
+            _filename = $@"{CaptureFolder}\{filename}-visible.avi";
+            _recorder.StartRecording(_filename);
         }
 
         private void StopRecording()
         {
             Log.Info("Train exited. Stopping capture.");
             _recorder.StopRecording();
+            Publish(Commands.Upload, _filename);
         }
 
         public void Dispose()

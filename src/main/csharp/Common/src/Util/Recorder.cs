@@ -10,7 +10,7 @@ namespace SebastianHaeni.ThermoBox.Common.Util
         private readonly int _fps;
         private readonly Size _size;
         private VideoWriter _videoWriter;
-        private bool _isColor;
+        private readonly bool _isColor;
         public int FrameCounter { get; private set; }
 
         public Recorder(int fps, Size size, bool isColor)
