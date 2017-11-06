@@ -80,9 +80,6 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             // Array to contain images that will be collected until it's full and we analyze them.
             var images = new Image<Gray, byte>[AnalyzeSequenceImages];
 
-            // The background image used to find motion
-            Image<Gray, byte> background = null;
-
             // Analyze image array counter
             var i = 0;
 
@@ -129,12 +126,6 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                     // Convert to grayscale image for further analysis
                     var grayImage = image.Convert<Gray, byte>();
 
-                    // Set background image if not set yet
-                    if (background == null)
-                    {
-                        background = grayImage;
-                    }
-
                     // Append to analyze array
                     images[i] = grayImage;
                     i++;
@@ -149,7 +140,7 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                     i = 0;
 
                     // Get the state of the image array (is a train entering? exiting?)
-                    var newState = detector.Detect(background, images, state);
+                    var newState = detector.Detect(images, state);
 
                     switch (newState)
                     {
