@@ -119,7 +119,6 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
             }
         }
 
-
         private void Evaluate(Rectangle[] boundingBoxes)
         {
             // Not found anything useful. 
