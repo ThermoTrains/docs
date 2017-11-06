@@ -74,7 +74,6 @@
     <Compile Include="src\Component\ThermoBoxComponent.cs" />
     <Compile Include="src\Motion\EntryDetector.cs" />
     <Compile Include="src\Motion\DetectorExtensions.cs" />
-    <Compile Include="src\Motion\Evaluator.cs" />
     <Compile Include="src\Motion\MotionFinder.cs" />
     <Compile Include="src\Motion\NextStates.cs" />
     <Compile Include="src\Motion\DetectorState.cs" />

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Text;
 using log4net;
 using SebastianHaeni.ThermoBox.Common.Component;
 using SebastianHaeni.ThermoBox.Common.Util;

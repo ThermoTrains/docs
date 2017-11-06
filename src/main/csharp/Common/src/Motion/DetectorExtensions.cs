@@ -1,16 +1,13 @@
 using System;
-using System.Drawing;
 using System.Reflection;
 
 namespace SebastianHaeni.ThermoBox.Common.Motion
 {
     internal static class DetectorExtensions
     {
-        public static Evaluator GetEvaluator(this DetectorState state, Size size)
+        public static DetectorState[] GetStates(this DetectorState state)
         {
-            var nextStates = GetAttr(state);
-
-            return new Evaluator(nextStates.States, size);
+            return GetAttr(state).States;
         }
 
         private static NextStates GetAttr(DetectorState state)

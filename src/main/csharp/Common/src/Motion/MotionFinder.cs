@@ -10,11 +10,11 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
     public class MotionFinder<TDepth>
         where TDepth : new()
     {
-        private readonly Image<Gray, TDepth> _background;
+        public Image<Gray, TDepth> Background { get; private set; }
 
         public MotionFinder(Image<Gray, TDepth> background)
         {
-            _background = background;
+            Background = background;
         }
 
         public Rectangle? FindBoundingBox(
@@ -23,7 +23,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
             Gray maxValue)
         {
             // compute absolute diff between current frame and first frame
-            var diff = _background.AbsDiff(source);
+            var diff = Background.AbsDiff(source);
 
             // binarize image
             var t = diff.ThresholdBinary(threshold, maxValue);

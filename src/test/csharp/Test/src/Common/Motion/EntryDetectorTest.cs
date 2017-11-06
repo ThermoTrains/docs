@@ -13,6 +13,16 @@ namespace Test.Common.Motion
         private static Image<Gray, byte> Background =>
             new Image<Rgb, byte>(@"Resources\train-background.jpg").Convert<Gray, byte>();
 
+        private static Image<Gray, byte> FlippedBackground
+        {
+            get
+            {
+                var background = new Image<Rgb, byte>(@"Resources\train-background.jpg").Convert<Gray, byte>();
+                CvInvoke.Flip(background, background, FlipType.Horizontal);
+                return background;
+            }
+        }
+
         [TestMethod]
         public void DetectRightEntryTest()
         {
@@ -20,18 +30,18 @@ namespace Test.Common.Motion
 
             var images = Enumerable.Range(2, 3)
                 .Select(i => new Image<Rgb, byte>($@"Resources\train-{i}.jpg"))
-                .Select(train => train.Convert<Gray, byte>());
+                .Select(train => train.Convert<Gray, byte>())
+                .ToArray();
 
-            var result = detector.Detect(images, DetectorState.Nothing);
+            detector.Tick(images);
 
-            Assert.AreEqual(result, DetectorState.Entry);
+            Assert.AreEqual(DetectorState.Entry, detector.CurrentState);
         }
 
         [TestMethod]
         public void DetectLeftEntryTest()
         {
-            CvInvoke.Flip(Background, Background, FlipType.Horizontal);
-            var detector = new EntryDetector(Background);
+            var detector = new EntryDetector(FlippedBackground);
 
             var images = Enumerable.Range(2, 3)
                 .Select(i => new Image<Rgb, byte>($@"Resources\train-{i}.jpg"))
@@ -41,33 +51,37 @@ namespace Test.Common.Motion
                     // flipping the image and reverse the order will produce a train entering from the other side
                     CvInvoke.Flip(image, image, FlipType.Horizontal);
                     return image;
-                });
+                })
+                .ToArray();
 
-            var result = detector.Detect(images, DetectorState.Nothing);
+            detector.Tick(images);
 
-            Assert.AreEqual(result, DetectorState.Entry);
+            Assert.AreEqual(DetectorState.Entry, detector.CurrentState);
         }
 
         [TestMethod]
         public void DetectRightExitTest()
         {
-            var detector = new EntryDetector(new Image<Gray, byte>(@"Resources\train-background-jpg"));
+            var detector = new EntryDetector(Background)
+            {
+                CurrentState = DetectorState.Entry
+            };
 
             var images = Enumerable.Range(1, 4)
                 .Select(i => new Image<Rgb, byte>($@"Resources\train-{i}.jpg"))
                 .Select(image => image.Convert<Gray, byte>())
-                .Reverse(); // just by reversing, the train exits :)
+                .Reverse() // just by reversing, the train exits :)
+                .ToArray();
 
-            var result = detector.Detect(images, DetectorState.Entry);
+            detector.Tick(images);
 
-            Assert.AreEqual(result, DetectorState.Exit);
+            Assert.AreEqual(DetectorState.Exit, detector.CurrentState);
         }
 
         [TestMethod]
         public void DetectLeftExitTest()
         {
-            CvInvoke.Flip(Background, Background, FlipType.Horizontal);
-            var detector = new EntryDetector(Background);
+            var detector = new EntryDetector(FlippedBackground) {CurrentState = DetectorState.Entry};
 
             var images = Enumerable.Range(1, 4)
                 .Select(i => new Image<Rgb, byte>($@"Resources\train-{i}.jpg"))
@@ -78,11 +92,12 @@ namespace Test.Common.Motion
                     CvInvoke.Flip(image, image, FlipType.Horizontal);
                     return image;
                 })
-                .Reverse();
+                .Reverse()
+                .ToArray();
 
-            var result = detector.Detect(images, DetectorState.Entry);
+            detector.Tick(images);
 
-            Assert.AreEqual(result, DetectorState.Exit);
+            Assert.AreEqual(DetectorState.Exit, detector.CurrentState);
         }
 
         [TestMethod]
@@ -92,11 +107,12 @@ namespace Test.Common.Motion
 
             var images = Enumerable.Range(0, 1) // image 0 and 1 have no train on
                 .Select(i => new Image<Rgb, byte>($@"Resources\train-{i}.jpg"))
-                .Select(image => image.Convert<Gray, byte>());
+                .Select(image => image.Convert<Gray, byte>())
+                .ToArray();
 
-            var result = detector.Detect(images, DetectorState.Nothing);
+            detector.Tick(images);
 
-            Assert.AreEqual(result, DetectorState.Nothing);
+            Assert.AreEqual(DetectorState.Nothing, detector.CurrentState);
         }
     }
 }

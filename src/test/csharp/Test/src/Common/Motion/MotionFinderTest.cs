@@ -16,7 +16,7 @@ namespace Test.Common.Motion
             var motionFinder = new MotionFinder<byte>(background.Convert<Gray, byte>());
 
             var threshold = new Gray(40.0);
-            var maxValue = new Gray(255.0);
+            var maxValue = new Gray(byte.MaxValue);
 
             var gray= new Image<Rgb, byte>($@"Resources\train-2.jpg").Convert<Gray, byte>();
             var bbox = motionFinder.FindBoundingBox(gray, threshold, maxValue);

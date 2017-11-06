@@ -74,8 +74,13 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             // Detection class
             var detector = new EntryDetector();
 
-            // Current state of detection (entering, exiting, nothing)
-            var state = DetectorState.Nothing;
+            // Event handlers
+            detector.TrainEnter += (sender, args) => Publish(Commands.CaptureStart, StartRecording());
+            detector.TrainExit += (sender, args) =>
+            {
+                StopRecording();
+                Publish(Commands.CaptureStop, FileUtil.GenerateTimestampFilename());
+            };
 
             // Array to contain images that will be collected until it's full and we analyze them.
             var images = new Image<Gray, byte>[AnalyzeSequenceImages];
@@ -139,22 +144,8 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                     // Reset array counter
                     i = 0;
 
-                    // Get the state of the image array (is a train entering? exiting?)
-                    var newState = detector.Detect(images, state);
-
-                    switch (newState)
-                    {
-                        case DetectorState.Entry when state != newState:
-                            var savestamp = StartRecording();
-                            Publish(Commands.CaptureStart, savestamp);
-                            break;
-                        case DetectorState.Exit when state != newState:
-                            StopRecording();
-                            Publish(Commands.CaptureStop, FileUtil.GenerateTimestampFilename());
-                            break;
-                    }
-
-                    state = newState;
+                    // Let the detector do it's thing (is a train entering? exiting?)
+                    detector.Tick(images);
 
                     // dispose of references to improve memory consumption
                     for (var k = 0; k < images.Length; k++)
