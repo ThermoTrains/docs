@@ -37,6 +37,8 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
         };
 
         private string _filename;
+        private string _startRecording = null;
+        private bool _stopRecording = false;
 
         private const int AnalyzeSequenceImages = 4;
         private const int ErrorThreshold = 5;
@@ -62,8 +64,8 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             _recorder = new Recorder(fps, _size, true);
 
             // Setup subscriptions
-            Subscription(Commands.CaptureStart, (channel, filename) => StartRecording(filename));
-            Subscription(Commands.CaptureStop, (channel, filename) => StopRecording());
+            Subscription(Commands.CaptureStart, (channel, filename) => _startRecording = filename);
+            Subscription(Commands.CaptureStop, (channel, filename) => _stopRecording = true);
 
             // Start detecting asynchronously
             new Task(DetectIncomingTrains).Start();
@@ -96,6 +98,17 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             // Grab images.
             while (true)
             {
+                if (_startRecording != null)
+                {
+                    StartRecording(_startRecording);
+                    _startRecording = null;
+                }
+                else if (_stopRecording)
+                {
+                    StopRecording();
+                    _stopRecording = false;
+                }
+
                 // Wait for an image and then retrieve it. A timeout of 5000 ms is used.
                 var grabResult = _camera.StreamGrabber.RetrieveResult(5000, TimeoutHandling.ThrowException);
 
@@ -147,7 +160,7 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                     // Let the detector do it's thing (is a train entering? exiting?)
                     detector.Tick(images);
 
-                    // dispose of references to improve memory consumption
+                    // dispose of references to lower memory consumption
                     for (var k = 0; k < images.Length; k++)
                     {
                         images[k] = null;
@@ -158,7 +171,7 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
 
         private void StartRecording(string filename)
         {
-            Log.Info($"Detected train entering. Starting capture {filename}");
+            Log.Info($"Starting capture {filename}");
 
             // ensuring the recordings directory exists
             var recordingDirectory = new DirectoryInfo(CaptureFolder);
@@ -173,7 +186,7 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
 
         private void StopRecording()
         {
-            Log.Info("Train exited. Stopping capture.");
+            Log.Info("Stopping capture.");
             _recorder.StopRecording();
             Publish(Commands.Upload, _filename);
         }
