@@ -1,5 +1,87 @@
 <section>
-  <h2>Image processing pipeline</h2>
+  <h2>Software</h2>
+</section>
+
+<section data-background-video="images/pipeline/gopro-moving-train-1.mp4"
+         data-background-video-muted
+         data-background-video-loop>
+  <h3 class="fragment fade-out">Input</h3>
+</section>
+
+<section>
+  <h3>Architecture</h3>
+  <ul>
+    <li>Pub / Sub</li>
+    <li>Components:
+      <ul>
+        <li>IR Reader</li>
+        <li>IR Compressor</li>
+        <li>Temperature Reader</li>
+        <li>Visible Light Reader</li>
+        <li>Uploader</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h3>TODO: Diagram of components with SDKs and connected hardware</h3>
+</section>
+
+<section>
+  <h3>Artifacts</h3>
+  <ul>
+    <li>IR Snapshot Image</li>
+    <li>IR Video</li>
+    <li>FLIR Camera Parameters</li>
+    <li>RGB Video</li>
+    <li>Outside atmospheric temperature</li>
+  </ul>
+</section>
+
+<section>
+  <h3>TODO sample of IR snapshot</h3>
+</section>
+<section>
+  <h3>TODO sample of IR video</h3>
+</section>
+<section>
+  <h3>TODO sample of device parameters</h3>
+</section>
+<section>
+  <h3>TODO sample of RGB video</h3>
+</section>
+<section>
+  <h3>TODO sample of temperature</h3>
+</section>
+
+<section>
+  <h3>Archiving</h3>
+  <p>TODO</p>
+</section>
+
+<section>
+  <h3>Start / Stop Detection algorithm</h3>
+  <p>TODO</p>
+</section>
+
+<section>
+  <h3>Monitoring Tools</h3>
+  <ul>
+    <li><a href="https://monitoring.sebastianhaeni.ch" target="_blank" rel="noopener">Hardware Monitoring</a></li>
+    <li><a href="https://thermobox.sebastianhaeni.ch" target="_blank" rel="noopener">Dashboard</a></li>
+    <li><a href="https://sentry.io/student-00/thermobox/" target="_blank" rel="noopener">Sentry Error Tracking</a></li>
+    <li>Teamviewer Remote</li>
+    <li>Logs</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Live Demo</h2>
+</section>
+
+<section>
+  <h2>Pipeline</h2>
 </section>
 
 <section data-background-video="images/pipeline/gopro-moving-train-1.mp4"
@@ -13,38 +95,14 @@
   <img src="images/pipeline/pano.jpg">
 </section>
 
-<section data-background-image="images/pipeline/diagram.png"
-         data-background-size="80%"></section>
-
 <section data-background-image="images/pipeline/frames.jpg">
   <h3 class="fragment fade-out" style="color: #333; background: rgba(255,255,255,.5);">Frames extrahieren</h3>
 </section>
 
 
-<section data-background-video="images/pipeline/calibration/gopro-checkerboard.mp4"
-         data-background-video-muted
-         data-background-video-loop>
-  <h3 class="fragment fade-out">Kalibration</h3>
-</section>
 <section data-background-image="images/pipeline/calibration/cal1.jpg"
-         data-background-size="contain"></section>
-<section data-background-image="images/pipeline/calibration/cal2.jpg"
-         data-background-size="contain"></section>
-<section data-background-image="images/pipeline/calibration/cal3.jpg"
-         data-background-size="contain"></section>
-
-
-<section data-background-image="images/pipeline/motion/1-bg.jpg">
-  <h3 class="fragment fade-out">Fahrtrichtung erkennen</h3>
-</section>
-<section data-background-image="images/pipeline/motion/2-gray.jpg"></section>
-<section data-background-image="images/pipeline/motion/3-diff.jpg"></section>
-<section data-background-image="images/pipeline/motion/4-thresh.jpg"></section>
-<section data-background-image="images/pipeline/motion/5-erode.jpg"></section>
-<section data-background-image="images/pipeline/motion/6-dilate.jpg"></section>
-<section data-background-image="images/pipeline/motion/7-contours.jpg"></section>
-<section data-background-image="images/pipeline/motion/contour-train-entering.jpg">
-  <h3>Fahrtrichtung erkennen</h3>
+         data-background-size="contain">
+  <h3 class="fragment fade-out">Kalibration</h3>
 </section>
 
 
@@ -57,8 +115,6 @@
 <section data-background-image="images/pipeline/undistort/undistorted.jpg">
   <h3 class="fragment fade-out">Ausrichten</h3>
 </section>
-<section data-background-image="images/pipeline/straighten/masked.jpg"></section>
-<section data-background-image="images/pipeline/straighten/lines.jpg"></section>
 <section data-background-image="images/pipeline/straighten/straight.jpg"></section>
 
 
@@ -67,34 +123,20 @@
 </section>
 
 
-<section data-background-image="images/pipeline/rectify/value.jpg" data-background-size="contain">
-  <h3>Recktifizieren</h3>
+<section data-background-image="images/pipeline/rectify/unrectified.jpg" data-background-size="contain">
+  <h3 class="fragment fade-out">Recktifizieren</h3>
 </section>
-<section data-background-image="images/pipeline/rectify/upper.jpg" data-background-size="contain"></section>
-<section data-background-image="images/pipeline/rectify/lines.jpg" data-background-size="contain"></section>
-<section data-background-image="images/pipeline/rectify/upper-line.jpg" data-background-size="contain"></section>
-<section data-background-image="images/pipeline/rectify/lower.jpg" data-background-size="contain"></section>
-<section data-background-image="images/pipeline/rectify/lower-line.jpg" data-background-size="contain"></section>
-<section data-background-image="images/pipeline/rectify/unrectified.jpg" data-background-size="contain"></section>
 <section data-background-image="images/pipeline/rectify/rectified.jpg" data-background-size="contain"></section>
 
 
 <section>
   <h3>Stitching</h3>
-  <img src="images/pipeline/stitch/template.jpg">
 </section>
-<section data-background-image="images/pipeline/stitch/match.jpg" data-background-size="contain"></section>
 <section data-background-image="images/pipeline/pano.jpg" data-background-size="contain"></section>
-<section data-background-image="images/pipeline/pano.jpg"></section>
 
 
 <section>
   <h3>Wagons ausschneiden</h3>
-  <img src="images/pipeline/pano.jpg" width="70%">
-  <img src="images/pipeline/split/split-histogram.jpg" width="70%">
-</section>
-
-<section>
   <img src="images/pipeline/split/wagon_1.jpg" width="45%">
   <img src="images/pipeline/split/wagon_2.jpg" width="45%">
   <img src="images/pipeline/split/wagon_3.jpg" width="45%">
