@@ -40,7 +40,17 @@ namespace SebastianHaeni.ThermoBox.Common.Component
 
         protected void Subscription(string channel, Action<string, string> handler)
         {
-            _subscriptions.Add(channel, handler);
+            _subscriptions.Add(channel, (c, m) =>
+            {
+                try
+                {
+                    handler.Invoke(c, m);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
+                }
+            });
         }
 
         protected void Publish(string channel, string message)
