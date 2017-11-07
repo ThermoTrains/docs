@@ -61,7 +61,6 @@ namespace SebastianHaeni.ThermoBox.Uploader
             {
                 client.Credentials = _clientCredentials;
                 client.UploadFile(requestUriString, WebRequestMethods.Ftp.UploadFile, filePath);
-                throw new Exception("haha");
             }
 
             // Get the elapsed time as a TimeSpan value.
