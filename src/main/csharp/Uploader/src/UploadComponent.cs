@@ -14,8 +14,7 @@ namespace SebastianHaeni.ThermoBox.Uploader
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string _requestUriString;
-        private readonly string _username;
-        private readonly string _password;
+        private readonly NetworkCredential _clientCredentials;
 
         public UploadComponent()
         {
@@ -32,8 +31,10 @@ namespace SebastianHaeni.ThermoBox.Uploader
             var userSettingsParts = userSettings.Split(':');
 
             _requestUriString = settingsParts[1];
-            _username = userSettingsParts[0];
-            _password = userSettingsParts[1];
+            var username = userSettingsParts[0];
+            var password = userSettingsParts[1];
+
+            _clientCredentials = new NetworkCredential(username, password);
 
             Subscription(Commands.Upload, (channel, message) => UploadFile(message));
         }
@@ -48,29 +49,20 @@ namespace SebastianHaeni.ThermoBox.Uploader
 
             var filename = Path.GetFileName(filePath);
 
-            // Get the object used to communicate with the server.  
-            var request = (FtpWebRequest) WebRequest.Create($"ftp://{_requestUriString}/{filename}");
-            request.Method = WebRequestMethods.Ftp.UploadFile;
+            Log.Info($"Uploading {filePath} to {_requestUriString}");
 
-            // Provide credentials.
-            request.Credentials = new NetworkCredential(_username, _password);
-
-            // Copy the contents of the file to the request stream.  
-            var sourceBytes = File.ReadAllBytes(filePath);
-            request.ContentLength = sourceBytes.Length;
-            
-            Log.Info(
-                $"Uploading {filePath} to {_requestUriString}, " +
-                $"File Size: {FileUtil.GetSizeRepresentation((ulong)sourceBytes.Length)}");
+            // URL to upload the file to.
+            var requestUriString = $"ftp://{_requestUriString}/{filename}";
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            var requestStream = request.GetRequestStream();
-            requestStream.Write(sourceBytes, 0, sourceBytes.Length);
-            requestStream.Close();
-
-            var response = (FtpWebResponse) request.GetResponse();
+            using (var client = new WebClient())
+            {
+                client.Credentials = _clientCredentials;
+                client.UploadFile(requestUriString, WebRequestMethods.Ftp.UploadFile, filePath);
+                throw new Exception("haha");
+            }
 
             // Get the elapsed time as a TimeSpan value.
             var ts = stopWatch.Elapsed;
@@ -78,13 +70,7 @@ namespace SebastianHaeni.ThermoBox.Uploader
             // Format and display the TimeSpan value.
             var elapsedTime = $"{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
 
-            Log.Info(
-                $"Upload file complete, took {elapsedTime}, " +
-                $"Status: {response.StatusDescription.Replace(Environment.NewLine, " ")}");
-
-            response.Close();
-
-            Log.Info($"Moving file to recycle bin: {filePath}");
+            Log.Info($"Upload of file {filePath} complete, took {elapsedTime}, moving it to recycle bin.");
             FileUtil.MoveToRecycleBin(filePath);
         }
     }
