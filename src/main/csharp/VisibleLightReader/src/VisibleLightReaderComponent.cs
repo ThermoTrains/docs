@@ -33,12 +33,12 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
 
         private readonly PixelDataConverter _converter = new PixelDataConverter
         {
-            OutputPixelFormat = PixelType.RGB8packed
+            OutputPixelFormat = PixelType.BGR8packed
         };
 
         private string _filename;
-        private string _startRecording = null;
-        private bool _stopRecording = false;
+        private string _startRecording;
+        private bool _stopRecording;
 
         private const int AnalyzeSequenceImages = 4;
         private const int ErrorThreshold = 5;
