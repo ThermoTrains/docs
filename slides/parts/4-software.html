@@ -23,6 +23,16 @@
   </section>
 
   <section>
+    <h3>Technologies</h3>
+    <ul>
+      <li>C# / .NET</li>
+      <li>OpenCV / EmguCV</li>
+      <li>FLIR Atlas SDK</li>
+      <li>Basler Pylon SDK</li>
+    </ul>
+  </section>
+
+  <section>
     <h3>Artifacts</h3>
     <ul>
       <li>IR Snapshot Image</li>
@@ -148,8 +158,18 @@ Peak Spectral Sensitivity       : 10.1 um</code></pre>
   </section>
 
   <section>
+    <h4>ExifTool Version History</h4>
+    <pre><code>Oct. 17, 2017 - Version 10.64
+  Added a new Nikon LensID
+  Added a new SonyModelID
+  Added a new CanonModelID (thanks LibRaw)
+  Added some new non-standard CustomRendered values
+  Decode FrameRate from FLIR SEQ files (thanks Sebastian Häni)</code></pre>
+  </section>
+
+  <section>
     <h3>Start / Stop Detection algorithm</h3>
-    <ul style="font-size: .7em">
+    <ul style="font-size: .7em;">
       <li>Get background image (no movements)</li>
       <li>Grab 4 images</li>
       <li>Detect changed area
@@ -165,7 +185,7 @@ Peak Spectral Sensitivity       : 10.1 um</code></pre>
       <li>If changed area is getting wider
         <ul>
           <li>=> entry</li>
-          <li>else => exit </li>
+          <li>else => exit</li>
         </ul>
       </li>
     </ul>
