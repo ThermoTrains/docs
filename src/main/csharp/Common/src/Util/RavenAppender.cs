@@ -43,14 +43,14 @@ namespace SebastianHaeni.ThermoBox.Common.Util
                 };
             }
 
-            var exception = loggingEvent.ExceptionObject ?? loggingEvent.MessageObject as Exception;
             var level = Translate(loggingEvent.Level);
 
-            var sentryEvent = new SentryEvent(exception)
-            {
-                Level = level,
-                Tags = new Dictionary<string, string> {{"assembly", AppDomain.CurrentDomain.FriendlyName}}
-            };
+            var sentryEvent = loggingEvent.ExceptionObject != null
+                ? new SentryEvent(loggingEvent.ExceptionObject)
+                : new SentryEvent(loggingEvent.MessageObject as string);
+
+            sentryEvent.Level = level;
+            sentryEvent.Tags = new Dictionary<string, string> {{"assembly", AppDomain.CurrentDomain.FriendlyName}};
 
             _ravenClient.Capture(sentryEvent);
         }
