@@ -85,7 +85,7 @@ ushort[] uncompressed = (compressed / factor) + min</code></pre>
 
   <section>
     <h4>FLIR SEQ Exif Data</h4>
-    <pre><code>ExifTool Version Number         : 10.65
+    <pre><code data-noescape>ExifTool Version Number         : 10.65
 File Name                       : Recordings0001.seq
 Directory                       : .
 File Size                       : 723 MB
@@ -142,7 +142,7 @@ Raw Value Range                 : 1622
 Date/Time Original              : 2017:09:29 10:09:03.033+01:00
 Focus Step Count                : 0
 Focus Distance                  : 0.0 m
-Frame Rate                      : 30
+<mark>Frame Rate                      : 30</mark>
 Palette Colors                  : 224
 Above Color                     : 169 128 128
 Below Color                     : 49 128 128
@@ -159,12 +159,16 @@ Peak Spectral Sensitivity       : 10.1 um</code></pre>
 
   <section>
     <h4>ExifTool Version History</h4>
-    <pre><code>Oct. 17, 2017 - Version 10.64
+    <pre><code data-noescape>Oct. 17, 2017 - Version 10.64
   Added a new Nikon LensID
   Added a new SonyModelID
   Added a new CanonModelID (thanks LibRaw)
   Added some new non-standard CustomRendered values
-  Decode FrameRate from FLIR SEQ files (thanks Sebastian Häni)</code></pre>
+  <mark>Decode FrameRate from FLIR SEQ files (thanks Sebastian Häni)</mark>
+  Enhanced shift feature to be able to shift some ...
+  Fixed problem with possible malformed UTF-8 when writing IPTC
+  Fixed incorrect Writable type for XMP-GSpherical:TimeStamp
+  Fixed incorrect family 2 group name for Nikon HDRInfo tags</code></pre>
   </section>
 
   <section>
