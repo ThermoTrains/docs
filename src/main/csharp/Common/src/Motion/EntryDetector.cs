@@ -30,6 +30,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
 
         public EntryDetector()
         {
+            // constructor with no background image, background will be initialized lazily
         }
 
         public EntryDetector(Image<Gray, byte> background)
@@ -121,7 +122,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
 
         private void Evaluate(Rectangle[] boundingBoxes)
         {
-            // Not found anything useful. 
+            // Not found anything useful.
             if (!boundingBoxes.Any())
             {
                 return;
