@@ -180,7 +180,7 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
                 recordingDirectory.Create();
             }
 
-            _filename = $@"{CaptureFolder}\{filename}-visible.avi";
+            _filename = $@"{CaptureFolder}\{filename}-visible.mp4";
             _recorder.StartRecording(_filename);
         }
 
