@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRReader", "src\main\csharp\IRReader\IRReader.csproj", "{9F8C0AE7-5DF6-4423-B46D-972D386900BC}"
 EndProject
@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{84F3A3
 	ProjectSection(SolutionItems) = preProject
 		src\main\csharp\Config\App.config = src\main\csharp\Config\App.config
 		src\main\csharp\Config\SharedAssemblyInfo.cs = src\main\csharp\Config\SharedAssemblyInfo.cs
+		src\main\csharp\Config\SharedVersionInfo.cs = src\main\csharp\Config\SharedVersionInfo.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\test\csharp\Test\Test.csproj", "{4E86F038-1070-4846-8B2C-1F2D922770EB}"

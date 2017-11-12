@@ -71,6 +71,9 @@
     <Compile Include="..\Config\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Config\SharedVersionInfo.cs">
+      <Link>Properties\SharedVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="src\CompressorComponent.cs" />
     <Compile Include="src\IRSensorDataCompression.cs" />
     <Compile Include="src\Program.cs" />
@@ -105,5 +108,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\..\..\packages\EMGU.CV.3.3.0.2824\build\Emgu.CV.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\EMGU.CV.3.3.0.2824\build\Emgu.CV.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
   </Target>
+  <Import Project="..\..\..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\..\..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
 </Project>
