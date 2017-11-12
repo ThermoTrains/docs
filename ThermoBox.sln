@@ -18,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{84F3A347-3FDB-479A-92A9-9898DD06ECF6}"
 	ProjectSection(SolutionItems) = preProject
 		src\main\csharp\Config\App.config = src\main\csharp\Config\App.config
+		src\main\csharp\Common.targets = src\main\csharp\Common.targets
 		src\main\csharp\Config\SharedAssemblyInfo.cs = src\main\csharp\Config\SharedAssemblyInfo.cs
 		src\main\csharp\Config\SharedVersionInfo.cs = src\main\csharp\Config\SharedVersionInfo.cs
 	EndProjectSection

@@ -28,7 +28,7 @@ namespace SebastianHaeni.ThermoBox.Common.Component
         {
             var assembly = Assembly.GetExecutingAssembly();
             var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            var version = fvi.FileVersion;
+            var version = fvi.ProductVersion;
             GlobalContext.Properties["version"] = version;
         }
     }
