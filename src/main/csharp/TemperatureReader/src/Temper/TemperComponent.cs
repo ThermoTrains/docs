@@ -21,7 +21,7 @@ namespace SebastianHaeni.ThermoBox.TemperatureReader.Temper
         {
             _bulk = temper.bulk;
 
-            Subscription(Commands.CaptureStart, (channel, message) => { ReadTemperature(message); });
+            Subscription(Commands.CaptureStop, (channel, message) => { ReadTemperature(message); });
         }
 
         private void ReadTemperature(string message)

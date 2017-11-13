@@ -39,6 +39,9 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
         private string _filename;
         private string _startRecording;
         private bool _stopRecording;
+        private bool _abortRecording;
+        private bool _pauseRecording;
+        private bool _resumeRecording;
 
         private const int AnalyzeSequenceImages = 4;
         private const int ErrorThreshold = 5;
@@ -66,6 +69,9 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             // Setup subscriptions
             Subscription(Commands.CaptureStart, (channel, filename) => _startRecording = filename);
             Subscription(Commands.CaptureStop, (channel, filename) => _stopRecording = true);
+            Subscription(Commands.CaptureAbort, (channel, filename) => _abortRecording = true);
+            Subscription(Commands.CapturePause, (channel, filename) => _pauseRecording = true);
+            Subscription(Commands.CaptureResume, (channel, filename) => _resumeRecording = true);
 
             // Start detecting asynchronously
             new Task(DetectIncomingTrains).Start();
@@ -98,16 +104,7 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             // Grab images.
             while (true)
             {
-                if (_startRecording != null)
-                {
-                    StartRecording(_startRecording);
-                    _startRecording = null;
-                }
-                else if (_stopRecording)
-                {
-                    StopRecording();
-                    _stopRecording = false;
-                }
+                HandleStateChange();
 
                 // Wait for an image and then retrieve it. A timeout of 5000 ms is used.
                 var grabResult = _camera.StreamGrabber.RetrieveResult(5000, TimeoutHandling.ThrowException);
@@ -169,6 +166,43 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             }
         }
 
+        private void HandleStateChange()
+        {
+            if (_startRecording != null)
+            {
+                StartRecording(_startRecording);
+                _startRecording = null;
+                return;
+            }
+
+            if (_stopRecording)
+            {
+                StopRecording();
+                _stopRecording = false;
+                return;
+            }
+
+            if (_abortRecording)
+            {
+                AbortRecording();
+                _abortRecording = false;
+                return;
+            }
+
+            if (_pauseRecording)
+            {
+                PauseRecording();
+                _pauseRecording = false;
+                return;
+            }
+
+            if (_resumeRecording)
+            {
+                ResumeRecording();
+                _resumeRecording = false;
+            }
+        }
+
         private void StartRecording(string filename)
         {
             Log.Info($"Starting capture {filename}");
@@ -189,6 +223,27 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             Log.Info("Stopping capture.");
             _recorder.StopRecording();
             Publish(Commands.Upload, _filename);
+        }
+
+        private void AbortRecording()
+        {
+            Log.Info("Aborting capture.");
+            _recorder.StopRecording();
+
+            // Deleting generated artifact
+            File.Delete(_filename);
+        }
+
+        private void PauseRecording()
+        {
+            Log.Info("Pausing recording");
+            _recorder.Pause();
+        }
+
+        private void ResumeRecording()
+        {
+            Log.Info("Resuming recording");
+            _recorder.Resume();
         }
 
         public void Dispose()

@@ -35,6 +35,8 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             Subscription(Commands.CaptureStart, (channel, message) => StartCapture(message));
             Subscription(Commands.CaptureStop, (channel, message) => StopCapture());
             Subscription(Commands.CaptureAbort, (channel, message) => AbortCapture());
+            Subscription(Commands.CapturePause, (channel, message) => PauseCapture());
+            Subscription(Commands.CaptureResume, (channel, message) => ResumeCapture());
         }
 
         private static void ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
@@ -44,7 +46,8 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
                 return;
             }
 
-            if (e.Status == ConnectionStatus.Disconnected) { 
+            if (e.Status == ConnectionStatus.Disconnected)
+            {
                 Log.Error("Lost connection to camera => Exiting");
                 Environment.Exit(1);
             }
@@ -184,7 +187,35 @@ namespace SebastianHaeni.ThermoBox.IRReader.Recorder
             Retry(() => _camera.Recorder.Stop(), () => _camera.Recorder.Status == RecorderState.Stopped);
 
             // Deleting generated artifact
-            new DirectoryInfo(_currentRecording).Delete(true);
+            File.Delete(FlirVideoFileName);
+        }
+
+        /// <summary>
+        /// Pauses an ongoing recording.
+        /// </summary>
+        private void PauseCapture()
+        {
+            if (_camera.Recorder.Status != RecorderState.Recording)
+            {
+                Log.Warn("Cannot pause recording. It is currently not recording.");
+                return;
+            }
+
+            Retry(() => _camera.Recorder.Pause(), () => _camera.Recorder.Status == RecorderState.Paused);
+        }
+
+        /// <summary>
+        /// Resumes or continues an ongoing recording.
+        /// </summary>
+        private void ResumeCapture()
+        {
+            if (_camera.Recorder.Status != RecorderState.Paused)
+            {
+                Log.Warn("Cannot resume. It is currently not paused.");
+                return;
+            }
+
+            Retry(() => _camera.Recorder.Continue(), () => _camera.Recorder.Status == RecorderState.Recording);
         }
 
         /// <summary>
