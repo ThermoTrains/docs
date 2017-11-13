@@ -1,4 +1,3 @@
-$title = "Action"
 $message = "Which action do you want to execute?"
 
 $start  = New-Object System.Management.Automation.Host.ChoiceDescription "&Start"
@@ -12,18 +11,25 @@ $options = [System.Management.Automation.Host.ChoiceDescription[]]($start, $stop
 
 while($true)
 {
-    $result = $host.ui.PromptForChoice($title, $message, $options, 0)
+    $result = $host.ui.PromptForChoice("", $message, $options, 0)
 
     switch ($result)
     {
         0 {
             $timestamp = get-date -f yyyy-MM-dd@HH-mm-ss
-            & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:start $timestamp
+            & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:start $timestamp | out-null
         }
-        1 { & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:stop 0 }
-        2 { & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:abort 0 }
-        3 { & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:pause 0 }
-        4 { & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:resume 0 }
-        5 { & "C:\Program Files\Redis\redis-cli.exe" publish cmd:kill 0 }
+        1 { & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:stop 0 | out-null }
+        2 { & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:abort 0 | out-null }
+        3 { & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:pause 0 | out-null }
+        4 { & "C:\Program Files\Redis\redis-cli.exe" publish cmd:capture:resume 0 | out-null }
+        5 {
+            & "C:\Program Files\Redis\redis-cli.exe" publish cmd:kill 0 | out-null
+            return
+        }
     }
+
+    echo "Done!"
+    echo ""
+    echo ""
 }
