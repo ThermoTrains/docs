@@ -16,12 +16,14 @@ namespace SebastianHaeni.ThermoBox.TemperatureReader.Temper
         private static readonly string CaptureFolder = ConfigurationManager.AppSettings["CAPTURE_FOLDER"];
 
         private readonly HidDevice _bulk;
+        private string _filename;
 
         public TemperComponent((HidDevice control, HidDevice bulk) temper)
         {
             _bulk = temper.bulk;
 
-            Subscription(Commands.CaptureStop, (channel, message) => { ReadTemperature(message); });
+            Subscription(Commands.CaptureStart, (channel, message) => { _filename = message; });
+            Subscription(Commands.CaptureStop, (channel, message) => { ReadTemperature(_filename); });
         }
 
         private void ReadTemperature(string message)
