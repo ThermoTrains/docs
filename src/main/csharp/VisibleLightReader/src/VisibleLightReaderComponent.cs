@@ -85,10 +85,11 @@ namespace SebastianHaeni.ThermoBox.VisibleLightReader
             var detector = new EntryDetector();
 
             // Event handlers
-            detector.TrainEnter += (sender, args) =>
-                Publish(Commands.CaptureStart, FileUtil.GenerateTimestampFilename());
-            detector.TrainExit += (sender, args) =>
-                Publish(Commands.CaptureStop, FileUtil.GenerateTimestampFilename());
+            detector.Enter += (sender, args) => Publish(Commands.CaptureStart, FileUtil.GenerateTimestampFilename());
+            detector.Exit += (sender, args) => Publish(Commands.CaptureStop);
+            detector.Abort += (sender, args) => Publish(Commands.CaptureAbort);
+            detector.Pause += (sender, args) => Publish(Commands.CapturePause);
+            detector.Resume += (sender, args) => Publish(Commands.CaptureResume);
 
             // Array to contain images that will be collected until it's full and we analyze them.
             var images = new Image<Gray, byte>[AnalyzeSequenceImages];

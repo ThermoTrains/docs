@@ -57,5 +57,10 @@ namespace SebastianHaeni.ThermoBox.Common.Component
         {
             _pubSub.Publish(channel, message);
         }
+
+        protected void Publish(string channel)
+        {
+            _pubSub.Publish(channel, "0");
+        }
     }
 }
