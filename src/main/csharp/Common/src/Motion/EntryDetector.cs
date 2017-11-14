@@ -147,6 +147,11 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
             {
                 _noBoundingBoxCount = 0;
 
+                if (CurrentState != DetectorState.Entry)
+                {
+                    return;
+                }
+
                 if (!_motionFinder.HasDifference(_images.First(), _images.Last(), threshold, maxValue))
                 {
                     // The train (or whatever) is covering the whole image and it's not moving
