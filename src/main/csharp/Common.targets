@@ -5,7 +5,9 @@
     <VersionNumber Condition="'$(VersionNumber)' == ''">1.0.0.0</VersionNumber>
   </PropertyGroup>
 
-  <Target Name="UpdateSharedAssemblyInfo" BeforeTargets="PrepareForBuild" Condition="'${UpdatedAssemblyInfo}' != ''">
+  <Target Name="UpdateSharedAssemblyInfo"
+          BeforeTargets="PrepareForBuild"
+          Condition="'${UpdatedAssemblyInfo}' != true">
     <PropertyGroup>
       <UpdatedAssemblyInfo>true</UpdatedAssemblyInfo>
     </PropertyGroup>
