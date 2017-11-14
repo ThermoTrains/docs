@@ -1,6 +1,41 @@
 @echo off
 
 rem
+rem Test if it's already running.
+rem
+
+tasklist /FI "IMAGENAME eq VisibleLightReader.exe" 2>NUL | find /I /N "VisibleLightReader.exe">NUL
+if "%ERRORLEVEL%"=="0" (
+  echo VisibleLightReader is already running
+  pause
+  exit
+)
+tasklist /FI "IMAGENAME eq Uploader.exe" 2>NUL | find /I /N "Uploader.exe">NUL
+if "%ERRORLEVEL%"=="0" (
+  echo Uploader is already running
+  pause
+  exit
+)
+tasklist /FI "IMAGENAME eq TemperatureReader.exe" 2>NUL | find /I /N "TemperatureReader.exe">NUL
+if "%ERRORLEVEL%"=="0" (
+  echo TemperatureReader is already running
+  pause
+  exit
+)
+tasklist /FI "IMAGENAME eq IRCompressor.exe" 2>NUL | find /I /N "IRCompressor.exe">NUL
+if "%ERRORLEVEL%"=="0" (
+  echo IRCompressor is already running
+  pause
+  exit
+)
+tasklist /FI "IMAGENAME eq IRReader.exe" 2>NUL | find /I /N "IRReader.exe">NUL
+if "%ERRORLEVEL%"=="0" (
+  echo IRReader is already running
+  pause
+  exit
+)
+
+rem
 rem Change to source directory.
 rem
 
@@ -43,9 +78,11 @@ cd src\main\csharp
 
 start /B VisibleLightReader\bin\release\VisibleLightReader.exe
 
+rem
 rem Sleep for 4 seconds to let VisibleLightReader find the camera and not block IRReader
-ping 127.0.0.1 -n 4 > nul
+rem
 
+ping 127.0.0.1 -n 4 > nul
 
 start /B Uploader\bin\release\Uploader.exe
 start /B TemperatureReader\bin\release\TemperatureReader.exe
