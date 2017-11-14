@@ -53,7 +53,7 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
         private int _noMotionCount;
 
         private DateTime _entryDateTime = DateTime.MinValue;
-        private DateTime _exitDateTime = DateTime.MinValue;
+        private DateTime? _exitDateTime = null;
         private Image<Gray, byte>[] _images;
 
         private bool _paused;
@@ -79,6 +79,13 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
             CurrentState = DetectorState.Entry;
             _entryDateTime = DateTime.Now;
             _foundNothingCount = 0;
+
+            if (_exitDateTime == null)
+            {
+                // We also set exit time if it's null
+                _exitDateTime = DateTime.Now;
+            }
+
             Enter?.Invoke(this, new EventArgs());
         }
 
@@ -167,9 +174,13 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
                 if (_noMotionCount > NoMotionPauseThreshold)
                 {
                     _noMotionCount = 0;
-                    // Not found moving things for a while => pause until we find movement again.
-                    Pause?.Invoke(this, new EventArgs());
-                    _paused = true;
+
+                    if (!_paused)
+                    {
+                        // Not found moving things for a while => pause until we find movement again.
+                        Pause?.Invoke(this, new EventArgs());
+                        _paused = true;
+                    }
                 }
 
                 return;
