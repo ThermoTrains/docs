@@ -32,19 +32,23 @@ namespace SebastianHaeni.ThermoBox.Common.Motion
         private const int NoMotionPauseThreshold = 12;
 
         /// <summary>
-        /// The minimum time that has to pass after a train exited the image.
+        /// The minimum time that has to pass after a train exited the image until one can
+        /// entering can trigger a new recording.
         /// </summary>
         private const int MinTimeAfterExit = 30;
 
         /// <summary>
-        /// Tge minimum time that has to pass after the train entered. Otherwise an abort will be published.
+        /// The minimum time that has to pass after the train entered. Otherwise an abort will
+        /// be published.
         /// </summary>
-        private const int MinTimeAfterEntry = 10;
+        private const int MinTimeAfterEntry = 30;
 
         /// <summary>
         /// Maximum time a recording can be. After it has passed, the recording will be stopped.
+        /// Assuming a train has 6 cars, each about 25 meters long and it travels at 1 km/h that
+        /// would result in 10 minutes or 600 seconds.
         /// </summary>
-        private const int MaxEntryDuration = 120;
+        private const int MaxEntryDuration = 600;
 
         private MotionFinder<byte> _motionFinder;
 
