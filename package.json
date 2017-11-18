@@ -5,18 +5,14 @@
   "scripts": {
     "start": "npm run docs",
     "docs": "opn http://localhost:3003 && npm run serve:docs",
-    "serve:docs": "gulp serve:docs",
-    "slides": "opn http://localhost:3002 && npm run serve:slides",
-    "serve:slides": "gulp serve:slides",
     "build": "gulp && npm run build:docs:pdf && opn ./build/docs/thermotrains.pdf",
     "build:docs": "npm run build:docs:html && npm run build:docs:pdf && opn ./build/docs/thermotrains.pdf",
     "build:docs:html": "gulp docs",
-    "build:docs:pdf": "prince --javascript build/docs/index.html -o build/docs/thermotrains.pdf",
-    "build:slides": "gulp slides"
+    "build:docs:pdf": "prince --javascript build/docs/index.html -o build/docs/thermotrains.pdf"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sebastianhaeni/thermotrains.git"
+    "url": "git+https://github.com/ThermoTrains/docs.git"
   },
   "author": {
     "name": "Sebastian Häni",
@@ -33,9 +29,9 @@
   "license": "UNLICENSED",
   "private": true,
   "bugs": {
-    "url": "https://github.com/sebastianhaeni/thermotrains/issues"
+    "url": "https://github.com/ThermoTrains/docs/issues"
   },
-  "homepage": "https://github.com/sebastianhaeni/thermotrains#readme",
+  "homepage": "https://github.com/ThermoTrains/docs#readme",
   "engines": {
     "npm": "^5.4.0"
   },
@@ -51,7 +47,6 @@
     "normalize.css": "^7.0.0",
     "nunjucks": "^3.0.0",
     "opn-cli": "^3.1.0",
-    "reveal.js": "^3.5.0",
     "run-sequence": "^2.2.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
