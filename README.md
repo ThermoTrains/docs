@@ -1,4 +1,4 @@
-# Thermo Trains [![Build Status](https://travis-ci.com/sebastianhaeni/thermotrains.svg?token=qgj44e18REfhtFnW25Z2&branch=master)](https://travis-ci.com/sebastianhaeni/thermotrains)
+# Thermo Trains [![Build Status](https://travis-ci.org/ThermoTrains/docs.svg?branch=master)](https://travis-ci.org/ThermoTrains/docs)
 
 Automatic detection of isolation deficiencies on rolling trains
 
