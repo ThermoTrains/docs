@@ -14,12 +14,12 @@ const moment = require('moment');
 
 const pkg = JSON.parse(fs.readFileSync('./package.json'));
 
-gulp.task('default', ['root', 'docs', 'slides']);
+gulp.task('default', ['root', 'docs']);
 
 gulp.task('root', () => gulp.src('index.html').pipe(gulp.dest('build')));
 gulp.task('docs', () => runSequence('clean:docs', ['docs:nunjucks', 'docs:js', 'docs:style', 'docs:images', 'docs:deps']));
 
-gulp.task('clean', ['clean:docs', 'clean:slides']);
+gulp.task('clean', ['clean:docs']);
 gulp.task('clean:docs', () => del(['build/docs/**/*']));
 
 gulp.task('docs:nunjucks', function () {
