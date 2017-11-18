@@ -20,7 +20,7 @@ gulp.task('root', () => gulp.src('index.html').pipe(gulp.dest('build')));
 gulp.task('docs', () => runSequence('clean:docs', ['docs:nunjucks', 'docs:js', 'docs:style', 'docs:images', 'docs:deps']));
 
 gulp.task('clean', ['clean:docs']);
-gulp.task('clean:docs', () => del(['build/docs/**/*']));
+gulp.task('clean:docs', () => del(['build/**/*']));
 
 gulp.task('docs:nunjucks', function () {
   gulp.src('docs/index.html')
@@ -35,32 +35,32 @@ gulp.task('docs:nunjucks', function () {
       gutil.log(gutil.colors.red('Error (' + error.plugin + '): ' + error.message));
       this.emit('end');
     })
-    .pipe(gulp.dest('./build/docs'));
+    .pipe(gulp.dest('./build'));
 });
 
 gulp.task('docs:js', () => {
   gulp.src('docs/js/**/*.js')
-    .pipe(gulp.dest('build/docs'));
+    .pipe(gulp.dest('build'));
 });
 
 gulp.task('docs:style', () => {
   gulp.src('docs/styles/main.scss')
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('build/docs'));
+    .pipe(gulp.dest('build'));
 });
 
 gulp.task('docs:deps', () => {
   gulp.src('{node_modules/jquery/dist/jquery.min.js,node_modules/normalize.css/normalize.css}')
-    .pipe(gulp.dest('build/docs'));
+    .pipe(gulp.dest('build'));
 });
 
 gulp.task('docs:images', () => {
   gulp.src('docs/images/**/*.{png,jpg,gif,svg}')
-    .pipe(gulp.dest('build/docs/images'));
+    .pipe(gulp.dest('build/images'));
 });
 
 gulp.task('serve:docs', ['docs'], () => {
-  const server = gls.static('build/docs', 3003);
+  const server = gls.static('build', 3003);
   server.start();
 
   // Restart the server when file changes

@@ -5,10 +5,10 @@
   "scripts": {
     "start": "npm run docs",
     "docs": "opn http://localhost:3003 && npm run serve:docs",
-    "build": "gulp && npm run build:docs:pdf && opn ./build/docs/thermotrains.pdf",
-    "build:docs": "npm run build:docs:html && npm run build:docs:pdf && opn ./build/docs/thermotrains.pdf",
+    "build": "gulp && npm run build:docs:pdf && opn ./build/thermotrains.pdf",
+    "build:docs": "npm run build:docs:html && npm run build:docs:pdf && opn ./build/thermotrains.pdf",
     "build:docs:html": "gulp docs",
-    "build:docs:pdf": "prince --javascript build/docs/index.html -o build/docs/thermotrains.pdf"
+    "build:docs:pdf": "prince --javascript build/index.html -o build/thermotrains.pdf"
   },
   "repository": {
     "type": "git",
