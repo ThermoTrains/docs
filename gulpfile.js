@@ -7,8 +7,6 @@ const nunjucksRender = require('gulp-nunjucks-render');
 const sass = require('gulp-sass');
 
 const runSequence = require('run-sequence');
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
 const del = require('del');
 const moment = require('moment');
 
@@ -59,21 +57,22 @@ gulp.task('docs:images', () => {
     .pipe(gulp.dest('build/images'));
 });
 
-gulp.task('serve:docs', ['docs'], () => {
-  const server = gls.static('build', 3003);
+let server;
+gulp.task('watch', () => {
+  server = gls.static('build', 3003);
   server.start();
 
-  // Restart the server when file changes
-  gulp.watch('docs/styles/**/*.scss', (file) => {
-    runSequence('docs:style', () => server.notify.apply(server, [file]));
-  });
-  gulp.watch('docs/**/*.html', (file) => {
-    runSequence('docs:nunjucks', () => server.notify.apply(server, [file]));
-  });
-  gulp.watch('docs/js/**/*.js', (file) => {
-    runSequence('docs:js', () => server.notify.apply(server, [file]));
-  });
-  gulp.watch('docs/images/**/*.{png,jpg,gif,svg}', (file) => {
-    runSequence('docs:images', () => server.notify.apply(server, [file]));
-  });
+  gulp.watch('docs/styles/**/*.scss', ['docs:style']);
+  gulp.watch('docs/**/*.html', ['docs:nunjucks']);
+  gulp.watch('docs/js/**/*.js', ['docs:js']);
+  gulp.watch('docs/images/**/*.{png,jpg,gif,svg}', ['docs:images']);
 });
+
+gulp.task('livereload', () => {
+  // Refresh browser when artifacts change
+  // Activate after a timeout because sometimes there are conflicts from the build task
+  setTimeout(() => gulp.watch('build/**/*', (file) => server.notify.apply(server, [file])), 1000);
+});
+
+gulp.task('serve:docs', () => runSequence('docs', ['watch', 'livereload']));
+
