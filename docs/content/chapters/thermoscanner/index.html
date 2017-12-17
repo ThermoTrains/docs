@@ -1,9 +1,34 @@
 <div class="chapter">
   <h2 class="break">Thermo-Scanner</h2>
 
-  <p>Einleitung</p>
+  <figure>
+    <img src="images/thermoscanner/20171120_100306.jpg" width="700"/>
+    <figcaption>Fertig installierte Thermobox</figcaption>
+  </figure>
+
+  <figure>
+    <img src="images/thermoscanner/20171120_084011.jpg" width="700"/>
+    <figcaption>Installation Thermobox</figcaption>
+  </figure>
+  <p>
+    Die Thermobox verkörpert die Hard- und Software, um alle nötigen Rohdaten für die Analyse der Züge zu beschaffen.
+    Sie soll am Gleisrand aufgestellt werden und alle vorbeifahrenden Züge automatisch aufnehmen. Die einzige Voraussetzung
+    für den Betrieb ist ein Stromanschluss. Ansonsten soll die Thermobox autonom funktionieren.
+  </p>
 
   <h3>Anforderungen</h3>
+
+  <ul>
+    <li>Die Box ist wetterfest.</li>
+    <li>Benötigt nur einen Stromanschluss, funktioniert nach dem Einstecken automatisch.</li>
+    <li>Die Aufnahme startet automatisch beim Einfahren eines Zuges.</li>
+    <li>Ein Infrarot- und ein Farbvideo wird aufgenommen</li>
+    <li>Metadaten zur Aufnahme werden aufgenommen (Kameraparameter, Temperatur, ...)</li>
+    <li>Die Wagonnummer wird mittels RFID ausgelesen um den Zug zu identifizieren</li>
+    <li>Die Vidoes und Metadaten werden auf einen Server hochgeladen.</li>
+    <li>Die Box kann remote gesteuert und gewartet werden.</li>
+    <li>Kann langsam fahrende Züge aufnehmen (Schritttempo).</li>
+  </ul>
 
   {% include "./hardware.html" %}
   {% include "./software.html" %}
