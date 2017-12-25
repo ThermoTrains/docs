@@ -11,70 +11,75 @@
 <p>
   FLIR Kameras bereinigen die Messungen in Echtzeit bei der Aufnahme. Dafür muss die Kamera aber richtig parametrisiert sein, damit die verschiedenen Strahlungsquellen berücksichtig werden können.
   Diese Parameter sind:
-  <ul>
-    <li>Emissionsgrad</li>
-    <li>scheinbar reflektierte Temperatur</li>
-    <li>Distanz zum Objekt</li>
-    <li>relative Luftfeuchtigkeit</li>
-    <li>atmospherische Temperatur</li>
-  </ul>
 </p>
+
+<ul>
+  <li>Emissionsgrad</li>
+  <li>scheinbar reflektierte Temperatur</li>
+  <li>Distanz zum Objekt</li>
+  <li>relative Luftfeuchtigkeit</li>
+  <li>atmospherische Temperatur</li>
+</ul>
 
 <h4>Kamera Parameter</h4>
 
-<b>Emissionsgrad</b>
+<p><b>Emissionsgrad</b></p>
 <p>
   Der Emissionsgrad ist der wichtigste Parameter. Er sagt aus wieviel Strahlung ein Objekt emittiert im Vergleich zu einem perfekten Schwarzkörper (bei derselben Temperatur).
   Typische Werte liegen zwischen 0.1 und 0.95. Einige Beispiele:
 </p>
 
-<table>
-  <thead>
-    <th>Material</th>
-    <th>Emissionsgrad</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td>hochpolierte Oberfläche (Spiegel)</td>
-      <td>< 0.1</td>
-    </tr>
-    <tr>
-      <td>Ölfarbe</td>
-      <td>> 0.9</td>
-    </tr>
-    <tr>
-      <td>menschliche Haut</td>
-      <td>~ 0.97</td>
-    </tr>
-    <tr>
-      <td>nicht-oxidierte Metalle</td>
-      <td>tiefer Emissionsgrad der mit Temperatur ansteigt (opak und spiegelnd)</td>
-    </tr>
-  </tbody>
-</table>
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>Material</th>
+        <th>Emissionsgrad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>hochpolierte Oberfläche (Spiegel)</td>
+        <td>< 0.1</td>
+              </tr>
+      <tr>
+        <td>Ölfarbe</td>
+        <td>> 0.9</td>
+      </tr>
+      <tr>
+        <td>menschliche Haut</td>
+        <td>~ 0.97</td>
+      </tr>
+      <tr>
+        <td>nicht-oxidierte Metalle</td>
+        <td>tiefer Emissionsgrad der mit Temperatur ansteigt (opak und spiegelnd)</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 
 <p>Der Emissionsgrad ist für viele Materialien bekannt, kann aber auch im Experiment bestimmt werden.</p>
 
-<b>scheinbar reflektierte Temperatur</b>
+<p><b>scheinbar reflektierte Temperatur</b></p>
 <p>
   Dient dazu die Strahlung anderer Quellen zu kompensieren, die das Objekt in die Kamera reflektiert.
   Bei tiefem Emissionsgrad und wenn sich die effektive Temperatur von der reflektierten stark unterscheiden,
   ist dieser Parameter wichtig.
 </p>
 
-<b>Distanz zum Objekt</b>
+<p><b>Distanz zum Objekt</b></p>
 <p>
   Ist die Distanz vom Objektiv bis zum Objekt. Dieser Parameter ist wichtig,
   weil die Atmosphäre Strahlung absorbiert und selbst Strahlung erzeugt.
 </p>
 
-<b>Relative Luftfeuchtigkeit</b>
+<p><b>Relative Luftfeuchtigkeit</b></p>
 <p>
   Die Übertratung der Strahlung ist auch von der Luftfeuchtigkeit abhängig. Bei kurzen Distanzen und normaler Luftfeuchtigkeit kann
   als Standartwert 50% genommen werden.
 </p>
 
-<b>Atmosphärische Temperatur</b>
+<p><b>Atmosphärische Temperatur</b></p>
 <p>
   Temperatur die zwischen Kamera und Objekt herrscht.
 </p>
@@ -85,21 +90,21 @@
   der jeweiligen Bänder messen oder produzieren kann.
 </p>
 
-<figure class="full">
-  <img src="images/research/elek_spectrum.png">
+<figure>
+  <img src="images/research/elek_spectrum.png" width="700">
   <figcaption>Elektromagnetisches Spektrum: 1: Röngten, 2: UV, 3: Sichtbar, 4: IR, 5: Mikrowellen, 6: Radiowelln</figcaption>
   <span class="source">Quelle: <a href="#ref-flir-theory">FLIR: Infrared Theory</a></span>
 </figure>
 
 <p>Thermographie beschränkt sich auf das Infrarotband. Typischerweise im Wellenlängenbereich von 2 - 13μm. Der Infrarotbereich kann
   noch weiter in folgende Bänder unterteilt werden:
-  <ul>
-    <li>near infrared (0.75 - 3μm)</li>
-    <li>middle infrared (3 - 6μm)</li>
-    <li>far infrared (6 - 15μm)</li>
-    <li>extreme infrared (15 - 100μm)</li>
-  </ul>
 </p>
+<ul>
+  <li>near infrared (0.75 - 3μm)</li>
+  <li>middle infrared (3 - 6μm)</li>
+  <li>far infrared (6 - 15μm)</li>
+  <li>extreme infrared (15 - 100μm)</li>
+</ul>
 
 <h4>Schwarzer Körper</h4>
 <p>
@@ -114,66 +119,66 @@
   der Schwarzkörperstrahlung hängen nur von der Temperatur ab. Der schwarze Körper stellt die ideale Strahlungsquelle dar und
   wird als Referenz für reale Köper genommen.
 </p>
-<p>
-  <span class="source">Quelle: <a href="#ref-plank-wiki">Wikipedia: Plancksches Strahlungsgesetz</a></span>
-</p>
+
 <p>
   Ein Schwarzkörper kann simuliert werden, in dem man ein kleines Loch in einen Hohlraum bohrt. Alle einfallende Strahlung wird innerhalb
   des Hohlraums reflektiert und schliessich praktisch vollständig absorbiert. Die kleine Öffnung verhält sich somit annähernd wie ein
   Schwarzkörper. Wird der Hohlraum nun erhizt, kann man einen sogennanten Hohlraumsstrahler erzeugen. Damit werden Wärmebildkameras
-  kalibriert. Was man mit einem solchen Hohlraum auch beobachten kann, ist der Fakt, dass bei einer Temperatur > 525℃ die austretende
+  kalibriert. Was man mit einem solchen Hohlraum auch beobachten kann, ist der Fakt, dass bei einer Temperatur > 525°C die austretende
   Strahlung sichtbar wird. Das Licht ändert die Farbe von rot über orange, gelb bis zu blau-weiss. Die sogenannte Farbtemperatur ist nichts anderes
   als die Temperatur, auf die ein Schwarzkörper erhizt werden muss, um gleich auszusehen.
 </p>
 
 <p>Zur Hohlraum- resp. Schwarzkörperstrahlung gibt es drei wichtige Gesetze:</p>
 
-<p>
-  <b>Plancksches Strahlungsgesetz</b>
-</p>
+<p><b>Plancksches Strahlungsgesetz</b></p>
 
 <figure>
-  <img src="images/research/planck_law.svg">
-  <figcaption>Planksches Strahlungsgesetz</figcaption>
-  <span class="source">Quelle: <a href="#ref-plank-wiki">Planksches Strahlengesetz, Wikipedia</a></span>
+  <img src="images/research/planck_law.svg" style="height:4em;">
+  <figcaption>Plancksches Strahlungsgesetz</figcaption>
+  <span class="source">Quelle: <a href="#ref-planck-wiki">Plancksches Strahlengesetz, Wikipedia</a></span>
 </figure>
 
-<table>
-  <thead>
-    <th>Variable</th>
-    <th>Bedeutung</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td>B<sub>λ</sub></td>
-      <td>Spektrale Ausstrahlung [W/sr m<sup>3</sup>]<br>(Strahlungsleistung pro Flächeneinheit pro Raumwinkel)</td>
-    </tr>
-    <tr>
-      <td>e</td>
-      <td>eulerische Zahl</td>
-    </tr>
-    <tr>
-      <td>h</td>
-      <td>Planksches Wirkungsquantum [J s]</td>
-    </tr>
-    <tr>
-      <td>c</td>
-      <td>Lichtgeschwindigket [m/s]</td>
-    </tr>
-    <tr>
-      <td>λ</td>
-      <td>Wellenlänge [m]</td>
-    </tr>
-    <tr>
-      <td>k</td>
-      <td>Boltzmann Konstante</td>
-    </tr>
-    <tr>
-      <td>B<sup>T</sup></td>
-      <td>Objekt Temperatur [K]</td>
-    </tr>
-  </tbody>
-</table>
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>Variable</th>
+        <th>Bedeutung</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>B<sub>λ</sub></td>
+        <td>Spektrale Ausstrahlung [W/sr m<sup>3</sup>]<br>(Strahlungsleistung pro Flächeneinheit pro Raumwinkel)</td>
+      </tr>
+      <tr>
+        <td>e</td>
+        <td>eulerische Zahl</td>
+      </tr>
+      <tr>
+        <td>h</td>
+        <td>Plancksches Wirkungsquantum [J s]</td>
+      </tr>
+      <tr>
+        <td>c</td>
+        <td>Lichtgeschwindigket [m/s]</td>
+      </tr>
+      <tr>
+        <td>λ</td>
+        <td>Wellenlänge [m]</td>
+      </tr>
+      <tr>
+        <td>k</td>
+        <td>Boltzmann Konstante</td>
+      </tr>
+      <tr>
+        <td>T</td>
+        <td>Objekt Temperatur [K]</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 
 <p>
   Die von Max Planck (1858 - 1947) entwickelte Formel beschreibt die Verteilung der
@@ -181,12 +186,12 @@
 </p>
 <p>
   Randbemerkung: Die Herleitung des Strahlengesetzes war mit der damaligen Physik nicht
-  möglich, weshalb Plank Quanten (Photonen) einführte. Dies gilt als Geburtsstunde der
+  möglich, weshalb Planck Quanten (Photonen) einführte. Dies gilt als Geburtsstunde der
   Quantenphysik.
 </p>
 <p>
   Die graphische Darstellung für verschieden Temperaturen ergibt eine Familie von Kurven. Bei jeder
-  dieser Plankkurven ist die Ausstrahlung null bei λ = 0, steigt danach stark an bis zum
+  dieser Planckkurven ist die Ausstrahlung null bei λ = 0, steigt danach stark an bis zum
   Maximum bei λ<sub>max</sub> und flacht danach wieder Richtung null ab.
   Je höher die Temperatur, desto schmaler wird die Kurve im Bereich des Maximums. Bei einer Temperatur
   von 1000K ist ein Schwarzkörper also am besten bei einer Wellenlänge von ca. 3μm im middle
@@ -194,9 +199,9 @@
 </p>
 
 <figure>
-  <img src="images/research/plank_spectrum.png" width="400px">
-  <figcaption>Planksches Strahlungsspektrum</figcaption>
-  <span class="source">Quelle: <a href="#ref-plank-wiki">Planksches Strahlengesetz, Wikipedia</a></span>
+  <img src="images/research/planck_spectrum.png" width="400px">
+  <figcaption>Plancksches Strahlungsspektrum</figcaption>
+  <span class="source">Quelle: <a href="#ref-planck-wiki">Plancksches Strahlengesetz, Wikipedia</a></span>
 </figure>
 
 <p>
@@ -224,7 +229,7 @@
 </p>
 <p>
   Das Stefan-Boltzmann-Gesetz beschreibt die Abstrahlung eines Schwarzkörpers in
-  Abhängigkeit der Temperatur. Graphisch gesehen ist das die Fläche unter einer Plankkurve.
+  Abhängigkeit der Temperatur. Graphisch gesehen ist das die Fläche unter einer Planckkurve.
   Das Gesetz sagt aus, dass die Strahlungsleistung eines Schwarzkörpers proportional zur
   vierten Potenz seiner absoluten Temperatur ist. D.h. eine verdoppelung der Temperatur
   lässt die abgestrahlte Leistung um das 16 fache ansteigen.
@@ -264,7 +269,7 @@
 <p>
   Ein weitere Faktor, der bereits viel erwähnte Emissionsgrad ε ist nötig und die Abstrahlung im Verhältnis zu einem
   Schwarzkörper bei der selben Temperatur anzugeben. Der spektrale Emissionsgrad ε<sub>λ</sub> ist das Verhältnis
-  der spektralen Strahlungsleistung eines Köpers zu dem eines Schwarzkörpers bei gleicher Temeperatur und Wellenlänge λ.
+  der spektralen Strahlungsleistung eines Köpers zu dem eines Schwarzkörpers bei gleicher Temperatur und Wellenlänge λ.
 </p>
 
 <figure>
@@ -276,12 +281,12 @@
 <p>
   Man kann Strahlungsquellen in drei Typen aufteilen und zwar nach je nach dem wie ihre Abstrahlung in
   verschiedenen Wellenlängen variiert.
-  <ul>
-    <li>Schwarzkörper mit ε<sub>λ</sub> = ε = 1</li>
-    <li>Graukörper mit ε<sub>λ</sub> = ε < 1</li>
-    <li>Selektiver Strahler mit ε<sub>λ</sub> variierend je nach Wellenlänge</li>
-  </ul>
 </p>
+<ul>
+  <li>Schwarzkörper mit ε<sub>λ</sub> = ε = 1</li>
+  <li>Graukörper mit ε<sub>λ</sub> = ε < 1</li>
+  <li>Selektiver Strahler mit ε<sub>λ</sub> variierend je nach Wellenlänge</li>
+</ul>
 
 <p>
   Gemäss dem Kirchhoff-Gesetz ist die spektrale Abstrahlung gleich der spektralen Absorption bei einer bestimmten
@@ -350,7 +355,7 @@
 </figure>
 
 <p>
-  Ein perfekter Schwarzkörper mit Abstrahlung W bei Temeperatur T<sub>source</sub> erzeugt über kurze Distanz auf der Kamera
+  Ein perfekter Schwarzkörper mit Abstrahlung W bei Temperatur T<sub>source</sub> erzeugt über kurze Distanz auf der Kamera
   die Ausgangsspannung U<sub>source</sub>. Dies ergibt folgende Formel, wobei C eine Konstante ist.
 </p>
 
@@ -371,21 +376,21 @@
 <p>
   Wenn das Objekt ein Graukörper ist mit Emissionsgrad ε ist die Abstrahlung W<sub>source</sub> mit εW<sub>source</sub> zu ersetzen.
   Die Abstrahlung W<sub>source</sub> setzt sich zusammen aus:
-  <ol>
-    <li>
-      Abstrahlung vom Objekt = ετW<sub>obj</sub>, wobei ε der Emissionsgrad des Objekts und τ die Durchlässigkeit der Atmosphäre ist.
-      Die Objekttemperatur ist T<sub>obj</sub>.
-    </li>
-    <li>
-      Reflektierte Abstrahlung aus der Umgebung = (1-ε)τW<sub>refl</sub>, wobei (1-ε) der Reflexionsgrad des Objektes ist. Die Strahlungsquellen
-      aus der Umgebung haben die Temperatur T<sub>refl</sub>. Die Annahme ist, dass T<sub>refl</sub> für alle Strahlungsqullen, in der selben Halbsphere
-      wie das Objekt, die gleiche ist.
-    </li>
-    <li>
-      Abstrahlung aus der Atmosphäre = (1-τ)τW<sub>atm</sub>, wobei (1-τ) der Emissionsgrad der Atmosphäre ist. Die Atmosphärentemperatur ist T<sub>atm</sub>
-    </li>
-  </ol>
 </p>
+<ol>
+  <li>
+    Abstrahlung vom Objekt = ετW<sub>obj</sub>, wobei ε der Emissionsgrad des Objekts und τ die Durchlässigkeit der Atmosphäre ist.
+    Die Objekttemperatur ist T<sub>obj</sub>.
+  </li>
+  <li>
+    Reflektierte Abstrahlung aus der Umgebung = (1-ε)τW<sub>refl</sub>, wobei (1-ε) der Reflexionsgrad des Objektes ist. Die Strahlungsquellen
+    aus der Umgebung haben die Temperatur T<sub>refl</sub>. Die Annahme ist, dass T<sub>refl</sub> für alle Strahlungsqullen, in der selben Halbsphere
+    wie das Objekt, die gleiche ist.
+  </li>
+  <li>
+    Abstrahlung aus der Atmosphäre = (1-τ)τW<sub>atm</sub>, wobei (1-τ) der Emissionsgrad der Atmosphäre ist. Die Atmosphärentemperatur ist T<sub>atm</sub>
+  </li>
+</ol>
 
 <p>
   Die total gemessene Abstrahlung kann somit wie folgt definiert werden:
@@ -411,7 +416,7 @@
 <p>
   Das ist die generelle Messformel die in allen FLIR Thermographiekomponenten angewandt wird.
   U<sub>tot</sub> ist dabei die von der Kamera gemessene Spannung und U<sub>obj</sub> die berechnete Spannung
-  für einen Schwarzkörper mit Temeperatur T<sub>obj</sub>. D.h. daraus kann direkt die effektive Temperatur
+  für einen Schwarzkörper mit Temperatur T<sub>obj</sub>. D.h. daraus kann direkt die effektive Temperatur
   des Objekts berechnet werden.
 </p>
 
@@ -422,20 +427,27 @@
 
 <h4>Implementation Temperaturberechnung</h4>
 
+<p>Die Berechnung der Temperatur erfolgt in zwei Schritten:</p>
+
+<ul>
+  <li>Messformel nach der spektralen Ausstrahlung des Objekts W<sub>obj</sub> umformen und fehlende Variablen berechnen.</li>
+  <li>Aus W<sub>obj</sub> mit dem planckschen Strahlungssatz die Objekttemperatur T<sub>obj</sub> bestimmen</li>
+</ul>
+
 <p><b>Umrechnen gemessene Strahlung in Objekt Strahlung</b></p>
 
 <p>
-  Der erste Schritt ist das Extrahieren der Ausstrahlung des Objekts aus der gemessenen totalen Ausstrahlung. Das erfolgt anhand der oben
+  Der erste Schritt ist das Extrahieren der Ausstrahlung des Objekts W<sub>obj</sub> aus der gemessenen totalen Ausstrahlung W<sub>tot</sub>. Das erfolgt anhand der oben
   behandelten Messformel. Es muss also nach W<sub>obj</sub> aufgelöst werden.
 </p>
 
 <figure>
-  <img src="images/research/object_emissivity.svg">
+  <img src="images/research/object_emissivity.svg" style="height:4em;">
   <figcaption>Ausstrahlung Objekt</figcaption>
 </figure>
 
-<p>Von ε, τ, W<sub>refl</sub> und W<sub>atm</sub> ist momentan nur der Emissionsgrad ε bekannt. Es ist durch die Beschaffenheit des Objekts gegeben.
-  Die restlichen Parameter berechnen sich wie folgt:
+<p>Von ε, τ, W<sub>refl</sub> und W<sub>atm</sub> ist momentan nur der Emissionsgrad ε bekannt. Er ist durch die Beschaffenheit des Objekts gegeben.
+  Die restlichen Parameter sind zu berechnen.
 </p>
 
 <p>
@@ -445,13 +457,211 @@
 <figure>
   <img src="images/research/vpw.svg">
   <figcaption>P: Druck Wasserdampf</figcaption>
+  <span class="source">Quelle: <a href="#ref-minkina-dudzik">Infrared Thermography: Errors and Uncertainties</a></span>
 </figure>
 
 <figure>
   <img src="images/research/tau.svg">
   <figcaption>τ: Durchlässigkeit Atmosphäre</figcaption>
+  <span class="source">Quelle: <a href="#ref-minkina-dudzik">Infrared Thermography: Errors and Uncertainties</a></span>
 </figure>
 
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>Variable</th>
+        <th>Bedeutung</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>A<sub>trans x</sub></td>
+        <td>Atmospheric Trans X: Konstante für die Berechnung der Transmission aufgrund der Luftfeuchtigkeit</td>
+      </tr>
+      <tr>
+        <td>A<sub>trans A1</sub></td>
+        <td>Atmospheric Trans Alpha 1: Konstante für die Berechnung der Transmission aufgrund der Luftfeuchtigkeit</td>
+      </tr>
+      <tr>
+        <td>A<sub>trans B1</sub></td>
+        <td>Atmospheric Trans Beta 1: Konstante für die Berechnung der Transmission aufgrund der Luftfeuchtigkeit</td>
+      </tr>
+      <tr>
+        <td>A<sub>trans A2</sub></td>
+        <td>Atmospheric Trans Alpha 2: Konstante für die Berechnung der Transmission aufgrund der Luftfeuchtigkeit</td>
+      </tr>
+      <tr>
+        <td>A<sub>trans B2</sub></td>
+        <td>Atmospheric Trans Beta 2: Konstante für die Berechnung der Transmission aufgrund der Luftfeuchtigkeit</td>
+      </tr>
+      <tr>
+        <td>d</td>
+        <td>Distanz zum Objekt [m]</td>
+      </tr>
+      <tr>
+        <td>P</td>
+        <td>Druck Wasserdampf [mmHg]</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>
+  W<sub>obj</sub>, W<sub>tot</sub>, W<sub>refl</sub> und W<sub>atm</sub> sind alles spektrale Ausstrahlungen. Also eine Strahlungsleistung
+  pro Flächenelement pro Raumwinkel. Sie berechnen sich mit dem Planckschen Strahlungsgesetz. Mit diesem Gesetz kann man direkt aus der spektralen Ausstrahlung
+  die Temperatur berechnen und umgekehrt.
+</p>
+
+<figure>
+  <img src="images/research/planck_law.svg" style="height:4em;">
+  <figcaption>Plancksches Strahlungsgesetz</figcaption>
+  <span class="source">Quelle: <a href="#ref-planck-wiki">Plancksches Strahlengesetz, Wikipedia</a></span>
+</figure>
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>Variable</th>
+        <th>Bedeutung</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>B<sub>λ</sub></td>
+        <td>Spektrale Ausstrahlung [W/sr m<sup>3</sup>]<br>(Strahlungsleistung pro Flächeneinheit pro Raumwinkel)</td>
+      </tr>
+      <tr>
+        <td>e</td>
+        <td>eulerische Zahl</td>
+      </tr>
+      <tr>
+        <td>h</td>
+        <td>Plancksches Wirkungsquantum [J s]</td>
+      </tr>
+      <tr>
+        <td>c</td>
+        <td>Lichtgeschwindigket [m/s]</td>
+      </tr>
+      <tr>
+        <td>λ</td>
+        <td>Wellenlänge [m]</td>
+      </tr>
+      <tr>
+        <td>k</td>
+        <td>Boltzmann Konstante</td>
+      </tr>
+      <tr>
+        <td>T</td>
+        <td>Objekt Temperatur [K]</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>
+  Da jede FLIR Kamera unterschiedlich misst, werden sie auf einen Schwarzkörper kalibriert. Das Resultat sind untenstehende Werte.
+  Die Werte aus der Kalibrierung substituieren die Konstanten Teile des planckschen Strahlungsgesetz (siehe Tabelle unten).
+  Für alle Berechnungen müssen also diese neuen Konstanten verwendet werden.
+  Sie sind in den EXIF-Metadaten der Videodatei zu finden.
+</p>
+
+<figure>
+  <img src="images/research/planck_substitute.svg" style="height:4em;">
+  <figcaption>Plancksches Strahlungsgesetz mit FLIR Konstanten</figcaption>
+</figure>
+
+<br>
+
+<figure>
+  <table width="300">
+    <thead>
+      <tr>
+        <th>Konstante</th>
+        <th>Bedeutung</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Planck R1</td>
+        <td><img src="images/research/planck_R1.svg" style="height:1em;"></td>
+      </tr>
+      <tr>
+        <td>Planck R2</td>
+        <td><img src="images/research/planck_R2.svg" style="height:1em;"></td>
+      </tr>
+      <tr>
+        <td>Planck R</td>
+        <td><img src="images/research/planck_R.svg" style="height:2em;"></td>
+      </tr>
+      <tr>
+        <td>Planck B</td>
+        <td><img src="images/research/planck_B.svg" style="height:2em;"></td>
+      </tr>
+      <tr>
+        <td>Planck F</td>
+        <td>Ersetzt die Konstante 1 in der Planck Formel mit einem Wert im Bereich [0.5, 2].</td>
+      </tr>
+      <tr>
+        <td>Planck O</td>
+        <td>Offset Rohdaten.</td>
+      </tr>
+      <tr>
+        <td>S</td>
+        <td><img src="images/research/planck_O.svg" style="height:1em;"> 16 Bit A/D Counts.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<p>
+  Aufgelöst nach Temperatur ergibt das folgende Formel:
+</p>
+
+<figure>
+  <img src="images/research/planck_flir_temp.svg" style="height:4em;">
+  <figcaption>Planckgesetz umgeformt nach Temperatur mit FLIR Konstanten</figcaption>
+</figure>
+
+<p>
+  Diese Formel findet sich auch in den <a href="http://80.77.70.144/DocDownload/Assets/dl/t559775-en-us.pdf">FLIR Unterlagen</a> und bestätigt somit die Korrektheit dieser Herleitung.
+</p>
+
+<p>
+  Mit diesen beiden Formel kann nun W<sub>refl</sub> und W<sub>atm</sub> und schlussendlich die Temperatur T<sub>obj</sub> berechnet werden.
+</p>
+
+<figure>
+  <img src="images/research/planck_wrefl.svg" style="height:4em;">
+  <figcaption>Gleichung W<sub>refl</sub></figcaption>
+</figure>
+
+<br>
+<br>
+
+<figure>
+  <img src="images/research/planck_watm.svg" style="height:4em;">
+  <figcaption>Gleichung W<sub>atm</sub></figcaption>
+</figure>
+
+<p>Wenn wir und die ursprüngliche Messformel nochmals ansehen, sehen wir, dass nun alle Variablen bekannt sind und W<sub>obj</sub> berechnet werden kann.</p>
+
+<figure>
+  <img src="images/research/object_emissivity.svg" style="height:4em;">
+  <figcaption>Ausstrahlung Objekt</figcaption>
+</figure>
+
+<p><b>Berechnung Temperatur aus Ausstrahlung</b></p>
+
+<p>
+  Die Objekttemperatur T<sub>obj</sub> kann nun ganz einfach mit dem planckschen Strahlungsgesetz berechnet werden.
+</p>
+
+<figure>
+  <img src="images/research/planck_Tobj.svg" style="height:4em;">
+  <figcaption>Gleichung T<sub>obj</sub></figcaption>
+</figure>
 
 <!-- References -->
 
@@ -460,7 +670,7 @@
   <a href="http://www.flir.com" target="_blank">http://www.flir.com</a>
 </p>
 
-<p id="ref-plank-wiki" class="reference-item">
+<p id="ref-planck-wiki" class="reference-item">
   <span class="ref">Plancksches Strahlungsgesetz</span>
   <a href="https://de.wikipedia.org/wiki/Plancksches_Strahlungsgesetz" target="_blank">https://de.wikipedia.org/wiki/Plancksches_Strahlungsgesetz</a>
   <span class="retrieved">19. Oktober 2017</span>
@@ -476,4 +686,8 @@
   <span class="ref">Stefan-Boltzmann-Gesetz</span>
   <a href="https://de.wikipedia.org/wiki/Stefan-Boltzmann-Gesetz" target="_blank">https://de.wikipedia.org/wiki/Stefan-Boltzmann-Gesetz</a>
   <span class="retrieved">19. Oktober 2017</span>
+</p>
+
+<p id="ref-minkina-dudzik" class="reference-item">
+  <span class="ref">Prof. Minkina W., Dudzik S: Infrared Thermography: Errors and Uncertainties, Wiley, 2009</span>
 </p>
