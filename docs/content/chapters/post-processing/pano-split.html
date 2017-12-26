@@ -6,11 +6,12 @@
 </ul>
 
 <p>
-  Als letztes möchten wir aus dem Panorama die einzelnen Wagons ausschneiden, so dass wir pro Wagon ein Bild haben.
+  Nun möchten wir aus dem Panorama die einzelnen Wagons ausschneiden, so dass wir pro Wagon ein Bild haben.
   Unsere Analyse hat ergeben, dass die Übergänge der Wagons jeweils sehr viele dunkle Pixel aufweisen. Mit dieser
-  Erkenntnis haben wir folgendes Verfahren entwickelt. Sollte sich dieses Verfahren nicht für Infrarot Bilder eignen,
-  könnten wir alternativ für die Zugtypen die wir unterstützen möchten die Übergänge als Templates erfassen. Und
-  dieses würden wir dann versuchen im Panorama zu finden.
+  Erkenntnis haben wir folgendes Verfahren entwickelt. Dieses Verfahren hat nicht für Infrarot Bilder funktioniert.
+  Die Idee bei den Infrarotbilder ist es die Räder zu finden zwischen den Räder abzuschneiden. Es sind nämlich immer
+  zwei Räder am Anfang und am Ende jedes Wagons. Somit kann man in der Mitte von vier nahe beieinander liegenden
+  Räder abschneiden und trifft so genau das Ende eines Wagons.
 </p>
 
 <p>

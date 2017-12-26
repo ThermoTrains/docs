@@ -1,3 +1,25 @@
 <h3>Metadaten extrahieren</h3>
 
-<p>Skalierungsfaktor in JPEG Panorama speichern.</p>
+<ul>
+  <li><b>In:</b> MP4 Video, Panorama / Wagon Bilder</li>
+  <li><b>Out:</b> Panorama / Wagon Bilder mit Metadaten</li>
+</ul>
+
+<p>
+  Der letzte Schritt der Pipeline ist nur für Infrarotbilder notwendig. Beim Komprimieren der Rohdaten zu MP4 wenden wir eine Skalierung an.
+  Die Skalierungsparameter sind in den Metadaten der MP4 Videodatei enthalten. In diesem letzten Schritt werden sie in die finalen zusammengesetzten
+  Bilder geschrieben. Dies ist notwending um später im Analysetool die richtigen Temperaturen berechnen zu können. Dafür sind logischerweise
+  die unskalierten Rohdaten notwendig.
+</p>
+
+<p>
+  Die Skalierungsparamter sind in den EXIF-Metadaten im Feld Comment gespeichert:
+</p>
+
+<figure>
+  <pre><code>
+     » exiftool -Comment 2017-11-23@23-13-01-IR.seq.mp4
+     Comment     : 1441/0.0827943086624146
+  </code></pre>
+  <figcaption>Skalierungsfaktor in EXIF Metadaten</figcaption>
+</figure>

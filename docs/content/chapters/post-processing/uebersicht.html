@@ -20,7 +20,12 @@
   Ausserdem gibt es pro Wagon ein Bild, welches auf den Wagon genau zugeschnitten ist.
 </p>
 
-<h4>Ziele</h4>
+<p>
+  Die Verarbeitung der Farb- und Infrarotvideos erfolgt dabei praktisch identisch. Grundsätzlich sind die Infrarotbilder
+  schwarz/weiss, haben eine kleinere Auflösung und sind teilweise sehr kontrastarm. Nichts desto trotz können die Infrarot-Panoramas
+  mit den selben Methoden erstellt werden. Lediglich die Parameter (Schwellwerte, Fenstergrössen, etc.) sind anzupassen.
+  Nennenswerte Abweichungen sind direkt in den jeweiligen Schritten beschrieben.
+</p>
 
 <h4>Implementation</h4>
 
@@ -31,7 +36,7 @@
 
 <p>
   Es war uns von Anfang an klar, dass unsere Pipeline mindestens vier Schritte hat. Das hat sich dann ausgeweitet auf
-  neun Schritte. Die Software ist so designt, dass Schritte der Pipeline fast unabhängig voneinander entwickelt
+  zehn Schritte. Die Software ist so designt, dass Schritte der Pipeline fast unabhängig voneinander entwickelt
   und getestet werden können. Der Grundbaustein der Pipeline ist der <code>PipelineRunner</code>. In ihm wird
   konfiguriert, welche Schritte auszuführen sind. Jeder Schritt hat mindestens ein Eingabeartefakt und mindestens ein Ausgabeartefakt.
   Die Daten lassen sich so von einem Schritt in den nächsten pipen. Dabei werden die Artefakte serialisiert auf der Festplatte abgelegt.

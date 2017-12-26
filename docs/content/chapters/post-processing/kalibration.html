@@ -17,15 +17,26 @@
   <figcaption>Gefundenes Schachbrett Muster</figcaption>
 </figure>
 
+<figure>
+  <img src="images/post-processing/calibration_ir.jpg">
+  <figcaption>Gefundenes Schachbrett Muster Infrarotbild</figcaption>
+</figure>
+
 <p>
   Wir brauchen nun viele Testbilder aus verschiedenen Blickwinkeln auf das Schachbrett. Je nachdem ist die Verzerrung
   der Kamera unten, oben, links oder rechts anders. Wir fügen sämtliche gefundenen Punkte in eine Liste ein. Nebenbei
   führen wir eine ideale Liste, in der die Punkte korrekt ausgerichtet sind. Die Methode
   <code>calibrateCamera(...)</code>
   findet dann die Kameramatrix mithilfe der zwei Listen. Weil wir wissen wie gross die Kacheln in Millimeter sind,
-  können wir auch die Field of View ausrechnen. Mit unseren GoPro Aufnahmen berechneten wir ein vertikales Sichtfeld von
-  34.1° mit einem Fehlerwert (RMS) von 0.277. Der echte Wert wäre eigentlich bei 37.2° gemäss der <a
-  href="#ref-gopro-spec">GoPro Hero 5 Spezifikation</a>.
+  können wir auch die Field of View ausrechnen. Mit unseren FLIR Aufnahmen berechneten wir ein vertikales Sichtfeld von
+  33.2° mit einem Fehlerwert (RMS) von 0.64. Der echte Wert wäre eigentlich bei 37° gemäss der FLIR A65 Spezifikation.
+</p>
+
+<p>
+  Um die Infrarotkamera zu kalibrieren haben wir das ausgedruckte Schachbrettmuster gegen das Sonnenlicht gefilmt.
+  So wurden die schwarzen Kacheln aufgewärmt und sind auf dem Bild als weisse Kacheln sichtbar. Das Schachbrettmuster
+  ist also invertiert. Der erste Versuch mit einem frisch gedruckten Schachbrett mit noch warmer Tinte, war nicht ausreichend
+  genau um die Eckpunkte zu identifizieren.
 </p>
 
 <p>
@@ -58,10 +69,4 @@
   die Methode <code>getOptimalNewCameraMatrix(...)</code> an, welche die Kameramatrix berechnet. Die einzelnen Frames
   lassen sich dann mit der Methode <code>undistort(...)</code> entzerren. Durch das Entzerren werden jedoch schwarze
   Ränder hinzugefügt. Wir schneiden diese Ränder anschliessend noch ab.
-</p>
-
-<p id="ref-gopro-spec" class="reference-item">
-  <span class="ref">GoPro Hero 5 FOV</span>
-  <a href="https://gopro.com/help/articles/Question_Answer/HERO5-Black-Field-of-View-FOV-Information" target="_blank">https://gopro.com/help/articles/Question_Answer/HERO5-Black-Field-of-View-FOV-Information</a>
-  <span class="retrieved">14. Juni 2017</span>
 </p>
