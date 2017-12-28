@@ -15,7 +15,7 @@
   <h3>Ziel</h3>
 
   <p>
-    Ziel des Projektes im Endausbau ist das automatische Erkennen von fehlerhaften Zügen. Ein fehlerhafter Zug soll mit
+    Die Vision des Gesamtprojekts der SBB ist das automatische Erkennen von fehlerhaften Zügen. Ein fehlerhafter Zug soll mit
     detaillierten Informationen (Zug X, n-ter Wagon von vorne, betroffener Bereich, etc.) an ein Servicecenter gemeldet
     werden. Weil dadurch der genaue Zustand bekannt ist, lässt sich der optimale Zeitpunkt einer Wartung kosteneffektiv festlegen.
     Solch vorausschauende Wartung (Predictive Maintenance) ist der nächste Schritt in der Industrie, um noch effizienter zu wirtschaften.
@@ -27,7 +27,9 @@
   <p>
     Mit Hilfe einer Wärmebildkamera sollen die Fahrzeuge auf Wärmeverlust untersucht werden. So kann man defekte
     Wärmebrücken und Isolationen sichtbar machen. Zusätzlich soll ein Farbvideo aufgezeichnet werden. Das ermöglicht die Defekte
-    zu lokalisieren und Rückschlüsse auf die Ursache zu ziehen. Die beiden Kameras sollen in einer wettertauglichen
+    zu lokalisieren und Rückschlüsse auf die Ursache zu ziehen. Die beiden Kameras sollen in einem wettertauglichen Gehäuse
+    automatisch vorbeifahrende Züge aufnehmen. Die Aufnahmen werden danach zu einem Zugpanorama zusammengesetzt und für die
+    Analyse vorbereitet (entzerrt / recktifiziert).
   </p>
 
   <h3>Resultate der Vorstudie</h3>
@@ -38,56 +40,56 @@
       fest, dass Projekt mit der heutigen Hardware, Umgebung und Prozessen realisierbar ist.
     </li>
     <li>
-      <strong>Evaluation Hardware:</strong>​ Wir finden die nötige Hardware und haben abschliessend festgestellt, ob sie
-      unseren Anforderungen genügt. Auch Evaluieren wir die "Box" die evtl. nicht nur eine Kamera, sondern auch andere
-      Hardware wie Computer, CMOS Kameras und ein GSM Modul enthält.
+      <strong>Evaluation Hardware:</strong>​ Mit der FLIR A65 Infrarotkamera haben wir eine Kamera gefunden mit relativ hoher
+      Auflösung (640x512px) und einem grossen Field of View (45°). Sie erlaubt qualitativ gute Aufnahmen von Zügen ab einer
+      Distanz von 5m und max. 30km/h (Schritttempo empfohlen). Die weitere Hardware für den Thermo-Scanner ist zu evaluieren.
     </li>
     <li>
-      <strong>Evaluation​ Computer Vision Pipeline:</strong>​ Wir finden eine praktikable Pipeline für die Verarbeitung
-      des Videostreams der Züge.
+      <strong>Prototyp Post-processing:</strong>​ Der Prototyp des Post-processings ist fertig und ist in der Lage
+      aus einem Farbvideo das entzerrte und recktifizierte Panorama eines Zuges automatisch zu erstellen..
     </li>
     <li>
-      <strong>Evaluation Standorte:</strong> ​Wir finden geeignete Standorte um unsere "Box" aufzustellen und nehmen
-      auch gleich ein Test-Set an Daten auf, das wir für Experimente brauchen können. Wir befragen Experten bei der SBB,
-      die uns helfen die Daten manuell zu klassifizieren.
+      <strong>Evaluation Standorte:</strong> ​Wir haben einen ersten Standort vor einer Waschanlage in Zürich Herdern
+      bei der wir unseren Thermo-Scanner aufstellen können. In einer 2 wöchigen Testphase sollen hier möglichst viele
+      Daten gesammelt werden.
     </li>
   </ol>
 
-  <h3>Ziele Phase 2</h3>
+  <h3>Ziele Bachelor Thesis</h3>
 
-  <p>In der Phase 2 wollen wir uns vor allem um die Fertigstellung unserer "Box" kümmern.</p>
+  <p>In der zweiten Phase wollen wir uns vor allem um die Fertigstellung unseres Thermo-Scanners kümmern.</p>
 
   <ol>
     <li>
-      <strong>Hardware:​</strong> Die "Box" ist soweit ausgereift, dass sie längere Zeit aufgestellt werden kann und
-      ohne Beobachter Daten sammelt.
+      <strong>Daten-Aquise​:</strong> Bau und Entwicklung des Thermo-Scanners.
+      Der Thermo-Scanner ist soweit ausgereift, dass automatisch Aufnahmen von Zügen
+      gesammelt und in die Cloud geladen werden. Dabei ist er wetterfest und benötigt nur einen Stromanschluss.
     </li>
     <li>
-      <strong>Kunde:</strong>​ Der Kunde, die SBB, soll beurteilen können, ob sich breiter Einsatz des Systems lohnt.
-      Über die Fortführung des Projektes kann entschieden werden.
+      <strong>Daten-Verarbeitung:</strong>​ Im Post-processing lassen sich automatisiert aus den Videos Panoramas von ganzen
+      Zügen erstellen.
     </li>
     <li>
-      <strong>Computer Vision Pipeline:</strong>​ Die Pipeline ist aufgrund vieler Testdaten ausgereift. Die
-      verschiedenen Einflussfaktoren wurden erkannt und werden berücksichtigt.
+      <strong>Daten-Analyse:</strong>​ Die Spezialisten der SBB können die aufbereiteten Zugpanoramas analysieren
+      und feststellen ob Defekte vorhanden sind. Es kann abgeschätzt werden, ob mit diesem Verfahren die Ziele der
+      SBB im Bereich Predictive Maintenance und der Energieeinsparung näher rücken.
     </li>
     <li>
-      <strong>Klassifizierung:</strong> ​Die Erkennung der fehlerhaften Stellen funktioniert mit einer zufrieden
-      stellenden Rate. Eine Null-Rate an "false negatives" ist fast vorhanden. Es gibt nur
-      wenige "false positives".
-    </li>
-    <li>
-      <strong>Integration:</strong> ​Die Box ist integriert in ein System der SBB. Die Benachrichtigung an das
-      Servicecenter funktioniert.
+      <strong>Klassifizierung (optional):</strong> ​Falls wirklich Schäden durch Experten der SBB erkannt werden können,
+      soll ein Klassifizierungsverfahren zur Detektion dieser Schäden entwickelt werden.
     </li>
   </ol>
 
   <h3>Problemstellung</h3>
 
   <p>
-    Die Thermographie-Analysen werden sich auf den IC2000 (Doppelstock-Züge) beschränken. Dies ist eine sinnvolle
-    Einschränkung, denn es gibt diverse Zugsmodelle. Ausserdem ist der IC2000 in der Mitte seines Lebenszyklus,
-    d.h. es werden sukzessive grosse Revisionen an diesen Modellen durchgeführt. Während einer solchen Revision tauscht
-    man dann idealerweise auch die detektierten fehlerhaten Isolationen aus.
+    Vorgesehen war die Beschränkung auf den IC2000 Zugtyp (Doppelstock-Züge). Dies um die Klassifizierung der Schäden
+    zu vereinfachen und generell die Problemstellung einzuschränken. Da wir aber zu Beginn des Projektes feststellen
+    mussten, dass noch gar keine Infrarotaufnahmen von Isolationsschäden vorhanden sind, haben wir die Beschränkung auf
+    den Zugtyp aufgehoben. Der Fokus der Arbeit hat sich von der automatischen Klassifizierung von Isolationsschäden auf
+    das Sammeln und Aufbereiten von Infrarotaufnahmen verschoben. Ziel ist neu Erkenntnisse darüber zu gewinnen ob und wie
+    Isolationsschäden mit Wärmebildkameras sichtbar sind. Die Problemstellung ist also wie kann man automatisiert Infrarotaufnahmen
+    von Zügen erstellen, diese für eine Analyse vorbereiten und Erkenntnisse aus den Daten gewinnen.
   </p>
 
   <p>
@@ -130,19 +132,22 @@
 
   <p>
     Solche Erkenntnisse, wie wir sie aus obigen Testaufnahmen gewinnen konnten, sind wichtig um später normal
-    auftretende Wärmebrücken von ungewollten Wärmebrücken unterscheiden zu können. Aufgrund der fehlenden Testbilder
-    konnten wir uns aber wie erwähnt noch nicht weiter mit der Klassifizierung beschäftigen. Deshalb haben wir uns
-    in dieser Phase mit dem Erstellen des Zugpanoramas beschäftigt, was im Kapitel <a href="#post-processing">"Image
-    Processing Pipeline"</a> beschrieben ist.
+    auftretende Wärmebrücken von ungewollten Wärmebrücken unterscheiden zu können.
   </p>
 
   <p>
-    Die Erkennung von Schäden am Zug ist nur die halbe Miete. Ein geeigneter Standort für die Aufnahmen muss ebenfalls
-    gefunden werden. Es sollen möglichst viele Züge erfasst werden. Dies bedingt einen oder mehrere zentrale Standorte,
-    an denen möglichst jeder Zug einmal vorbeifährt. Der Aufnahmeort sollte zudem ein Streckenabschnitt sein, an welchem
-    die Züge nicht schneller als 30km/h fahren. Diese Einschränkung ist durch die Technologie der IR-Kameras gegeben.
-    Genauere Erläuterungen finden sich im Kapitel <a href="#evaluierte-kamera">"Evaluation Kamera"</a>.
+    Neben der Problematik der Datenbeschaffung in Form von Videos ist auch der Aufnahmestandort ein wichtiger Faktor.
+    Es nützt nichts wenn wunderbare Aufnahmen vorhanden sind, diese aber nur einen Bruchteil der Flotte der SBB abdecken.
+    Deshalb ist ein strategischer Aufnahemstandort wichtig. Der Aufnahmestandort soll in einem viel frequentierten Gebiet
+    liegen, durch welches jeder Zug regelmässig durchfährt. Mit Aufnahmen an wenigen solchen Standorten soll ein grossteil
+    der Flotte gefilmt werden können. Die Anforderungen an den Standort sind:
   </p>
+  <ul>
+    <li>langsam fahrende Züge (max. 30km/h)</li>
+    <li>min. 5m Abstand der Kamera zum Gleis</li>
+    <li>Stromanschluss und Mobilfunkempfang</li>
+    <li>Züge frequentieren den Standort häufig</li>
+  </ul>
 
   <h3>Lösungsansatz</h3>
 
@@ -151,7 +156,7 @@
   <h4>Probeaufnahmen</h4>
 
   <p>
-    Die Aufnahmen mit der FLIR SC620 (altes Modell, von der BFH zur Verfügung gestellt) haben gezeigt,
+    Die ersten Aufnahmen mit der FLIR SC620 (altes Modell, von der BFH zur Verfügung gestellt) haben gezeigt,
     dass die Videos noch zu wünschen übriglassen:
   </p>
 
@@ -195,12 +200,50 @@
     <figcaption>Making of IR Testaufnahmen</figcaption>
   </figure>
 
+  <p>
+    Mit der neu evaluierten FLIR A65 aus der Vorstudie können wesentlich bessere Aufnahmen realisiert werden.
+    Die sorgfältige Evaluation hat die gewünschten Resultate geliefert.
+  </p>
+
+  <ul>
+    <li>
+      Die grundlegende Technologie die auf Microbolometer basiert ist zwar die gleiche wie bei der FLIR SC620,
+      aber die Aufnahmen der FLIR A65 sind trotzdem weniger schnell verschwommen und man könnte Züge bis 30km/h filmen.
+    </li>
+    <li>
+      Die Kamera ist vollständig automatisierbar, nur fokussieren muss man manuell. Die Belichtungszeit, autom. Rekalibrierung,
+      Framrate usw. können über eine API gesteuert werden.
+    </li>
+    <li>
+      Angeschlossen wird die Kamera über PoE (Power over Ethernet) über ein Standartprotokoll.
+    </li>
+    <li>
+      Designt für den Dauerbetrieb.
+    </li>
+  </ul>
+
+  <figure>
+    <img src="images/sample-pictures/train.png">
+    <figcaption>Testaufnahmen Bern, Stöckacker</figcaption>
+  </figure>
+
+  <figure>
+    <img src="images/sample-pictures/test-aufnahme-stoeckacker.jpg">
+    <figcaption>Making of Testaufnahmen Bern, Stöckacker</figcaption>
+  </figure>
+
   <h4>Mögliche Aufnahmestandorte</h4>
 
   <p>
     Als möglichen Aufnahmestandort eignen sich die Waschanlagen der SBB, welche unter anderem in Zürich, Basel und Genf
     stationiert sind. Die Waschstrassen eignen sich aus folgenden Gründen:
   </p>
+
+  <figure>
+    <img src="images/DLR_altstetten.jpg">
+    <figcaption>Waschanlage Zürich Altstätten</figcaption>
+    <span class="source">Quelle: <a href="#ref-sbb-pietro">Pietro Loderer, SBB</a></span>
+  </figure>
 
   <ul>
     <li>
@@ -225,4 +268,9 @@
 <p id="ref-sbb-thermography" class="reference-item">
   <span class="ref">Thermographie SBB</span>
   <span class="sub-title">Klimakammer, Bericht Thermographie-Aufnahmen IC-2000, Schweizerische Bundesbahnen SBB, Hilfikerstr. 1, 3000 Bern 65</span>
+</p>
+
+<p id="ref-sbb-pietro" class="reference-item">
+  <span class="ref">Waschanlage Zürich Altstätten</span>
+  <span class="sub-title">Pietro Loderer, Systemingenieur - Bremse & Antrieb, SBB</span>
 </p>
