@@ -15,14 +15,14 @@
 </p>
 
 <p>
-  Wir schränken das Panorama Bild auf Pixel ein, die zwischen <code>RGB(0,0,140)</code> und <code>RGB(255,255,255)</code>
-  sind. Danach führen wir eine Dilatation durch, um Löcher zu füllen und eine Erosion, um kleine Objekte zu entfernen.
+  Bei den Farbbildern schränken wir das Panorama Bild auf Pixel ein, die zwischen <code>HSV(0,0,0)</code> und <code>HSV(255,255,38)</code>
+  sind. Danach führen wir eine Erosion durch um kleine Objekte zu entfernen.
   Anschliessend bauen wir ein Histogram über die Spalten auf, welches die Anzahl der überlebenen Pixel aufsummiert.
   Das Resultat wird durch das folgende Diagramm dargestellt.
 </p>
 
 <figure class="affix">
-  <img src="images/post-processing/split/split-histogram.jpg">
+  <img src="images/post-processing/split/split-histogram.png">
   <figcaption>Histogram über dunkle Pixel in Spalten</figcaption>
 </figure>
 
@@ -33,22 +33,23 @@
 </p>
 
 <figure>
-  <pre><code>int lastPeak = -1;
-for (int i = 0; i < hist.length; i++) {
-  if (hist[i] < median * PEAK_THRESHOLD) {
-    hist[i] = 0;
-    continue;
-  }
+  <pre><code>
+    int lastPeak = -1;
+    for (int i = 0; i < hist.length; i++) {
+      if (hist[i] < max * PEAK_THRESHOLD) {
+        hist[i] = 0;
+      } else {
+        hist[i] = 1;
 
-  hist[i] = 1;
-
-  // Removes the plateau by flattening every element
-  // that is 1 before the current one in a fixed distance.
-  if (lastPeak >= 0 && lastPeak + MIN_CAR_LENGTH_IN_PX > i)
-    hist[lastPeak] = 0;
-
-  lastPeak = i;
-}</code></pre>
+        // Removes the plateau by flattening every element that
+        // is 1 before the current one in a fixed distance.
+        if (lastPeak >= 0 && lastPeak + MIN_CAR_LENGTH_IN_PX > i) {
+          hist[lastPeak] = 0;
+        }
+        lastPeak = i;
+      }
+    }
+  </code></pre>
   <figcaption>Algorithmus: Find Peaks</figcaption>
 </figure>
 
