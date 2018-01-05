@@ -8,10 +8,7 @@
 <p>
   Nun möchten wir aus dem Panorama die einzelnen Wagons ausschneiden, so dass wir pro Wagon ein Bild haben.
   Unsere Analyse hat ergeben, dass die Übergänge der Wagons jeweils sehr viele dunkle Pixel aufweisen. Mit dieser
-  Erkenntnis haben wir folgendes Verfahren entwickelt. Dieses Verfahren hat nicht für Infrarot Bilder funktioniert.
-  Die Idee bei den Infrarotbilder ist es die Räder zu finden zwischen den Räder abzuschneiden. Es sind nämlich immer
-  zwei Räder am Anfang und am Ende jedes Wagons. Somit kann man in der Mitte von vier nahe beieinander liegenden
-  Räder abschneiden und trifft so genau das Ende eines Wagons.
+  Erkenntnis haben wir folgendes Verfahren entwickelt.
 </p>
 
 <p>
@@ -73,3 +70,40 @@
   <img src="images/post-processing/split/wagon_4.jpg">
   <figcaption>Wagon 4</figcaption>
 </figure>
+
+<p>
+  Dieses Verfahren hat nicht für Infrarot Bilder funktioniert. In Matlab haben wir deshalb ein weiteres Verfahren
+  entwickelt. Es ist aus zeitgründen noch nicht in die Pipeline integriert, aber die Machbarkeit ist bewiesen.
+  Die Idee bei den Infrarotbilder ist es die Räder zu finden und dazwischen abzuschneiden. Es sind nämlich immer
+  zwei Räder am Anfang und am Ende eines Wagons. Somit kann man in der Mitte von vier nahe beieinander liegenden
+  Räder abschneiden und trifft so genau das Ende eines Wagons. Die Räder werden mit der <a href="#ref-phase-coding">Phase Coding Methode von Atherton and Kerbyson</a> gefunden.
+  Alternativ wäre dies auch möglich über eine Hough-Transformation.
+</p>
+
+<figure>
+  <img src="images/post-processing/split/wheel_detected_detail.jpg">
+  <figcaption>Räder detektieren, Detailansicht</figcaption>
+</figure>
+
+<figure>
+  <img src="images/post-processing/split/wagon_ir_1.jpg">
+  <figcaption>Wagon Infrarot 1</figcaption>
+</figure>
+<figure>
+  <img src="images/post-processing/split/wagon_ir_2.jpg">
+  <figcaption>Wagon Infrarot 2</figcaption>
+</figure>
+<figure>
+  <img src="images/post-processing/split/wagon_ir_3.jpg">
+  <figcaption>Wagon Infrarot 3</figcaption>
+</figure>
+<figure>
+  <img src="images/post-processing/split/wagon_ir_4.jpg">
+  <figcaption>Wagon Infrarot 4</figcaption>
+</figure>
+
+<!-- References -->
+
+<p id="ref-phase-coding" class="reference-item">
+  <span class="ref">T.J Atherton, D.J. Kerbyson. "Size invariant circle detection." Image and Vision Computing. Volume 17, Number 11, 1999, pp. 795-803.</span>
+</p>
