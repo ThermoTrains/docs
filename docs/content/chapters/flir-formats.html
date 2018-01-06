@@ -1,8 +1,66 @@
 <h3>FLIR Formate</h3>
 
-<p>Einleitung</p>
+<p>
+  Da wir mit den Rohdaten der FLIR Kamera arbeiten, mussten wir uns zuerst umfangreich über deren Format informieren.
+  Die Informationen des Hersteller sind nur spärlich und verstreut vorhanden. Einige Erkenntnisse erhielten wir durch Reverse-Engineering.
+  In diesem Kapitel sind die wichtigen Erkenntnisse festgehalten.
+</p>
 
 <h4>Format</h4>
+
+<p><strong>Rohdaten</strong></p>
+
+<p>
+  Die Rohdaten sind im sogenannten Mono14 Format. Jeder Pixelwert ist LSB aligned und in den Bits 0-13 enthalten. Bits 14 und 15 sind immer 0.
+  Die Kamera nimmt also 16-Bit Graustufen Bilder auf.
+  Die Pixelwerte wiederum repräsentieren eine Strahlungsleistung, wie das im Kapitel <a href="#infrarot-theorie">IR-Theorie</a> beschrieben ist.
+  Durch die Infrarotstrahlung wird in der Kamera eine Ausgangsspannung erzeugt. Diese wird in A/D Counts umgewandelt. Mit den Rohdaten erhalten
+  wir also diese A/D Counts. In der Temperaturberechnung von FLIR <code>Temperature (in Kelvin) = B / log(R / (S - O) + F)</code> sind die A/D Counts
+  mit S bezeichnet. Die A/D Counts haben ein Offset O, der in den Metadaten des Videos enthalten ist.
+</p>
+
+<p><strong>Sensor Gain Modes</strong></p>
+
+<p>
+  Die FLIR Kamera hat zwei Sensor Gain Modes. Diese bestimmen den Temperaturbereich in welchem gemessen wird. Für unseren Anwendungsfall wählen wir
+  den HighGainMode. Da der Temperaturbereich in diesem Mode kleiner ist, haben wir eine höhere Auflösung in den A/D Counts.
+</p>
+
+<figure><pre><code>Auflösung = 160°C / 2<sup>16</sup> = 0.01°C (exemplarische Darstellung)</code></pre></figure>
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>Sensor Gain Mode</th>
+        <th>Temperaturbereich</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>HighGainMode</td>
+        <td>–25 to +135°C</td>
+      </tr>
+      <tr>
+        <td>LowGainMode</td>
+        <td>–40 to +550°C</td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>FLIR Sensor Gain Modes</figcaption>
+</figure>
+
+<p><strong>Temperatur Linear Mode</strong></p>
+
+<p>
+  Eine wichtige Einstellung die vorzunehmen ist, ist die TemperaturLinearMode. Die Kamera kann nämlich lineare Signal- oder Temperaturdaten liefern.
+  Die Signaldaten sind die wirklichen Rohdaten, die die Strahlungsleistung repräsentieren. Die linearen Temperaturdaten dagegen wären schon umgerechnete
+  Temperaturen aus den Rohdaten. Dies bedingt das Konfigurieren von Parameter für die Temeperaturberechnung auf der Kamera selber.
+  Wir präferieren die wirklichen Rohdaten, da uns das mehr Kontroller über die Berechnung der Temperatur gibt.
+  Die vorallem weil wir unser eigenes Analyse-Tool / Viewer für die IR-Aufnahmen schreiben. So können wir die Parameter zur Temeperaturberechnung
+  dynamisch anpassen.
+</p>
+
 <h4>Header</h4>
 <h4>Exifdaten</h4>
 
