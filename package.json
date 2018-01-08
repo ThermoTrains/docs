@@ -39,16 +39,17 @@
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-live-server": "0.0.31",
-    "gulp-nunjucks-render": "^2.0.0",
+    "gulp-nunjucks-render": "^2.2.2",
+    "gulp-responsive": "^2.8.0",
     "gulp-sass": "^3.1.0",
     "gulp-util": "^3.0.8",
     "jquery": "1.11.2",
-    "moment": "^2.19.3",
+    "moment": "^2.20.1",
     "normalize.css": "^7.0.0",
     "nunjucks": "^3.0.0",
     "opn-cli": "^3.1.0",
-    "run-sequence": "^2.2.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "run-sequence": "^2.2.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^1.1.2"
   }
 }

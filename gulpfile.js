@@ -5,6 +5,7 @@ const gutil = require('gulp-util');
 const gls = require('gulp-live-server');
 const nunjucksRender = require('gulp-nunjucks-render');
 const sass = require('gulp-sass');
+const responsive = require('gulp-responsive');
 
 const runSequence = require('run-sequence');
 const del = require('del');
@@ -54,6 +55,14 @@ gulp.task('docs:deps', () => {
 
 gulp.task('docs:images', () => {
   gulp.src('docs/images/**/*.{png,jpg,gif,svg}')
+    .pipe(responsive({
+      '**/*.{png,jpg,gif}': { width: 700, withoutEnlargement: true }
+    }, {
+      errorOnEnlargement: false,
+      passThroughUnused: true,
+      errorOnUnusedImage: false,
+      silent: true
+    }))
     .pipe(gulp.dest('build/images'));
 });
 
