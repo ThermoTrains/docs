@@ -169,6 +169,16 @@ TODO diese Tabelle eventuell weiter oben als übersicht?
   auf.
 </p>
 
+<h5>Remote Access</h5>
+<p>
+  Um von Fern auf den Mini-PC und die Hardware zu zugreifen, haben wir einen Teamviewer Server installiert. Dieser
+  ermöglicht es mit einer Partner ID und einem Passwort darauf zuzugreifen. Teamviewer bietet das beste
+  Benutzererlebnis verschiedenster Remote Access Lösungen. Auf die Standard Windows Remote Desktop Lösung können wir
+  nicht zugreifen, weil der Server direkt mit einer IP im Internet angebunden ist welche nicht statisch ist.
+  Teamviewer darf für nicht kommerzielle Zwecke gratis eingesetzt werden. Sobald die SBB das Projekt weiterführt,
+  müsste ein Lizenz angeschafft werden sofern noch keine bestehen.
+</p>
+
 <h5>Hardware Monitoring</h5>
 <p>
   Wir stellen unsere Hardware an einem Ort auf an dem es externe Einflüsse gibt die wir nicht unter Kontrolle haben.
@@ -375,34 +385,217 @@ TODO diese Tabelle eventuell weiter oben als übersicht?
 </p>
 
 <h4>Interne Kommunikation</h4>
-TOOD
 <p>
-  Redis...
+  Durch die Anbindung von verschiedenen Komponenten und die verteilte Entwicklung sowie möglicher Integration von
+  weiteren Komponenten je nach Projektverlauf haben wir uns für eine Microservice Architektur entschieden. In einer
+  solchen Architektur braucht es in der Regel einen Message Broker beziehungsweise eine Message Queue. Um dies
+  umzusetzen haben wir auf Redis gesetzt. Der Redis Server läuft ständig auf dem Mini PC und fährt automatisch hoch
+  sobald Windows startet.
+</p>
+
+<p>
+  Redis kann zwar mehr als nur Broker spielen, wir brauchen diese Features allerdings nicht. Redis zeichnet sich aus
+  durch die Einfachheit sowie die grosse Anzahl an production ready Bibliotheken zur Integration in alle gängingen
+  und zum Teil auch nicht gängigen Technologien. Ausserdem gibt es ein Command Line Interface mit welchem bequem
+  manuell Nachrichten in die Queue geschrieben werden können sowie diese auch ausgelesen werden kann.
+</p>
+
+<p>
+  Der Einsatz von Redis bringt also das Pattern PubSub (Publish/Subscribe) hervor. Die entwickelten Komponenten
+  laufen als eigenständige Prozesse und wissen nicht welche andere Prozesse laufen. Will eine Komponente mit einer
+  anderen kommunizieren muss sie die Nachricht in die Redis Message Queue schreiben und somit publishen. Will sie
+  Nachrichten lesen, muss sie sich auf eine Queue subscriben.
+</p>
+
+<p>
+  Um auf der Entwicklungsumgebung nicht den Redis Server installieren zu müssen, gibt es ein Redis Docker Image
+  welches den Server containerisiert startet. Somit kann eine Instanz ohne Konfiguration on Demand gestartet werden.
+  Auf dem Mini PC haben wir zuerst auch mit Docker den Redis Server eingerichtet weil die Windows Version des Redis
+  Servers nicht offiziell unterstützt wird von Seite Redis. Jedoch ist zum Zeitpunkt dieser Arbeit Docker immer noch
+  nicht sehr stabil um Container auf einer Serverplattform laufen zu lassen. Für eine Entwicklungsumgebung ist es ok,
+  aber auch nicht ideal. Deshalb haben wir dann den Redis Server der Microsoft offiziell unterstützt als
+  Windowsdiesnt installiert.
+</p>
+
+<p>
+  Während der Entwicklung der Komponenten haben wir uns schlussendlich auf folgende Menge an Befehlen geeinigt.
+</p>
+
+<ul>
+  <li><code>capture:start {{timestamp}}</code></li>
+  <li><code>capture:stop</code></li>
+  <li><code>capture:abort</code></li>
+  <li><code>capture:pause</code> (obsolete)</li>
+  <li><code>capture:resume</code> (obsolete)</li>
+  <li><code>delivery:upload {{filename}}</code></li>
+  <li><code>delivery:compress {{filename}}</code></li>
+  <li><code>kill</code></li>
+</ul>
+
+<p>
+  Im Diagramm unten ist dargestellt wie ein Aufnahme des Zuges auf der Kommunikationsebene abläuft. Es sind sämtliche
+  Nachrichten ersichtlich. Wie man sieht, geht jede Nachricht immer zuerst an den Redis Server welche sie dann weiter
+  an die Komponenten, die sich darauf subscribed haben, leitet. Die einzelnen Komponenten werden später erklärt.
+</p>
+
+<figure class="full">
+  <img src="images/thermoscanner/aufnahme-sequenz-diagramm.png">
+  <figcaption>Sequenzdiagramm Aufnahme</figcaption>
+</figure>
+<!--
+To generate the diagram: Go to https://www.websequencediagrams.com/ and paste the following:
+
+title Aufnahme Sequenz
+
+Trigger->Redis: capture:start "1"
+Redis->IRReader: capture:start "1"
+Redis->VisibleLightReader: capture:start "1"
+Redis->TemperatureReader: capture:start "1"
+
+Trigger->Redis: capture:stop
+Redis->IRReader: capture:stop
+Redis->VisibleLightReader: capture:stop
+Redis->TemperatureReader: capture:stop
+
+IRReader->Redis: delivery:compress "1-ir.seq"
+Redis->IRCompressor: delivery:compress "1-ir.seq"
+IRCompressor->Redis: delivery:upload "1-ir.mp4"
+VisibleLightReader->Redis: delivery:upload "1-visible.mp4"
+TemperatureReader->Redis: delivery:upload "1-temperature.txt"
+
+Redis->Uploader: delivery:upload "1-ir.mp4"
+Redis->Uploader: delivery:upload "1-visible.mp4"
+Redis->Uploader: delivery:upload "1-temperature.txt"
+-->
+
+<h4>Komponenten Architektur</h4>
+<p>
+  Damit es einfach ist neue Komponenten zu erstellen, haben wir ein Common Modul erstellt welches Code bereitstellt,
+  welcher für alle Komponenten der selbe ist. Im Common Modul gibt es eine abstrakte Klasse
+  <code>ThermoBoxComponent</code> von welcher konkrete Komponenten erben können. Eine Komponente kann dann definieren
+  welchen Kanälen Sie folgen möchte und welchen Handler sie anstössen möchte wenn eine Nachricht eintritt. Zudem gibt
+  es eine Funktion um Nachrichten zu publishen.
+</p>
+
+<p>
+  Die gewählte Architektur hat sich sehr bewährt. Es ermöglicht den selektiven Betrieb einzelner Komponenten so, dass
+  diese isoliert getestet werden können. Zudem kann man auch mal eine Komponente ausschalten wenn man das Feature
+  gerade nicht braucht. Zum Beispiel können wir den Uploader einfach nicht starten wenn wir nicht möchten, dass
+  Dateien auf den Server hochgeladen werden. Es ist keine Konfigurationsänderung notwendig.
+</p>
+
+<p>
+  Das einzige Problem das wir mit dieser Architektur festgestellt haben ist, dass wir Kameras haben auf welche mit
+  nur einem Windows Prozess zugegriffen werden kann. Die erste Idee war, dass wir eine Komponente haben, welche die
+  Farbkamera ausliest um zu erkennen ob gerade ein Zug in die Waschstrasse fährt. Eine zweite Komponente greift auf
+  die selbe Kamera zu um die Bilder in ein Video aufzunehmen sobald der Zug erkannt wurde. Dies war leider nicht
+  möglich. Also mussten wir in diesem konkreten und einzigen Fall vom Microservice-Pattern abweichen und beide
+  Funktionalitäten in der selben Komponente implementieren.
 </p>
 
 <h4>Reader Komponenten</h4>
+<p>
+  Unter den Reader Komponenten verstehen sich Komponenten die eine Aufnahme tätigen oder eben einen Sensor auslesen.
+  Die Reader Komponenten subscriben sich auf die Channels <code>capture:start</code>, <code>capture:stop</code> und
+  <code>capture:abort</code>.</p>
+<p>
+  Beim Start Befehl wird ein Timestamp im Format <code>YYYY-MM-DD@HH-mm-ss</code>
+  übergeben. Diesen Timestamp verwenden die Reader um einen eindeutigen Dateinamen zu erzeugen. Wenn diese Dateinamen
+  später asynchron über diverse Wege wieder zusammengetragen werden können Sie wieder zusammen gruppiert werden und
+  man weiss zu welcher Aufnahme sie gehören. Würden die Reader selber den Timestamp erzeugen ist durch die asynchrone
+  Natur der Redis Message Queue nicht gegeben, dass die selben Timestamps zum Zuge kommen.
+</p>
+
+<p>
+  Beim Stop Befehl stoppen die Reader ihre Aufnahme und schicken die erzeugte Datei an den jeweiligen Channel weiter.
+</p>
+
+<p>
+  Beim Abbruch-Befehl werden die Reader die Aufnahme abbrechen und alle angefallenen Dateien aufräumen. Ein Abbruch
+  kann unter anderem stattfinden wenn die Trigger Komponente sich dafür entscheidet die Aufnahme zu starten weil sie
+  glaubt der Zug sei eingefahren. Später wird dann aber gemerkt, dass es ein Fehlalarm war und die Aufnahme
+  abgebrochen werden sollte. Würde der Trigger warten bis er sich ganz sicher ist, könnte bereits ein Teil des Zuges
+  durch gefahren sein ohne dass er aufgenommen wurde.
+</p>
+
+<p>
+  Um manuelle Befehle zu geben haben wir ein Powershell Script <code>Control.ps1</code> erstellt mit welchem
+  interaktiv die möglichen Befehle abgesendet werden können.
+</p>
+
 <h5>IRReader</h5>
 TODO
 <p>
-
+  Die Aufgabe des IRReaders ist die Bilder FLIR Kamera aufzunehmen. Bevor die eigentliche Komponente gestartet wird,
+  wird zuerst die Kamera gefunden.
 </p>
 
 <h5>VisibleLightReader</h5>
 TODO
 <p>
-
-</p>
-
-<h5>WeatherReader</h5>
-TODO
-<p>
-
+  Liest Bilder der Basler Kamera aus.
 </p>
 
 <h5>TemperatureReader</h5>
 TODO
 <p>
 
+</p>
+
+<h5>WeatherReader</h5>
+<p>
+  In der zweiten Aufnahmephase haben wir uns entschieden den TemperatureReader nicht mehr zu verwenden weil die
+  Messdaten nicht brauchbar sind. Um die aufgenommenen IR Bilder trotzdem auswerten zu können haben wir den
+  WeatherReader implementiert der aktuelle Wetterdaten von OpenWeatherMap herunterlädt.
+</p>
+
+<p>
+  OpenWeatherMap bietet eine gratis API an um das aktuelle Wetter abzufragen. Um alte Daten abzufragen müsste man
+  bezahlen. Deswegen haben wir uns entschieden die Daten jeweils dann abzufragen wann die Aufnahme gemacht wird.
+  Durch das müssen wir nicht bezahlen. Die Daten können über einen HTTP GET Request abgefragt werden:
+</p>
+
+<figure>
+  <pre><code>http://api.openweathermap.org/data/2.5/weather?q=Zürich,CH&appid={openWeatherMapApiKey}</code></pre>
+  <figcaption>OpenWeatherMap API Request URL</figcaption>
+</figure>
+
+<p>
+  Die Antwort die zurück kommt sieht dann ungefähr so aus:
+</p>
+
+<figure>
+  <pre><code>{
+  "coord": {"lon": 8.54, "lat": 47.37},
+  "weather": [{
+    "id": 802,
+    "main": "Clouds",
+    "description": "scattered clouds",
+    "icon": "03n"
+  }],
+  "main": {
+    "temp": 280.06,
+    "pressure": 1016,
+    "humidity": 71,
+    "temp_min": 276.15,
+    "temp_max": 284.15
+  },
+  "visibility": 10000,
+  "wind": {"speed": 7.2, "deg": 240},
+  "clouds": {"all": 40},
+  "dt": 1514697600,
+  "sys": {
+    "sunrise": 1514704386,
+    "sunset": 1514735106
+  }
+}</code></pre>
+  <figcaption>OpenWeatherMap API Response</figcaption>
+</figure>
+
+<p>
+  Der WeatherReader setzt eine Internetverbindung voraus. In der Zeit als das LTE Modul ausgefallen ist, hatten wir
+  somit keine Wetterdaten sammeln können. Die Rate Limits der Gratis API Subsciprtion schränken uns mit 60 Calls pro
+  Minute nicht ein. Etwas unschön ist, dass die Wetterdaten nur alle 2 Stunden aktualisiert werden wenn man nicht zahlt.
 </p>
 
 <h4>Delivery Komponenten</h4>
@@ -420,6 +613,11 @@ TODO
 </p>
 
 <h4>CLI Utils</h4>
+TODO
+<p>
+
+</p>
+
 <h5>SeqConverter</h5>
 TODO
 <p>
