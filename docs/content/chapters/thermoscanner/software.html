@@ -1,27 +1,406 @@
 <h3>Software</h3>
 
-<h4>Architektur</h4>
-<p>
+<h4>Software Landschaft</h4>
 
+<ul>
+  <li>Thermobox</li>
+  <li>Sentry</li>
+  <li>Cockpit</li>
+  <li>Thermoboard</li>
+  <li>Github</li>
+  <li>GitHub</li>
+  <li>Teamviewer</li>
+</ul>
+
+<p>
+  Um die vielfältigen Anforderung an die Entwicklung der Software abzudecken haben wir über den Verlauf dieser Arbeit
+  eine ganze Software-Landschaft aufgebaut um unsere Hardware.
+</p>
+
+TODO Diagramm
+
+<h4>Technologie</h4>
+
+TODO diese Tabelle eventuell weiter oben als übersicht?
+
+<figure>
+  <table>
+    <thead>
+    <tr>
+      <th>Repository</th>
+      <th>Sprachen</th>
+      <th>Frameworks</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><code>thermobox</code></td>
+      <td>C#, Powershell, Batch</td>
+      <td>.NET, FLIR Atlas, Basler Pylon, EMGU.CV, Raven, Log4Net</td>
+    </tr>
+    <tr>
+      <td><code>thermoboard</code></td>
+      <td>PHP, Typescript</td>
+      <td>Laravel, Angular</td>
+    </tr>
+    <tr>
+      <td><code>thermobox-cockpit</code></td>
+      <td>PHP, HTML</td>
+      <td>keine</td>
+    </tr>
+    <tr>
+      <td><code>supersimplemonitoring</code></td>
+      <td>PHP, HTML</td>
+      <td>Chart.JS</td>
+    </tr>
+    <tr>
+      <td><code>research</code></td>
+      <td>Matlab</td>
+      <td>keine</td>
+    </tr>
+    <tr>
+      <td><code>post-processing</code></td>
+      <td>Java</td>
+      <td>OpenCV</td>
+    </tr>
+    </tbody>
+  </table>
+  <figcaption>Übersicht Code Repositories</figcaption>
+</figure>
+
+<h5>Continous Integration</h5>
+<p>
+  Zu einem guten Entwicklungsprozess gehört Continuous Integration. Da es für die zu verwendeten Technologien und
+  Frameworks keine gratis Dienste gibt und wir selber keine Server besitzen die diese Aufgabe übernehmen könnten,
+  haben wir die Thermobox selber als Continuous Integration Server eingesetzt. Startet die Thermobox wird automatisch
+  der HEAD commit aus dem Git repository auf dem master Branch ausgecheckt. Dann werden die Nuget Dependencies
+  aktualisiert. Somit kann anschliessend der Release Build durchgeführt werden. Alle Assemblies erhalten die korrekte
+  Versionsnummer die im Repository in der Datei <code>SharedAssemblyInfo.cs</code> eingecheckt ist. Weil wir aber
+  nicht andauernd die Version erhöhen möchten um diese bauen zu lassen, hängen wir auch den Commit Hash hinten daran.
+  Dieser String kann mit folgendem Git Befehl erzeugt werden:
+</p>
+
+<figure>
+  <pre><code>git describe --long --tags</code></pre>
+  <figcaption>Version mit Git Commit Hash erzeugen Befehl</figcaption>
+</figure>
+
+<p>
+  Dies erzeugt einen String wie diesen: <code>1.0.0-52-ge078b31</code>. Diese Versionsnummer ist deswegen wichtig
+  weil wir in den Logs auf diese zurückgreifen. Dazu mehr im Kapitel <a href="#thermobox-logging">Logging</a>.
+</p>
+
+<h5>Unit Testing</h5>
+<p>
+  Um die verschiedenen Komponenten und insbesondere die Bildanalyse Algorithmen zu entwickeln haben wir wo es sind
+  macht, TDD (Test Driven Development) eingesetzt. Seit Visual Studio 2017 Update 5 gibt es in der Enterprise Edition
+  (welche wir über Microsoft Imagine via Schulaccount beziehen können) Live Unit Testing. Dieses nette Feature
+  erkennt live welche Unit Tests von der Code Änderung betroffen sind und führt diese nach einem Build automatisch
+  aus. Das Resultat wird gleich links leben den Zeilennummern im Editor angezeigt.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/screenshot-live-unit-testing.png">
+  <figcaption>Screenshot Live Unit Testing</figcaption>
+</figure>
+
+<p>
+  Zu beachten ist, dass Visual Studio dabei sämtliche Dateiänderungen folgt. In unserem Build wurde anfänglich
+  jedesmal die Datei <code>SharedVersionInfo.cs</code> generiert welche die aktuelle Versionsnummer enthält. Dies hat
+  den Build jedes mal neu getriggert. Somit hat Visual Studio non-Stopp gebuilded und die Unit Tests ausgeführt. Nach
+  dem hilfreichen Feedback auf eine <a
+  href="https://developercommunity.visualstudio.com/content/problem/152749/live-unit-testing-rebuilding-non-stop.html">Frage
+  in der Visual Studio Developer Community</a> konnten wir aber auch diesen Issue beheben in dem wir den Build nur
+  triggern wenn es die Datei noch nicht gibt. Zudem löschen wir diese zu Beginn eines Builds damit sie dann auch
+  wirklich neu generiert wird.
+</p>
+
+<h5 id="thermobox-logging">Logging</h5>
+<p>
+  Um auch später nachvollziehen zu können was in der Software passiert, ist ein umfängliches Logging unumgänglich.
+  Wir setzen dazu log4net ein. Die Konfiguration des Loggings ist für alle Konfigurationen die selbe und wird
+  geteilt. Somit müssen kleine Anpassungen an der Konfiguration nicht über all nachvollzogen werden. Die Log Dateien
+  werden pro Komponente in eine Datei im Pfad <code>C:\Thermobox\logs\</code> abgelegt. Eine Zeile im Log enthält
+  folgende Informationen:
+</p>
+
+<ul>
+  <li>Datum</li>
+  <li>Uhrzeit auf die Millisekunde genau</li>
+  <li>Assembly Name</li>
+  <li>Version</li>
+  <li>Git Commit Hash</li>
+  <li>Log Level</li>
+  <li>Nachricht</li>
+</ul>
+
+<p>
+  Eine Log Zeile sind dann als Beispiel so aus:
+</p>
+
+<figure>
+  <pre><code>2017-11-20 09:06:44,724 TemperatureReader.exe-1.0.0-1-gb652480
+    [INFO] Received message on channel cmd:capture:start: 2017-11-20@09-06-44</code></pre>
+  <figcaption>Beispiel Log Zeile</figcaption>
+</figure>
+
+<p>
+  Wird eine Log Datei zu gross wird diese automatisch umbenannt und es wird eine neue Datei begonnen. Wir haben ein
+  Threshold von 10 MiB gewählt. Dieser wurde eigentlich nur von der VisibleLightReader-Komponente erreicht weil wir
+  dort Debug Logs um den Detektionsalgorithmus laufend zu verbessern. Gesamthaft haben wir über die zwei Testphasen
+  ca. 154 MiB an Logdateien gesammelt.
+</p>
+
+<p>
+  Auf einer Logzeile wird der Assembly Name aufgeführt. Dies mag redundant erscheinen weil dieser ja auch bereits in
+  der Logdatei enthalten ist. Allerdings starten mit dem Start Script alle Komponenten miteinander und lassen diese
+  auch auf die selbe Konsole schreiben damit man nicht 6 verschiedene Fenster offen und überwachen muss. Im
+  Normalbetrieb starten die Komponenten im Hintergrund. Somit hätte man eigentlich keine Möglichkeit die Logs
+  aggregiert zu sehen. Man kann höchstens ein <code>tail</code> auf die einzelnen Dateien machen. Also haben wir ein
+  Powershell Script geschrieben, dass sämtliche Logdateien folgt. Zudem färbt es die verschiedenen Loglevels auch
+  gleich ein. Also erscheint eine Exception auch gleich rot. Die Entwicklung des Scripts war nicht ganz einfach weil
+  pro Logdatei ein Thread gestartet werden muss der einer einzelnen Logdatei folgt und dessen neuen Logs zurück auf
+  die Hauptkonsole schreibt. Diese Lösung könnte eventuell auch für andere Projekte interessant sein.
+</p>
+
+<p>
+  Um das Logging muss man sich bei einem Wiederbetrieb der Kabine als erstes nicht kümmern. Logs werden nur lokal
+  abgelegt. Auch die Scripts zur aggregierten Ansicht der Logs gehen nehmen zusätzliche Komponenten Logs automatisch
+  auf.
+</p>
+
+<h5>Hardware Monitoring</h5>
+<p>
+  Wir stellen unsere Hardware an einem Ort auf an dem es externe Einflüsse gibt die wir nicht unter Kontrolle haben.
+  So kann z.B. jemand den Kasten ausstecken, Regen kann hineingelangen und einen Kurzschluss erzeugen oder er
+  verliert die Netzwerkkonnektivität. Wir möchten also überwachen können ob die Thermobox läuft. Also brauchen wir
+  ein Tool zur Überwachung der Uptime.
+</p>
+
+<p>
+  Weiter möchten wir die Temperatur der Hardware überwachen um eventuelle Konstruktionsbedingte Wärmestaus frühzeitig
+  zu erkennen bevor es anfängt zu schmelzen. Die Hardware ist draussen und kann nur in den vorgebenenen Temperaturen
+  betrieben werden. Durch eine Fehlfunktion des Heizlüfters oder Thermostats könnte des Innere des Gehäuses auch
+  überhitzt werden. Oder der Mini PC erzeugt eventuell so viel Hitze, dass diese nicht abgebaut werden kann. Einen
+  Lüftungsschlitz nach aussen gibt es nämlich nicht. Die einzige undichte Ort ist der Kabelschlitz im Boden des
+  Gehäuses. Also möchten wir die Temperatur des Mini-PCs überwachen können.
+</p>
+
+<p>
+  Um Erkenntnisse über die Performance der Software Suite zu gelangen und eventuell zu erkennen, dass das System
+  überlastet ist möchten wir auch die CPU Last sowie den Memory Verbrauch analysieren können. Die
+  Performance-intensivsten Abläufe sind folgende:
+</p>
+
+<ul>
+  <li>Bildanalyse ob ein Zug im Bild ist</li>
+  <li>Aufnahme Full HD Farbvideo mit Live H.264 Kompression</li>
+  <li>Aufnahme Infrarot Bilder</li>
+  <li>Clamping Infrarot Bilder von 16 bits zu 8 bits</li>
+  <li>Nachträgliche H.264 Kompression der Infrarot Bilder</li>
+</ul>
+
+<p>
+  Diese Abläufe können sich auch in die Quere kommen was wir erkennen möchten. Zudem möchten wir erkennen wenn der
+  Arbeitsspeicher ausgeht und eventuell auf die Disk geswapped wird.
+</p>
+
+<p>
+  Um diese Daten aufzunehmen haben wir nach einer Monitoring Lösung gesucht. Dazu gibt es diverse Self-Hosting
+  Lösungen wie z.B. das alt bekannte Nagios wovon es mittlerweile auch schon diverse Forks gibt. Diese Lösungen
+  können wir allerdings nicht selber betreiben weil uns die Server dazu fehlen. Ausserdem ist ein solches System
+  dafür ausgelegt eine ganze Serverlandschaft zu überwachen und nicht nur einen einzigen. Deswegen ist die
+  Installation und Konfiguration einer solchen Lösung sehr aufwändig. Diesen Aufwand wollten wir uns wenn möglich
+  sparen.
+</p>
+
+<p>
+  Die andere Option ist eine SaaS Monitoring Lösung zu verwenden. Das Problem hierbei ist, dass es keine Anbieter
+  gibt die das gratis machen. Oder jedenfalls nicht so, dass wir mehrere Monate lang auf den Server zugreifen können.
+</p>
+
+<p>
+  Deswegen haben wir uns entschlossen eine eigene Lösung zu schaffen die wir auf dem Server von Sebastian Häni hosten
+  können. Die entworfene Lösung ist so simpel gehalten wie möglich und ist nicht sehr erweiterbar. Die Funktionsweise
+  ist so, dass die Thermobox alle 5 Minuten ein Datentupel im JSON Format mit folgenden Werten an den Server per HTTP
+  POST schickt:
+</p>
+
+<ul>
+  <li>CPU Temperaturen in Celsius pro Core</li>
+  <li>CPU Auslastung in Prozent pro Core</li>
+  <li>Memory Auslastung in Prozent</li>
+  <li>Freier Festplattenspeicher in Bytes</li>
+  <li>Hostname</li>
+</ul>
+
+<p>
+  Der Server hängt das Datentupel an eine Datei. Das Frontend liest dann diese Datei aus und erzeugt eine HTML Seite
+  die vier Graphen im Browser darstellt. Oben links wird dargestellt ob die Box online ist. Oben rechts werden die
+  CPU Auslastung sowie die CPU Temperatur überlagert dargstellt. Unten links sieht man die Memory Auslastung. Und
+  unten rechts sieht man den Verlauf des freien Speicherplatzes.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/monitoring-screenshot.jpg">
+  <figcaption>Screenshot Monitoring</figcaption>
+</figure>
+
+<p>
+  Der Source Code ist ausnahmsweise nicht im ThermoTrains Github Repository eingecheckt, weil diese Lösung nicht
+  spezifisch für dieses Projekt funktionieren kann. Im Code ist nichts spezifisches was auf dieses Projekt hinweist.
+  Das Repository kann unter <a href="https://github.com/sebastianhaeni/supersimplemonitoring">
+  https://github.com/sebastianhaeni/supersimplemonitoring</a> gefunden werden.
+</p>
+
+<p>
+  Weil es ab und zu vorkam, dass die Software nicht so funktionierte wie gewünscht, hat sich die Festplatte gefüllt
+  und es konnten keine Aufnahmen mehr gemacht werden. Um sofort reagieren zu können wenn dies bald der Fall sein
+  wird, schickt der Server eine E-Mail mit der Information, dass weniger als 5 GiB freier Speicherplatz zur Verfügung
+  ist.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/screenshot-monitoring-email.png">
+  <figcaption>Screenshot Monitoring E-Mail Benachrichtigung</figcaption>
+</figure>
+
+<p>
+  Die Anforderungen an den Monitoring Server sind folgende:
+</p>
+
+<ul>
+  <li>PHP 7+</li>
+  <li>Schreibberechtigung auf <code>data/stats.txt</code></li>
+</ul>
+
+<p>
+  Um den Server in Betrieb zu nehmen müssen nur die Sourcen auf den Webserver kopiert werden und die
+  Schreibberechtigung eingerichtet werden. Im <code>ping.ps1</code> Script muss die richtige URL konfigurtiert werden
+  damit die Datentupel an den richtigen Ort gelangen. Es gibt kein Mechanismus die alten Daten zu löschen. Dazu muss
+  manuell die Datei <code>stats.txt</code> geleert werden. Die Graphen stellen jeweils nur die letzten 48 Stunden
+  dar. Details über ältere Posts können mit dem Button "Show more" angezeigt werden.
+</p>
+
+<p>
+  Der Client, also in unserem Fall der Thermo-Scanner, führt das Script <code>ping.ps1</code>, welches ebenfalls im
+  Repository zu finden ist, alle 5 Minuten aus. Dieser allgemein als Cron-Job bekannte Prozess kann auf dem Mini-PC
+  auf welchem Windows 10 läuft mit dem Task Scheduler gesteuert werden. Folgend zwei Screenshots wie der Task
+  konfiguriert wurde:
+</p>
+
+<figure>
+  <img src="images/thermoscanner/monitoring-task-configuration-1.png">
+  <figcaption>Konfiguration Monitoring Ping Task Generell</figcaption>
+</figure>
+
+<figure>
+  <img src="images/thermoscanner/monitoring-task-configuration-2.png">
+  <figcaption>Konfiguration Monitoring Ping Task Trigger</figcaption>
+</figure>
+
+<p>
+  Im Register Actions wurde eine Action hinzugefügt. Diese ist vom Typ "Start a program". Das Programm ist
+  <code>powershell</code> und die Argumente sind
+  <code>-NoLogo -File C:\repos\thermotrains\src\main\csharp\Scripts\ping.ps1 -WindowStyle Hidden"</code>.
+</p>
+
+<p>
+  Das Ping Script <code>ping.ps1</code> ist in Powershell geschrieben. Es liest die CPU Temperaturen, CPU
+  Auslastungen und die Memory Auslastung vom OpenHardwareMonitor aus. Um diese Angaben zuverlässig und einfach
+  auslesen zu können gibt es von Windows leider keine vorgegebenen Befehler oder Services. Das Auslesen des
+  verbleibenden Speicherplatzes ist jedoch mit Powershell Hausmitteln möglich.
+</p>
+
+<p>
+  Eine generell funktionierende Lösung um die Sensoren der Hardware auszulesen gibt es nicht. Jeder Hersteller
+  prorammiert in seinen Treibern eigene Interfaces um die Werte auszulesen. Die Software OpenHardwareMonitor versucht
+  diese verschiedenen Interfaces zusammen zu tragen und stellt diese im einfachen Tool dar. Zusätzlich bietet
+  OpenHardwareMonitor die Option an beim Systemstart sich selber im Tray auszuführen. Dies haben wir auf dem Mini-PC
+  so konfiguriert. Wenn OpenHardwareMonitor läuft, kann über die angebotenen WMI Objekte (Windows Managment
+  Instrumentation) auf die Sensor Werte mit simplen Queries zugegriffen werden. Als Beispiel hier ein Befehl welcher
+  alle CPU Kern Temperaturen in Kelvin ausliest:
+</p>
+
+<figure>
+  <pre><code>$temp = Get-WmiObject -Namespace "root/OpenHardwareMonitor" Sensor `
+  | Where-Object {$_.SensorType -eq 'Temperature' -and $_.Name -like 'CPU Core #*'} `
+  | Select-Object Value `
+  | ForEach-Object {$_.Value}</code></pre>
+  <figcaption>CPU Temperatur Auslesen Powershell Script</figcaption>
+</figure>
+
+<figure>
+  <img src="images/thermoscanner/screenshot-openhardwaremonitor.png">
+  <figcaption>Screenshot OpenHardwareMonitor</figcaption>
+</figure>
+
+<h5>Error Monitoring</h5>
+<p>
+  In den jeweiligen Komponenten können Errors und Warnungen geloggt oder gar uncatchted Exceptions auftreten. Um
+  diese nicht mühsam im Log suchen zu müssen sollen diese einfacher eingesehen werden können. Zudem sollte bei neuen
+  Fehler gleich eine E-Mail Benachrichtigung versendet werden.
+</p>
+
+<p>
+  Dazu haben wir Sentry integriert. Sentry ist ein Dienst, welcher selber gehosted werden kann oder auf sentry.io
+  betrieben wird. Da die Gratis-Lizenz mit ihren Einschränkungen für uns gut reicht, müssen wir keine Kosten
+  aufwenden. Wenn eine Warnung oder Fehler auftritt, wird dieses Event an die Sentry API gemeldet. Sentry aggregiert
+  dann die Events zusammen und schickt bei neuen unentdeckten Events eine E-Mail an uns.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/screenshot-sentry.png">
+  <figcaption>Screenshot Sentry</figcaption>
+</figure>
+
+<p>
+  Der Dienst ermöglicht es uns die Fehler sofort zu beheben nachdem sie aufgetreten sind. Zudem können wir die
+  Warnungen dazu benutzen um zu sehen wie häufig und wann gewisse Meldungen auftauchen. Zum Beispiel schicken wir
+  immer eine Warnung wenn ein Zug entdeckt wurde dieser aber "anscheinenden" nach zu kurzer Zeit schon wieder aus dem
+  Bild gefahren ist, dass das eigentlich gar nicht möglich ist. Wenn wir dann sehen, dass das immer während der
+  Dämmerung passiert ist das ein guter Hinweis was womöglich mit der Bildanalyse schief läuft.
+</p>
+
+<p>
+  Um Sentry einzubinden mussten wir einen eigenen log4net Appender bauen. Die existierenden Appender sind zu alt und
+  werden nicht mehr gewartet. Sollte sich in naher Zukunft nichts mehr tun in diesen Projekten erwägen wir unseren
+  Appender selber als Nuget Package zu veröffentlich damit andere auch davon profitieren können.
+</p>
+
+<p>
+  Der Sentry Account müsste im kommerziellen Betrieb von der SBB neu erstellt werden. Danach kann im Projekt ein
+  neuer DSN (Data Source Name) generiert werden. Dieser muss dann auf dem Mini PC in der Umgebungsvariable mit dem
+  Namen <code>SENTRY_DSN</code> abgelegt werden.
+</p>
+
+<h4>Interne Kommunikation</h4>
+TOOD
+<p>
+  Redis...
 </p>
 
 <h4>Reader Komponenten</h4>
 <h5>IRReader</h5>
+TODO
 <p>
 
 </p>
 
 <h5>VisibleLightReader</h5>
+TODO
 <p>
 
 </p>
 
 <h5>WeatherReader</h5>
+TODO
 <p>
 
 </p>
 
 <h5>TemperatureReader</h5>
+TODO
 <p>
 
 </p>
@@ -29,22 +408,26 @@
 <h4>Delivery Komponenten</h4>
 
 <h5>IRCompressor</h5>
+TODO
 <p>
 
 </p>
 
 <h5>Uploader</h5>
+TODO
 <p>
 
 </p>
 
 <h4>CLI Utils</h4>
 <h5>SeqConverter</h5>
+TODO
 <p>
   Das SeqConverter CLI Programm dient zur Konvertierung von FLIR SEQ Dateien zu MP4 oder umgekehrt.
 </p>
 
 <h5>ExtractFrames</h5>
+TODO
 <p>
   Das ExtractFrames diente uns während der Nachbearbeitung und zur Erstellung von kurzen Testvideos anhand unseres
   Testmaterials. Dieses Tool kann schnell n Frames aus einem Video extrahieren und in einem Ordner ablegen.
