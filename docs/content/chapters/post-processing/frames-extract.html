@@ -25,15 +25,15 @@ int framesBetween = frameCount / framesToExtract;
 int frameCounter = 0;
 
 Predicate&lt;Integer&gt; termination = isForward ?
-  i -> i < frameCount :
-  i -> i > 0;
+  i -&gt; i &lt; frameCount :
+  i -&gt; i &gt; 0;
 Function&lt;Integer, Integer&gt; increment = isForward ?
-  i -> i + 1 :
-  i -> i - 1;
+  i -&gt; i + 1 :
+  i -&gt; i - 1;
 
 int i = isForward ? 0 : frameCount;
 
-while (termination.test(i) && frameCounter < framesToExtract) {
+while (termination.test(i) && frameCounter &lt; framesToExtract) {
   i = increment.apply(i);
 
   if (i == 0 || i % framesBetween != 0)

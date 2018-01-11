@@ -32,15 +32,15 @@
 <figure>
   <pre><code>
     int lastPeak = -1;
-    for (int i = 0; i < hist.length; i++) {
-      if (hist[i] < max * PEAK_THRESHOLD) {
+    for (int i = 0; i &lt; hist.length; i++) {
+      if (hist[i] &lt; max * PEAK_THRESHOLD) {
         hist[i] = 0;
       } else {
         hist[i] = 1;
 
         // Removes the plateau by flattening every element that
         // is 1 before the current one in a fixed distance.
-        if (lastPeak >= 0 && lastPeak + MIN_CAR_LENGTH_IN_PX > i) {
+        if (lastPeak &gt;= 0 && lastPeak + MIN_CAR_LENGTH_IN_PX &gt; i) {
           hist[lastPeak] = 0;
         }
         lastPeak = i;

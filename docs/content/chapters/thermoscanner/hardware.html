@@ -448,21 +448,45 @@
   könnte. Dank des grossen Gehäuses konnten wir alle Sicherheitsabstände einhalten.
 </p>
 
+<figure>
+  <img src="images/thermoscanner/heizluefter-thermostat.jpg">
+  <figcaption>Thermostat / Heizlüfter</figcaption>
+</figure>
+
 <p><strong>Temperatursensor</strong></p>
 
+<p>
+  Um die Aussentemperatur zu messen wurde ein USB-Temperatursensor <a href="#ref-temper2">TEMPer2 von PCSensor</a>
+  verbaut. Wir brauchen die Aussentemperatur um aus den Infrarotaufnahmen die genaue Temperatur berechnen zu können. Der
+  Sensor wird durch ein Loch im Bodenblech aus dem Gehäuse geführt. In der Praxis hat sich leider gezeigt, dass der
+  Sensor nicht zuverlässig funktioniert. Es müsste das gesamte Kabel aus dem Gehäuse rausschauen nicht nur das Endstück,
+  um eine richtige Messung zu erhalten. Wir greifen deshalb auf die Temperaturdaten einer nahe gelegenen Wetterstation
+  zu für die Aussentemperatur. Die Ungenauigkeiten die sich dadurch ergeben sind für unseren Fall vernachlässigbar.
+</p>
+
 <figure>
-  <img src="images/thermoscanner/temp-sensor.jpg" width="300"/>
+  <img src="images/thermoscanner/temper-sensor.jpg">
   <figcaption>Temperatursensor</figcaption>
-  <span class="source">Quelle: <a href="#ref-temp-sensor">Ali Express</a></span>
 </figure>
 
 <p>
-  Um die Aussentemperatur zu messen wurde ein USB-Temperatursensor verbaut. Wir brauchen die Aussentemperatur um aus den Infrarotaufnahmen
-  die genaue Temperatur berechnen zu können. Der Sensor wird durch ein Loch im Bodenblech aus dem Gehäuse geführt. In der Praxis hat sich leider
-  gezeigt, dass der Sensor nicht zuverlässig funktioniert. Es müsste das gesamte Kabel aus dem Gehäuse rausschauen nicht nur das Endstück, um eine
-  richtige Messung zu erhalten. Wir greifen deshalb auf die Temperaturdaten einer nahe gelegenen Wetterstation zu für die Aussentemperatur. Die
-  Ungenauigkeiten die sich dadurch ergeben sind für unseren Fall vernachlässigbar.
+  Zum Ende des Projektes haben wir eine neue Seite von PCSensor gefunden, die den Sensor besser beschreibt. Zum
+  Zeitpunkt der Implementierung waren englische Information leider nur über ältere Gerätetypen vorhanden. TEMPer2 war
+  nur auf chinesisch beschrieben. Auch gibt es seit 22. November 2017 eine neue Version der TEMPer Software. Wir
+  haben nun herausgefunden, dass die 2 in TEMPer2 dafür steht, dass das Gerät zwei Sensoren hat. Einer im Gehäuse und
+  einer über ein Kabel. Da unsere Messungen wie man unten sieht fast nie unter 14°C gelangen gehen wir davon aus,
+  dass wir die Innentemperatur gemessen haben. Man sieht gut wie die Temperatur in der Nacht konstant bei ca. 14°C
+  verharrt und am Tag, an dem die Aussentemperatur über 14°C ging im Verlaufe des Tages ansteigt. Das auf und ab
+  gegen Ende der ersten Testphase deuten wir auf eine Aussentemperatur die stark unter 14°C lag so, dass der
+  Thermostat den Heizlüfter über längere Intervalle eingeschaltet lies. Die Zeitstempel zu denen wir die Temperatur
+  aufgenommen haben sind leider nicht schön linear verteilt weil nur eine Aufnahme gespeichert wenn ein Zug durch
+  fährt. Diese fahren nicht regelmässig durch die Waschstrasse.
 </p>
+
+<figure class="full">
+  <img src="images/thermoscanner/temper-histogram.png">
+  <figcaption>Temperatursensor Histogram</figcaption>
+</figure>
 
 <p><strong>RFID Reader</strong></p>
 <p>
@@ -471,13 +495,13 @@
 </p>
 <p>
   <b>Anforderungen</b>
-  <ul>
-    <li>Extern anschliessbar an Thermobox</li>
-    <li>Outdoor tauglich</li>
-    <li>Auslesen von Zügen die mit max. 30km/h fahren</li>
-    <li>Brauchbare API / unterstützte Protokolle für die Anbindung an Thermobox SW</li>
-  </ul>
 </p>
+<ul>
+  <li>Extern anschliessbar an Thermobox</li>
+  <li>Outdoor tauglich</li>
+  <li>Auslesen von Zügen die mit max. 30km/h fahren</li>
+  <li>Brauchbare API / unterstützte Protokolle für die Anbindung an Thermobox SW</li>
+</ul>
 <p>
   Die SBB hat bereits RFID Reader im Einsatz, z.B. in den Waschstrassen. Wir haben deshalb beim Hersteller Vilant AG nachgefragt,
   ob sie uns bei unserem Projekt unterstützen und wir einen RFID Reader kaufen können. Vilant bietet RFID Reader für professionelle
@@ -522,8 +546,8 @@
   <span class="retrieved">17. Dezember 2017</span>
 </p>
 
-<p id="ref-temp-sensor" class="reference-item">
-  <span class="ref">Ali Express Webseite</span>
-  <a href="https://de.aliexpress.com/item/USB-Thermometer-Hygrometer-Temperature-Sensor-Data-Logger-Recorder-For-PC-Laptop/32347888182.html?spm=a2g0s.9042311.0.0.v7bYjN" target="_blank">https://de.aliexpress.com/item/USB-Thermometer-Hygrometer-Temperature-Sensor-Data-Logger-Recorder-For-PC-Laptop/32347888182.html?spm=a2g0s.9042311.0.0.v7bYjN</a>
-  <span class="retrieved">17. Dezember 2017</span>
+<p id="ref-temper2" class="reference-item">
+  <span class="ref">TEMPer2 von PCSensor</span>
+  <a href="http://www.pcsensor.com/usb-thermometer/temper2.html" target="_blank">http://www.pcsensor.com/usb-thermometer/temper2.html</a>
+  <span class="retrieved">11. Januar 2017</span>
 </p>
