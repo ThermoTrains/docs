@@ -68,7 +68,7 @@ TODO diese Tabelle eventuell weiter oben als übersicht?
   <figcaption>Übersicht Code Repositories</figcaption>
 </figure>
 
-<h5>Continous Integration</h5>
+<h5>Continuous Integration</h5>
 <p>
   Zu einem guten Entwicklungsprozess gehört Continuous Integration. Da es für die zu verwendeten Technologien und
   Frameworks keine gratis Dienste gibt und wir selber keine Server besitzen die diese Aufgabe übernehmen könnten,
@@ -524,7 +524,6 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 </p>
 
 <h5>IRReader</h5>
-TODO
 <p>
   Die Aufgabe des IRReaders ist die Bilder FLIR Kamera aufzunehmen. Bevor die eigentliche Komponente gestartet wird,
   wird zuerst die Kamera gefunden. Die Suche nach der Kamera geschieht asynchron. Um die Testingzyklen sowie
@@ -533,7 +532,9 @@ TODO
 </p>
 
 <p>
-  FLIR Atlas SDK
+  Die Kommunikation zur Kamera handeln wir mit dem FLIR Atlas SDK ab. Im Hintergrund verwendet das SDK einen GenICam
+  Treiber für die Kommunikation. FLIR hat aber weitere proprietäre Parameter in die Kamera verbaut weswegen wir nicht
+  ein Standard GenICam-SDK verwenden.
 </p>
 
 <p>
@@ -627,14 +628,14 @@ TODO
 /// Tries to execute an action. If an exception is thrown, it tries again until a
 /// threshold is reached.
 /// &lt;/summary&gt;
-/// &lt;param name="action"&gt;Action with potential exception thrown</param>
-    /// &lt;param name="testSuccess"&gt;Function to test the success of the action</param>
-    private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
+/// &lt;param name="action"&gt;Action with potential exception thrown&lt;/param&gt;
+/// &lt;param name="testSuccess"&gt;Function to test the success of the action&lt;/param&gt;
+private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 {
   var tries = 0;
   const int maxTries = 5;
 
-  while (tries < maxTries)
+  while (tries &lt; maxTries)
   {
     try
     {
@@ -697,6 +698,17 @@ TODO
   geschrieben die wir befüllen und dann mit <a href="#ref-json-net">Json.NET</a> serialisieren.
 </p>
 
+<figure>
+  <pre><code>{
+  "Parameters": [{
+    "Name": "SensorTemperature",
+    "Description": "FPA temperature in Celsius",
+    "Value": "28.4"
+  }, ...]
+}</code></pre>
+  <figcaption>Ausgelesen Device Parameter in JSON Format</figcaption>
+</figure>
+
 <p>
   Hier ein Auszug aus den Parametern die für uns zum Teil relevant sind:
 </p>
@@ -722,9 +734,22 @@ TODO
 </p>
 
 <h5>TemperatureReader</h5>
-TODO
 <p>
+  Um unseren TEMPer2 Temperatursensor auszulesen mussten wir das USB HID (Human Interface Device) konsumieren. Vom
+  Hersteller gibt es nur eine Bedienersoftware ohne Code Beispiele oder Support für Entwickler. Glücklicherweise
+  haben wir ein .NET Codebeispiel gefunden, welches jedoch etwas veraltet ist. Wir haben die Konstanten, die der
+  Autor gefunden hat übernommen und den Code neu geschrieben. Im Artikel
+  <a href="#ref-temper-in-csharp">Code Project: Temper USB Thermometer in C#</a> wurde jedoch von einem älteren
+  TEMPer Geärt ausgegangen welches nicht zwei Sensoren hat. Deswegen haben wir anfangs nicht gemerkt, dass wir
+  eigentlich den falschen Sensor auslesen.
+</p>
 
+<p>
+  Beim Befehl <code>capture:start</code> macht der TemperatureReader nichts anderes als sich den übermittelten
+  Timestamp merken. Würde er nämlich bereits jetzt die Temperatur auslesen und mit <code>delivery:upload</code>
+  weiterschicken, hat ein späterer Abbruch durch <code>capture:abort</code> keine folgen mehr und die Datei wäre
+  bereits auf dem Server. Erst bei <code>capture:stop</code> zeichnet der Sensor die Temperatur in eine Datei auf die
+  er dann weiter schickt.
 </p>
 
 <h5>WeatherReader</h5>
@@ -825,30 +850,51 @@ TODO
 </p>
 
 <h4>CLI Utils</h4>
-TODO
 <p>
-
+  Während der Projektarbeit sind wir immer wieder auf mühsame Arbeiten gestossen die wir automatisiert haben. Diese
+  kleinen CLI Tools haben wir auch in die .NET Solution integriert damit diese auch vom gemeinsamen Code profitieren
+  können.
 </p>
 
 <h5>SeqConverter</h5>
 TODO
 <p>
-  Das SeqConverter CLI Programm dient zur Konvertierung von FLIR SEQ Dateien zu MP4 oder umgekehrt.
+  Das SeqConverter CLI Programm dient zur Konvertierung von FLIR SEQ Dateien zu MP4 oder umgekehrt. Zudem kann es
+  schwarzweisse MP4 Videos in Falschfarben Videos konvertieren.
 </p>
 
 <h5>ExtractFrames</h5>
-TODO
 <p>
   Das ExtractFrames diente uns während der Nachbearbeitung und zur Erstellung von kurzen Testvideos anhand unseres
   Testmaterials. Dieses Tool kann schnell n Frames aus einem Video extrahieren und in einem Ordner ablegen.
 </p>
 
-
-<h4>Thermoboard Cockpit</h4>
-TODO
+<h4>Thermobox Cockpit</h4>
 <p>
-
+  Die vom Uploader hochgeladenen Dateien möchten wir mit einfachen Mitteln einsehen können um nachvollziehen zu
+  können ob die Datenakquise richtig funktioniert. Die Dateien werden asynchron auf den Server geladen was heisst,
+  dass man partielle Aufnahmen bereits ansehen kann. Das Cockpit ist eine Webapplikation, die im Browser links eine
+  Liste aller Artefakte darstellt. Diese werden zuerst nach Datum und dann nach Zeitpunkt zusammengefasst. Dies kann
+  anhand der Dateinamen der Artefakt gemacht werden. Klickt man ein Artefakt an wird es rechts angezeigt.
 </p>
+
+<p>
+  Es gibt eine simple REST API die die Artefakte auf die auf dem Dateisystem verfügbar sind sammelt und zurück gibt.
+  Mit Javascript bauen wir dann die Liste der Artefakte auf. Auf ein Framework haben wir bewusst verzichtet weil das
+  Cockpit eigentlich nie mehr sein soll als ein Debug Tool.
+</p>
+
+<p>
+  Um den Datenschutzanforderungen der SBB Folge zu leisten haben wir die Webapplikation hinter einen simplen
+  Kennwortschutz gestellt. Auf den Aufnahmen sind zum Teil auch Personen erkennbar die im Zug sitzen. Zudem sind
+  die Zugnummern lesbar. Jemand könnte also eine Inventarliste aller Fahrzeuge der SBB aufbauen. Die Passwörter
+  werden in einer Konfigurationsdatei abgelegt.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/screenshot-thermobox-cockpit.png">
+  <figcaption>Screenshot Thermobox Cockpit</figcaption>
+</figure>
 
 
 <p id="ref-openweathermap" class="reference-item">
@@ -861,4 +907,10 @@ TODO
   <span class="ref">Json.NET: .NET API für JSON</span>
   <a href="https://www.newtonsoft.com/json" target="_blank">https://www.newtonsoft.com/json</a>
   <span class="retrieved">11. Januar 2018</span>
+</p>
+
+<p id="ref-temper-in-csharp" class="reference-item">
+  <span class="ref">Code Project: Temper USB Thermometer in C#</span>
+  <a href="https://www.codeproject.com/Tips/1007522/Temper-USB-Thermometer-in-Csharp">https://www.codeproject.com/Tips/1007522/Temper-USB-Thermometer-in-Csharp</a>
+  <span class="retrieved">12. Januar 2018</span>
 </p>
