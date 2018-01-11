@@ -15,6 +15,10 @@ h4 {
   font-size: 1.25em;
 }
 
+h5 {
+  font-size: 1.1em;
+}
+
 p {
   font-size: 1em;
   text-align: justify;
@@ -26,29 +30,37 @@ h2 {
 }
 
 h2:before,
-h3:before {
+h3:before,
+h4:before {
   width: 70px;
   padding-right: 20px;
   display: inline-block;
   text-align: right;
 }
 
+h2.nonr:before,
+h3.nonr:before,
+h4.nonr:before {
+  content: none;
+}
+
 h2:before {
   content: counter(chapter);
 }
 
-h2.nonr:before {
-  content: none;
-}
-
 h3 {
   counter-increment: sub-chapter;
+  counter-reset: sub-sub-chapter
 }
 
 h3:before {
   content: counter(chapter) "." counter(sub-chapter);
 }
 
-h3.nonr:before {
-  content: none;
+h4 {
+  counter-increment: sub-sub-chapter;
+}
+
+h4:before {
+  content: counter(chapter) "." counter(sub-chapter) "." counter(sub-sub-chapter);
 }
