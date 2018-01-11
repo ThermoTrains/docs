@@ -527,8 +527,193 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 TODO
 <p>
   Die Aufgabe des IRReaders ist die Bilder FLIR Kamera aufzunehmen. Bevor die eigentliche Komponente gestartet wird,
-  wird zuerst die Kamera gefunden.
+  wird zuerst die Kamera gefunden. Die Suche nach der Kamera geschieht asynchron. Um die Testingzyklen sowie
+  grundsätzlich den Start der Komponente zu beschleunigen haben wir folgendes Verfahren entwickelt um möglichst
+  schnell mit der Kamera zu verbinden.
 </p>
+
+<p>
+  FLIR Atlas SDK
+</p>
+
+<p>
+  Zu erst wird ein Discovery Thread gestartet der in einem Event Handler auf gefundene Kameras reagiert. Wird die
+  richtige Kamera gefunden welche den Suchstring matched, wird der originale Thread mit dem Resultat der Kamera
+  beendet und er retourniert. Die Kamera die gefunden werden soll ist in der Konfiguration unter dem Key
+  <code>IR_CAMERA_NAME</code> abgelegt. Für unsere Kamera ist diesre "FLIR AX5". Wird die Kamara nicht innerhalb von
+  5 Sekunden gefunden verwenden wir die Emulator-Kamera, die das FLIR Atlas SDK anbietet, verwendet. Das heisst das
+  Discovery-Verfahren dauert maximum 5 Sekunden oder kürzer.
+</p>
+
+<p>
+  Die Emulatorkamera ist hilfreich wenn man die Komponente testen will ohne dass man die Kamera im Netzwerk in
+  Betrieb genommen hat. Das erzeugte Bild ist ein Test-Infrarotbild bei welchem sich ein Balken auf und ab bewegt
+  sowie einige Noise-Pixel die sich zufällig verteilen.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/kamera-emulator.jpg">
+  <figcaption>Bild des FLIR ATLAS SDK Kameraemulators</figcaption>
+</figure>
+
+<figure>
+  <pre><code>2018-01-11 10:51:40,520 IRReader.exe [INFO] Discovering cameras
+2018-01-11 10:51:45,640 IRReader.exe [WARN] Fallback to emulator camera
+2018-01-11 10:51:47,125 IRReader.exe [INFO] Stopping discovery
+2018-01-11 10:51:47,125 IRReader.exe [INFO] Connecting to camera: Camera Emulator
+2018-01-11 10:51:48,229 IRReader.exe [INFO] Connecting to redis on localhost
+2018-01-11 10:51:48,893 IRReader.exe [INFO] Connected to redis
+2018-01-11 10:51:48,894 IRReader.exe [INFO] Subscribing to cmd:capture:start
+2018-01-11 10:51:48,904 IRReader.exe [INFO] Subscribing to cmd:capture:stop
+2018-01-11 10:51:48,905 IRReader.exe [INFO] Subscribing to cmd:capture:abort
+2018-01-11 10:51:48,905 IRReader.exe [INFO] Subscribing to cmd:capture:pause
+2018-01-11 10:51:48,906 IRReader.exe [INFO] Subscribing to cmd:capture:resume
+2018-01-11 10:51:48,907 IRReader.exe [INFO] Subscribing to cmd:kill</code></pre>
+  <figcaption>IRReader Startup Log</figcaption>
+</figure>
+
+<p>
+  Die Infrarot Kamera wird in der Regel eine Betriebstemperatur von ca. 40 - 50° C einnehmen. Die Kamera hat eine
+  interne Mappingtabelle sowie ein Kalibrierungsverfahren um die Eigentemperatur zu kompensieren damit diese keine
+  Einflüsse auf das aufgenommene Bild haben. Flir nennt den Prozess NUC (Non Uniformity Correction). Ein NUC dauert
+  ca. 0.2 - 0.5 Sekunden und blockiert die Aufnahme. Zeichnet man Bilder auf hat man während eines NUCs ein schwarzes
+  Bild. Die Standardkonfiguration der Kamera ist, dass alle 4 Minuten ein NUC gemacht wird um eventuelle sich
+  veränderte Temperaturen zu kompensieren. Zusätzlich startet die Kamera den NUC wenn sich die Eigentemperatur um
+  einen einstellbaren Threshold verändert hat. Gerade wenn man die Kamera in einem Büro in Betrieb nimmt, wird sie
+  anfänglich ca. jede Minute einen NUC durchführen bis sie die normale Betriebstemperatur erreicht hat. Der NUC ist
+  übrigens hörbar weil der Verschluss mechanisch betätigt wird. Es hört sich wie ein Klicken an.
+</p>
+
+<p>
+  Wir möchten in unseren Aufnahmen keine schwarzen Frames haben. Als Lösung haben wir eingebaut, dass unmittelbar
+  bevor eine Aufnahme gestartet wird ein NUC durchgeführt wird. Dann können wir davon ausgehen, sofern die Kamera
+  länger als ein paar Minuten in Betrieb ist, dass der nächste NUC erst in 4 Minuten durchgeführt wird. Der
+  anfängliche NUC dauert auch nicht zu lange dass wir eventuell sogar den Anfang verpassen würden. Die NUC
+  Einstellungen können via dia Parameter <code>NUCMode</code>, <code>NUCTempDelta</code> und
+  <code>NUCIntervalFrames</code> eingerichtet werden.
+</p>
+
+<p>
+  Die Aufnahme steuern wir über den FLIR ATLAS SDK Recorder. Dieser kann Videos von der Kamera aufnehmen. Diese
+  werden im FLIR proprietären Format SEQ abgespeichert. Das SEQ Format ist nichts anderes als aneinandergehängte TIFF
+  Dateien welche mit Rohdaten der Kamera befüllt sind. Zusätzlich gibt es EXIF Metadaten. Da die Kamera mit 14 bit
+  aufnimmt und keine Kompression stattfindet, sind die resultierenden Dateien sehr gross. Es gibt keine Möglichkeit
+  die Bilder sofort zu komprimieren.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/seq-filesize-formula.png">
+  <figcaption>Formel zur Berechnung der SEQ-Dateigrösse</figcaption>
+</figure>
+
+<p>
+  Nehmen wir in der vollen Auflösung und Framerate auf werden die Dateien schnell so gross, dass sie gar nicht mehr
+  der Disk Platz hätten. Deshalb haben wir die Framerate auf ein Frame pro Sekunde verringert. Die Auflösung zu
+  verringern macht kein Sinn weil wir dann Bilddetails verlieren.
+</p>
+
+<p>
+  Die Kontrolle der Kamera über das FLIR ATLAS SDK ist etwas mühsam. Zum einen muss das SDK manuell heruntergeladen
+  und installiert werden. Es gibt kein Nuget Package. Zum anderen ist die Control-Library nicht sehr stabil. Es kann
+  zu zufälligen Exceptions kommen wenn ein Befehl abgesetzt wird. Um uns Abhilfe zu schaffen haben wir eine Retry
+  Methode gebaut der ein Callback zur Befehlsausführung mitgegeben wird sowie ein Callback zur Überprüfung ob es
+  erfolgreich war. Diese Retry Methode für dann den Befehl so lange wiederholt aus bis keine Exception geworfen wird
+  und der zweite Callback sagt, dass es funktioniert hat. Leider können wir nicht in den Code hineinschauen weil er
+  propriertär und obfuscated ist.
+</p>
+
+<figure>
+  <pre><code>/// &lt;summary&gt;
+/// Tries to execute an action. If an exception is thrown, it tries again until a
+/// threshold is reached.
+/// &lt;/summary&gt;
+/// &lt;param name="action"&gt;Action with potential exception thrown</param>
+    /// &lt;param name="testSuccess"&gt;Function to test the success of the action</param>
+    private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
+{
+  var tries = 0;
+  const int maxTries = 5;
+
+  while (tries < maxTries)
+  {
+    try
+    {
+      action.Invoke();
+
+      if (testSuccess.Invoke())
+      {
+        return;
+      }
+
+      throw new Exception("Camera state was not as expected");
+    }
+    catch (Exception ex)
+    {
+      Log.Warn("Exception while executing camera command", ex);
+    }
+
+    tries++;
+    Log.Warn($"Failed executing camera command (try {tries} of {maxTries})");
+    Thread.Sleep(10);
+  }
+
+  Log.Error($"Could not execute command after {tries} tries.");
+}</code></pre>
+  <figcaption>FLIR ATLAS SDK Code zur wiederholten Befehlsausführung</figcaption>
+</figure>
+
+<p>
+  Wird die Aufnahme gestoppt erzeugt der IRReader drei Dateien.
+</p>
+
+<ul>
+  <li>SEQ Datei: Video-Rohdaten</li>
+  <li>JPG Datei: Snapshot des ersten Frames des Videos</li>
+  <li>JSON Datei: Aktuelle Device Parameter</li>
+</ul>
+
+<p>
+  Die SEQ Datei wird via <code>delivery:compress</code> an den IRCompressor übergeben welcher die Datei komprimiert
+  damit dieser übertragen werden kann. Das übertragen der Rohdaten ist erstens zu langsam weil Züge schneller
+  vorbeifahren als wir hochladen könnten und zweitens haben wir nicht genügend Serverspeicherplatz im die Dateien
+  abzuspeichern. Zu beachten ist, dass die SEQ Datei nur die Sensorwerte enthält. Es sind noch keine Temperaturwerte
+  darin. Um diese zu Berechnen müssen weitere Parameter hinzugenommen werden.
+</p>
+
+<p>
+  Die JPG Datei dient uns zum Vergleich des komprimierten Videos. Damit sehen wir ob der Kompressionsalgorithmus
+  keine offensichtlichen Fehler beinhaltet. Weiter dauert das Kompressionsverfahren sowie der Upload einige Zeit.
+  Möchten wir trotzdem schon sehen was aufgenommen wurde müssten wir warten. Dieser Snapshot kann allerdings sehr
+  schnell und ohne langwirige Kompression hochgeladen werden. So sehen wir direkt ob und welcher Zug sich im Bild
+  befindet.
+</p>
+
+<p>
+  Die JSON Datei enthält die 315 verfügbaren Geräteparameter der FLIR A65 Kamera die zur Zeit der Aufnahme
+  konfiguriert waren. Je nach Einstellung resultieren andere Bilder. So gibt es zum Beispiel einen High Gain oder Low
+  Gain Modus. Diese Angaben dienen uns als Kontext bei der Interpretation und weiterverarbeitung der aufgenommenen
+  Bilder. Wir speichern diese Informationen bei jeder Aufnahme mit ab. Enthalten sind auch Sensorinformationen der
+  Kamera wie z.B. Gehäuse- oder Sensortemperatur. Zur Serialisierung der Kameraparamter haben wir eigene Modelklassen
+  geschrieben die wir befüllen und dann mit <a href="#ref-json-net">Json.NET</a> serialisieren.
+</p>
+
+<p>
+  Hier ein Auszug aus den Parametern die für uns zum Teil relevant sind:
+</p>
+
+<figure>
+  <code>DeviceVendorName, DeviceModelName, DeviceManufacturerInfo, DeviceVersion, DeviceID, DeviceUserID,
+    DeviceScanType, DeviceTemperatureSelector, DeviceTemperature, CameraFirmwareVersion,
+    SensorFirmwareVersion, SensorResolution, SensorFocalLength, SensorFrameRate, SensorTemperature,
+    HousingTemperature, CameraOptions, SensorWidth, SensorHeight, SensorDigitizationTaps, WidthMax, HeightMax, Width,
+    Height, OffsetX, OffsetY, BinningHorizontal, BinningVertical, DecimationHorizontal, DecimationVertical, PixelFormat,
+    PixelCoding, PixelSize, PixelColorFilter, AcquisitionMode, AcquisitionFrameCount, LineSelector,
+    LineMode, UserOutputSelector, LineDebounceFactor, SyncMode, SensorGainMode, NUCMode, NUCTempDelta,
+    NUCIntervalFrames, BaudRate, ShutterPosition, CorrectionMask, R, Spot, B, F, O, FNumber,
+    Transmission, OInt, TemperatureLinearMode, TemperatureLinearResolution, RThg, J1, OAShift, ObjectEmissivity,
+    ReflectedTemperature, WindowTransmission, WindowTemperature, AtmosphericTransmission, AtmosphericTemperature,
+    SensorVideoStandard, ImageAdjustMethod, VideoOrientation, PlateauLevel, MaxAGCGain</code>
+</figure>
 
 <h5>VisibleLightReader</h5>
 TODO
@@ -599,6 +784,11 @@ TODO
   Minute nicht ein. Etwas unschön ist, dass die Wetterdaten nur alle 2 Stunden aktualisiert werden wenn man nicht zahlt.
 </p>
 
+<p>
+  Der API Key wird auf dem Mini PC in der Umgebungsvariable <code>OPEN_WEATHER_MAP_API_KEY</code> abgelegt, damit
+  dieser nicht in einer im Repository eingecheckten Datei gespeichert werden muss.
+</p>
+
 <h4>Delivery Komponenten</h4>
 
 <h5>IRCompressor</h5>
@@ -608,9 +798,30 @@ TODO
 </p>
 
 <h5>Uploader</h5>
-TODO
 <p>
+  Die Uploader Komponente hört auf Nachrichten im Kanal <code>delivery:upload</code>. Die Dateien werden auf einen
+  FTP Server hochgeladen und anschliessend in den Papierkorb verschoben. Die Zugagngsdaten zum FTP Server sind in der
+  Umgebungsvariable <code>THERMOBOX_FTP</code> abgelegt in der Form <code>username:password@server</code>.
+</p>
+<p>
+  Die Dateien werden anschliessend nicht einfach gelöscht sondern in den Papierkorb verschoben weil sich so die
+  Möglichkeit bietet nachzuschauen welche Dateien genau auf dem Mini PC existiert haben weil vielleicht etwas mit dem
+  Upload schiefgegangen ist. Auf Windows kann dann eingestellt werden wie gross der Inhalt des Papierkorbs maximal
+  sein darf. Ist das Limit überschritten leer Windows automatisch die ältesten Dateien. So können wir den
+  Festplattenspeicherplatz optimal ausnutzen und trotzdem sicherstellen, dass sie nie voll läuft. Ausser ein Programm
+  erstellt eine einzige Datei die den verfügbaren Speicherplatz alleine ausnutzt.
+</p>
 
+<p>
+  Um Dateien von einer .NET Applikation in den Papierkorb zu verschieben, gibt es leider kein einfaches Interface.
+  Zum einen kann man ein Shell32 Objekt erstellen welches auf den Papierkorb zeigt und die Datei dann dort
+  hinverschieben. Damit das klappt muss man aber zuerst in einem STA Thread (single-threaded apartment) sein, welches
+  unsere Komponenten nicht sind.
+</p>
+
+<p>
+  Die auf den FTP Server hochgeladenen Dateien lesen wir dann im Thermobox Cockpit aus und zeigen sie im Browser an.
+  So kann live mitverfolgt werden was gerade aufgenommen wurde.
 </p>
 
 <h4>CLI Utils</h4>
@@ -632,8 +843,22 @@ TODO
   Testmaterials. Dieses Tool kann schnell n Frames aus einem Video extrahieren und in einem Ordner ablegen.
 </p>
 
+
+<h4>Thermoboard Cockpit</h4>
+TODO
+<p>
+
+</p>
+
+
 <p id="ref-openweathermap" class="reference-item">
   <span class="ref">OpenWeatherMap: Wetter API</span>
-  <a href="http://openweathermap.org/" target="_blank">http://openweathermap.org/</a>
+  <a href="http://openweathermap.org" target="_blank">http://openweathermap.org</a>
   <span class="retrieved">10. Januar 2018</span>
+</p>
+
+<p id="ref-json-net" class="reference-item">
+  <span class="ref">Json.NET: .NET API für JSON</span>
+  <a href="https://www.newtonsoft.com/json" target="_blank">https://www.newtonsoft.com/json</a>
+  <span class="retrieved">11. Januar 2018</span>
 </p>
