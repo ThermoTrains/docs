@@ -1,0 +1,166 @@
+<div class="chapter">
+  <h2 class="break">System Architektur</h2>
+
+  <p>
+    Dieses Kapitel soll einen Überblick über die geschaffene Lösung bieten. Die Lösung entspricht dem typischen
+    Muster eines komplett Systems im Feld von Predictive Maintenance. Um seine Aufgabe zu erfüllen sind folgende
+    Schritte durchzuführen:
+  </p>
+
+  <ol>
+    <li>Datenakquise</li>
+    <li>Datenverarbeitung</li>
+    <li>Datenanalyse</li>
+  </ol>
+
+  <p>
+    Nebst den eigentlichen Schritten müssen diese überwacht werden können. Dazu haben wir in einer zweiten Dimension
+    einen Maintenance Layer gebaut.
+  </p>
+
+  <p>
+    In den jeweiligen Kapitel wird im Detail auf die drei Subsysteme eingegangen.
+  </p>
+
+  <figure class="full affix">
+    <img src="images/master-diagram.png">
+    <figcaption>System Architektur</figcaption>
+  </figure>
+
+  <h3>Datenakquise</h3>
+  <p>
+    Die Datenakquise passiert auf der Thermo-Scanner Hardware. Die gesammelten Artefakte werden dann in das
+    Processing System übergeben in dem diese auf einen Dateiserver geladen werden. Die Akquise der Daten ist in
+    unserem Projekt der wichtigste sowie auf herausfordernste Faktor. Die Hardware sowie auch Software wurde komplett
+    durch uns zusammengebaut und programmiert.
+  </p>
+
+  <p>
+    Das System haben wir mit einer eigens gebauten Monitoringlösung überwacht. Aufgetretene Fehler haben wir an ein
+    externes Tool "Sentry" geschickt auf welchem wir diese auswerten konnten. Den Zugang zum System haben wir mit
+    Teamviewer eingerichtet.
+  </p>
+
+  <p>
+    Das Akquise-Subsystem liefert folgende Daten an das Datenverarbeitungs-Subsystem weiter:
+  </p>
+
+  <ul>
+    <li>Infrarot Video</li>
+    <li>Sichtbare Lichtwellen Video</li>
+    <li>Aussentemperaturinformationen</li>
+    <li>Wetterinformationen</li>
+    <li>Metainformationen</li>
+  </ul>
+
+  <h3>Datenverarbeitung</h3>
+  <p>
+    Die Datenverarbeitung hat keine dedizierte Hardware. Stattdessen haben wir die Software auf unseren privaten
+    Rechnern laufen lassen. Zum einen wären solche Server ziemlich teuer im Betrieb und zum anderen ist das System
+    nicht ganz ausgereift um es autonom zu betreiben. Die Image Processing Pipeline ist in einer
+    plattformunabhängigen Sprache geschrieben und könnte bei Bedarf auf irgendwelcher Hardware automatisch betrieben
+    werden.
+  </p>
+
+  <p>
+    Das Datenverarbeitungs-Subsystem liefert folgende Daten an das Analyse-Subsystem weiter:
+  </p>
+
+  <ul>
+    <li>Infrarot Bild mit ganzem Zug</li>
+    <li>Infrarot Bild mit einzelnen Wagen</li>
+    <li>Sichtbare Lichtwellen mit einzelnen Wagen</li>
+    <li>Sichtbare Lichtwellen Bild mit ganzem Zug</li>
+    <li>Aussentemperaturinformationen</li>
+    <li>Wetterinformationen</li>
+    <li>Metainformationen</li>
+  </ul>
+
+  <h3>Datenanalyse</h3>
+  <p>
+    Dieses Subsystem dient einem Experten der sich mit den Wagenbaustrukturen auskennt eine Plattform zur manuellen
+    Auswertung der aufbereiteten Daten. Er hat Möglichkeit in einer angenehmen Umgebung die Daten genauer anzuschauen
+    und sie zu vergleichen. Er kann zum Beispiel das selbe Fahrzeug über die Betriebsdauer vergleichen und sehen ob
+    sich irgendwo ein Schaden abbildet. Oder er kann den selben Fahrzeugtyp unter einander vergleichen und einen
+    Unterschied feststellen. Die Metainformationen die ihm dazu angezeigt werden helfen ihm zu einem Schluss zu kommen.
+  </p>
+
+  <h3>Technologien</h3>
+  <p>
+    Sämtlicher Sourcecode der im Umfang dieser Arbeit geschrieben wurde, ist auf GitHub verfügbar. Da wird für
+    unterschiedliche Technologien und Betriebsumgebungen Software geschrieben haben, haben wir diese in verschiedene
+    Git Repositories aufgeteilt. Jedoch sind sie alle zusammen in der GitHub Organisation Thermo Trains ersichtlich:
+    <a href="https://github.com/ThermoTrains">https://github.com/ThermoTrains</a>.
+  </p>
+
+  <figure class="full">
+    <table>
+      <thead>
+      <tr>
+        <th>Repository</th>
+        <th>Typ</th>
+        <th>Sprachen</th>
+        <th>Frameworks</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><code><a href="https://github.com/ThermoTrains/thermobox">thermobox</a></code></td>
+        <td>Windows Applikation</td>
+        <td>C#</td>
+        <td>.NET, FLIR ATLAS, Basler Pylon, EMGU.CV</td>
+      </tr>
+      <tr>
+        <td><code><a href="https://github.com/ThermoTrains/post-processing">post-processing</a></code></td>
+        <td>Konsolenapplikation</td>
+        <td>Java</td>
+        <td>OpenCV</td>
+      </tr>
+      <tr>
+        <td><code><a href="https://github.com/ThermoTrains/thermoboard">thermoboard</a></code></td>
+        <td>Webapplikation</td>
+        <td>PHP, Typescript</td>
+        <td>Laravel, Angular</td>
+      </tr>
+      <tr>
+        <td><code><a href="https://github.com/ThermoTrains/thermobox-cockpit">thermobox-cockpit</a></code></td>
+        <td>Webapplikation</td>
+        <td>PHP, HTML</td>
+        <td>keine</td>
+      </tr>
+      <tr>
+        <td><code><a href="https://github.com/ThermoTrains/supersimplemonitoring">supersimplemonitoring</a></code></td>
+        <td>Webapplikation</td>
+        <td>PHP, HTML</td>
+        <td>Chart.JS</td>
+      </tr>
+      <tr>
+        <td><code><a href="https://github.com/ThermoTrains/research">research</a></code></td>
+        <td>Forschungscode-Snippets</td>
+        <td>Matlab</td>
+        <td>keine</td>
+      </tr>
+      <tr>
+        <td><code><a href="https://github.com/ThermoTrains/docs">docs</a></code></td>
+        <td>Dokumentation</td>
+        <td>HTML</td>
+        <td>PrinceXML</td>
+      </tr>
+      <tr>
+        <td><code><a href="https://github.com/ThermoTrains/slides">slides</a></code></td>
+        <td>Slides zum Projekt</td>
+        <td>HTML</td>
+        <td>Reveal.js</td>
+      </tr>
+      <tr>
+        <td><code><a href="https://github.com/ThermoTrains/thermotrains.github.io">thermotrains.github.io</a></code></td>
+        <td>Projektwebsite</td>
+        <td>HTML</td>
+        <td>keine</td>
+      </tr>
+      </tbody>
+    </table>
+    <figcaption>Übersicht Repositories</figcaption>
+  </figure>
+
+</div>

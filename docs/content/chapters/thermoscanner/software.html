@@ -1,72 +1,9 @@
 <h3>Software</h3>
 
+TODO Thermoscanner Software Einleitung
+
 <h4>Software Landschaft</h4>
-
-<ul>
-  <li>Thermobox</li>
-  <li>Sentry</li>
-  <li>Cockpit</li>
-  <li>Thermoboard</li>
-  <li>Github</li>
-  <li>GitHub</li>
-  <li>Teamviewer</li>
-</ul>
-
-<p>
-  Um die vielfältigen Anforderung an die Entwicklung der Software abzudecken haben wir über den Verlauf dieser Arbeit
-  eine ganze Software-Landschaft aufgebaut um unsere Hardware.
-</p>
-
-TODO Diagramm
-
-<h4>Technologie</h4>
-
-TODO diese Tabelle eventuell weiter oben als übersicht?
-
-<figure>
-  <table>
-    <thead>
-    <tr>
-      <th>Repository</th>
-      <th>Sprachen</th>
-      <th>Frameworks</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td><code>thermobox</code></td>
-      <td>C#, Powershell, Batch</td>
-      <td>.NET, FLIR Atlas, Basler Pylon, EMGU.CV, Raven, Log4Net</td>
-    </tr>
-    <tr>
-      <td><code>thermoboard</code></td>
-      <td>PHP, Typescript</td>
-      <td>Laravel, Angular</td>
-    </tr>
-    <tr>
-      <td><code>thermobox-cockpit</code></td>
-      <td>PHP, HTML</td>
-      <td>keine</td>
-    </tr>
-    <tr>
-      <td><code>supersimplemonitoring</code></td>
-      <td>PHP, HTML</td>
-      <td>Chart.JS</td>
-    </tr>
-    <tr>
-      <td><code>research</code></td>
-      <td>Matlab</td>
-      <td>keine</td>
-    </tr>
-    <tr>
-      <td><code>post-processing</code></td>
-      <td>Java</td>
-      <td>OpenCV</td>
-    </tr>
-    </tbody>
-  </table>
-  <figcaption>Übersicht Code Repositories</figcaption>
-</figure>
+TODO einleitung
 
 <h5>Continuous Integration</h5>
 <p>
@@ -728,7 +665,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <h5>VisibleLightReader</h5>
-TODO
+TODO VisibleLightReader
 <p>
   Liest Bilder der Basler Kamera aus.
 </p>
@@ -817,7 +754,7 @@ TODO
 <h4>Delivery Komponenten</h4>
 
 <h5>IRCompressor</h5>
-TODO
+TODO IRCompressor
 <p>
 
 </p>
@@ -857,7 +794,7 @@ TODO
 </p>
 
 <h5>SeqConverter</h5>
-TODO
+TODO SeqConverter
 <p>
   Das SeqConverter CLI Programm dient zur Konvertierung von FLIR SEQ Dateien zu MP4 oder umgekehrt. Zudem kann es
   schwarzweisse MP4 Videos in Falschfarben Videos konvertieren.
