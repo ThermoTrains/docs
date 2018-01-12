@@ -38,12 +38,12 @@
 </ul>
 
 <figure>
-  <img src="images/thermoscanner/innenleben.jpg" width="700"/>
+  <img src="images/thermoscanner/innenleben.jpg" style="height: 500px;"/>
   <figcaption>Innenleben Thermobox</figcaption>
 </figure>
 
 <figure>
-  <img src="images/thermoscanner/front_nahe.jpg" width="700"/>
+  <img src="images/thermoscanner/front_nahe.jpg"/>
   <figcaption>Front Thermobox</figcaption>
 </figure>
 
@@ -52,7 +52,7 @@
 <h5>Gehäuse</h5>
 
 <figure>
-  <img src="images/thermoscanner/front_ganz.jpg" width="700"/>
+  <img src="images/thermoscanner/front_ganz.jpg" style="height: 500px;"/>
   <figcaption>Thermobox Gehäuse</figcaption>
 </figure>
 
@@ -76,6 +76,7 @@
 <p>
   Die FLIR A65 Infrarotkamera wurde in der Voranalyse des Projektes evaluiert. Aufgrund des grossen FOV, der verhältnissmässig
   grossen Auflösung, der Möglichkeit zur automatisierten Steuerung und der Bezahlbarkeit ist es die ideale Kamera für unser Projekt.
+  Die Kamera ist auf einem schwenkbaren Stativ montiert und kann so ideal ausgerichtet werden.
 </p>
 
 <p>Die konkreten Anforderungen sind:</p>
@@ -204,7 +205,8 @@
 
 <p>
   Die Farbkamera nimmt dasselbe Bild wie die FLIR Kamera auf. Diese zusätzlichen Informationen helfen später bei der Analyse.
-  Ausserdem wird sie zum Triggern der Aufnahme (Start/Stop) verwendet, indem wir im Video einfahrende Züge erkennen.
+  Ausserdem wird sie zum Triggern der Aufnahme (Start/Stop) verwendet, indem wir im Video einfahrende Züge erkennen. Auch die
+  Farbkamera ist auf einem schwenkbaren Stativ montiert, was ein optimales Ausrichten erlaubt.
 </p>
 
 <p>Anforderungen</p>
@@ -425,7 +427,8 @@
       <tr>
         <th>Kühlung</th>
         <td>passiv</td>
-      </tr>        <tr>
+      </tr>
+      <tr>
         <th>Weiteres</th>
         <td>integriertes LTE Modul</td>
       </tr>
@@ -439,12 +442,117 @@
 </figure>
 
 <h5>LTE Antenne</h5>
-TODO raeffu
+
+<figure>
+  <img src="images/thermoscanner/lte_antenne.jpg">
+  <figcaption>Outdoortaugliche Kreuzpol LTE Antenne</figcaption>
+  <span class="source">Quelle: <a href="#ref-brack-lte">Brack: LTE-Antenne, 2x SMA Stecker</a></span>
+</figure>
+
 <p>
-  <!-- Resources: https://www.brack.ch/usl-lte-antenne-237340 -->
-  <!-- kreuzpoalisierung (warum ist das gut), outdoor tauglich, langes ansteckkabel, unten herausgeführt, festgemacht
-   mit klebeband, ... -->
+  Der Mini PC verfügt über ein LTE Modul mit zwei Antennenanschlüssen. Die mitgelieferten Antennen sind direkt am Mini PC
+  montiert und somit innerhalb des Gehäuses. Im Gehäuse selber gibt es aber überhaut keinen Empfang. Bis zu dieser Erkenntniss
+  hat es lange gedauert, da zuerst die Antennen nicht geliefert wurden und wir dachten, dass LTE Modul funktioniere nicht. Wir
+  nahmen an die Antennen befinden sich innerhalb des Mini PC. Als die Antennen nachgeliefert wurden, hat jemand sie aus dem Briefkasten
+  gestohlen. Als wir die Antennen dann endlich hatten, mussten wir feststellen, dass es im Gehäuse keinen Empfang gibt.
 </p>
+<p>
+  Somit war nun klar, dass eine externe LTE Antenne benötigt wird. Die Anforderungen sind:
+</p>
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>Nr.</th>
+        <th>Name</th>
+        <th>Beschreibung</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Outdoortauglich</td>
+        <td>
+          Antennen ist für den Einsatz draussen gedacht und wetterfest.
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>langes Kabel</td>
+        <td>
+          Min. 2m langes Kabel notwendig um Antenne aus dem Gehäuse führen zu können.
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>guter Empfang</td>
+        <td>
+          Möglichst guter Empfang auch in empfangsschwachen Gebieten.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>Anforderungen LTE Antenne</figcaption>
+</figure>
+
+<p>
+  Die evaluierte LTE Antenne erfüllt alle unsere Anforderungen und ist dank 90°-Kreuz-Polarisierung empfangsstark. Dank der Kreuzpolarisierung
+  spielt es keine Rolle, wie die Antenne zum Signal ausgerichtet ist. Das lange Antennenkabel führen wir unten aus dem Gehäuse (zusammen mit Strom
+  usw.) und montieren die Antenne mit starkem Klebeband auf dem Dach des Thermo-Scanners.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/kreuz_pol.jpg">
+  <figcaption>Antennenausrichtung</figcaption>
+</figure>
+
+<p>Links: sehr schlechter Empfang, Mitte: idealer Empfang, Rechts: Platzierung spielt keine Rolle</p>
+
+<p>Spezifikation LTE Antenne</p>
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>USL LTE-Antenne</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <th>Frequenzband</th>
+        <td>800 Mhz bis 2.7 Ghz</td>
+      </tr>
+      <tr>
+        <th>Polarisierung</th>
+        <td>90°-Kreuz-Polarisierung</td>
+      </tr>
+      <tr>
+        <th>Mobilfunktechnologien</th>
+        <td>Unterstützt LTE, 3G und 2G</td>
+      </tr>
+      <tr>
+        <th>Anschluss</th>
+        <td>2 x SMA, 2m Antennenkabel</td>
+      </tr>
+      <tr>
+        <th>Abstrahlcharakteristik</th>
+        <td>Rundstrahl</td>
+      </tr>
+      <tr>
+        <th>Weiteres</th>
+        <td>outdoortauglich</td>
+      </tr>
+      <tr>
+        <th>Preis</th>
+        <td>62.00 CHF</td>
+      </tr>
+    </tbody>
+  </table>
+  <figcaption>Spezifikation USL LTE-Antenne</figcaption>
+</figure>
 
 <h5>Thermostat / Heizlüfter</h5>
 
@@ -558,4 +666,10 @@ TODO raeffu
   <span class="ref">TEMPer2 von PCSensor</span>
   <a href="http://www.pcsensor.com/usb-thermometer/temper2.html" target="_blank">http://www.pcsensor.com/usb-thermometer/temper2.html</a>
   <span class="retrieved">11. Januar 2017</span>
+</p>
+
+<p id="ref-brack-lte" class="reference-item">
+  <span class="ref">USL LTE-ANTENNE, 2X SMA STECKER</span>
+  <a href="https://www.brack.ch/usl-lte-antenne-237340" target="_blank">https://www.brack.ch/usl-lte-antenne-237340</a>
+  <span class="retrieved">12. Januar 2017</span>
 </p>
