@@ -56,7 +56,7 @@ gulp.task('docs:deps', () => {
 gulp.task('docs:images', () => {
   gulp.src('docs/images/**/*.{png,jpg,gif,svg}')
     .pipe(responsive({
-      '**/*.{png,jpg,gif}': { width: 700, withoutEnlargement: true }
+      '**/*.{png,jpg,gif}': { width: 1200, withoutEnlargement: true }
     }, {
       errorOnEnlargement: false,
       passThroughUnused: true,
