@@ -1,7 +1,7 @@
 <h3>Hardware</h3>
 
 <p>
-  Dieses Kapitel beschreibt wie die Thermobox beschaffen ist, die Funktionsweise wird im Kapitel
+  Dieses Kapitel beschreibt wie der Thermo-Scanner beschaffen ist, die Funktionsweise wird im Kapitel
   Software beschrieben.
 </p>
 
@@ -17,7 +17,7 @@
   Die gesamte Hardware ist in einem wetterfesten Gehäuse nach IP55 Standart untergebracht (Staub- / Wasserschutz). Das Gehäuse ist
   eine Spezialanfertigung mit einem Sichtfenster für die Farbkamera und einer Öffnung für die Infrarotkamera.
   Im Boden des Gehäuse sind Öffnungen für die Stromzufuhr und den Anschluss der externen GSM-Antenne sowie des RFID Readers vorhanden.
-  Die Thermobox steht aufrecht und kann, dank der soliden Füsse, bei Bedarf auch mit Sandsäcken stabil montiert werden.
+  Der Thermo-Scanner steht aufrecht und kann, dank der soliden Füsse, bei Bedarf auch mit Sandsäcken stabil montiert werden.
 </p>
 
 <p>
@@ -39,12 +39,12 @@
 
 <figure>
   <img src="images/thermoscanner/innenleben.jpg" style="height: 500px;"/>
-  <figcaption>Innenleben Thermobox</figcaption>
+  <figcaption>Innenleben Thermo-Scanner</figcaption>
 </figure>
 
 <figure>
   <img src="images/thermoscanner/front_nahe.jpg"/>
-  <figcaption>Front Thermobox</figcaption>
+  <figcaption>Front Thermo-Scanner</figcaption>
 </figure>
 
 <h4>Komponenten</h4>
@@ -53,7 +53,7 @@
 
 <figure>
   <img src="images/thermoscanner/front_ganz.jpg" style="height: 500px;"/>
-  <figcaption>Thermobox Gehäuse</figcaption>
+  <figcaption>Thermo-Scanner Gehäuse</figcaption>
 </figure>
 
 <p>
@@ -352,7 +352,7 @@
         <td>2</td>
         <td>LTE Modul</td>
         <td>
-          Wir brauchen Remotezugang zur Thermobox für Wartungen und den Upload der Aufnahmen.
+          Wir brauchen Remotezugang zum Thermo-Scanner für Wartungen und den Upload der Aufnahmen.
           Der Mini-PC sollte also ein LTE Modul enthalten.
         </td>
       </tr>
@@ -387,7 +387,7 @@
         <td>6</td>
         <td>Preis</td>
         <td>
-          Die SBB übernimmt die Kosten für die Anschaffung und Wartung der Thermobox. Deshalb müssen die Kosten im
+          Die SBB übernimmt die Kosten für die Anschaffung und Wartung des Thermo-Scanners. Deshalb müssen die Kosten im
           Rahmen des Budget der SBB liegen.
         </td>
       </tr>
@@ -590,13 +590,13 @@
   Zeitpunkt der Implementierung waren englische Information leider nur über ältere Gerätetypen vorhanden. TEMPer2 war
   nur auf chinesisch beschrieben. Auch gibt es seit 22. November 2017 eine neue Version der TEMPer Software. Wir
   haben nun herausgefunden, dass die 2 in TEMPer2 dafür steht, dass das Gerät zwei Sensoren hat. Einer im Gehäuse und
-  einer über ein Kabel. Da unsere Messungen wie man unten sieht fast nie unter 14°C gelangen gehen wir davon aus,
-  dass wir die Innentemperatur gemessen haben. Man sieht gut wie die Temperatur in der Nacht konstant bei ca. 14°C
-  verharrt und am Tag, an dem die Aussentemperatur über 14°C ging im Verlaufe des Tages ansteigt. Das auf und ab
-  gegen Ende der ersten Testphase deuten wir auf eine Aussentemperatur die stark unter 14°C lag so, dass der
+  einer über ein Kabel. Da unsere Messungen, wie man unten sieht, fast nie unter 14°C gelangen, gehen wir davon aus,
+  dass wir die Innentemperatur gemessen haben. Man sieht gut, wie die Temperatur in der Nacht konstant bei ca. 14°C
+  verharrt und am Tag, falls Aussentemperatur über 14°C stieg, im Verlaufe des Tages ansteigt. Das auf und ab
+  gegen Ende der ersten Testphase deuten wir als eine Aussentemperatur, die stark unter 14°C lag, so dass der
   Thermostat den Heizlüfter über längere Intervalle eingeschaltet lies. Die Zeitstempel zu denen wir die Temperatur
-  aufgenommen haben sind leider nicht schön linear verteilt weil nur eine Aufnahme gespeichert wenn ein Zug durch
-  fährt. Diese fahren nicht regelmässig durch die Waschstrasse.
+  gemessen haben sind leider nicht schön linear verteilt, weil nur bei Zugdruchfahrt eine Aufnahme gespeichert wird.
+  Die Züge fahren nicht regelmässig durch die Waschstrasse.
 </p>
 
 <figure class="full">
@@ -613,10 +613,10 @@
   <b>Anforderungen</b>
 </p>
 <ul>
-  <li>Extern anschliessbar an Thermobox</li>
+  <li>Extern anschliessbar an Thermo-Scanner</li>
   <li>Outdoor tauglich</li>
   <li>Auslesen von Zügen die mit max. 30km/h fahren</li>
-  <li>Brauchbare API / unterstützte Protokolle für die Anbindung an Thermobox SW</li>
+  <li>Brauchbare API / unterstützte Protokolle für die Anbindung an Thermo-Scanner SW</li>
 </ul>
 <p>
   Die SBB hat bereits RFID Reader im Einsatz, z.B. in den Waschstrassen. Wir haben deshalb beim Hersteller Vilant AG nachgefragt,
