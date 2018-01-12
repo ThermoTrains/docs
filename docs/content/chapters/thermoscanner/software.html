@@ -1,9 +1,15 @@
 <h3>Software</h3>
-
-TODO Thermoscanner Software Einleitung
+<p>
+  Die Software des Thermo-Scanners ist mit modernen Paradigmen des Softwareengineerings gebaut. Einfachheit,
+  Stabilität, Geschwindigkeit und vor allem Erweiterbarkeit waren die Kriterien die wir beim Design immer wieder
+  überprüft haben ob sie eingehalten sind.
+</p>
 
 <h4>Software Landschaft</h4>
-TODO einleitung
+<p>
+  Um die vielfältigen Anforderung an die Entwicklung der Software abzudecken haben wir über den Verlauf dieser Arbeit
+  eine ganze Software-Landschaft aufgebaut um unsere Hardware.
+</p>
 
 <h5>Continuous Integration</h5>
 <p>
@@ -665,7 +671,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <h5>VisibleLightReader</h5>
-TODO VisibleLightReader
+TODO VisibleLightReader: implementation, gegenbenheiten (einflüsse aufs bild), erkennungsverfahren, nicht
+funktionierende verfahren, ...
 <p>
   Liest Bilder der Basler Kamera aus.
 </p>
@@ -754,7 +761,7 @@ TODO VisibleLightReader
 <h4>Delivery Komponenten</h4>
 
 <h5>IRCompressor</h5>
-TODO IRCompressor
+TODO IRCompressor: kompressionsverfahren mit clamping, offset, h.264, metadaten abspeichern, verlustberechnung, exiftool
 <p>
 
 </p>
@@ -794,7 +801,7 @@ TODO IRCompressor
 </p>
 
 <h5>SeqConverter</h5>
-TODO SeqConverter
+TODO SeqConverter: von mp4 wieder auf seq (aufblasen der datei)
 <p>
   Das SeqConverter CLI Programm dient zur Konvertierung von FLIR SEQ Dateien zu MP4 oder umgekehrt. Zudem kann es
   schwarzweisse MP4 Videos in Falschfarben Videos konvertieren.
