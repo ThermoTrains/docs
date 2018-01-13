@@ -90,7 +90,8 @@
 <p>
   Wird eine Log Datei zu gross wird diese automatisch umbenannt und es wird eine neue Datei begonnen. Wir haben ein
   Threshold von 10 MiB gewählt. Dieser wurde eigentlich nur von der VisibleLightReader-Komponente erreicht weil wir
-  dort Debug Logs einsetzen um den Detektionsalgorithmus laufend zu verbessern. Gesamthaft haben wir über die zwei Testphasen
+  dort Debug Logs einsetzen um den Detektionsalgorithmus laufend zu verbessern. Gesamthaft haben wir über die zwei
+  Testphasen
   ca. 154 MiB an Logdateien gesammelt.
 </p>
 
@@ -671,10 +672,286 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <h5>VisibleLightReader</h5>
-TODO VisibleLightReader: implementation, gegenbenheiten (einflüsse aufs bild), erkennungsverfahren, nicht
-funktionierende verfahren, ...
 <p>
-  Liest Bilder der Basler Kamera aus.
+  Aus technischen Limitierungen erfüllt der VisibleLightReader zwei Aufgaben was gegen das Microservice Prinzip
+  verstösst. Die Komponente liest zum einten den Bildstream der Basler Kamera um festzustellen ob sich ein Zug in das
+  Bild hineinbewegt hat. Hat sie einen Zug detektiert meldet sie mit <code>capture:start</code> dies an alle
+  Komponenten weiter so wie auch sich selber. Selber startet sie nämlich dann auf den Befehl die Aufnahme in eine
+  Videodatei. Der Name der Komponente kommt davon dass wir damit die für das menschliche Auge sichtbaren Wellenlängen
+  aufnehmen. Das Licht und Wellenlängen nicht das selbe ist, ist uns bewusst. Der Name ist also wissenschaftlich nicht
+  ganz korrekt.
+</p>
+
+<p>
+  Die Komponente benutzt zur Kommunikation das Basler Pylon SDK. Da die Firma Basler einer der führenden Hersteller
+  ist von Industriekameras, sich aber trotzdem gegen eine starke Konkurrenz wehren muss, merkt man auch, dass das SDK
+  weit aus durchdachter und stabiler ist als das Pendant von FLIR. Man merkt auch das FLIR einige Patterns vom Pylon
+  SDK abgekupfert hat.
+</p>
+
+<p>
+  Die technische Limitierung ist die, dass man nur von einem Windows Prozess auf die über USB angeschlossene Basler
+  Kamera zugreifen kann. Der Prozess lockt die Kamera und kein zweiter kann mehr darauf zugreifen. Das heisst wir
+  mussten den Image Grab Loop so schreiben, dass die Bilder zum einten vom Erkennungsalgorithmus verarbeitet werden
+  können und zum anderen in eine Videodatei geschrieben werden können. Das setzt natürlich voraus dass die
+  Erkennungsphase nicht länger dauert als die Aufnahme eines Frames. Ansonsten verlieren wir entweder Frames oder der
+  Buffer wird unendlich gross.
+</p>
+
+<p>
+  Das folgende Flow Chart erklärt wie wir das gelöst haben. In der Implementation haben wir eine Klasse
+  <code>Recorder</code> geschrieben welche intern einen State hat ob sie am aufnehmen ist oder nicht. Der Image Grab
+  Loop schickt dann an eine Instanz der Klasse die Bilder. Der Recorder weiss dann selber ob er das Bild verwerfen
+  oder aufnehmen soll.
+</p>
+
+<p>
+  Die Prozesse die gelb umrandet sind werden später in einem weiteren Flow Chart erklärt. Den gesamten Flow in einem
+  einzigen Flow Chart darzustellen ist leider zu unübersichtlich.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/detection/flowchart-grab-loop.png">
+  <figcaption>VisibleLightReader: Grab Loop Flow Chart</figcaption>
+</figure>
+
+<p>
+  Zuerst finden wir die richtige Kamera mithilfe des Namens welcher in der Konfiguration unter dem Key
+  <code>VISIBLE_LIGHT_CAMERA_NAME</code> abgelegt ist. Dazu mussten wir glücklicherweise keinen asynchronen
+  Discover-Service bauen. Im Pylon Framework gibt es einen synchronen Aufruf der das Kameraobjekt liefert. Nach dem
+  öffnen konfigurieren wir die Kameraparameter für uns passend. Wir stellen ein, dass nur 1 Frame pro Sekunde
+  aufgezeichnet werden kann. Das machen wir weil wir ansonsten zu grosse Dateien erhalten für welche wir kein
+  Speicherplatz haben. Ausserdem haben wir in der Nacht sowieso nicht mehr als 1 FPS weil die Beleuchtungszeit so
+  hoch wird. Den Image Grabber stellen wir so ein, dass er immer das aktuellste Frame der Kamera holt. Somit baut
+  sich kein versteckter Buffer unendlich auf. Den Grab Loop entwickeln wir wie erwähnt selber weil wir mehr Kontrolle
+  brauchen. Pylon würde auch eine Implementation anbieten.
+</p>
+
+<p>
+  In der Methode <code>HandleStateChange</code> verarbeiten wir Befehle die asynchron von extern hineingekommen sind.
+  Also Befehle der Message Queue.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/detection/flowchart-handle-state-change.png">
+  <figcaption>VisibleLightReader: Handle State Change Flow Chart</figcaption>
+</figure>
+
+<p>
+  Es geht nun weiter in den Detektionsalgorithmus. Dies ist eine eigene Klasse. Die 4 übergebenen Bilder von vorher
+  sind bereits vorvearbeitet. Sie sind in Graustufen, verkleinert und enthalten nur den Ausschnitt des Bildes auf
+  welchem sich nur die Räder des Zuges befinden.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/detection/background.jpg">
+  <figcaption>Gecroppter Background mit Gleis</figcaption>
+</figure>
+
+<figure>
+  <img src="images/thermoscanner/detection/snapshot.jpg">
+  <figcaption>Einfahrt Zug aufgenommen von Basler Kamera</figcaption>
+</figure>
+
+<p>
+  Das Erkennen des Zuges mit dem ganzen Bild ist sehr schwierig wie auch unnötig. Der Ausschnitt verändert sich nicht
+  solange die Kabine nicht bewegt wird. Im gesamten Hintergrund gibt es ca. 10 weitere Gleise auf welchen Züge
+  vorbeifahren können. Zu Beginn haben wir den Ausschnitt nicht ausgeschnitten. Dass wir dann mehr aufnehmen war uns
+  klar. Da wussten wir aber noch nicht dass wir an einer neuronalgischen Stelle aufnehmen werden wo jede Minute
+  mindestens ein Zug im Hintergrund vorbeifährt.
+</p>
+
+<p>
+  In der Detektionsklasse ist das Hintergrundbild abgelegt. Also das Bild der Kamera auf welchem sich kein Zug befindet.
+  Wir nennen es von nun an Background. Der Background wird beim Start sowie in regelmässigen Abständen immer wieder neu
+  abgelegt. Wenn wir den Background ablegen führen wir zuerst einen Blurfilter aus. Danach berechnen wir die
+  arithmetische durchschnittliche Helligkeit. Wir speichern also nur ein Wert zwischen 0 und 255.
+</p>
+
+<p>
+  Um immer etwas zu sehen auf dem Bild müssen wir periodisch die Beleuchtungszeit korrigieren lassen. In der Nacht
+  haben wir Beleuchtungszeiten von einer Sekunde und am Tag von wenigen Millisekunden. Aber auch mit der
+  Beleuchtungszeit von einer Sekunde haben wir je nach eingeschalteten Flutlichtern zu wenig gesehen. Deswegen weisen
+  wir die Kamera auch an den Gain automatisch zu korrigieren. Diese automatische Korrektur dauert im Extremfall bis
+  zu zwei Sekunden. Wir geben den Befehl zur automatischen Korrektur selber. Würden wir es die Kamera selber
+  periodisch machen lassen könnten wir im falschen Moment eine Background-Momentaufnahme machen und wir würden dann
+  fälschlicherweise einen Zug detektieren.
+</p>
+
+<p>
+  Auf dem folgendem Diagramm sieht man die von uns in der ersten Testphase aufgezeichneten Beleuchtungszeiten
+  (links) und Gains (rechts).
+</p>
+
+<figure>
+  <img src="images/thermoscanner/detection/exposure-gain.png">
+  <figcaption>Balser Kamera Belichtungszeit und Gain</figcaption>
+</figure>
+
+<p>
+  Haben wir alle diese Stategeschichten hinter uns gelassen können wir die eigentlichen Bilder evaluieren.
+  Nachfolgend das Flow Chart welche Schritte durchlaufen werden bis es dazu kommt:
+</p>
+
+<figure>
+  <img src="images/thermoscanner/detection/flowchart-detection.png">
+  <figcaption>VisibleLightReader: Detektion Flow Chart</figcaption>
+</figure>
+
+<p>
+  Bisher haben wir also einen Backgrounddurchschnittswert und nun neu auch die Durchschnittswerte der aktuellen
+  Bilder. Wir können nun vergleichen ob der aktuelle Wert dunkler ist als der Backgroundwert. Zugräder sind nämlich
+  dunkler als der Schotter und produzieren einen deutlich sichtbaren Einfall der Bildhelligkeit. Auf dieses Verfahren
+  sind wir nicht von Anfang an gekommen so einfach es klingt. Die Umstände der echten Welt sind viel abstruser als
+  man sich das im Labor vorstellt. Der Kasten ist diversen Umständen ausgeliefert und muss damit umgehen können.
+</p>
+
+<ul>
+  <li>Sonnenaufgang und Sonnenuntergang verändern</li>
+  <li>Regen und Schnee erzeugen Noise im Bild welcher potentiell detektiert wird</li>
+  <li>Wenn Schnee liegt sieht das Bild anders aus</li>
+  <li>Personen können auf dem Fussweg vor der Kabine durchgehen</li>
+  <li>Regen kann an der Scheibe Tropfen bilden</li>
+  <li>Nebel kann die Sicht verschlechtern</li>
+  <li>Reflexionen vom Prime Tower können Kaustiken bilden</li>
+  <li>Vorbeifahrende Züge in der Nacht werfen Licht auf den Boden</li>
+  <li>Züge fahren nicht immer in der selben Richtung durch</li>
+</ul>
+
+<p>
+  Unser erstes Verfahren war mit dem Backgroundbild die sich veränderten Pixel zu tracken und festzustellen ob von
+  links oder rechts ein genug grosses Objekt hineinfährt. Das hat schon gar nicht funktioniert wenn man den ganzen
+  Bildbereich analysiert. Man könnte zwar meinen man muss einfach einen genug hochen Raum festlegen. Anders gesagt
+  die Bounding Box müsste eine gewisse Höhe haben. Nur steht im Hintergrund das Bahnviadukt von Zürich. Wenn
+  gleichzeitig ein Zug auf einem der unteren Gleise und einem auf dem oberen Gleis durchfährt haben wir eine Bounding
+  Box die genau gleich hoch ist wie ein Zug der durch die Waschstrasse fährt. Jetzt kann man sich fragen wie häufig
+  das vorkommt. Wir mussten feststellen, dass das ca. alle 5 Minuten passiert. Ansonsten hätte dieses Verfahren sehr
+  gut funktioniert soweit wir es getestet haben.
+</p>
+
+<p>
+  Nachdem wir den Analyseausschnitt auf das untere Gleis gelegt haben, haben wir gehofft dass es jetzt funktionieren
+  wird. Das Problem war jetzt, dass in der Nacht vorbeifahrende Züge einen sofort auftretenden starken Lichteinfall
+  auf den Boden werfen. Dies hat den Detektor eine Aufnahme auslösen lassen.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/detection/night-light.jpg">
+  <figcaption>Von anderen Zügen einfallendes Licht</figcaption>
+</figure>
+
+<p>
+  Wir mussten also ein einfacheres Verfahren entwickeln welches nun simpel die Helligkeit zum Background vergleicht. Mit
+  fleissiger Überwachung des Detektionsalgorithmus und ständigem Nachschrauben sowie den praktischen Tools die wir
+  geschaffen haben konnten wir die Thresholds ständig verbessern. Das nachfolgende Flow Chart zeigt auf was passiert
+  wenn der Threshold erreicht wurde oder nicht. Zur Übersicht wurde der End-State weggelassen. Wenn kein Pfeil von
+  einem Kasten wegzeigt geht, endet der Flow dort.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/detection/flowchart-evaluate.png">
+  <figcaption>VisibleLightReader: Evaluierungs-Flow Chart</figcaption>
+</figure>
+
+<p>
+  Die Detektorklasse meldet die Befehle über C# Events an die Klasse die den Grab Loop beherbergt. Diese erzeugt dann
+  asynchron den Befehl welchen sie an die Message Queue weiterleitet.
+</p>
+
+<p>
+  Um den Detektionsalgorithmus herum entstanden eine ganze Menge an Konstanten die wir nach besten Kenntnissen
+  vorkonfigurierten und dann während der Testphase ständig nachkorrigierten. Die aufgeführten Werte sind die
+  schlussendlichen Resultate davon.
+</p>
+
+<figure>
+  <table>
+    <thead>
+    <tr>
+      <th>Konstante</th>
+      <th>Beschreibung</th>
+      <th>Einheit</th>
+      <th>Wert</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>NoBoundingBoxBackgroundThreshold</td>
+      <td>Nachdem solange sich nichts bewegt hat wird der Background neu initialisiert</td>
+      <td>Sekunden</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>MinTimeAfterExit</td>
+      <td>Minimale Dauer zwischen zwei Aufnahmen</td>
+      <td>Sekunden</td>
+      <td>60</td>
+    </tr>
+    <tr>
+      <td>MinTimeAfterEntry</td>
+      <td>Minimale Dauer einer Aufnahme. Ist sie kürzer wird sie abgebrochen</td>
+      <td>Sekunden</td>
+      <td>60</td>
+    </tr>
+    <tr>
+      <td>MaxRecordingDuration</td>
+      <td>Maximale Dauer einer Aufnahme</td>
+      <td>Minuten</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <td>AutoExposureTimeout</td>
+      <td>Zeit die die Kamera braucht um die Belichtung einzustellen</td>
+      <td>Sekunden</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>ExitThreshold</td>
+      <td>Wieviel mal bestätigt werden muss, dass kein Zug mehr da ist</td>
+      <td>Einheit</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>ExitScheduleTime</td>
+      <td>Dauer des Auslaufens der Aufnahme (damit das Video das Wegfahren des Zuges aufnimmt)</td>
+      <td>Sekunden</td>
+      <td>20</td>
+    </tr>
+    </tbody>
+  </table>
+  <figcaption>Konstanten des Detektionsalgorithmus</figcaption>
+</figure>
+
+<p>
+  Insgesamt sind wir mit der Erkennunsrate des Verfahrens zufrieden. Es detektiert zwar eindeutig zu viele Bilder als
+  Zug jedoch wird kein einziger Zug verpasst. Wenn man folgende Beispiele anschaut ist es aber erstaunlich wie gut es
+  in den miserablen Sichtverhältnissen funktioniert.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/detection/rain-no-train.jpg">
+  <figcaption>Fälschlicherweise Aufnahme gestartet</figcaption>
+</figure>
+
+<figure>
+  <img src="images/thermoscanner/detection/rain-train.jpg">
+  <figcaption>Aufnahme wurde gestartet</figcaption>
+</figure>
+
+<p>
+  Die Erkennungsrate liegt in der ersten Testphase in den finalen Tagen, als der Algorithmus stabil war, bei 99
+  erkannt von 100. 27 Aufnahmen wurden gestartet und hochgeladen auf welchen kein Zug war. In der zweiten Testphase
+  wurden 178 von 178 Zügen erkannt. Es gab eine hohe Anzahl von falsch erkannten Zügen von 49. Als Grund dazu
+  halten wir das schlechte Wetter sowie die Wassertropfen die sich auf dem Sichtglas festgesetzt haben. In einer
+  neuen Version der Kabine wäre ein Glas welches keine Tropfen ansetzen lässt sicher besser. Allenfalls würde auch
+  ein kleines Dach Abhilfe schaffen (welches wir eigentlich ürsprünglich von Almatec bestellt hatten).
+</p>
+
+<p>
+  Die Sensitivität liegt also bei 0.78 trotz dem schlechten Wetter mit dem Sturm Burglind. Die Spezifität ist
+  schwierig zu betiteln weil wir künstlich etwa ein Zeitinterval für richtig negativ erkannte Bilder festlegen
+  müssten. Oder dann müssten wir mögliche Features in sämtlichen Bildern als richtig negativ erkannt zählen was
+  unmöglich ist.
 </p>
 
 <h5>TemperatureReader</h5>
@@ -762,6 +1039,7 @@ funktionierende verfahren, ...
 
 <h5>IRCompressor</h5>
 TODO IRCompressor: kompressionsverfahren mit clamping, offset, h.264, metadaten abspeichern, verlustberechnung, exiftool
+spezifität, erkennungsraten, kompression und aufnahme geht nicht gleichzeitig, dauert sehr lange bei grossen dateien
 <p>
 
 </p>
