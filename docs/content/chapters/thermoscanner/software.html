@@ -988,7 +988,18 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   unmöglich ist.
 </p>
 
-TODO erklären warum pause und resume obsolet sind
+<p>
+  Nachdem wir die erste Durchlaufwaschstrasse besucht haben, haben wir bemerkt, dass Züge zuerst an die Waschstrasse
+  heranfahren und dann dort ein paar Minuten verweilen. Während dieser Zeit kommunizieren Sie mit dem
+  Waschstrassenleiter oder bedienen die Steueranlage je nach Typ der Anlage. Für uns heisst das, dass auf dem Video
+  der Zug zu Beginn einfach steht und sich nicht bewegt. Das erzeugt unnötig grosse Videodateien. Deshalb hatten wir
+  die Idee das Video zu pausieren und wieder fortzusetzen, wenn sich der Zug in Bewegung setzt. Das hat bei gutem
+  Wetter gut funktioniert. Wir haben die Bewegung auf dem Bild analysiert mit dem vorherigen Bild und konnten sagen
+  ob sich etwas bewegt hat. Leider funktionierte das Verfahren bei Nacht, wenn diverse Lichtquellen Bewegung
+  verursachen und schlechtes Wetter, wenn Regentropfen oder Schnee im Bild sichtbar sind eher schlecht. Deshalb haben
+  wir die Pausierung und Fortsetzung wieder entfernt. Die Reader selber sind aber noch in der Lage zu pausieren und
+  fortzusetzen, wenn ein manueller Befehl eintrifft.
+</p>
 
 <h5>TemperatureReader</h5>
 <ul>
