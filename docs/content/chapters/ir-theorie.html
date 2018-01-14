@@ -1,5 +1,12 @@
 <h3><a name="infrarot-theorie">Infrarot Theorie</a></h3>
 
+<p>
+  Das folgende Kapitel basiert auf dem Leitfaden <a href="#ref-flir-theory">FLIR: Infrared Theory</a>, das von FLIR
+  für alle Anwender ihrer Infrarotkameras bereitgestellt wird. Darin ist die grundlegende Theorie zum Thema Infrarot
+  beschrieben sowie die Messformel, die für die Tempereturberechnung benötigt wird. Zusätzlich ist das Kapitel mit
+  Informationen aus Wikipedia und eigenen Erkenntnissen angereichert.
+</p>
+
 <h4>Einleitung</h4>
 
 <p>
@@ -627,7 +634,10 @@
 
 <p>
   Diese Formel findet sich auch in den <a href="#ref-flir-temp-doc">FLIR Unterlagen</a> und bestätigt somit die Korrektheit dieser Herleitung.
-  Auch fanden wir im <a href="#ref-exiftool-forum">Exiftool Forum</a> die Angaben von Usern, die vor dem selben Problem standen und zu den gleichen Schlüssen wie wir gekommen sind.
+  Die Herleitung, von den User im <a href="#ref-exiftool-forum">Exiftool Forum</a> konnten wir so ebenfalls nachvollziehen und bestätigen.
+  Auch fanden wir eine <a href="#ref-raw2temp">Implementation in R von Glenn J. Tattersall</a> die sogar noch die Atmosphäre korrekt in der Temperaturberechnung berücksichtigt.
+  Mit einem Protoypen in Matlab haben wir stichprobenartig für eine Infrarotaufnahme die Temperatur mehrerer Punkte gemessen und mit den
+  Temperaturen im offizillen Analysetool von FLIR (FLIR Tools) verglichen. Die Abweichungen lagen unter 1%.
 </p>
 
 <p>
@@ -704,4 +714,10 @@
   <span class="ref">Exiftool Forum: FLIR Temperaturberechnung</span>
   <a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4898.msg23944.html#msg23944" target="_blank" rel="noopener">Extract binary data from FLIR radiometric jpg</a>
   <span class="retrieved">6. Januar 2018</span>
+</p>
+
+<p id="ref-raw2temp" class="reference-item">
+  <span class="ref">Tattersall, G.J.: Thermimage: Thermal Image Analysis, raw2temp.R</span>
+  <a href="https://rdrr.io/cran/Thermimage/src/R/raw2temp.R" target="_blank" rel="noopener">Temperaturberechnung aus FLIR Rohdaten in R</a>
+  <span class="retrieved">14. Januar 2018</span>
 </p>
