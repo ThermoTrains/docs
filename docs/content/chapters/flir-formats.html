@@ -62,8 +62,67 @@
 </p>
 
 <h4>Header</h4>
-TODO
-<h4>Exifdaten</h4>
-TODO
+
+
+<p>
+  Glücklicherweise sind wir nicht die ersten die sich damit beschäftigen. Im <a href="#ref-exiftool">ExifTool von Phil
+  Harvey</a> gibt es bereits einige Tags die aus den Metadaten ausgelesen werden.
+</p>
+
+<figure>
+  <table>
+    <tbody>
+    <tr><td>ExifTool Version Number</td><td>10.75</td></tr>
+    <tr><td>Emissivity</td><td>1.00</td></tr>
+    <tr><td>Object Distance</td><td>0.00 m</td></tr>
+    <tr><td>Reflected Apparent Temperature</td><td>21.9 C</td></tr>
+    <tr><td>Atmospheric Temperature</td><td>21.9 C</td></tr>
+    <tr><td>Relative Humidity</td><td>0.0 %</td></tr>
+    <tr><td>Planck R1</td><td>16556</td></tr>
+    <tr><td>Planck B</td><td>1428</td></tr>
+    <tr><td>Planck F</td><td>1</td></tr>
+    <tr><td>Atmospheric Trans Alpha 1</td><td>0.006569</td></tr>
+    <tr><td>Atmospheric Trans Alpha 2</td><td>0.012620</td></tr>
+    <tr><td>Atmospheric Trans Beta 1</td><td>-0.002276</td></tr>
+    <tr><td>Atmospheric Trans Beta 2</td><td>-0.006670</td></tr>
+    <tr><td>Atmospheric Trans X</td><td>1.900000</td></tr>
+    <tr><td>Planck O</td><td>-207</td></tr>
+    <tr><td>Planck R2</td><td>0.046952017</td></tr>
+    <tr><td>Frame Rate</td><td>30</td></tr>
+    <tr><td>Raw Thermal Image Width</td><td>640</td></tr>
+    <tr><td>Raw Thermal Image Height</td><td>512</td></tr>
+    <tr><td>Raw Thermal Image Type</td><td>TIFF</td></tr>
+    <tr><td>Raw Thermal Image</td><td>(Binary data 655564 bytes, use -b option to extract)</td></tr>
+    </tbody>
+  </table>
+  <figcaption>ExifTool Ouptput einer SEQ Datei (Auszug)</figcaption>
+</figure>
+
+<p>
+  Diese Angaben werden zum Teil auch in den FLIR Tools wieder dargestellt wenn man die Datei öffnet. Je nach Wert
+  erzeugt dies andere Temperaturwerte.
+</p>
+
+<p>
+  Das Tag "FrameRate" ist nur für SEQ Dateien relevant. Die anderen Tag erscheinen genau so bei einzelnen Bildern.
+  Das ExifTool kann dank den Erkenntnissen von unserem Reverse Engineering diese jetzt auch auslesen. Die das
+  FrameRate Tag nicht präsent, kann FLIR Tools die Datei nicht als Video erkennen und abspielen.
+</p>
+
+<figure>
+  <img src="images/screenshot-flir-tools.jpg">
+  <figcaption>Screenshot FLIR Tools</figcaption>
+</figure>
+
+<p>
+  Man sieht auf der rechten Seite die einstellbaren Parameter die dann die Temperaturgleichung einfliessen. Diese
+  sind auch in den Metadaten vorhanden.
+</p>
 
 <!-- References -->
+
+<p id="ref-exiftool" class="reference-item">
+  <span class="ref">ExifTool von Phil Harvey</span>
+  <a href="https://www.sno.phy.queensu.ca/~phil/exiftool/" target="_blank" rel="noopener">https://www.sno.phy.queensu.ca/~phil/exiftool/</a>
+  <span class="retrieved">13. Januar 2018</span>
+</p>

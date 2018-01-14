@@ -1130,8 +1130,6 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
     </ul>
   </li>
 </ul>
-TODO IRCompressor: kompressionsverfahren mit clamping, offset, h.264, metadaten abspeichern, verlustberechnung, exiftool
-spezifität, erkennungsraten, kompression und aufnahme geht nicht gleichzeitig, dauert sehr lange bei grossen dateien
 <p>
   Die Bilder von der FLIR Infrarotkamera können mithilfe des FLIR ATLAS SDKs leider nicht anders abgespeichert werden
   als SEQ Datei. Diese Dateien sind zu gross um in Vernünftiger Zeit über eine Mobilfunkantenne zu übertragen ohne
@@ -1197,7 +1195,9 @@ spezifität, erkennungsraten, kompression und aufnahme geht nicht gleichzeitig, 
 
 <p>
   Nachdem wir die Bilder zu 8 bit grayscale konvertiert haben können wir sie mit h.264 encodieren und erhalten somit
-  eine sehr kleine Datei die zudem auch direkt im Browser im Cockpit angeschaut werden kann.
+  eine sehr kleine Datei die zudem auch direkt im Browser im Cockpit angeschaut werden kann. Den Offset- und
+  Skalierungsfaktor den wir zum Clamping benutzt haben speichern wir in den Metadaten der MP4 Datei damit die SEQ
+  Datei wieder rekonstruiert werden kann wenn auch mit Verlust.
 </p>
 
 <p>
@@ -1207,12 +1207,12 @@ spezifität, erkennungsraten, kompression und aufnahme geht nicht gleichzeitig, 
   endeten diese Videos als schwarze Frames. Der Bildanalyse teil hat aber wie bis anhin funktioniort weil das
   Betriebssystem dem Prozess genug Priorität gegeben hat. Das Encoding passiert jedoch in einem separatem Thread der
   über EMGU.CV zu OpenCV von FFmpeg gesteuert wird. Somit hatten wir keine Kontrolle über die Priorität dieser Threads.
-  Als gegen Massnahme haben wir zum einten mit dem C# Profiler den Code soweit wie möglich optimiert. Dies ergab ein
+  Als Gegenmassnahme haben wir zum einten mit dem C# Profiler den Code soweit wie möglich optimiert. Dies ergab ein
   merkbarer aber vernichtend kleinen Performanceboost. Wir haben uns dann entschlossen die Framerate der IR Videos
   auf 1 Frame zu setzen. Danach konnten wir die Videos innerhalb einer Minute konvertieren. Da wir das Video sowieso
   nur zum Stitching verwenden spielt dies keine Rolle. Wir haben es nicht von Beginn an gemacht weil 30 FPS Videos zu
-  zeigen sehr gut bei Projektpartnern bei der SBB ankommst als wenn man ein Video mit 1 FPS zeigt. Die
-  Hardwarelimitation hat uns also dann aber davon abgehalten.
+  zeigen besser bei Projektpartnern der SBB ankommt als wenn man ein Video mit 1 FPS zeigt. Die
+  Hardwarelimitation haben uns also davon abgehalten.
 </p>
 
 <h5>Uploader</h5>
@@ -1265,11 +1265,60 @@ spezifität, erkennungsraten, kompression und aufnahme geht nicht gleichzeitig, 
 </p>
 
 <h5>SeqConverter</h5>
-TODO SeqConverter: von mp4 wieder auf seq (aufblasen der datei)
 <p>
   Das SeqConverter CLI Programm dient zur Konvertierung von FLIR SEQ Dateien zu MP4 oder umgekehrt. Zudem kann es
   schwarzweisse MP4 Videos in Falschfarben Videos konvertieren.
 </p>
+
+<p>
+  Im Modus <strong>SEQ zu MP4</strong> macht das CLI Tool genau das selbe wie der IRCompressor.
+</p>
+
+<p>
+  Im Modus <strong>MP4 zu SEQ</strong> werden die Metainformationen der MP4 Datei ausgelesen um die SEQ Datei zu
+  rekonstruieren. Dies dient uns dazu, dass wir verifizieren können dass unser Kompressionsverfahren funktioniert.
+  Vorher und nachher sollten die selben Temperaturwerte berechnet werden. Auch können wir so visualisieren was der
+  Präzisionsverlust effektiv ausmacht indem wir die zwei Dateien in den FLIR Tools vergleichen können. Das FLIR ATLAS
+  SDK bietet leider keine Möglichkeit an SEQ oder auch nur einzelne Bilder mit Signaldaten zu erstellen an. Das heisst
+  wir mussten die SEQ Datei bit für bit selber erstellen. Damit wir das konnten mussten wir zuerst die essentiellen Tags
+  der Metadaten finden damit die SEQ Datei valide ist und von den FLIR Tools erkannt und gelesen wird. Mithilfe von
+  ExifTool und einem Hexeditor und einer langen Nacht konnten wir das nötige Verständnis aufbauen.
+</p>
+
+<p>
+  Als Einstiegspunkt diente das veraltete <a href="#ref-flir-interface">Spezifikationsdokument</a> von FLIR für einzelne
+  Bilder mit angehängten Signaldaten. Das fehlende Puzzelstück war die Framerate des Videos. Ist diese gesetzt
+  erkennt FLIR Tools die Datei als Video. Fehlt sie, wird nur das erste Frame angezeigt. Die Kenntnis welches Tag
+  Feld und welchen Datentyp die Framerate haben wir zurück ins ExifTool fliessen lassen. Phil Harvey hat kurz später
+  eine neue Version erstellt die nun die Framerate von SEQ Dateien auslesen kann. Sebastian Häni wurde dankend in den
+  Release Notes erwähnt.
+</p>
+
+<p>
+  Das Verfahren zur Erstellung der SEQ Datei ist nun jedoch sehr einfach geraten nachdem wir das Format verstanden
+  haben. Der Header der SEQ Datei enthält wichtige Informationen die von der Kamera respektive durch das FLIR ATLAS
+  SDK geschrieben werden. Jedoch sind diese Informationen immer die selben bei gleichbleibender Kamera. Das einzige
+  was sich ändert sind dynamische Anzeigeparameter und Temperaturberechnungsparameter die in den FLIR Tools durch den
+  Klick auf "Auto" sowieso neu berechnet werden. Wir können also getrost immer den binär identischen Header
+  verwenden. Danach können wir jedes Frame einzeln an den Binärstream anhängen nachdem wir sie durch den
+  Skalierungsfaktor geteilt und den Offset dazu addiert haben.
+</p>
+
+<p>
+  Im Modus <strong>MP4 zu MP4</strong> muss ein weiterer Parameter zur Farbpalette angegeben werden. Der SeqConverter
+  akzeptiert ein Graustufenvideo und wendet eine Falschfarbenpalette an. Innerhalb von OpenCV gibt es bereits eine
+  ganze Reihe von <a href="#ref-opencv-color-map">Paletten</a> welche aber nicht wirklich gut aussehen. Deswegen
+  unterstützen wir davon nur die Palette Hot. Neben dieser haben wir die Palette die schöne Palette von FLIR namens
+  Iron implementiert. Weil es keine zu 100% genaue mathematische Definition der Palette gibt haben wir die 256
+  Farbwerte in einer Map abgelegt. Somit können wir die nicht so ansehbaren Graustufenvideos in mit farben versehen
+  um diese an unsere Partner weiterleiten zu können damit sie diese in Präsentation aufnehmen können. Zudem können
+  wir die Falschfarbenbilder auch weiter an das Thermoboard schicken.
+</p>
+
+<figure>
+  <img src="images/thermoscanner/iron-colormap.png">
+  <figcaption>FLIR Iron Color Palette</figcaption>
+</figure>
 
 <h5>ExtractFrames</h5>
 <p>
@@ -1330,8 +1379,15 @@ TODO SeqConverter: von mp4 wieder auf seq (aufblasen der datei)
   <span class="retrieved">13. Januar 2018</span>
 </p>
 
-<p id="ref-exiftool" class="reference-item">
-  <span class="ref">ExifTool von Phil Harvey</span>
-  <a href="https://www.sno.phy.queensu.ca/~phil/exiftool/" target="_blank" rel="noopener">https://www.sno.phy.queensu.ca/~phil/exiftool/</a>
-  <span class="retrieved">13. Januar 2018</span>
+<p id="ref-flir-interface" class="reference-item">
+  <span class="ref">FLIR Interface Requirements Specification for FLIR TIFF File Format</span>
+  <a href="http://www.flir.com/uploadedFiles/sUAS/Products/Vue-Pro/FLIR-Interface-Requirements-TIFF.pdf" target="_blank"
+     rel="noopener">http://www.flir.com/uploadedFiles/sUAS/Products/Vue-Pro/FLIR-Interface-Requirements-TIFF.pdf</a>
+  <span class="retrieved">14. Januar 2018</span>
+</p>
+
+<p id="ref-opencv-color-map" class="reference-item">
+  <span class="ref">OpenCV Color Maps</span>
+  <a href="https://docs.opencv.org/3.4.0/d3/d50/group__imgproc__colormap.html#gga9a805d8262bcbe273f16be9ea2055a65aef83628a5b46e23bf823000ff0270304" target="_blank" rel="noopener">https://docs.opencv.org/3.4.0/d3/d50/group__imgproc__colormap.html</a>
+  <span class="retrieved">14. Januar 2018</span>
 </p>
