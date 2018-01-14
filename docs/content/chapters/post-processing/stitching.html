@@ -1,12 +1,12 @@
 <h3>Stitching</h3>
 
 <ul>
-  <li><b>In:</b> Recktifizierte Zug Frames</li>
+  <li><b>In:</b> Rektifizierte Zug Frames</li>
   <li><b>Out:</b> Zug Panorama</li>
 </ul>
 
 <p>
-  Durch die vorgänging angewandten Operationan auf den Frames, können wir nun ein vereinfachtes Stitching
+  Durch die vorgängig angewandten Operationen auf den Frames, können wir nun ein vereinfachtes Stitching
   Verfahren anwenden. Wir haben zuerst mit handelsüblichem Panoramastitching versucht Resultate herauszuholen,
   schlugen aber fehl. Die <code>Stitcher</code> Klasse von OpenCV ist zum einen nicht in der Java Wrapper Library verfügbar,
   weshalb wir selber einen JNI Wrapper schreiben mussten. Dieser hat es schlussendlich nicht überlebt. Die <code>Stitcher</code>
@@ -21,13 +21,13 @@
   kommt, dass sich Wagons ziemlich ähnlich sind. Der erste Versuch war einfach mal drauf los stitchen. Wir haben
   sämtliche Frames der <code>Stitcher</code> Klasse übergeben, den Modus auf Ebene gestellt und geschaut was passiert. Es gab
   einen Fehler, den wir auf keine Weise beheben konnten. Der Modus Landschaft hat ein sehr amüsantes Resultat
-  geliefert, das allerdings weniger hilfreich war. Die Wagons waren wild übereinander gestapelt und verzerrt.
+  geliefert, das allerdings weniger hilfreich war. Die Wagons waren wild übereinandergestapelt und verzerrt.
 </p>
 
 <p>
   Der zweite Ansatz war die Bilder gestaffelt zu stitchen. Das heisst wir würden inkrementell ein Bild mit dem
   bisherigen Resultat zusammenstitchen. Das war auch nicht erfolgreich. Man kann auch nicht spezifizieren, wo das
-  nächste Bild hin soll. Also hat OpenCV versucht das Bild irgendwo zu platzieren. Meistens gab es auch hier einen
+  nächste Bild hinsoll. Also hat OpenCV versucht das Bild irgendwo zu platzieren. Meistens gab es auch hier einen
   Fehler, weil zu wenig Bilder vorhanden waren.
 </p>
 

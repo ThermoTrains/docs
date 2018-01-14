@@ -12,15 +12,15 @@
 </p>
 
 <p>
-  Bei den Farbbildern schränken wir das Panorama Bild auf Pixel ein, die zwischen <code>HSV(0,0,0)</code> und <code>HSV(255,255,38)</code>
-  sind. Danach führen wir eine Erosion durch um kleine Objekte zu entfernen.
-  Anschliessend bauen wir ein Histogram über die Spalten auf, welches die Anzahl der überlebenen Pixel aufsummiert.
-  Das Resultat wird durch das folgende Diagramm dargestellt.
+  Bei den Farbbildern schränken wir das Panorama Bild auf Pixel ein, die zwischen <code>HSV(0,0,0)</code> und <code>
+  HSV(255,255,38)</code> sind. Danach führen wir eine Erosion durch um kleine Objekte zu entfernen. Anschliessend bauen
+  wir ein Histogramm über die Spalten auf, welches die Anzahl der überlebenden Pixel aufsummiert. Das Resultat wird
+  durch das folgende Diagramm dargestellt.
 </p>
 
 <figure class="affix">
   <img src="images/post-processing/split/split-histogram.png">
-  <figcaption>Histogram über dunkle Pixel in Spalten</figcaption>
+  <figcaption>Histogramm über dunkle Pixel in Spalten</figcaption>
 </figure>
 
 <p>
@@ -73,11 +73,12 @@
 
 <p>
   Dieses Verfahren hat nicht für Infrarot Bilder funktioniert. In Matlab haben wir deshalb ein weiteres Verfahren
-  entwickelt. Es ist aus zeitgründen noch nicht in die Pipeline integriert, aber die Machbarkeit ist bewiesen.
-  Die Idee bei den Infrarotbilder ist es die Räder zu finden und dazwischen abzuschneiden. Es sind nämlich immer
-  zwei Räder am Anfang und am Ende eines Wagons. Somit kann man in der Mitte von vier nahe beieinander liegenden
-  Räder abschneiden und trifft so genau das Ende eines Wagons. Die Räder werden mit der <a href="#ref-phase-coding">Phase Coding Methode von Atherton and Kerbyson</a> gefunden.
-  Alternativ wäre dies auch möglich über eine Hough-Transformation.
+  entwickelt. Es ist aus Zeitgründen noch nicht in die Pipeline integriert, aber die Machbarkeit ist bewiesen.
+  Die Idee bei den Infrarotbildern ist es die Räder zu finden und dazwischen abzuschneiden. Es sind nämlich immer
+  zwei Räder am Anfang und am Ende eines Wagons. Somit kann man in der Mitte von vier nahe beieinanderliegenden
+  Räder abschneiden und trifft so genau das Ende eines Wagons. Die Räder werden mit der <a href="#ref-phase-coding">Phase
+  Coding Methode von Atherton and Kerbyson</a> gefunden. Alternativ wäre dies auch möglich über eine
+  Hough-Transformation.
 </p>
 
 <figure>

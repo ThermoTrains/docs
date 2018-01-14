@@ -16,7 +16,7 @@
   Zu einem guten Entwicklungsprozess gehört Continuous Integration. Da es für die zu verwendeten Technologien und
   Frameworks keine gratis Dienste gibt und wir selber keine Server besitzen die diese Aufgabe übernehmen könnten,
   haben wir die Thermobox selber als Continuous Integration Server eingesetzt. Startet die Thermobox wird automatisch
-  der HEAD commit aus dem Git repository auf dem master Branch ausgecheckt. Dann werden die Nuget Dependencies
+  der HEAD commit aus dem Git repository auf dem master Branch ausgecheckt. Dann werden die NuGet Dependencies
   aktualisiert. Somit kann anschliessend der Release Build durchgeführt werden. Alle Assemblies erhalten die korrekte
   Versionsnummer die im Repository in der Datei <code>SharedAssemblyInfo.cs</code> eingecheckt ist. Weil wir aber
   nicht andauernd die Version erhöhen möchten um diese bauen zu lassen, hängen wir auch den Commit Hash hinten daran.
@@ -29,7 +29,7 @@
 </figure>
 
 <p>
-  Dies erzeugt einen String wie diesen: <code>1.0.0-52-ge078b31</code>. Diese Versionsnummer ist deswegen wichtig
+  Dies erzeugt einen String wie diesen: <code>1.0.0-52-ge078b31</code>. Diese Versionsnummer ist deswegen wichtig,
   weil wir in den Logs auf diese zurückgreifen. Dazu mehr im Kapitel <a href="#thermobox-logging">Logging</a>.
 </p>
 
@@ -38,7 +38,7 @@
   Um die verschiedenen Komponenten und insbesondere die Bildanalyse Algorithmen zu entwickeln haben wir wo es Sinn
   macht, TDD (Test Driven Development) eingesetzt. Seit Visual Studio 2017 Update 5 gibt es in der Enterprise Edition
   (welche wir über Microsoft Imagine via Schulaccount beziehen können) Live Unit Testing. Dieses nette Feature
-  erkennt live welche Unit Tests von der Code Änderung betroffen sind und führt diese nach einem Build automatisch
+  erkennt live welche Unit Tests von der Code-Änderung betroffen sind und führt diese nach einem Build automatisch
   aus. Das Resultat wird gleich links leben den Zeilennummern im Editor angezeigt.
 </p>
 
@@ -49,8 +49,8 @@
 
 <p>
   Zu beachten ist, dass Visual Studio dabei sämtliche Dateiänderungen folgt. In unserem Build wurde anfänglich
-  jedesmal die Datei <code>SharedVersionInfo.cs</code> generiert welche die aktuelle Versionsnummer enthält. Dies hat
-  den Build jedes mal neu getriggert. Somit hat Visual Studio non-Stopp gebuilded und die Unit Tests ausgeführt. Nach
+  jedes Mal die Datei <code>SharedVersionInfo.cs</code> generiert welche die aktuelle Versionsnummer enthält. Dies hat
+  den Build jedes Mal neu getriggert. Somit hat Visual Studio non-Stopp gebuilded und die Unit Tests ausgeführt. Nach
   dem hilfreichen Feedback auf eine <a
   href="https://developercommunity.visualstudio.com/content/problem/152749/live-unit-testing-rebuilding-non-stop.html">Frage
   in der Visual Studio Developer Community</a> konnten wir aber auch diesen Issue beheben in dem wir den Build nur
@@ -61,8 +61,8 @@
 <h5 id="thermobox-logging">Logging</h5>
 <p>
   Um auch später nachvollziehen zu können was in der Software passiert, ist ein umfängliches Logging unumgänglich.
-  Wir setzen dazu log4net ein. Die Konfiguration des Loggings ist für alle Konfigurationen die selbe und wird
-  geteilt. Somit müssen kleine Anpassungen an der Konfiguration nicht über all nachvollzogen werden. Die Log Dateien
+  Wir setzen dazu log4net ein. Die Konfiguration des Loggings ist für alle Konfigurationen dieselbe und wird
+  geteilt. Somit müssen kleine Anpassungen an der Konfiguration nicht überall nachvollzogen werden. Die Log Dateien
   werden pro Komponente in eine Datei im Pfad <code>C:\Thermobox\logs\</code> abgelegt. Eine Zeile im Log enthält
   folgende Informationen:
 </p>
@@ -89,20 +89,19 @@
 
 <p>
   Wird eine Log Datei zu gross wird diese automatisch umbenannt und es wird eine neue Datei begonnen. Wir haben ein
-  Threshold von 10 MiB gewählt. Dieser wurde eigentlich nur von der VisibleLightReader-Komponente erreicht weil wir
+  Threshold von 10 MiB gewählt. Dieser wurde eigentlich nur von der VisibleLightReader-Komponente erreicht, weil wir
   dort Debug Logs einsetzen um den Detektionsalgorithmus laufend zu verbessern. Gesamthaft haben wir über die zwei
-  Testphasen
-  ca. 154 MiB an Logdateien gesammelt.
+  Testphasen ca. 154 MiB an Logdateien gesammelt.
 </p>
 
 <p>
-  Auf einer Logzeile wird der Assembly Name aufgeführt. Dies mag redundant erscheinen weil dieser ja auch bereits in
+  Auf einer Logzeile wird der Assembly Name aufgeführt. Dies mag redundant erscheinen, weil dieser ja auch bereits in
   der Logdatei enthalten ist. Allerdings starten mit dem Start Script alle Komponenten miteinander und lassen diese
-  auch auf die selbe Konsole schreiben damit man nicht 6 verschiedene Fenster offen und überwachen muss. Im
+  auch auf dieselbe Konsole schreiben damit man nicht 6 verschiedene Fenster offen und überwachen muss. Im
   Normalbetrieb starten die Komponenten im Hintergrund. Somit hätte man eigentlich keine Möglichkeit die Logs
   aggregiert zu sehen. Man kann höchstens ein <code>tail</code> auf die einzelnen Dateien machen. Also haben wir ein
-  Powershell Script geschrieben, dass sämtliche Logdateien folgt. Zudem färbt es die verschiedenen Loglevels auch
-  gleich ein. Also erscheint eine Exception auch gleich rot. Die Entwicklung des Scripts war nicht ganz einfach weil
+  PowerShell Script geschrieben, dass sämtliche Logdateien folgt. Zudem färbt es die verschiedenen Loglevels auch
+  gleich ein. Also erscheint eine Exception auch gleich rot. Die Entwicklung des Scripts war nicht ganz einfach, weil
   pro Logdatei ein Thread gestartet werden muss der einer einzelnen Logdatei folgt und dessen neuen Logs zurück auf
   die Hauptkonsole schreibt. Diese Lösung könnte eventuell auch für andere Projekte interessant sein.
 </p>
@@ -117,7 +116,7 @@
 <p>
   Um von Fern auf den Mini-PC und die Hardware zu zugreifen, haben wir einen Teamviewer Server installiert. Dieser
   ermöglicht es mit einer Partner ID und einem Passwort darauf zuzugreifen. Teamviewer bietet das beste
-  Benutzererlebnis verschiedenster Remote Access Lösungen. Auf die Standard Windows Remote Desktop Lösung können wir
+  Benutzererlebnis verschiedenster Remote Access Lösungen. Auf die Standard-Windows-Remote-Desktop-Lösung können wir
   nicht zugreifen, weil der Server direkt mit einer IP im Internet angebunden ist welche nicht statisch ist.
   Teamviewer darf für nicht kommerzielle Zwecke gratis eingesetzt werden. Sobald die SBB das Projekt weiterführt,
   müsste ein Lizenz angeschafft werden sofern noch keine bestehen.
@@ -133,10 +132,10 @@
 
 <p>
   Weiter möchten wir die Temperatur der Hardware überwachen um eventuelle Konstruktionsbedingte Wärmestaus frühzeitig
-  zu erkennen bevor es anfängt zu schmelzen. Die Hardware ist draussen und kann nur in den vorgebenenen Temperaturen
+  zu erkennen bevor es anfängt zu schmelzen. Die Hardware ist draussen und kann nur in den vorgegebenen Temperaturen
   betrieben werden. Durch eine Fehlfunktion des Heizlüfters oder Thermostats könnte des Innere des Gehäuses auch
   überhitzt werden. Oder der Mini PC erzeugt eventuell so viel Hitze, dass diese nicht abgebaut werden kann. Einen
-  Lüftungsschlitz nach aussen gibt es nämlich nicht. Die einzige undichte Ort ist der Kabelschlitz im Boden des
+  Lüftungsschlitz nach aussen gibt es nämlich nicht. Der einzige undichte Ort ist der Kabelschlitz im Boden des
   Gehäuses. Also möchten wir die Temperatur des Mini-PCs überwachen können.
 </p>
 
@@ -155,21 +154,21 @@
 </ul>
 
 <p>
-  Diese Abläufe können sich auch in die Quere kommen was wir erkennen möchten. Zudem möchten wir erkennen wenn der
+  Diese Abläufe können sich auch in die Quere kommen was wir erkennen möchten. Zudem möchten wir erkennen, wann der
   Arbeitsspeicher ausgeht und eventuell auf die Disk geswapped wird.
 </p>
 
 <p>
-  Um diese Daten aufzunehmen haben wir nach einer Monitoring Lösung gesucht. Dazu gibt es diverse Self-Hosting
+  Um diese Daten aufzunehmen haben wir nach einer Monitoring-Lösung gesucht. Dazu gibt es diverse Self-Hosting
   Lösungen wie z.B. das alt bekannte Nagios wovon es mittlerweile auch schon diverse Forks gibt. Diese Lösungen
-  können wir allerdings nicht selber betreiben weil uns die Server dazu fehlen. Ausserdem ist ein solches System
+  können wir allerdings nicht selber betreiben, weil uns die Server dazu fehlen. Ausserdem ist ein solches System
   dafür ausgelegt eine ganze Serverlandschaft zu überwachen und nicht nur einen einzigen. Deswegen ist die
-  Installation und Konfiguration einer solchen Lösung sehr aufwändig. Diesen Aufwand wollten wir uns wenn möglich
+  Installation und Konfiguration einer solchen Lösung sehr aufwändig. Diesen Aufwand wollten wir uns, wenn möglich,
   sparen.
 </p>
 
 <p>
-  Die andere Option ist eine SaaS Monitoring Lösung zu verwenden. Das Problem hierbei ist, dass es keine Anbieter
+  Die andere Option ist eine SaaS Monitoring-Lösung zu verwenden. Das Problem hierbei ist, dass es keine Anbieter
   gibt die das gratis machen. Oder jedenfalls nicht so, dass wir mehrere Monate lang auf den Server zugreifen können.
 </p>
 
@@ -191,7 +190,7 @@
 <p>
   Der Server hängt das Datentupel an eine Datei. Das Frontend liest dann diese Datei aus und erzeugt eine HTML Seite
   die vier Graphen im Browser darstellt. Oben links wird dargestellt ob die Box online ist. Oben rechts werden die
-  CPU Auslastung sowie die CPU Temperatur überlagert dargstellt. Unten links sieht man die Memory Auslastung. Und
+  CPU Auslastung sowie die CPU Temperatur überlagert dargestellt. Unten links sieht man die Memory Auslastung. Und
   unten rechts sieht man den Verlauf des freien Speicherplatzes.
 </p>
 
@@ -201,27 +200,19 @@
 </figure>
 
 <p>
-  Der Source Code ist ausnahmsweise nicht im ThermoTrains Github Repository eingecheckt, weil diese Lösung nicht
-  spezifisch für dieses Projekt funktionieren kann. Im Code ist nichts spezifisches was auf dieses Projekt hinweist.
-  Das Repository kann unter
-  <a href="https://github.com/sebastianhaeni/supersimplemonitoring" target="_blank" rel="noopener">
-    https://github.com/sebastianhaeni/supersimplemonitoring</a> gefunden werden.
-</p>
-
-<p>
   Weil es ab und zu vorkam, dass die Software nicht so funktionierte wie gewünscht, hat sich die Festplatte gefüllt
-  und es konnten keine Aufnahmen mehr gemacht werden. Um sofort reagieren zu können wenn dies bald der Fall sein
+  und es konnten keine Aufnahmen mehr gemacht werden. Um sofort reagieren zu können, wenn dies bald der Fall sein
   wird, schickt der Server eine E-Mail mit der Information, dass weniger als 5 GiB freier Speicherplatz zur Verfügung
   ist.
 </p>
 
 <figure>
   <img src="images/thermoscanner/screenshot-monitoring-email.png">
-  <figcaption>Screenshot Monitoring E-Mail Benachrichtigung</figcaption>
+  <figcaption>Screenshot Monitoring E-Mail-Benachrichtigung</figcaption>
 </figure>
 
 <p>
-  Die Anforderungen an den Monitoring Server sind folgende:
+  Die Anforderungen an den Monitoring-Server sind folgende:
 </p>
 
 <ul>
@@ -231,7 +222,7 @@
 
 <p>
   Um den Server in Betrieb zu nehmen müssen nur die Sourcen auf den Webserver kopiert werden und die
-  Schreibberechtigung eingerichtet werden. Im <code>ping.ps1</code> Script muss die richtige URL konfigurtiert werden
+  Schreibberechtigung eingerichtet werden. Im <code>ping.ps1</code> Script muss die richtige URL konfiguriert werden
   damit die Datentupel an den richtigen Ort gelangen. Es gibt kein Mechanismus die alten Daten zu löschen. Dazu muss
   manuell die Datei <code>stats.txt</code> geleert werden. Die Graphen stellen jeweils nur die letzten 48 Stunden
   dar. Details über ältere Posts können mit dem Button "Show more" angezeigt werden.
@@ -261,19 +252,19 @@
 </p>
 
 <p>
-  Das Ping Script <code>ping.ps1</code> ist in Powershell geschrieben. Es liest die CPU Temperaturen, CPU
+  Das Ping Script <code>ping.ps1</code> ist in PowerShell geschrieben. Es liest die CPU Temperaturen, CPU
   Auslastungen und die Memory Auslastung vom OpenHardwareMonitor aus. Um diese Angaben zuverlässig und einfach
-  auslesen zu können gibt es von Windows leider keine vorgegebenen Befehler oder Services. Das Auslesen des
-  verbleibenden Speicherplatzes ist jedoch mit Powershell Hausmitteln möglich.
+  auslesen zu können gibt es von Windows leider keine vorgegebenen Befehle oder Services. Das Auslesen des
+  verbleibenden Speicherplatzes ist jedoch mit PowerShell Hausmitteln möglich.
 </p>
 
 <p>
   Eine generell funktionierende Lösung um die Sensoren der Hardware auszulesen gibt es nicht. Jeder Hersteller
-  prorammiert in seinen Treibern eigene Interfaces um die Werte auszulesen. Die Software OpenHardwareMonitor versucht
+  programmiert in seinen Treibern eigene Interfaces um die Werte auszulesen. Die Software OpenHardwareMonitor versucht
   diese verschiedenen Interfaces zusammen zu tragen und stellt diese im einfachen Tool dar. Zusätzlich bietet
   OpenHardwareMonitor die Option an beim Systemstart sich selber im Tray auszuführen. Dies haben wir auf dem Mini-PC
-  so konfiguriert. Wenn OpenHardwareMonitor läuft, kann über die angebotenen WMI Objekte (Windows Managment
-  Instrumentation) auf die Sensor Werte mit simplen Queries zugegriffen werden. Als Beispiel hier ein Befehl welcher
+  so konfiguriert. Wenn OpenHardwareMonitor läuft, kann über die angebotenen WMI Objekte (Windows Management
+  Instrumentation) auf die Sensorwerte mit simplen Queries zugegriffen werden. Als Beispiel hier ein Befehl welcher
   alle CPU Kern Temperaturen in Kelvin ausliest:
 </p>
 
@@ -282,7 +273,7 @@
   | Where-Object {$_.SensorType -eq 'Temperature' -and $_.Name -like 'CPU Core #*'} `
   | Select-Object Value `
   | ForEach-Object {$_.Value}</code></pre>
-  <figcaption>CPU Temperatur Auslesen Powershell Script</figcaption>
+  <figcaption>CPU Temperatur Auslesen PowerShell Script</figcaption>
 </figure>
 
 <figure>
@@ -292,13 +283,13 @@
 
 <h5>Error Monitoring</h5>
 <p>
-  In den jeweiligen Komponenten können Errors und Warnungen geloggt oder gar uncatchted Exceptions auftreten. Um
-  diese nicht mühsam im Log suchen zu müssen sollen diese einfacher eingesehen werden können. Zudem sollte bei neuen
-  Fehler gleich eine E-Mail Benachrichtigung versendet werden.
+  In den jeweiligen Komponenten können Errors und Warnungen geloggt oder gar nicht aufgefangenen Exceptions
+  auftreten. Um diese nicht mühsam im Log suchen zu müssen sollen diese einfacher eingesehen werden können. Zudem sollte
+  bei neuen Fehler gleich eine E-Mail-Benachrichtigung versendet werden.
 </p>
 
 <p>
-  Dazu haben wir Sentry integriert. Sentry ist ein Dienst, welcher selber gehosted werden kann oder auf sentry.io
+  Dazu haben wir Sentry integriert. Sentry ist ein Dienst, welcher selber gehostet werden kann oder auf sentry.io
   betrieben wird. Da die Gratis-Lizenz mit ihren Einschränkungen für uns gut reicht, müssen wir keine Kosten
   aufwenden. Wenn eine Warnung oder Fehler auftritt, wird dieses Event an die Sentry API gemeldet. Sentry aggregiert
   dann die Events zusammen und schickt bei neuen unentdeckten Events eine E-Mail an uns.
@@ -312,15 +303,15 @@
 <p>
   Der Dienst ermöglicht es uns die Fehler sofort zu beheben nachdem sie aufgetreten sind. Zudem können wir die
   Warnungen dazu benutzen um zu sehen wie häufig und wann gewisse Meldungen auftauchen. Zum Beispiel schicken wir
-  immer eine Warnung wenn ein Zug entdeckt wurde dieser aber "anscheinenden" nach zu kurzer Zeit schon wieder aus dem
+  immer eine Warnung, wenn ein Zug entdeckt wurde dieser aber "anscheinenden" nach zu kurzer Zeit schon wieder aus dem
   Bild gefahren ist, dass das eigentlich gar nicht möglich ist. Wenn wir dann sehen, dass das immer während der
-  Dämmerung passiert ist das ein guter Hinweis was womöglich mit der Bildanalyse schief läuft.
+  Dämmerung passiert ist das ein guter Hinweis was womöglich mit der Bildanalyse schiefläuft.
 </p>
 
 <p>
   Um Sentry einzubinden mussten wir einen eigenen log4net Appender bauen. Die existierenden Appender sind zu alt und
   werden nicht mehr gewartet. Sollte sich in naher Zukunft nichts mehr tun in diesen Projekten erwägen wir unseren
-  Appender selber als Nuget Package zu veröffentlich damit andere auch davon profitieren können.
+  Appender selber als NuGet Package zu veröffentlich damit andere auch davon profitieren können.
 </p>
 
 <p>
@@ -332,7 +323,7 @@
 <h4>Interne Kommunikation</h4>
 <p>
   Durch die Anbindung von verschiedenen Komponenten und die verteilte Entwicklung sowie möglicher Integration von
-  weiteren Komponenten je nach Projektverlauf haben wir uns für eine Microservice Architektur entschieden. In einer
+  weiteren Komponenten je nach Projektverlauf haben wir uns für eine Microservice-Architektur entschieden. In einer
   solchen Architektur braucht es in der Regel einen Message Broker beziehungsweise eine Message Queue. Um dies
   umzusetzen haben wir auf Redis gesetzt. Der Redis Server läuft ständig auf dem Mini PC und fährt automatisch hoch
   sobald Windows startet.
@@ -340,14 +331,14 @@
 
 <p>
   Redis kann zwar mehr als nur Broker spielen, wir brauchen diese Features allerdings nicht. Redis zeichnet sich aus
-  durch die Einfachheit sowie die grosse Anzahl an production ready Bibliotheken zur Integration in alle gängingen
+  durch die Einfachheit sowie die grosse Anzahl an production ready Bibliotheken zur Integration in alle gängigen
   und zum Teil auch nicht gängigen Technologien. Ausserdem gibt es ein Command Line Interface mit welchem bequem
   manuell Nachrichten in die Queue geschrieben werden können sowie diese auch ausgelesen werden kann.
 </p>
 
 <p>
   Der Einsatz von Redis bringt also das Pattern PubSub (Publish/Subscribe) hervor. Die entwickelten Komponenten
-  laufen als eigenständige Prozesse und wissen nicht welche andere Prozesse laufen. Will eine Komponente mit einer
+  laufen als eigenständige Prozesse und wissen nicht welche anderen Prozesse laufen. Will eine Komponente mit einer
   anderen kommunizieren muss sie die Nachricht in die Redis Message Queue schreiben und somit publishen. Will sie
   Nachrichten lesen, muss sie sich auf eine Queue subscriben.
 </p>
@@ -355,11 +346,11 @@
 <p>
   Um auf der Entwicklungsumgebung nicht den Redis Server installieren zu müssen, gibt es ein Redis Docker Image
   welches den Server containerisiert startet. Somit kann eine Instanz ohne Konfiguration on Demand gestartet werden.
-  Auf dem Mini PC haben wir zuerst auch mit Docker den Redis Server eingerichtet weil die Windows Version des Redis
+  Auf dem Mini PC haben wir zuerst auch mit Docker den Redis Server eingerichtet, weil die Windows Version des Redis
   Servers nicht offiziell unterstützt wird von Seite Redis. Jedoch ist zum Zeitpunkt dieser Arbeit Docker immer noch
   nicht sehr stabil um Container auf einer Serverplattform laufen zu lassen. Für eine Entwicklungsumgebung ist es ok,
   aber auch nicht ideal. Deshalb haben wir dann den Redis Server der Microsoft offiziell unterstützt als
-  Windowsdiesnt installiert.
+  Windowsdienst installiert.
 </p>
 
 <p>
@@ -370,15 +361,15 @@
   <li><code>capture:start {{timestamp}}</code></li>
   <li><code>capture:stop</code></li>
   <li><code>capture:abort</code></li>
-  <li><code>capture:pause</code> (obsolete)</li>
-  <li><code>capture:resume</code> (obsolete)</li>
+  <li><code>capture:pause</code> (obsolet)</li>
+  <li><code>capture:resume</code> (obsolet)</li>
   <li><code>delivery:upload {{filename}}</code></li>
   <li><code>delivery:compress {{filename}}</code></li>
   <li><code>kill</code></li>
 </ul>
 
 <p>
-  Im Diagramm unten ist dargestellt wie ein Aufnahme des Zuges auf der Kommunikationsebene abläuft. Es sind sämtliche
+  Im Diagramm unten ist dargestellt wie eine Aufnahme des Zuges auf der Kommunikationsebene abläuft. Es sind sämtliche
   Nachrichten ersichtlich. Wie man sieht, geht jede Nachricht immer zuerst an den Redis Server welche sie dann weiter
   an die Komponenten, die sich darauf subscribed haben, leitet. Die einzelnen Komponenten werden später erklärt.
 </p>
@@ -415,17 +406,17 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 
 <h4>Komponenten Architektur</h4>
 <p>
-  Damit es einfach ist neue Komponenten zu erstellen, haben wir ein Common Modul erstellt welches Code bereitstellt,
-  welcher für alle Komponenten der selbe ist. Im Common Modul gibt es eine abstrakte Klasse
+  Damit es einfach ist neue Komponenten zu erstellen, haben wir ein Common-Modul erstellt welches Code bereitstellt,
+  welcher für alle Komponenten derselbe ist. Im Common Modul gibt es eine abstrakte Klasse
   <code>ThermoBoxComponent</code> von welcher konkrete Komponenten erben können. Eine Komponente kann dann definieren
-  welchen Kanälen Sie folgen möchte und welchen Handler sie anstössen möchte wenn eine Nachricht eintritt. Zudem gibt
+  welchen Kanälen Sie folgen möchte und welchen Handler sie anstossen möchte, wenn eine Nachricht eintritt. Zudem gibt
   es eine Funktion um Nachrichten zu publishen.
 </p>
 
 <p>
   Die gewählte Architektur hat sich sehr bewährt. Es ermöglicht den selektiven Betrieb einzelner Komponenten so, dass
-  diese isoliert getestet werden können. Zudem kann man auch mal eine Komponente ausschalten wenn man das Feature
-  gerade nicht braucht. Zum Beispiel können wir den Uploader einfach nicht starten wenn wir nicht möchten, dass
+  diese isoliert getestet werden können. Zudem kann man auch mal eine Komponente ausschalten, wenn man das Feature
+  gerade nicht braucht. Zum Beispiel können wir den Uploader einfach nicht starten, wenn wir nicht möchten, dass
   Dateien auf den Server hochgeladen werden. Es ist keine Konfigurationsänderung notwendig.
 </p>
 
@@ -433,9 +424,9 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
   Das einzige Problem das wir mit dieser Architektur festgestellt haben ist, dass wir Kameras haben auf welche mit
   nur einem Windows Prozess zugegriffen werden kann. Die erste Idee war, dass wir eine Komponente haben, welche die
   Farbkamera ausliest um zu erkennen ob gerade ein Zug in die Waschstrasse fährt. Eine zweite Komponente greift auf
-  die selbe Kamera zu um die Bilder in ein Video aufzunehmen sobald der Zug erkannt wurde. Dies war leider nicht
+  dieselbe Kamera zu um die Bilder in ein Video aufzunehmen sobald der Zug erkannt wurde. Dies war leider nicht
   möglich. Also mussten wir in diesem konkreten und einzigen Fall vom Microservice-Pattern abweichen und beide
-  Funktionalitäten in der selben Komponente implementieren.
+  Funktionalitäten in derselben Komponente implementieren.
 </p>
 
 <h4>Reader Komponenten</h4>
@@ -448,23 +439,23 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
   übergeben. Diesen Timestamp verwenden die Reader um einen eindeutigen Dateinamen zu erzeugen. Wenn diese Dateinamen
   später asynchron über diverse Wege wieder zusammengetragen werden können Sie wieder zusammen gruppiert werden und
   man weiss zu welcher Aufnahme sie gehören. Würden die Reader selber den Timestamp erzeugen ist durch die asynchrone
-  Natur der Redis Message Queue nicht gegeben, dass die selben Timestamps zum Zuge kommen.
+  Natur der Redis Message Queue nicht gegeben, dass dieselben Timestamps zum Zuge kommen.
 </p>
 
 <p>
-  Beim Stop Befehl stoppen die Reader ihre Aufnahme und schicken die erzeugte Datei an den jeweiligen Channel weiter.
+  Beim Stopp Befehl stoppen die Reader ihre Aufnahme und schicken die erzeugte Datei an den jeweiligen Channel weiter.
 </p>
 
 <p>
   Beim Abbruch-Befehl werden die Reader die Aufnahme abbrechen und alle angefallenen Dateien aufräumen. Ein Abbruch
-  kann unter anderem stattfinden wenn die Trigger Komponente sich dafür entscheidet die Aufnahme zu starten weil sie
+  kann unter anderem stattfinden, wenn die Trigger Komponente sich dafür entscheidet die Aufnahme zu starten, weil sie
   glaubt der Zug sei eingefahren. Später wird dann aber gemerkt, dass es ein Fehlalarm war und die Aufnahme
   abgebrochen werden sollte. Würde der Trigger warten bis er sich ganz sicher ist, könnte bereits ein Teil des Zuges
   durch gefahren sein ohne dass er aufgenommen wurde.
 </p>
 
 <p>
-  Um manuelle Befehle zu geben haben wir ein Powershell Script <code>Control.ps1</code> erstellt mit welchem
+  Um manuelle Befehle zu geben haben wir ein PowerShell Script <code>Control.ps1</code> erstellt mit welchem
   interaktiv die möglichen Befehle abgesendet werden können.
 </p>
 
@@ -497,22 +488,22 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 </p>
 
 <p>
-  Die Kommunikation zur Kamera handeln wir mit dem FLIR Atlas SDK ab. Im Hintergrund verwendet das SDK einen GenICam
+  Die Kommunikation zur Kamera handeln wir mit dem FLIR ATLAS SDK ab. Im Hintergrund verwendet das SDK einen GenICam
   Treiber für die Kommunikation. FLIR hat aber weitere proprietäre Parameter in die Kamera verbaut weswegen wir nicht
   ein Standard GenICam-SDK verwenden.
 </p>
 
 <p>
-  Zu erst wird ein Discovery Thread gestartet der in einem Event Handler auf gefundene Kameras reagiert. Wird die
-  richtige Kamera gefunden welche den Suchstring matched, wird der originale Thread mit dem Resultat der Kamera
+  Zuerst wird ein Discovery Thread gestartet der in einem Event Handler auf gefundene Kameras reagiert. Wird die
+  richtige Kamera gefunden welche den Suchstring matcht, wird der originale Thread mit dem Resultat der Kamera
   beendet und er retourniert. Die Kamera die gefunden werden soll ist in der Konfiguration unter dem Key
-  <code>IR_CAMERA_NAME</code> abgelegt. Für unsere Kamera ist diesre "FLIR AX5". Wird die Kamara nicht innerhalb von
-  5 Sekunden gefunden verwenden wir die Emulator-Kamera, die das FLIR Atlas SDK anbietet, verwendet. Das heisst das
+  <code>IR_CAMERA_NAME</code> abgelegt. Für unsere Kamera ist dieser "FLIR AX5". Wird die Kamera nicht innerhalb von
+  5 Sekunden gefunden verwenden wir die Emulator-Kamera, die das FLIR ATLAS SDK anbietet, verwendet. Das heisst das
   Discovery-Verfahren dauert maximum 5 Sekunden oder kürzer.
 </p>
 
 <p>
-  Die Emulatorkamera ist hilfreich wenn man die Komponente testen will ohne dass man die Kamera im Netzwerk in
+  Die Emulator-Kamera ist hilfreich, wenn man die Komponente testen will ohne dass man die Kamera im Netzwerk in
   Betrieb genommen hat. Das erzeugte Bild ist ein Test-Infrarotbild bei welchem sich ein Balken auf und ab bewegt
   sowie einige Noise-Pixel die sich zufällig verteilen.
 </p>
@@ -541,21 +532,21 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 <p>
   Die Infrarot Kamera wird in der Regel eine Betriebstemperatur von ca. 40 - 50° C einnehmen. Die Kamera hat eine
   interne Mappingtabelle sowie ein Kalibrierungsverfahren um die Eigentemperatur zu kompensieren damit diese keine
-  Einflüsse auf das aufgenommene Bild haben. Flir nennt den Prozess NUC (Non Uniformity Correction). Ein NUC dauert
+  Einflüsse auf das aufgenommene Bild haben. FLIR nennt den Prozess NUC (Non Uniformity Correction). Ein NUC dauert
   ca. 0.2 - 0.5 Sekunden und blockiert die Aufnahme. Zeichnet man Bilder auf hat man während eines NUCs ein schwarzes
   Bild. Die Standardkonfiguration der Kamera ist, dass alle 4 Minuten ein NUC gemacht wird um eventuelle sich
-  veränderte Temperaturen zu kompensieren. Zusätzlich startet die Kamera den NUC wenn sich die Eigentemperatur um
+  veränderte Temperaturen zu kompensieren. Zusätzlich startet die Kamera den NUC, wenn sich die Eigentemperatur um
   einen einstellbaren Threshold verändert hat. Gerade wenn man die Kamera in einem Büro in Betrieb nimmt, wird sie
   anfänglich ca. jede Minute einen NUC durchführen bis sie die normale Betriebstemperatur erreicht hat. Der NUC ist
-  übrigens hörbar weil der Verschluss mechanisch betätigt wird. Es hört sich wie ein Klicken an.
+  übrigens hörbar, weil der Verschluss mechanisch betätigt wird. Es hört sich wie ein Klicken an.
 </p>
 
 <p>
   Wir möchten in unseren Aufnahmen keine schwarzen Frames haben. Als Lösung haben wir eingebaut, dass unmittelbar
   bevor eine Aufnahme gestartet wird ein NUC durchgeführt wird. Dann können wir davon ausgehen, sofern die Kamera
   länger als ein paar Minuten in Betrieb ist, dass der nächste NUC erst in 4 Minuten durchgeführt wird. Der
-  anfängliche NUC dauert auch nicht zu lange dass wir eventuell sogar den Anfang verpassen würden. Die NUC
-  Einstellungen können via dia Parameter <code>NUCMode</code>, <code>NUCTempDelta</code> und
+  anfängliche NUC dauert auch nicht zu lange, dass wir eventuell sogar den Anfang verpassen würden. Die NUC
+  Einstellungen können via die Parameter <code>NUCMode</code>, <code>NUCTempDelta</code> und
   <code>NUCIntervalFrames</code> eingerichtet werden.
 </p>
 
@@ -575,17 +566,17 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 <p>
   Nehmen wir in der vollen Auflösung und Framerate auf werden die Dateien schnell so gross, dass sie gar nicht mehr
   der Disk Platz hätten. Deshalb haben wir die Framerate auf ein Frame pro Sekunde verringert. Die Auflösung zu
-  verringern macht kein Sinn weil wir dann Bilddetails verlieren.
+  verringern macht keinen Sinn, weil wir dann Bilddetails verlieren.
 </p>
 
 <p>
   Die Kontrolle der Kamera über das FLIR ATLAS SDK ist etwas mühsam. Zum einen muss das SDK manuell heruntergeladen
-  und installiert werden. Es gibt kein Nuget Package. Zum anderen ist die Control-Library nicht sehr stabil. Es kann
-  zu zufälligen Exceptions kommen wenn ein Befehl abgesetzt wird. Um uns Abhilfe zu schaffen haben wir eine Retry
+  und installiert werden. Es gibt kein NuGet Package. Zum anderen ist die Control-Library nicht sehr stabil. Es kann
+  zu zufälligen Exceptions kommen, wenn ein Befehl abgesetzt wird. Um uns Abhilfe zu schaffen haben wir eine Retry
   Methode gebaut der ein Callback zur Befehlsausführung mitgegeben wird sowie ein Callback zur Überprüfung ob es
   erfolgreich war. Diese Retry Methode für dann den Befehl so lange wiederholt aus bis keine Exception geworfen wird
-  und der zweite Callback sagt, dass es funktioniert hat. Leider können wir nicht in den Code hineinschauen weil er
-  propriertär und obfuscated ist.
+  und der zweite Callback sagt, dass es funktioniert hat. Leider können wir nicht in den Code hineinschauen, weil er
+  proprietär und obfuscatet ist.
 </p>
 
 <figure>
@@ -640,26 +631,26 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Die SEQ Datei wird via <code>delivery:compress</code> an den IRCompressor übergeben welcher die Datei komprimiert
-  damit dieser übertragen werden kann. Das übertragen der Rohdaten ist erstens zu langsam weil Züge schneller
+  damit dieser übertragen werden kann. Das übertragen der Rohdaten ist erstens zu langsam, weil Züge schneller
   vorbeifahren als wir hochladen könnten und zweitens haben wir nicht genügend Serverspeicherplatz im die Dateien
   abzuspeichern. Zu beachten ist, dass die SEQ Datei nur die Sensorwerte enthält. Es sind noch keine Temperaturwerte
-  darin. Um diese zu Berechnen müssen weitere Parameter hinzugenommen werden.
+  darin. Um diese zu berechnen müssen weitere Parameter hinzugenommen werden.
 </p>
 
 <p>
   Die JPG Datei dient uns zum Vergleich des komprimierten Videos. Damit sehen wir ob der Kompressionsalgorithmus
-  keine offensichtlichen Fehler beinhaltet. Weiter dauert das Kompressionsverfahren sowie der Upload einige Zeit.
+  keine offensichtlichen Fehler beinhaltet. Weiter dauern das Kompressionsverfahren sowie der Upload einige Zeit.
   Möchten wir trotzdem schon sehen was aufgenommen wurde müssten wir warten. Dieser Snapshot kann allerdings sehr
-  schnell und ohne langwirige Kompression hochgeladen werden. So sehen wir direkt ob und welcher Zug sich im Bild
+  schnell und ohne langwierige Kompression hochgeladen werden. So sehen wir direkt ob und welcher Zug sich im Bild
   befindet.
 </p>
 
 <p>
   Die JSON Datei enthält die 315 verfügbaren Geräteparameter der FLIR A65 Kamera die zur Zeit der Aufnahme
   konfiguriert waren. Je nach Einstellung resultieren andere Bilder. So gibt es zum Beispiel einen High Gain oder Low
-  Gain Modus. Diese Angaben dienen uns als Kontext bei der Interpretation und weiterverarbeitung der aufgenommenen
+  Gain Modus. Diese Angaben dienen uns als Kontext bei der Interpretation und Weiterverarbeitung der aufgenommenen
   Bilder. Wir speichern diese Informationen bei jeder Aufnahme mit ab. Enthalten sind auch Sensorinformationen der
-  Kamera wie z.B. Gehäuse- oder Sensortemperatur. Zur Serialisierung der Kameraparamter haben wir eigene Modelklassen
+  Kamera wie z.B. Gehäuse- oder Sensortemperatur. Zur Serialisierung der Kamera-Parameter haben wir eigene Modelklassen
   geschrieben die wir befüllen und dann mit <a href="#ref-json-net">Json.NET</a> serialisieren.
 </p>
 
@@ -720,8 +711,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   verstösst. Die Komponente liest zum einten den Bildstream der Basler Kamera um festzustellen ob sich ein Zug in das
   Bild hineinbewegt hat. Hat sie einen Zug detektiert meldet sie mit <code>capture:start</code> dies an alle
   Komponenten weiter so wie auch sich selber. Selber startet sie nämlich dann auf den Befehl die Aufnahme in eine
-  Videodatei. Der Name der Komponente kommt davon dass wir damit die für das menschliche Auge sichtbaren Wellenlängen
-  aufnehmen. Das Licht und Wellenlängen nicht das selbe ist, ist uns bewusst. Der Name ist also wissenschaftlich nicht
+  Videodatei. Der Name der Komponente kommt davon, dass wir damit die für das menschliche Auge sichtbaren Wellenlängen
+  aufnehmen. Das Licht und Wellenlängen nicht dasselbe ist, ist uns bewusst. Der Name ist also wissenschaftlich nicht
   ganz korrekt.
 </p>
 
@@ -736,14 +727,14 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Die technische Limitierung ist die, dass man nur von einem Windows Prozess auf die über USB angeschlossene Basler
   Kamera zugreifen kann. Der Prozess lockt die Kamera und kein zweiter kann mehr darauf zugreifen. Das heisst wir
   mussten den Image Grab Loop so schreiben, dass die Bilder zum einten vom Erkennungsalgorithmus verarbeitet werden
-  können und zum anderen in eine Videodatei geschrieben werden können. Das setzt natürlich voraus dass die
+  können und zum anderen in eine Videodatei geschrieben werden können. Das setzt natürlich voraus, dass die
   Erkennungsphase nicht länger dauert als die Aufnahme eines Frames. Ansonsten verlieren wir entweder Frames oder der
   Buffer wird unendlich gross.
 </p>
 
 <p>
   Das folgende Flow Chart erklärt wie wir das gelöst haben. In der Implementation haben wir eine Klasse
-  <code>Recorder</code> geschrieben welche intern einen State hat ob sie am aufnehmen ist oder nicht. Der Image Grab
+  <code>Recorder</code> geschrieben welche intern einen State hat ob sie am Aufnehmen ist oder nicht. Der Image Grab
   Loop schickt dann an eine Instanz der Klasse die Bilder. Der Recorder weiss dann selber ob er das Bild verwerfen
   oder aufnehmen soll.
 </p>
@@ -762,17 +753,17 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Zuerst finden wir die richtige Kamera mithilfe des Namens welcher in der Konfiguration unter dem Key
   <code>VISIBLE_LIGHT_CAMERA_NAME</code> abgelegt ist. Dazu mussten wir glücklicherweise keinen asynchronen
   Discover-Service bauen. Im Pylon Framework gibt es einen synchronen Aufruf der das Kameraobjekt liefert. Nach dem
-  öffnen konfigurieren wir die Kameraparameter für uns passend. Wir stellen ein, dass nur 1 Frame pro Sekunde
-  aufgezeichnet werden kann. Das machen wir weil wir ansonsten zu grosse Dateien erhalten für welche wir kein
-  Speicherplatz haben. Ausserdem haben wir in der Nacht sowieso nicht mehr als 1 FPS weil die Beleuchtungszeit so
+  Öffnen konfigurieren wir die Kameraparameter für uns passend. Wir stellen ein, dass nur 1 Frame pro Sekunde
+  aufgezeichnet werden kann. Das machen wir, weil wir ansonsten zu grosse Dateien erhalten für welche wir kein
+  Speicherplatz haben. Ausserdem haben wir in der Nacht sowieso nicht mehr als 1 FPS, weil die Beleuchtungszeit so
   hoch wird. Den Image Grabber stellen wir so ein, dass er immer das aktuellste Frame der Kamera holt. Somit baut
-  sich kein versteckter Buffer unendlich auf. Den Grab Loop entwickeln wir wie erwähnt selber weil wir mehr Kontrolle
+  sich kein versteckter Buffer unendlich auf. Den Grab Loop entwickeln wir wie erwähnt selber, weil wir mehr Kontrolle
   brauchen. Pylon würde auch eine Implementation anbieten.
 </p>
 
 <p>
   In der Methode <code>HandleStateChange</code> verarbeiten wir Befehle die asynchron von extern hineingekommen sind.
-  Also Befehle der Message Queue.
+  Das sind also Befehle der Message Queue.
 </p>
 
 <figure>
@@ -782,7 +773,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Es geht nun weiter in den Detektionsalgorithmus. Dies ist eine eigene Klasse. Die 4 übergebenen Bilder von vorher
-  sind bereits vorvearbeitet. Sie sind in Graustufen, verkleinert und enthalten nur den Ausschnitt des Bildes auf
+  sind bereits vorverarbeitet. Sie sind in Graustufen, verkleinert und enthalten nur den Ausschnitt des Bildes auf
   welchem sich nur die Räder des Zuges befinden.
 </p>
 
@@ -798,9 +789,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Das Erkennen des Zuges mit dem ganzen Bild ist sehr schwierig wie auch unnötig. Der Ausschnitt verändert sich nicht
-  solange die Kabine nicht bewegt wird. Im gesamten Hintergrund gibt es ca. 10 weitere Gleise auf welchen Züge
+  solange die Kabine nicht bewegt wird. Im gesamten Hintergrund gibt es ca. 10 weitere Gleise auf welchen Zügen
   vorbeifahren können. Zu Beginn haben wir den Ausschnitt nicht ausgeschnitten. Dass wir dann mehr aufnehmen war uns
-  klar. Da wussten wir aber noch nicht dass wir an einer neuronalgischen Stelle aufnehmen werden wo jede Minute
+  klar. Da wussten wir aber noch nicht, dass wir an einer neuralgischen Stelle aufnehmen werden wo jede Minute
   mindestens ein Zug im Hintergrund vorbeifährt.
 </p>
 
@@ -822,17 +813,17 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <p>
-  Auf dem folgendem Diagramm sieht man die von uns in der ersten Testphase aufgezeichneten Beleuchtungszeiten
+  Auf dem folgenden Diagramm sieht man die von uns in der ersten Testphase aufgezeichneten Beleuchtungszeiten
   (links) und Gains (rechts) aggregiert auf einen Tagesverlauf.
 </p>
 
 <figure>
   <img src="images/thermoscanner/detection/exposure-gain.png">
-  <figcaption>Balser Kamera Belichtungszeit und Gain</figcaption>
+  <figcaption>Basler Kamera Belichtungszeit und Gain</figcaption>
 </figure>
 
 <p>
-  Haben wir alle diese Stategeschichten hinter uns gelassen können wir die eigentlichen Bilder evaluieren.
+  Haben wir alle diese State-Geschichten hinter uns gelassen können wir die eigentlichen Bilder evaluieren.
   Nachfolgend das Flow Chart welche Schritte durchlaufen werden bis es dazu kommt:
 </p>
 
@@ -858,13 +849,13 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   <li>Nebel kann die Sicht verschlechtern</li>
   <li>Reflexionen vom Prime Tower können Kaustiken bilden</li>
   <li>Vorbeifahrende Züge in der Nacht werfen Licht auf den Boden</li>
-  <li>Züge fahren nicht immer in der selben Richtung durch</li>
+  <li>Züge fahren nicht immer in derselben Richtung durch</li>
 </ul>
 
 <p>
   Unser erstes Verfahren war mit dem Backgroundbild die sich veränderten Pixel zu tracken und festzustellen ob von
-  links oder rechts ein genug grosses Objekt hineinfährt. Das hat schon gar nicht funktioniert wenn man den ganzen
-  Bildbereich analysiert. Man könnte zwar meinen man muss einfach einen genug hochen Raum festlegen. Anders gesagt
+  links oder rechts ein genug grosses Objekt hineinfährt. Das hat schon gar nicht funktioniert, wenn man den ganzen
+  Bildbereich analysiert. Man könnte zwar meinen man muss einfach einen genug hohen Raum festlegen. Anders gesagt
   die Bounding Box müsste eine gewisse Höhe haben. Nur steht im Hintergrund das Bahnviadukt von Zürich. Wenn
   gleichzeitig ein Zug auf einem der unteren Gleise und einem auf dem oberen Gleis durchfährt haben wir eine Bounding
   Box die genau gleich hoch ist wie ein Zug der durch die Waschstrasse fährt. Jetzt kann man sich fragen wie häufig
@@ -873,7 +864,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <p>
-  Nachdem wir den Analyseausschnitt auf das untere Gleis gelegt haben, haben wir gehofft dass es jetzt funktionieren
+  Nachdem wir den Analyseausschnitt auf das untere Gleis gelegt haben, haben wir gehofft, dass es jetzt funktionieren
   wird. Das Problem war jetzt, dass in der Nacht vorbeifahrende Züge einen sofort auftretenden starken Lichteinfall
   auf den Boden werfen. Dies hat den Detektor eine Aufnahme auslösen lassen.
 </p>
@@ -886,9 +877,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 <p>
   Wir mussten also ein einfacheres Verfahren entwickeln welches nun simpel die Helligkeit zum Background vergleicht. Mit
   fleissiger Überwachung des Detektionsalgorithmus und ständigem Nachschrauben sowie den praktischen Tools die wir
-  geschaffen haben konnten wir die Thresholds ständig verbessern. Das nachfolgende Flow Chart zeigt auf was passiert
+  geschaffen haben konnten wir die Thresholds ständig verbessern. Das nachfolgende Flow Chart zeigt auf was passiert,
   wenn der Threshold erreicht wurde oder nicht. Zur Übersicht wurde der End-State weggelassen. Wenn kein Pfeil von
-  einem Kasten wegzeigt geht, endet der Flow dort.
+  einem Kasten weggeht, endet der Flow dort.
 </p>
 
 <figure>
@@ -950,7 +941,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
     </tr>
     <tr>
       <td>ExitThreshold</td>
-      <td>Wieviel mal bestätigt werden muss, dass kein Zug mehr da ist</td>
+      <td>Wievielmal bestätigt werden muss, dass kein Zug mehr da ist</td>
       <td>Einheit</td>
       <td>8</td>
     </tr>
@@ -966,7 +957,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Insgesamt sind wir mit der Erkennunsrate des Verfahrens zufrieden. Es detektiert zwar eindeutig zu viele Bilder als
+  Insgesamt sind wir mit der Erkennungsrate des Verfahrens zufrieden. Es detektiert zwar eindeutig zu viele Bilder als
   Zug jedoch wird kein einziger Zug verpasst. Wenn man folgende Beispiele anschaut ist es aber erstaunlich wie gut es
   in den miserablen Sichtverhältnissen funktioniert.
 </p>
@@ -987,15 +978,17 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   wurden 178 von 178 Zügen erkannt. Es gab eine hohe Anzahl von falsch erkannten Zügen von 49. Als Grund dazu
   halten wir das schlechte Wetter sowie die Wassertropfen die sich auf dem Sichtglas festgesetzt haben. In einer
   neuen Version der Kabine wäre ein Glas welches keine Tropfen ansetzen lässt sicher besser. Allenfalls würde auch
-  ein kleines Dach Abhilfe schaffen (welches wir eigentlich ürsprünglich von Almatec bestellt hatten).
+  ein kleines Dach Abhilfe schaffen (welches wir eigentlich ursprünglich von Almatec bestellt hatten).
 </p>
 
 <p>
   Die Sensitivität liegt also bei 0.78 trotz dem schlechten Wetter mit dem Sturm Burglind. Die Spezifität ist
-  schwierig zu betiteln weil wir künstlich etwa ein Zeitinterval für richtig negativ erkannte Bilder festlegen
+  schwierig zu betiteln, weil wir künstlich etwa ein Zeitintervall für richtig negativ erkannte Bilder festlegen
   müssten. Oder dann müssten wir mögliche Features in sämtlichen Bildern als richtig negativ erkannt zählen was
   unmöglich ist.
 </p>
+
+TODO erklären warum pause und resume obsolet sind
 
 <h5>TemperatureReader</h5>
 <ul>
@@ -1021,7 +1014,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   haben wir ein .NET Codebeispiel gefunden, welches jedoch etwas veraltet ist. Wir haben die Konstanten, die der
   Autor gefunden hat übernommen und den Code neu geschrieben. Im Artikel
   <a href="#ref-temper-in-csharp">Code Project: Temper USB Thermometer in C#</a> wurde jedoch von einem älteren
-  TEMPer Geärt ausgegangen welches nicht zwei Sensoren hat. Deswegen haben wir anfangs nicht gemerkt, dass wir
+  TEMPer Gerät ausgegangen welches nicht zwei Sensoren hat. Deswegen haben wir anfangs nicht gemerkt, dass wir
   eigentlich den falschen Sensor auslesen.
 </p>
 
@@ -1052,9 +1045,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   </li>
 </ul>
 <p>
-  In der zweiten Aufnahmephase haben wir uns entschieden den TemperatureReader nicht mehr zu verwenden weil die
+  In der zweiten Aufnahmephase haben wir uns entschieden den TemperatureReader nicht mehr zu verwenden, weil die
   Messdaten nicht brauchbar sind. Um die aufgenommenen IR Bilder trotzdem auswerten zu können haben wir den
-  WeatherReader implementiert der aktuelle Wetterdaten von <a href="#ref-openweathermap">OpenWeatherMap</a>
+  WeatherReader implementiert der aktuellen Wetterdaten von <a href="#ref-openweathermap">OpenWeatherMap</a>
   herunterlädt.
 </p>
 
@@ -1103,8 +1096,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Der WeatherReader setzt eine Internetverbindung voraus. In der Zeit als das LTE Modul ausgefallen ist, hatten wir
-  somit keine Wetterdaten sammeln können. Die Rate Limits der Gratis API Subsciprtion schränken uns mit 60 Calls pro
-  Minute nicht ein. Etwas unschön ist, dass die Wetterdaten nur alle 2 Stunden aktualisiert werden wenn man nicht zahlt.
+  somit keine Wetterdaten sammeln können. Die Rate Limits der Gratis API Subscription schränken uns mit 60 Calls pro
+  Minute nicht ein. Etwas unschön ist, dass die Wetterdaten nur alle 2 Stunden aktualisiert werden, wenn man nicht
+  zahlt.
 </p>
 
 <p>
@@ -1136,7 +1130,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   dass sich Übertragungen überlappen würden. Eventuell käme es dann zu einem nicht aufholbaren Rückstand in der
   Übertragungsqueue. Der andere Grund ist, dass der Server auf den die Dateien übertragen nicht unendlich Speicher
   hat. Dieser hat nur 50 GiB an Speicherplatz verfügbar. Dies ist jedoch ein softes Limit wie wir bemerkt haben. Wir
-  möchten also die SEQ Dateien in ein anderes Format kompromieren um die Daten zu übertragen. Da es sich um
+  möchten also die SEQ Dateien in ein anderes Format komprimieren um die Daten zu übertragen. Da es sich um
   aufeinander folgende Bilder handelt würde sich ein Videoformat anbieten. Das proprietäre Format von FLIR SEQ
   mussten wir selber reverse engineeren um die Inhalte zu verstehen und diese auslesen zu können. FLIR hat kein
   Interesse diese Innereien zu dokumentieren oder Gratissoftware anzubieten die diese konvertieren kann. Es gibt
@@ -1150,8 +1144,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Wir können mit dem FLIR ATLAS SDK auf diese rohen Daten lesend zugreifen. Allerdings erhalten wir ein Byte-Array.
   Das heisst wir müssen dieses in ein ushort-Array umkonvertieren und jeweils zwei Bytes mergen. Das müssen wir für
   jedes Bild im Video machen. Jetzt haben wir Bilder mit 16 bit pro Pixel in einem Format das wir weiterverarbeiten
-  können. Dsa Problem ist nun wenn wir aus diesen Graustufen Bildern ein Video machen möchten müssten wir einen Codec
-  finden der 16 bit Grayscale unterstützt. Das gibt es leider nicht in einem breit unterstützten Codec. Apple hat die
+  können. Das Problem ist nun, wenn wir aus diesen Graustufen Bildern ein Video machen möchten müssten wir einen Codec
+  finden der 16 bit Graustufen unterstützt. Das gibt es leider nicht in einem breit unterstützten Codec. Apple hat die
   <a href="#ref-apple-prores">ProRes Codec Familie</a> die bis zu 12 bit sampeln kann. Wir müssen also die 16
   respektive 14 bits auf die gängige Samplerate von 8 bits herunterbringen.
 </p>
@@ -1162,31 +1156,31 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Temperaturspanne nicht von 0 bis 16'384 sondern bewegt sich im Bereich von wenigen Celsius. Die kältesten Objekte
   sind so kalt wie die Aussentemperatur und die heissesten Objekte, die Bremsen und Achsen bis zu 40°C. Züge fahren
   idealerweise nicht mit Vollgas auf die Waschstrasse zu und bremsen mit einer Vollbremsung ab was die Bremsen
-  zum glühen bringen würde.
+  zum Glühen bringen würde.
 </p>
 
 <p>
-  Mit dieser Erkenntnis haben wir ausprobiert was das heissen würde wenn die minimalen maximalen Pixelwerte auslesen
+  Mit dieser Erkenntnis haben wir ausprobiert was das heissen würde, wenn die minimalen maximalen Pixelwerte auslesen
   und die Werte mit dem Offset "clampen". Nach dem Clamping nehmen wir die ganze Range und skalieren sie auf 8 bit.
   Dabei können wir auch gleich ausrechnen wieviel Präzision das wir verlieren.
 </p>
 
 <figure>
   <pre><code>Präzisonsverlust = Math.Max(0, (1 - (256f / (max - min))) * 100)</code></pre>
-  <figcaption>Formel zur Berechnung des Präzionsverlusts in Prozent</figcaption>
+  <figcaption>Formel zur Berechnung des Präzisionsverlusts in Prozent</figcaption>
 </figure>
 
 <p>
-  Sämtliche Verluste haben wir in diesem Histogram beider Testphasen aufgezeigt:
+  Sämtliche Verluste haben wir in diesem Histogramm beider Testphasen aufgezeigt:
 </p>
 
 <figure>
   <img src="images/thermoscanner/compression-precision-loss.png">
-  <figcaption>IRCompressor Histogram Präzisionsverlust in Prozent</figcaption>
+  <figcaption>IRCompressor Histogramm Präzisionsverlust in Prozent</figcaption>
 </figure>
 
 <p>
-  Man sieht, dass der Verlust in der Regel zwischen 78% und 88% liegt. Wir gewinnen also platt gesagt nicht soviel
+  Man sieht, dass der Verlust in der Regel zwischen 78% und 88% liegt. Wir gewinnen also platt gesagt nicht so viel
   dabei. Man muss allerdings folgendes berücksichtigen. Die Kamera liefert im HighGainMode eine Temperaturgenauigkeit
   von 0.01°C (Temperaturspanne von 160 (-25° bis 135°C) geteilt durch 16'384). Bei einem Verlust von 100% können wir
   die Temperatur mit einer Genauigkeit von 0.625°C angeben. Bei einem Verlust von 80% bei <strong>0.125°C</strong>.
@@ -1194,7 +1188,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <p>
-  Nachdem wir die Bilder zu 8 bit grayscale konvertiert haben können wir sie mit h.264 encodieren und erhalten somit
+  Nachdem wir die Bilder zu 8 bit Graustufen konvertiert haben können wir sie mit h.264 encodieren und erhalten somit
   eine sehr kleine Datei die zudem auch direkt im Browser im Cockpit angeschaut werden kann. Den Offset- und
   Skalierungsfaktor den wir zum Clamping benutzt haben speichern wir in den Metadaten der MP4 Datei damit die SEQ
   Datei wieder rekonstruiert werden kann wenn auch mit Verlust.
@@ -1202,15 +1196,15 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Ein Problem ergab sich während dem Betrieb. Wenn die aufgenommen SEQ Datei sehr gross war hat der IRCompressor die
-  CPU zu 100% ausgelastet um das Video zu encodieren. Das hatte zur folge, dass der VisibleLightReader keine
-  Aufnahmen mehr machen konnte weil er nicht mehr genug schnell seine eigene Aufnahme encodieren konnte. Somit
-  endeten diese Videos als schwarze Frames. Der Bildanalyse teil hat aber wie bis anhin funktioniort weil das
-  Betriebssystem dem Prozess genug Priorität gegeben hat. Das Encoding passiert jedoch in einem separatem Thread der
+  CPU zu 100% ausgelastet um das Video zu encodieren. Das hatte zur Folge, dass der VisibleLightReader keine
+  Aufnahmen mehr machen konnte, weil er nicht mehr genug schnell seine eigene Aufnahme encodieren konnte. Somit
+  endeten diese Videos als schwarze Frames. Der Bildanalyse teil hat aber wie bis anhin funktioniert, weil das
+  Betriebssystem dem Prozess genug Priorität gegeben hat. Das Encoding passiert jedoch in einem separaten Thread der
   über EMGU.CV zu OpenCV von FFmpeg gesteuert wird. Somit hatten wir keine Kontrolle über die Priorität dieser Threads.
   Als Gegenmassnahme haben wir zum einten mit dem C# Profiler den Code soweit wie möglich optimiert. Dies ergab ein
-  merkbarer aber vernichtend kleinen Performanceboost. Wir haben uns dann entschlossen die Framerate der IR Videos
+  merkbarer aber vernichtend kleinen Performance Boost. Wir haben uns dann entschlossen die Framerate der IR Videos
   auf 1 Frame zu setzen. Danach konnten wir die Videos innerhalb einer Minute konvertieren. Da wir das Video sowieso
-  nur zum Stitching verwenden spielt dies keine Rolle. Wir haben es nicht von Beginn an gemacht weil 30 FPS Videos zu
+  nur zum Stitching verwenden spielt dies keine Rolle. Wir haben es nicht von Beginn an gemacht, weil 30 FPS Videos zu
   zeigen besser bei Projektpartnern der SBB ankommt als wenn man ein Video mit 1 FPS zeigt. Die
   Hardwarelimitation haben uns also davon abgehalten.
 </p>
@@ -1233,22 +1227,22 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </ul>
 <p>
   Die Uploader Komponente hört auf Nachrichten im Kanal <code>delivery:upload</code>. Die Dateien werden auf einen
-  FTP Server hochgeladen und anschliessend in den Papierkorb verschoben. Die Zugagngsdaten zum FTP Server sind in der
+  FTP Server hochgeladen und anschliessend in den Papierkorb verschoben. Die Zugangsdaten zum FTP Server sind in der
   Umgebungsvariable <code>THERMOBOX_FTP</code> abgelegt in der Form <code>username:password@server</code>.
 </p>
 <p>
-  Die Dateien werden anschliessend nicht einfach gelöscht sondern in den Papierkorb verschoben weil sich so die
-  Möglichkeit bietet nachzuschauen welche Dateien genau auf dem Mini PC existiert haben weil vielleicht etwas mit dem
+  Die Dateien werden anschliessend nicht einfach gelöscht, sondern in den Papierkorb verschoben, weil sich so die
+  Möglichkeit bietet nachzuschauen welche Dateien genau auf dem Mini PC existiert haben, weil vielleicht etwas mit dem
   Upload schiefgegangen ist. Auf Windows kann dann eingestellt werden wie gross der Inhalt des Papierkorbs maximal
   sein darf. Ist das Limit überschritten leer Windows automatisch die ältesten Dateien. So können wir den
-  Festplattenspeicherplatz optimal ausnutzen und trotzdem sicherstellen, dass sie nie voll läuft. Ausser ein Programm
+  Festplattenspeicherplatz optimal ausnutzen und trotzdem sicherstellen, dass sie nie vollläuft. Ausser ein Programm
   erstellt eine einzige Datei die den verfügbaren Speicherplatz alleine ausnutzt.
 </p>
 
 <p>
   Um Dateien von einer .NET Applikation in den Papierkorb zu verschieben, gibt es leider kein einfaches Interface.
   Zum einen kann man ein Shell32 Objekt erstellen welches auf den Papierkorb zeigt und die Datei dann dort
-  hinverschieben. Damit das klappt muss man aber zuerst in einem STA Thread (single-threaded apartment) sein, welches
+  hin verschieben. Damit das klappt muss man aber zuerst in einem STA Thread (single-threaded apartment) sein, welches
   unsere Komponenten nicht sind.
 </p>
 
@@ -1271,23 +1265,23 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <p>
-  Im Modus <strong>SEQ zu MP4</strong> macht das CLI Tool genau das selbe wie der IRCompressor.
+  Im Modus <strong>SEQ zu MP4</strong> macht das CLI Tool genau dasselbe wie der IRCompressor.
 </p>
 
 <p>
   Im Modus <strong>MP4 zu SEQ</strong> werden die Metainformationen der MP4 Datei ausgelesen um die SEQ Datei zu
-  rekonstruieren. Dies dient uns dazu, dass wir verifizieren können dass unser Kompressionsverfahren funktioniert.
-  Vorher und nachher sollten die selben Temperaturwerte berechnet werden. Auch können wir so visualisieren was der
+  rekonstruieren. Dies dient uns dazu, dass wir verifizieren können, dass unser Kompressionsverfahren funktioniert.
+  Vorher und nachher sollten dieselben Temperaturwerte berechnet werden. Auch können wir so visualisieren was der
   Präzisionsverlust effektiv ausmacht indem wir die zwei Dateien in den FLIR Tools vergleichen können. Das FLIR ATLAS
   SDK bietet leider keine Möglichkeit an SEQ oder auch nur einzelne Bilder mit Signaldaten zu erstellen an. Das heisst
   wir mussten die SEQ Datei bit für bit selber erstellen. Damit wir das konnten mussten wir zuerst die essentiellen Tags
   der Metadaten finden damit die SEQ Datei valide ist und von den FLIR Tools erkannt und gelesen wird. Mithilfe von
-  ExifTool und einem Hexeditor und einer langen Nacht konnten wir das nötige Verständnis aufbauen.
+  ExifTool und einem Hex Editor und einer langen Nacht konnten wir das nötige Verständnis aufbauen.
 </p>
 
 <p>
   Als Einstiegspunkt diente das veraltete <a href="#ref-flir-interface">Spezifikationsdokument</a> von FLIR für einzelne
-  Bilder mit angehängten Signaldaten. Das fehlende Puzzelstück war die Framerate des Videos. Ist diese gesetzt
+  Bilder mit angehängten Signaldaten. Das fehlende Puzzlestück war die Framerate des Videos. Ist diese gesetzt
   erkennt FLIR Tools die Datei als Video. Fehlt sie, wird nur das erste Frame angezeigt. Die Kenntnis welches Tag
   Feld und welchen Datentyp die Framerate haben wir zurück ins ExifTool fliessen lassen. Phil Harvey hat kurz später
   eine neue Version erstellt die nun die Framerate von SEQ Dateien auslesen kann. Sebastian Häni wurde dankend in den
@@ -1297,7 +1291,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 <p>
   Das Verfahren zur Erstellung der SEQ Datei ist nun jedoch sehr einfach geraten nachdem wir das Format verstanden
   haben. Der Header der SEQ Datei enthält wichtige Informationen die von der Kamera respektive durch das FLIR ATLAS
-  SDK geschrieben werden. Jedoch sind diese Informationen immer die selben bei gleichbleibender Kamera. Das einzige
+  SDK geschrieben werden. Jedoch sind diese Informationen immer dieselben bei gleichbleibender Kamera. Das einzige
   was sich ändert sind dynamische Anzeigeparameter und Temperaturberechnungsparameter die in den FLIR Tools durch den
   Klick auf "Auto" sowieso neu berechnet werden. Wir können also getrost immer den binär identischen Header
   verwenden. Danach können wir jedes Frame einzeln an den Binärstream anhängen nachdem wir sie durch den
@@ -1310,7 +1304,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   ganze Reihe von <a href="#ref-opencv-color-map">Paletten</a> welche aber nicht wirklich gut aussehen. Deswegen
   unterstützen wir davon nur die Palette Hot. Neben dieser haben wir die Palette die schöne Palette von FLIR namens
   Iron implementiert. Weil es keine zu 100% genaue mathematische Definition der Palette gibt haben wir die 256
-  Farbwerte in einer Map abgelegt. Somit können wir die nicht so ansehbaren Graustufenvideos in mit farben versehen
+  Farbwerte in einer Map abgelegt. Somit können wir die nicht so ansehbaren Graustufenvideos in mit Farben versehen
   um diese an unsere Partner weiterleiten zu können damit sie diese in Präsentation aufnehmen können. Zudem können
   wir die Falschfarbenbilder auch weiter an das Thermoboard schicken.
 </p>
@@ -1332,12 +1326,12 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   können ob die Datenakquise richtig funktioniert. Die Dateien werden asynchron auf den Server geladen was heisst,
   dass man partielle Aufnahmen bereits ansehen kann. Das Cockpit ist eine Webapplikation, die im Browser links eine
   Liste aller Artefakte darstellt. Diese werden zuerst nach Datum und dann nach Zeitpunkt zusammengefasst. Dies kann
-  anhand der Dateinamen der Artefakt gemacht werden. Klickt man ein Artefakt an wird es rechts angezeigt.
+  anhand der Dateinamen der Artefakte gemacht werden. Klickt man ein Artefakt an wird es rechts angezeigt.
 </p>
 
 <p>
-  Es gibt eine simple REST API die die Artefakte auf die auf dem Dateisystem verfügbar sind sammelt und zurück gibt.
-  Mit Javascript bauen wir dann die Liste der Artefakte auf. Auf ein Framework haben wir bewusst verzichtet weil das
+  Es gibt eine simple REST API die die Artefakte auf die auf dem Dateisystem verfügbar sind sammelt und zurückgibt.
+  Mit Javascript bauen wir dann die Liste der Artefakte auf. Auf ein Framework haben wir bewusst verzichtet, weil das
   Cockpit eigentlich nie mehr sein soll als ein Debug Tool.
 </p>
 
@@ -1388,6 +1382,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p id="ref-opencv-color-map" class="reference-item">
   <span class="ref">OpenCV Color Maps</span>
-  <a href="https://docs.opencv.org/3.4.0/d3/d50/group__imgproc__colormap.html#gga9a805d8262bcbe273f16be9ea2055a65aef83628a5b46e23bf823000ff0270304" target="_blank" rel="noopener">https://docs.opencv.org/3.4.0/d3/d50/group__imgproc__colormap.html</a>
+  <a
+    href="https://docs.opencv.org/3.4.0/d3/d50/group__imgproc__colormap.html#gga9a805d8262bcbe273f16be9ea2055a65aef83628a5b46e23bf823000ff0270304"
+    target="_blank" rel="noopener">https://docs.opencv.org/3.4.0/d3/d50/group__imgproc__colormap.html</a>
   <span class="retrieved">14. Januar 2018</span>
 </p>

@@ -14,10 +14,11 @@
 </figure>
 
 <p>
-  Die gesamte Hardware ist in einem wetterfesten Gehäuse nach IP55 Standart untergebracht (Staub- / Wasserschutz). Das Gehäuse ist
-  eine Spezialanfertigung mit einem Sichtfenster für die Farbkamera und einer Öffnung für die Infrarotkamera.
-  Im Boden des Gehäuse sind Öffnungen für die Stromzufuhr und den Anschluss der externen GSM-Antenne sowie des RFID Readers vorhanden.
-  Der Thermo-Scanner steht aufrecht und kann, dank der soliden Füsse, bei Bedarf auch mit Sandsäcken stabil montiert werden.
+  Die gesamte Hardware ist in einem wetterfesten Gehäuse nach IP55 Standard untergebracht (Staub- / Wasserschutz). Das
+  Gehäuse ist eine Spezialanfertigung mit einem Sichtfenster für die Farbkamera und einer Öffnung für die
+  Infrarotkamera. Im Boden des Gehäuses sind Öffnungen für die Stromzufuhr und den Anschluss der externen GSM-Antenne
+  sowie des RFID Readers vorhanden. Der Thermo-Scanner steht aufrecht und kann, dank der soliden Füsse, bei Bedarf auch
+  mit Sandsäcken stabil montiert werden.
 </p>
 
 <p>
@@ -27,7 +28,7 @@
 <ul>
   <li>Temperatursensor für die Aussentemperatur (hängt unten raus)</li>
   <li>Steckerleiste für die Stromversorgung aller Komponenten</li>
-  <li>Heizlüfter um Kondenzwasserbildung zu verhindern</li>
+  <li>Heizlüfter um Kondenswasserbildung zu verhindern</li>
   <li>Mini PC für Betrieb der Software</li>
   <li>Tablare für die Kameras</li>
   <li>3D schwenkbare Stative für Kameras</li>
@@ -57,12 +58,12 @@
 </figure>
 
 <p>
-  Das Gehäuse ist eine Spezialanfertigung, die wir bei der Firma Almatec in Auftrag gegeben haben.
-  Es ist wetterfest und für das Betreiben von Elektrtonik im freien geeignet. Oben befinden sich die Öffnungen
-  für die beiden Kameras. Die Farbkamera schaut durch ein Plexiglas und die Infrarotkamera durch ein Loch. Die
-  Infrarotkamera darf nicht durch ein Glas filmen, da sonst die Infrarotwellen gefilter werden. Spezialgläser existieren zwar,
-  sind aber extrem teuer. Um dennoch einigermassen gegen Wassereintritt geschützt zu sein, ist die Öffnung mit einer
-  Gummitülle abgedichtet. Auf die Hardware im Inneren kann von beiden Seiten über eine Türe zugegriffen werden.
+  Das Gehäuse ist eine Spezialanfertigung, die wir bei der Firma Almatec in Auftrag gegeben haben. Es ist wetterfest und
+  für das Betreiben von Elektronik im freien geeignet. Oben befinden sich die Öffnungen für die beiden Kameras. Die
+  Farbkamera schaut durch ein Plexiglas und die Infrarotkamera durch ein Loch. Die Infrarotkamera darf nicht durch ein
+  Glas filmen, da sonst die Infrarotwellen gefiltert werden. Spezialgläser existieren zwar, sind aber extrem teuer. Um
+  dennoch einigermassen gegen Wassereintritt geschützt zu sein, ist die Öffnung mit einer Gummitülle abgedichtet. Auf
+  die Hardware im Inneren kann von beiden Seiten über eine Türe zugegriffen werden.
 </p>
 
 <h5>FLIR Infrarotkamera</h5>
@@ -74,9 +75,10 @@
 </figure>
 
 <p>
-  Die FLIR A65 Infrarotkamera wurde in der Voranalyse des Projektes evaluiert. Aufgrund des grossen FOV, der verhältnissmässig
-  grossen Auflösung, der Möglichkeit zur automatisierten Steuerung und der Bezahlbarkeit ist es die ideale Kamera für unser Projekt.
-  Die Kamera ist auf einem schwenkbaren Stativ montiert und kann so ideal ausgerichtet werden.
+  Die FLIR A65 Infrarotkamera wurde in der Voranalyse des Projektes evaluiert. Aufgrund des grossen FOV, der
+  verhältnismässig grossen Auflösung, der Möglichkeit zur automatisierten Steuerung und der Bezahlbarkeit ist es die
+  ideale Kamera für unser Projekt. Die Kamera ist auf einem schwenkbaren Stativ montiert und kann so ideal ausgerichtet
+  werden.
 </p>
 
 <p>Die konkreten Anforderungen sind:</p>
@@ -84,55 +86,55 @@
 <figure>
   <table>
     <thead>
-      <tr>
-        <th>Nr.</th>
-        <th>Name</th>
-        <th>Beschreibung</th>
-      </tr>
+    <tr>
+      <th>Nr.</th>
+      <th>Name</th>
+      <th>Beschreibung</th>
+    </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Field Of View (FOV)</td>
-        <td>
-          Die Kamera muss ein genügend grosses FOV besitzen. Der Zug soll in der Höhe komplett auf das Bild
-          passen. Der IC2000 ist ca. 4m hoch.
-        </td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Auflösung</td>
-        <td>
-          Je höher die Auflösung desto besser lassen sich die Aufnahmen bearbeiten und analysieren. Die Auflösung von
-          Infrarotkamera sind technologiebedingt klein, deshalb sollte eine grösstmögliche Auflösung gewählt werden.
-        </td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Automatisierbar</td>
-        <td>
-          Die Kamera muss automatisierbar sein, d.h. sie muss per API gesteuert und ausgelesen werden können.
-          Ein Netzwerkanschluss ist wünschenswert, so kann die Kamera einfach remote gesteuert werden.
-        </td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Framerate</td>
-        <td>
-          Die Framerate muss genügend gross sein, um ausreichend Bilder des vorbeifahrenden Zuges aufzunehmen.
-          Zwei aufeinander folgende Frames sollten sich dabei zu min. 25% überlappen, um ein Stitching zu ermöglichen.
-          Bis zu einer Geschwindigkeit von 30km/h soll dies möglich sein. Die Limitierung auf 30km/h rührt von der
-          Trägheit des Detektionsmaterials her (bei Microbolometer).
-        </td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>Preis</td>
-        <td>
-          Die SBB übernimmt die Kosten für die Anschaffung und Wartung der Kamera. Deshalb müssen die Kosten im
-          Rahmen des Budget der SBB liegen.
-        </td>
-      </tr>
+    <tr>
+      <td>1</td>
+      <td>Field Of View (FOV)</td>
+      <td>
+        Die Kamera muss ein genügend grosses FOV besitzen. Der Zug soll in der Höhe komplett auf das Bild
+        passen. Der IC2000 ist ca. 4m hoch.
+      </td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Auflösung</td>
+      <td>
+        Je höher die Auflösung desto besser lassen sich die Aufnahmen bearbeiten und analysieren. Die Auflösung von
+        Infrarotkamera sind technologiebedingt klein, deshalb sollte eine grösstmögliche Auflösung gewählt werden.
+      </td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Automatisierbar</td>
+      <td>
+        Die Kamera muss automatisierbar sein, d.h. sie muss per API gesteuert und ausgelesen werden können.
+        Ein Netzwerkanschluss ist wünschenswert, so kann die Kamera einfach remote gesteuert werden.
+      </td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Framerate</td>
+      <td>
+        Die Framerate muss genügend gross sein, um ausreichend Bilder des vorbeifahrenden Zuges aufzunehmen.
+        Zwei aufeinander folgende Frames sollten sich dabei zu min. 25% überlappen, um ein Stitching zu ermöglichen.
+        Bis zu einer Geschwindigkeit von 30km/h soll dies möglich sein. Die Limitierung auf 30km/h rührt von der
+        Trägheit des Detektionsmaterials her (bei Microbolometer).
+      </td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Preis</td>
+      <td>
+        Die SBB übernimmt die Kosten für die Anschaffung und Wartung der Kamera. Deshalb müssen die Kosten im
+        Rahmen des Budgets der SBB liegen.
+      </td>
+    </tr>
     </tbody>
   </table>
   <figcaption>Anforderungen IR-Kamera</figcaption>
@@ -150,34 +152,34 @@
 <figure>
   <table>
     <thead>
-      <tr>
-        <th></th>
-        <th>FLIR A65</th>
-        <th>Optris PI 640</th>
-      </tr>
+    <tr>
+      <th></th>
+      <th>FLIR A65</th>
+      <th>Optris PI 640</th>
+    </tr>
     </thead>
 
     <tbody>
-      <tr>
-        <th>Auflösung</th>
-        <td>640 x 512px</td>
-        <td>640 x 480px</td>
-      </tr>
-      <tr>
-        <th>Field Of View</th>
-        <td>45° HFOV & 37° VFOV</td>
-        <td>60° HFOV & 45° VFOV</td>
-      </tr>
-      <tr>
-        <th>Framerate</th>
-        <td>30 Hz</td>
-        <td>32 Hz</td>
-      </tr>
-      <tr>
-        <th>Preis</th>
-        <td>8'359.85 CHF</td>
-        <td>7'462.80 USD</td>
-      </tr>
+    <tr>
+      <th>Auflösung</th>
+      <td>640 x 512px</td>
+      <td>640 x 480px</td>
+    </tr>
+    <tr>
+      <th>Field Of View</th>
+      <td>45° HFOV & 37° VFOV</td>
+      <td>60° HFOV & 45° VFOV</td>
+    </tr>
+    <tr>
+      <th>Framerate</th>
+      <td>30 Hz</td>
+      <td>32 Hz</td>
+    </tr>
+    <tr>
+      <th>Preis</th>
+      <td>8'359.85 CHF</td>
+      <td>7'462.80 USD</td>
+    </tr>
     </tbody>
   </table>
   <figcaption>FLIR A65 vs. Optris PI 640</figcaption>
@@ -200,67 +202,67 @@
 <figure>
   <img src="images/thermoscanner/basler.jpg" width="700"/>
   <figcaption>Basler acA1920-25uc</figcaption>
-  <span class="source">Quelle: <a href="#ref-basler-ace">Basler Webseite</a></span>
+  <span class="source">Quelle: <a href="#ref-basler-ace">Basler Website</a></span>
 </figure>
 
 <p>
-  Die Farbkamera nimmt dasselbe Bild wie die FLIR Kamera auf. Diese zusätzlichen Informationen helfen später bei der Analyse.
-  Ausserdem wird sie zum Triggern der Aufnahme (Start/Stop) verwendet, indem wir im Video einfahrende Züge erkennen. Auch die
-  Farbkamera ist auf einem schwenkbaren Stativ montiert, was ein optimales Ausrichten erlaubt.
+  Die Farbkamera nimmt dasselbe Bild wie die FLIR Kamera auf. Diese zusätzlichen Informationen helfen später bei der
+  Analyse. Ausserdem wird sie zum Triggern der Aufnahme (Start/Stopp) verwendet, indem wir im Video einfahrende Züge
+  erkennen. Auch die Farbkamera ist auf einem schwenkbaren Stativ montiert, was ein optimales Ausrichten erlaubt.
 </p>
 
 <p>Anforderungen</p>
 <figure>
   <table>
     <thead>
-      <tr>
-        <th>Nr.</th>
-        <th>Name</th>
-        <th>Beschreibung</th>
-      </tr>
+    <tr>
+      <th>Nr.</th>
+      <th>Name</th>
+      <th>Beschreibung</th>
+    </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Field Of View (FOV)</td>
-        <td>
-          Wie bei der Infrarotkamera muss auch hier das FOV genügend gross sein um den Zug in ganzer Höhe aufzunehmen.
-          Das Sichtfeld sollte sogar noch ein bisschen grösser sein als bei der IR-Kamera, damit für das Triggern der Aufnahme
-          genug Zeit bleibt.
-        </td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Auflösung</td>
-        <td>
-          Je höher die Auflösung desto besser lassen sich die Aufnahmen bearbeiten und analysieren.
-          Deshalb sollte eine grösstmögliche Auflösung gewählt werden.
-        </td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Automatisierbar</td>
-        <td>
-          Die Kamera muss automatisierbar sein, d.h. sie muss per API gesteuert und ausgelesen werden können.
-          Ausserdem soll sie für den Dauerbetrieb ausgelegt sein.
-        </td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Framerate</td>
-        <td>
-          Die Framerate muss genügend gross sein, um ausreichend Bilder des vorbeifahrenden Zuges aufzunehmen.
-          Zwei aufeinander folgende Frames sollten sich dabei zu min. 25% überlappen, um ein Stitching zu ermöglichen.
-        </td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>Preis</td>
-        <td>
-          Die SBB übernimmt die Kosten für die Anschaffung und Wartung der Kamera. Deshalb müssen die Kosten im
-          Rahmen des Budget der SBB liegen.
-        </td>
-      </tr>
+    <tr>
+      <td>1</td>
+      <td>Field Of View (FOV)</td>
+      <td>
+        Wie bei der Infrarotkamera muss auch hier das FOV genügend gross sein um den Zug in ganzer Höhe aufzunehmen.
+        Das Sichtfeld sollte sogar noch ein bisschen grösser sein als bei der IR-Kamera, damit für das Triggern der
+        Aufnahme genug Zeit bleibt.
+      </td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Auflösung</td>
+      <td>
+        Je höher die Auflösung desto besser lassen sich die Aufnahmen bearbeiten und analysieren.
+        Deshalb sollte eine grösstmögliche Auflösung gewählt werden.
+      </td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Automatisierbar</td>
+      <td>
+        Die Kamera muss automatisierbar sein, d.h. sie muss per API gesteuert und ausgelesen werden können.
+        Ausserdem soll sie für den Dauerbetrieb ausgelegt sein.
+      </td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Framerate</td>
+      <td>
+        Die Framerate muss genügend gross sein, um ausreichend Bilder des vorbeifahrenden Zuges aufzunehmen.
+        Zwei aufeinander folgende Frames sollten sich dabei zu min. 25% überlappen, um ein Stitching zu ermöglichen.
+      </td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Preis</td>
+      <td>
+        Die SBB übernimmt die Kosten für die Anschaffung und Wartung der Kamera. Deshalb müssen die Kosten im
+        Rahmen des Budgets der SBB liegen.
+      </td>
+    </tr>
     </tbody>
   </table>
   <figcaption>Anforderungen Farbkamera</figcaption>
@@ -269,47 +271,48 @@
 <p>Basler acA1920-25uc</p>
 
 <p>
-  Mit der Basler ace Industirekamera haben wir eine geeignete Farbkamera gefunden. Hier eine Übersicht über die Spezifikation:
+  Mit der Basler ace Industriekamera haben wir eine geeignete Farbkamera gefunden. Hier eine Übersicht über die
+  Spezifikation:
 </p>
 
 <figure>
   <table>
     <thead>
-      <tr>
-        <th></th>
-        <th>Basler acA1920-25uc</th>
-      </tr>
+    <tr>
+      <th></th>
+      <th>Basler acA1920-25uc</th>
+    </tr>
     </thead>
 
     <tbody>
-      <tr>
-        <th>Auflösung</th>
-        <td>Full-HD 1080p</td>
-      </tr>
-      <tr>
-        <th>Field Of View</th>
-        <td>76° HFOV & 58° VFOV</td>
-      </tr>
-      <tr>
-        <th>Framerate</th>
-        <td>26 Hz</td>
-      </tr>
-      <tr>
-        <th>Anschluss</th>
-        <td>USB. Stromversorgung ebenfalls über USB.</td>
-      </tr>
-      <tr>
-        <th>Preis</th>
-        <td>756.85 CHF</td>
-      </tr>
+    <tr>
+      <th>Auflösung</th>
+      <td>Full-HD 1080p</td>
+    </tr>
+    <tr>
+      <th>Field Of View</th>
+      <td>76° HFOV & 58° VFOV</td>
+    </tr>
+    <tr>
+      <th>Framerate</th>
+      <td>26 Hz</td>
+    </tr>
+    <tr>
+      <th>Anschluss</th>
+      <td>USB. Stromversorgung ebenfalls über USB.</td>
+    </tr>
+    <tr>
+      <th>Preis</th>
+      <td>756.85 CHF</td>
+    </tr>
     </tbody>
   </table>
   <figcaption>Spezifikation Basler Farbkamera</figcaption>
 </figure>
 
 <p>
-  Basler ist ein bekannter Hersteller von Industirekameras und geniesst einen guten Ruf. Deshalb und weil sie alle unsere Anforderungen
-  erfüllt, sind wir sicher die richtige Wahl getroffen zu haben.
+  Basler ist ein bekannter Hersteller von Industriekameras und geniesst einen guten Ruf. Deshalb und weil sie alle
+  unsere Anforderungen erfüllt, sind wir sicher die richtige Wahl getroffen zu haben.
 </p>
 
 <h5>Mini PC</h5>
@@ -317,12 +320,12 @@
 <figure>
   <img src="images/thermoscanner/minipc.jpg" width="700"/>
   <figcaption>Spectra PowerBox 31A0</figcaption>
-  <span class="source">Quelle: <a href="#ref-spectra-powerbox">Spectra Webseite</a></span>
+  <span class="source">Quelle: <a href="#ref-spectra-powerbox">Spectra Website</a></span>
 </figure>
 
 <p>
-  Der Mini PC bildet die zentraler Steuereinheit auf der unsere Software läuft. Die beiden Kameras werden über den
-  PC gesteuert und beziehen auch den Strom von dort. Weiter ist der Temperatursensor und die externe GSM-Antenne
+  Der Mini PC bildet die zentrale Steuereinheit auf der unsere Software läuft. Die beiden Kameras werden über den
+  PC gesteuert und beziehen auch den Strom von dort. Weiter sind der Temperatursensor und die externe GSM-Antenne
   an den Mini PC angeschlossen.
 </p>
 
@@ -330,67 +333,67 @@
 <figure>
   <table>
     <thead>
-      <tr>
-        <th>Nr.</th>
-        <th>Name</th>
-        <th>Beschreibung</th>
-      </tr>
+    <tr>
+      <th>Nr.</th>
+      <th>Name</th>
+      <th>Beschreibung</th>
+    </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Leistung</td>
-        <td>
-          <ul>
-            <li>Verarbeitung Vidoestreams von zwei Kameras möglich</li>
-            <li>Komprimierung FLIR Rohdaten (16Bit Video) zu MP4 läuft performant</li>
-            <li>min. 16GB Arbeitsspeicher</li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>LTE Modul</td>
-        <td>
-          Wir brauchen Remotezugang zum Thermo-Scanner für Wartungen und den Upload der Aufnahmen.
-          Der Mini-PC sollte also ein LTE Modul enthalten.
-        </td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Anschlüsse</td>
-        <td>
-          <ul>
-            <li>PoE um FLIR Kamera zu betreiben</li>
-            <li>USB mit Stormversorgung für Basler Kamera</li>
-            <li>Antennenanschluss LTE-Modul</li>
-            <li>USB Anschluss für Temperatursensor</li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Dauerbetrieb</td>
-        <td>
-          Der Mini-PC muss für den Dauerbetrieb ausgelegt sein. Möglichst wenig bewegliche Teile, robuste
-          Komponenten und ein guten Klimamanagement sind nötig.
-        </td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>Montage</td>
-        <td>
-          Möglichkeit zum Verschrauben des PC sollte vorhanden / vorgesehen sein.
-        </td>
-      </tr>
-      <tr>
-        <td>6</td>
-        <td>Preis</td>
-        <td>
-          Die SBB übernimmt die Kosten für die Anschaffung und Wartung des Thermo-Scanners. Deshalb müssen die Kosten im
-          Rahmen des Budget der SBB liegen.
-        </td>
-      </tr>
+    <tr>
+      <td>1</td>
+      <td>Leistung</td>
+      <td>
+        <ul>
+          <li>Verarbeitung Videostreams von zwei Kameras möglich</li>
+          <li>Komprimierung FLIR Rohdaten (16Bit Video) zu MP4 läuft performant</li>
+          <li>min. 16GB Arbeitsspeicher</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>LTE Modul</td>
+      <td>
+        Wir brauchen Remotezugang zum Thermo-Scanner für Wartungen und den Upload der Aufnahmen.
+        Der Mini-PC sollte also ein LTE Modul enthalten.
+      </td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Anschlüsse</td>
+      <td>
+        <ul>
+          <li>PoE um FLIR Kamera zu betreiben</li>
+          <li>USB mit Stromversorgung für Basler Kamera</li>
+          <li>Antennenanschluss LTE-Modul</li>
+          <li>USB Anschluss für Temperatursensor</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Dauerbetrieb</td>
+      <td>
+        Der Mini-PC muss für den Dauerbetrieb ausgelegt sein. Möglichst wenig bewegliche Teile, robuste
+        Komponenten und ein gutes Klimamanagement sind nötig.
+      </td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Montage</td>
+      <td>
+        Möglichkeit zum Verschrauben des PC sollte vorhanden / vorgesehen sein.
+      </td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Preis</td>
+      <td>
+        Die SBB übernimmt die Kosten für die Anschaffung und Wartung des Thermo-Scanners. Deshalb müssen die Kosten im
+        Rahmen des Budgets der SBB liegen.
+      </td>
+    </tr>
     </tbody>
   </table>
   <figcaption>Anforderungen Mini PC</figcaption>
@@ -401,81 +404,82 @@
 <figure>
   <table>
     <thead>
-      <tr>
-        <th></th>
-        <th>Spectra PowerBox 31A0</th>
-      </tr>
+    <tr>
+      <th></th>
+      <th>Spectra PowerBox 31A0</th>
+    </tr>
     </thead>
     <tbody>
-      <tr>
-        <th>Processor</th>
-        <td>Intel i7-6700TE</td>
-      </tr>
-      <tr>
-        <th>RAM</th>
-        <td>16GB</td>
-      </tr>
-      <tr>
-        <th>Harddisk</th>
-        <td>120GB SSD</td>
-      </tr>
-      <tr>
-        <th>Anschlüsse</th>
-        <td>PoE, USB, Antennenkabel, DisplayPort, ...</td>
-      </tr>
-      <tr>
-        <th>Kühlung</th>
-        <td>passiv</td>
-      </tr>
-      <tr>
-        <th>Weiteres</th>
-        <td>integriertes LTE Modul mit Daten SIM-Karte von Sunrise</td>
-      </tr>
-      <tr>
-        <th>Preis</th>
-        <td>2'764.80 CHF</td>
-      </tr>
+    <tr>
+      <th>Prozessor</th>
+      <td>Intel i7-6700TE</td>
+    </tr>
+    <tr>
+      <th>RAM</th>
+      <td>16GB</td>
+    </tr>
+    <tr>
+      <th>Harddisk</th>
+      <td>120GB SSD</td>
+    </tr>
+    <tr>
+      <th>Anschlüsse</th>
+      <td>PoE, USB, Antennenkabel, DisplayPort, ...</td>
+    </tr>
+    <tr>
+      <th>Kühlung</th>
+      <td>passiv</td>
+    </tr>
+    <tr>
+      <th>Weiteres</th>
+      <td>integriertes LTE Modul mit Daten SIM-Karte von Sunrise</td>
+    </tr>
+    <tr>
+      <th>Preis</th>
+      <td>2'764.80 CHF</td>
+    </tr>
     </tbody>
   </table>
   <figcaption>Spezifikation Spectra Powerbox</figcaption>
 </figure>
 
 <p>
-  Für das LTE Modul musste noch eine Daten-SIM Karte organisiert werden. Von der SBB konnten wir leider keine geeignete SIM Karte beziehen, diese waren
-  alle auf 10GB / Monat limitiert. Für den Testbetrieb reichte uns das leider nicht, da wir auch Rohdaten vom Mini PC runterladen wollten.
-  Deshalb schlossen wir bei der Sunrise ein Abo für eine unlimitierte Daten-SIM ab.
+  Für das LTE Modul musste noch eine Daten-SIM Karte organisiert werden. Von der SBB konnten wir leider keine geeignete
+  SIM Karte beziehen, diese waren alle auf 10GB / Monat limitiert. Für den Testbetrieb reichte uns das leider nicht, da
+  wir auch Rohdaten vom Mini PC runterladen wollten. Deshalb schlossen wir bei der Sunrise ein Abo für eine unlimitierte
+  Daten-SIM ab.
 </p>
 
 
 <figure>
   <table>
     <thead>
-      <tr>
-        <th></th>
-        <th>Daten SIM Sunrise</th>
-      </tr>
+    <tr>
+      <th></th>
+      <th>Daten SIM Sunrise</th>
+    </tr>
     </thead>
     <tbody>
-      <tr>
-        <th>Datenvolumen</th>
-        <td>unlimitiert</td>
-      </tr>
-      <tr>
-        <th>Übertragungsgeschwindigkeit</th>
-        <td>Unlimitiert 4G+ High Speed</td>
-      </tr>
-      <tr>
-        <th>Grundgebühr pro Monat</th>
-        <td>49.- CHF</td>
-      </tr>
-      <tr>
-        <th>Aktivierungsgebühr</th>
-        <td>49.- CHF</td>
-      </tr>
-      <tr>
-        <th>Vertragslaufzeit</th>
-        <td>3 Monate. 14.11.2017 - 14.02.2017.</td>
-      </tr>
+    <tr>
+      <th>Datenvolumen</th>
+      <td>unlimitiert</td>
+    </tr>
+    <tr>
+      <th>Übertragungsgeschwindigkeit</th>
+      <td>Unlimitiert 4G+ High Speed</td>
+    </tr>
+    <tr>
+      <th>Grundgebühr pro Monat</th>
+      <td>49.- CHF</td>
+    </tr>
+    <tr>
+      <th>Aktivierungsgebühr</th>
+      <td>49.- CHF</td>
+    </tr>
+    <tr>
+      <th>Vertragslaufzeit</th>
+      <td>3 Monate. 14.11.2017 - 14.02.2017.</td>
+    </tr>
     </tbody>
   </table>
   <figcaption>Spezifikation Daten-SIM Sunrise</figcaption>
@@ -491,11 +495,12 @@
 </figure>
 
 <p>
-  Der Mini PC verfügt über ein LTE Modul mit zwei Antennenanschlüssen. Die mitgelieferten Antennen sind direkt am Mini PC
-  montiert und somit innerhalb des Gehäuses. Im Gehäuse selber gibt es aber überhaut keinen Empfang. Bis zu dieser Erkenntniss
-  hat es lange gedauert, da zuerst die Antennen nicht geliefert wurden und wir dachten, dass LTE Modul funktioniere nicht. Wir
-  nahmen an die Antennen befinden sich innerhalb des Mini PC. Als die Antennen nachgeliefert wurden, hat jemand sie aus dem Briefkasten
-  gestohlen. Als wir die Antennen dann endlich hatten, mussten wir feststellen, dass es im Gehäuse keinen Empfang gibt.
+  Der Mini PC verfügt über ein LTE Modul mit zwei Antennenanschlüssen. Die mitgelieferten Antennen sind direkt am Mini
+  PC montiert und somit innerhalb des Gehäuses. Im Gehäuse selber gibt es aber überhaupt keinen Empfang. Bis zu dieser
+  Erkenntnis hat es lange gedauert, da zuerst die Antennen nicht geliefert wurden und wir dachten, dass LTE Modul
+  funktioniere nicht. Wir nahmen an die Antennen befinden sich innerhalb des Mini PC. Als die Antennen nachgeliefert
+  wurden, hat jemand sie aus dem Briefkasten gestohlen. Als wir die Antennen dann endlich hatten, mussten wir
+  feststellen, dass es im Gehäuse keinen Empfang gibt.
 </p>
 <p>
   Somit war nun klar, dass eine externe LTE Antenne benötigt wird. Die Anforderungen sind:
@@ -504,43 +509,44 @@
 <figure>
   <table>
     <thead>
-      <tr>
-        <th>Nr.</th>
-        <th>Name</th>
-        <th>Beschreibung</th>
-      </tr>
+    <tr>
+      <th>Nr.</th>
+      <th>Name</th>
+      <th>Beschreibung</th>
+    </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Outdoortauglich</td>
-        <td>
-          Antennen ist für den Einsatz draussen gedacht und wetterfest.
-        </td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>langes Kabel</td>
-        <td>
-          Min. 2m langes Kabel notwendig um Antenne aus dem Gehäuse führen zu können.
-        </td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>guter Empfang</td>
-        <td>
-          Möglichst guter Empfang auch in empfangsschwachen Gebieten.
-        </td>
-      </tr>
+    <tr>
+      <td>1</td>
+      <td>Outdoortauglich</td>
+      <td>
+        Antennen ist für den Einsatz draussen gedacht und wetterfest.
+      </td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>langes Kabel</td>
+      <td>
+        Min. 2m langes Kabel notwendig um Antenne aus dem Gehäuse führen zu können.
+      </td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>guter Empfang</td>
+      <td>
+        Möglichst guter Empfang auch in empfangsschwachen Gebieten.
+      </td>
+    </tr>
     </tbody>
   </table>
   <figcaption>Anforderungen LTE Antenne</figcaption>
 </figure>
 
 <p>
-  Die evaluierte LTE Antenne erfüllt alle unsere Anforderungen und ist dank 90°-Kreuz-Polarisierung empfangsstark. Dank der Kreuzpolarisierung
-  spielt es keine Rolle, wie die Antenne zum Signal ausgerichtet ist. Das lange Antennenkabel führen wir unten aus dem Gehäuse (zusammen mit Strom
-  usw.) und montieren die Antenne mit starkem Klebeband auf dem Dach des Thermo-Scanners.
+  Die evaluierte LTE Antenne erfüllt alle unsere Anforderungen und ist dank 90°-Kreuz-Polarisierung empfangsstark. Dank
+  der Kreuzpolarisierung spielt es keine Rolle, wie die Antenne zum Signal ausgerichtet ist. Das lange Antennenkabel
+  führen wir unten aus dem Gehäuse (zusammen mit Strom usw.) und montieren die Antenne mit starkem Klebeband auf dem
+  Dach des Thermo-Scanners.
 </p>
 
 <figure>
@@ -555,41 +561,41 @@
 <figure>
   <table>
     <thead>
-      <tr>
-        <th></th>
-        <th>USL LTE-Antenne</th>
-      </tr>
+    <tr>
+      <th></th>
+      <th>USL LTE-Antenne</th>
+    </tr>
     </thead>
 
     <tbody>
-      <tr>
-        <th>Frequenzband</th>
-        <td>800 Mhz bis 2.7 Ghz</td>
-      </tr>
-      <tr>
-        <th>Polarisierung</th>
-        <td>90°-Kreuz-Polarisierung</td>
-      </tr>
-      <tr>
-        <th>Mobilfunktechnologien</th>
-        <td>Unterstützt LTE, 3G und 2G</td>
-      </tr>
-      <tr>
-        <th>Anschluss</th>
-        <td>2 x SMA, 2m Antennenkabel</td>
-      </tr>
-      <tr>
-        <th>Abstrahlcharakteristik</th>
-        <td>Rundstrahl</td>
-      </tr>
-      <tr>
-        <th>Weiteres</th>
-        <td>outdoortauglich</td>
-      </tr>
-      <tr>
-        <th>Preis</th>
-        <td>62.00 CHF</td>
-      </tr>
+    <tr>
+      <th>Frequenzband</th>
+      <td>800 Mhz bis 2.7 Ghz</td>
+    </tr>
+    <tr>
+      <th>Polarisierung</th>
+      <td>90°-Kreuz-Polarisierung</td>
+    </tr>
+    <tr>
+      <th>Mobilfunktechnologien</th>
+      <td>Unterstützt LTE, 3G und 2G</td>
+    </tr>
+    <tr>
+      <th>Anschluss</th>
+      <td>2 x SMA, 2m Antennenkabel</td>
+    </tr>
+    <tr>
+      <th>Abstrahlcharakteristik</th>
+      <td>Rundstrahl</td>
+    </tr>
+    <tr>
+      <th>Weiteres</th>
+      <td>outdoortauglich</td>
+    </tr>
+    <tr>
+      <th>Preis</th>
+      <td>62.00 CHF</td>
+    </tr>
     </tbody>
   </table>
   <figcaption>Spezifikation USL LTE-Antenne</figcaption>
@@ -598,11 +604,12 @@
 <h5>Thermostat / Heizlüfter</h5>
 
 <p>
-  Um Kondenzwasserbildung zu verhindern ist im Gehäuse ein Heizlüfter und ein Thermostat verbaut. Bei Temperaturen unter 15°C
-  schaltet der Thermostat den Heizlüfter ein, bis wieder 15°C herrschen. Wichtig dabei ist, dass der Heizlüfter unten im Gehäuse
-  und der Thermostat möglichst weit entfernt oben im Gehäuse platziert ist. Ansonsten ist man nicht sicher, dass der ganze Innenraum
-  genügend aufgewärmt ist. Wichtig ist auch, dass über dem Heizlüfter genügend Platz ist, damit nichts zu heiss wird oder Feuer fangen
-  könnte. Dank des grossen Gehäuses konnten wir alle Sicherheitsabstände einhalten.
+  Um Kondenswasserbildung zu verhindern ist im Gehäuse ein Heizlüfter und ein Thermostat verbaut. Bei Temperaturen unter
+  15°C schaltet der Thermostat den Heizlüfter ein, bis wieder 15°C herrschen. Wichtig dabei ist, dass der Heizlüfter
+  unten im Gehäuse und der Thermostat möglichst weit entfernt oben im Gehäuse platziert ist. Ansonsten ist man nicht
+  sicher, dass der ganze Innenraum genügend aufgewärmt ist. Wichtig ist auch, dass über dem Heizlüfter genügend Platz
+  ist, damit nichts zu heiss wird oder Feuer fangen könnte. Dank des grossen Gehäuses konnten wir alle
+  Sicherheitsabstände einhalten.
 </p>
 
 <figure>
@@ -629,26 +636,27 @@
 <p>
   Zum Ende des Projektes haben wir eine neue Seite von PCSensor gefunden, die den Sensor besser beschreibt. Zum
   Zeitpunkt der Implementierung waren englische Information leider nur über ältere Gerätetypen vorhanden. TEMPer2 war
-  nur auf chinesisch beschrieben. Auch gibt es seit 22. November 2017 eine neue Version der TEMPer Software. Wir
-  haben nun herausgefunden, dass die 2 in TEMPer2 dafür steht, dass das Gerät zwei Sensoren hat. Einer im Gehäuse und
+  nur auf Chinesisch beschrieben. Auch gibt es seit 22. November 2017 eine neue Version der TEMPer Software. Wir
+  haben nun herausgefunden, dass die 2 in TEMPer2 dafürsteht, dass das Gerät zwei Sensoren hat. Einer im Gehäuse und
   einer über ein Kabel. Da unsere Messungen, wie man unten sieht, fast nie unter 14°C gelangen, gehen wir davon aus,
   dass wir die Innentemperatur gemessen haben. Man sieht gut, wie die Temperatur in der Nacht konstant bei ca. 14°C
   verharrt und am Tag, falls Aussentemperatur über 14°C stieg, im Verlaufe des Tages ansteigt. Das auf und ab
   gegen Ende der ersten Testphase deuten wir als eine Aussentemperatur, die stark unter 14°C lag, so dass der
   Thermostat den Heizlüfter über längere Intervalle eingeschaltet lies. Die Zeitstempel zu denen wir die Temperatur
-  gemessen haben sind leider nicht schön linear verteilt, weil nur bei Zugdruchfahrt eine Aufnahme gespeichert wird.
+  gemessen haben sind leider nicht schön linear verteilt, weil nur bei Zugdurchfahrt eine Aufnahme gespeichert wird.
   Die Züge fahren nicht regelmässig durch die Waschstrasse.
 </p>
 
 <figure class="full">
   <img src="images/thermoscanner/temper-histogram.png">
-  <figcaption>Temperatursensor Histogram</figcaption>
+  <figcaption>Temperatursensor Histogramm</figcaption>
 </figure>
 
 <h5>RFID Reader</h5>
 <p>
-  Alle Waggons der SBB sind mit einem RFID Chip ausgestettet, über den sie eindeutig identifizierbar sind. Ein detektierter Schaden könnte somit
-  eindeutig einem Waggon oder Zug zugeordnet werden. Der Einsatz eines RFID Readers ist also wünschenswert.
+  Alle Waggons der SBB sind mit einem RFID Chip ausgestattet, über den sie eindeutig identifizierbar sind. Ein
+  detektierter Schaden könnte somit eindeutig einem Waggon oder Zug zugeordnet werden. Der Einsatz eines RFID Readers
+  ist also wünschenswert.
 </p>
 <p>
   <b>Anforderungen</b>
@@ -660,21 +668,25 @@
   <li>Brauchbare API / unterstützte Protokolle für die Anbindung an Thermo-Scanner SW</li>
 </ul>
 <p>
-  Die SBB hat bereits RFID Reader im Einsatz, z.B. in den Waschstrassen. Wir haben deshalb beim Hersteller Vilant AG nachgefragt,
-  ob sie uns bei unserem Projekt unterstützen und wir einen RFID Reader kaufen können. Vilant bietet RFID Reader für professionelle
-  Anwendungen in der Industrie wie bsp. in Lagern, Logistikzentren und eben auch im Bahnsektor. Die Produktpalette erstreckt sich von
-  Handlesegeräten bis Hochleistungsleser die Züge bei voller Geschwindigkeit auslesen können. Das richtige Produkt für unsere Zwecke
-  war also vorhanden. Nach einem ersten Gespräch mit Vilant wurde uns ein Testgerät inklusive Unterstütztung durch Entwickeler in Aussicht gestellt.
-  Die SBB war aufgrund andere Projekte auch an einem Kauf eines Readers interessiert, deshalb haben wir auch eine Offertanfrage gestellt.
-  Leider hat Vilant nie auf unsere Anfragen mit konkreten Ergebnissen reagiert, sondern uns immer wieder auf später vertröstet und noch nicht einmal
-  eine Offerte erstellt. Wir haben eine letzte Deadline für die gewünschte Offerte und einen Workshop mit Testgerät gestellt, welche Vilant verstreichen liess.
-  Deshalb haben wir uns entschieden die Zusammenarbeit abzubrechen und den RFID Reader im Projekt vorerst nicht weiter zu berücksichtigen.
+  Die SBB hat bereits RFID Reader im Einsatz, z.B. in den Waschstrassen. Wir haben deshalb beim Hersteller Vilant AG
+  nachgefragt, ob sie uns bei unserem Projekt unterstützen und wir einen RFID Reader kaufen können. Vilant bietet RFID
+  Reader für professionelle Anwendungen in der Industrie wie bspw. in Lagern, Logistikzentren und eben auch im
+  Bahnsektor. Die Produktpalette erstreckt sich von Handlesegeräten bis Hochleistungsleser die Züge bei voller
+  Geschwindigkeit auslesen können. Das richtige Produkt für unsere Zwecke war also vorhanden. Nach einem ersten Gespräch
+  mit Vilant wurde uns ein Testgerät inklusive Unterstützung durch Entwickler in Aussicht gestellt. Die SBB war
+  aufgrund andere Projekte auch an einem Kauf eines Readers interessiert, deshalb haben wir auch eine Offerten-Anfrage
+  gestellt. Leider hat Vilant nie auf unsere Anfragen mit konkreten Ergebnissen reagiert, sondern uns immer wieder auf
+  später vertröstet und noch nicht einmal eine Offerte erstellt. Wir haben eine letzte Deadline für die gewünschte
+  Offerte und einen Workshop mit Testgerät gestellt, welche Vilant verstreichen liess. Deshalb haben wir uns entschieden
+  die Zusammenarbeit abzubrechen und den RFID Reader im Projekt vorerst nicht weiter zu berücksichtigen.
 </p>
 <p>
-  Es ist Schade haben wir viel Zeit in die Abklärungen für einen RFID Reader gesteckt ohne Resultat. Für das erwähnte Projekt der SBB, das auch einen RFID Reader benötigt,
-  wird derzeit bei einem anderen Anbieter eine Offerte eingeholt. Evtl. ergibt sich da etwas. Auf jeden Fall ist unsere Software so gebaut, dass weitere Sensoren problemlos
-  eingebunden werden können. Zudem ist unser Aufnahmestandort an einer Waschstrasse, in welchen alle RFID-Chips der Waggons ausgelesen werden. Möglicherweise kann man die
-  Daten aus der Waschstrasse mit unseren Aufnahmen matchen (z.B. über Timestamps). Dies verfolgen wir momentan aber nicht aktiv weiter und fokussieren uns auf die Aufnahmen und
+  Es ist schade haben wir viel Zeit in die Abklärungen für einen RFID Reader gesteckt ohne Resultat. Für das erwähnte
+  Projekt der SBB, das auch einen RFID Reader benötigt, wird derzeit bei einem anderen Anbieter eine Offerte eingeholt.
+  Evtl. ergibt sich da etwas. Auf jeden Fall ist unsere Software so gebaut, dass weitere Sensoren problemlos eingebunden
+  werden können. Zudem ist unser Aufnahmestandort an einer Waschstrasse, in welchen alle RFID-Chips der Waggons
+  ausgelesen werden. Möglicherweise kann man die Daten aus der Waschstrasse mit unseren Aufnahmen matchen (z.B. über
+  Timestamps). Dies verfolgen wir momentan aber nicht aktiv weiter und fokussieren uns auf die Aufnahmen und
   deren Analyse.
 </p>
 
@@ -693,14 +705,16 @@
 </p>
 
 <p id="ref-basler-ace" class="reference-item">
-  <span class="ref">Basler Webseite</span>
-  <a href="https://www.baslerweb.com/de/produkte/kameras/flaechenkameras/ace/aca1920-25uc" target="_blank" rel="noopener">https://www.baslerweb.com/de/produkte/kameras/flaechenkameras/ace/aca1920-25uc</a>
+  <span class="ref">Basler Website</span>
+  <a href="https://www.baslerweb.com/de/produkte/kameras/flaechenkameras/ace/aca1920-25uc" target="_blank"
+     rel="noopener">https://www.baslerweb.com/de/produkte/kameras/flaechenkameras/ace/aca1920-25uc</a>
   <span class="retrieved">17. Dezember 2017</span>
 </p>
 
 <p id="ref-spectra-powerbox" class="reference-item">
-  <span class="ref">Spectra Webseite</span>
-  <a href="https://www.spectra.de/produkte/industrie-pc-systeme/mini-pc-systeme/1-slot/spectra-powerbox-31a0.html" target="_blank" rel="noopener">https://www.spectra.de/produkte/industrie-pc-systeme/mini-pc-systeme/1-slot/spectra-powerbox-31a0.html</a>
+  <span class="ref">Spectra Website</span>
+  <a href="https://www.spectra.de/produkte/industrie-pc-systeme/mini-pc-systeme/1-slot/spectra-powerbox-31a0.html"
+     target="_blank" rel="noopener">https://www.spectra.de/produkte/industrie-pc-systeme/mini-pc-systeme/1-slot/spectra-powerbox-31a0.html</a>
   <span class="retrieved">17. Dezember 2017</span>
 </p>
 
