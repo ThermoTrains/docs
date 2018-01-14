@@ -468,6 +468,26 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 </p>
 
 <h5>IRReader</h5>
+<ul>
+  <li>
+    <b>Subscription:</b>
+    <ul>
+      <li><code>capture:start</code></li>
+      <li><code>capture:stop</code></li>
+      <li><code>capture:abort</code></li>
+      <li><code>capture:pause</code></li>
+      <li><code>capture:resume</code></li>
+      <li><code>kill</code></li>
+    </ul>
+  </li>
+  <li>
+    <b>Publish:</b>
+    <ul>
+      <li><code>delivery:compress</code></li>
+      <li><code>delivery:upload</code></li>
+    </ul>
+  </li>
+</ul>
 <p>
   Die Aufgabe des IRReaders ist die Bilder FLIR Kamera aufzunehmen. Bevor die eigentliche Komponente gestartet wird,
   wird zuerst die Kamera gefunden. Die Suche nach der Kamera geschieht asynchron. Um die Testingzyklen sowie
@@ -672,6 +692,28 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <h5>VisibleLightReader</h5>
+<ul>
+  <li>
+    <b>Subscription:</b>
+    <ul>
+      <li><code>capture:start</code></li>
+      <li><code>capture:stop</code></li>
+      <li><code>capture:abort</code></li>
+      <li><code>capture:pause</code></li>
+      <li><code>capture:resume</code></li>
+      <li><code>kill</code></li>
+    </ul>
+  </li>
+  <li>
+    <b>Publish:</b>
+    <ul>
+      <li><code>capture:start</code></li>
+      <li><code>capture:stop</code></li>
+      <li><code>capture:abort</code></li>
+      <li><code>delivery:upload</code></li>
+    </ul>
+  </li>
+</ul>
 <p>
   Aus technischen Limitierungen erfüllt der VisibleLightReader zwei Aufgaben was gegen das Microservice Prinzip
   verstösst. Die Komponente liest zum einten den Bildstream der Basler Kamera um festzustellen ob sich ein Zug in das
@@ -780,7 +822,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Auf dem folgendem Diagramm sieht man die von uns in der ersten Testphase aufgezeichneten Beleuchtungszeiten
-  (links) und Gains (rechts).
+  (links) und Gains (rechts) aggregiert auf einen Tagesverlauf.
 </p>
 
 <figure>
@@ -955,6 +997,23 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <h5>TemperatureReader</h5>
+<ul>
+  <li>
+    <b>Subscription:</b>
+    <ul>
+      <li><code>capture:start</code></li>
+      <li><code>capture:stop</code></li>
+      <li><code>capture:abort</code></li>
+      <li><code>kill</code></li>
+    </ul>
+  </li>
+  <li>
+    <b>Publish:</b>
+    <ul>
+      <li><code>delivery:upload</code></li>
+    </ul>
+  </li>
+</ul>
 <p>
   Um unseren TEMPer2 Temperatursensor auszulesen mussten wir das USB HID (Human Interface Device) konsumieren. Vom
   Hersteller gibt es nur eine Bedienersoftware ohne Code Beispiele oder Support für Entwickler. Glücklicherweise
@@ -974,6 +1033,23 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <h5>WeatherReader</h5>
+<ul>
+  <li>
+    <b>Subscription:</b>
+    <ul>
+      <li><code>capture:start</code></li>
+      <li><code>capture:stop</code></li>
+      <li><code>capture:abort</code></li>
+      <li><code>kill</code></li>
+    </ul>
+  </li>
+  <li>
+    <b>Publish:</b>
+    <ul>
+      <li><code>delivery:upload</code></li>
+    </ul>
+  </li>
+</ul>
 <p>
   In der zweiten Aufnahmephase haben wir uns entschieden den TemperatureReader nicht mehr zu verwenden weil die
   Messdaten nicht brauchbar sind. Um die aufgenommenen IR Bilder trotzdem auswerten zu können haben wir den
@@ -1038,6 +1114,21 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 <h4>Delivery Komponenten</h4>
 
 <h5>IRCompressor</h5>
+<ul>
+  <li>
+    <b>Subscription:</b>
+    <ul>
+      <li><code>delivery:compress</code></li>
+      <li><code>kill</code></li>
+    </ul>
+  </li>
+  <li>
+    <b>Publish:</b>
+    <ul>
+      <li><code>delivery:upload</code></li>
+    </ul>
+  </li>
+</ul>
 TODO IRCompressor: kompressionsverfahren mit clamping, offset, h.264, metadaten abspeichern, verlustberechnung, exiftool
 spezifität, erkennungsraten, kompression und aufnahme geht nicht gleichzeitig, dauert sehr lange bei grossen dateien
 <p>
@@ -1045,6 +1136,21 @@ spezifität, erkennungsraten, kompression und aufnahme geht nicht gleichzeitig, 
 </p>
 
 <h5>Uploader</h5>
+<ul>
+  <li>
+    <b>Subscription:</b>
+    <ul>
+      <li><code>delivery:upload</code></li>
+      <li><code>kill</code></li>
+    </ul>
+  </li>
+  <li>
+    <b>Publish:</b>
+    <ul>
+      <li>keine</li>
+    </ul>
+  </li>
+</ul>
 <p>
   Die Uploader Komponente hört auf Nachrichten im Kanal <code>delivery:upload</code>. Die Dateien werden auf einen
   FTP Server hochgeladen und anschliessend in den Papierkorb verschoben. Die Zugagngsdaten zum FTP Server sind in der
