@@ -49,23 +49,90 @@
   </p>
 
   <h3>Architektur</h3>
-  TODO thermoboard architektur
   <p>
     Das Thermoboard ist eine Webapplikation die auf modernen Web Standards basiert.
   </p>
   <p>
-    Der Technologie-Stack der Applikation enhält diese Kerntechnologien:
+    Der Technologie-Stack der Applikation enthält diese Kerntechnologien:
   </p>
   <ul>
-    <li>Laravel PHP Framework</li>
-    <li>GraphQL Backend</li>
-    <li>Angular Frontend</li>
-    <li>Apollo GraphQL Client</li>
+    <li><a href="#ref-laravel">Laravel PHP Framework</a></li>
+    <li><a href="#ref-mariadb">MariaDB</a></li>
+    <li><a href="#ref-graphql">GraphQL Backend</a></li>
+    <li><a href="#ref-angular">Angular Frontend</a></li>
+    <li><a href="#ref-angular-material">Angular Material</a></li>
+    <li><a href="#ref-apollo">Apollo GraphQL Client</a></li>
   </ul>
+
+  <p>
+    Die Idee hinter der Architektur ist, dass das Thermoboard nicht spezifisch nur für den Thermo-Scanner
+    funktionieren kann. Es soll möglich sein irgendwelche Sensordaten die von irgendwo her kommen darin zu
+    integrieren und auszuwerten. Deshalb haben wir die folgende Abstraktionslayers eingeführt mit dem jeweiligen
+    Pendant aus diesem Projekt als Beispiel:
+  </p>
+
+  <ol>
+    <li>Controller: Thermo-Scanner</li>
+    <li>Sensoren: Infrarotkamera, Farbkamera, Temperaturmesser, Wettersensor</li>
+    <li>Werte: Bild, Text, Zahl, Temperatur</li>
+    <li>Orte: Zürich Altstetten</li>
+  </ol>
+
+  <p>
+    Weiter gibt es <code>records</code> unter welchem wir eine Aufnahme verstehen. Die Aufnahme selber kann
+    Sensorwerte haben. Zu einem <code>record</code> kann es auch <code>entity_records</code> geben, welche mit einem
+    <code>entity</code> und einem <code>record</code> verknüpft sind und auch Sensorwerte haben. Ein Entity ist in
+    unserem Fall ein Fahrzeug. Der Record muss zwingend an einem Ort gemacht worden sein, weswegen wir diesen dort
+    auch verknüpfen. Ein Entity kann also in mehreren Records zu unterschiedliechen Zeit Sensorwerte von
+    verschiedensten Sensoren an verschiedenen Orten erhalten. Also genau so wie das ein Zugwagen kann. Dieser kann in
+    eine neue Zugkomposition aufgenommen werden. Meistens jedoch befinden er sich, gereade im Falle eines Triebzuges,
+    immer in der selben Komposition.
+  </p>
+
+  <p>
+    Hierzu das Datenbankschema. Administrative Tabellen wie Benutzer, Sessions, Migrationen und so weiter wurden
+    ausgeblendet.
+  </p>
+
+  <figure class="full">
+    <img src="images/thermoboard/database-diagram.png">
+    <figcaption>Thermoboard Datenbankdiagramm</figcaption>
+  </figure>
 
   <h3>Implementation</h3>
   TODO thermoboard implementation<br>
-  TODO thermoboard ORM
+
 </div>
 
 <!-- References -->
+
+<p id="ref-laravel" class="reference-item">
+  <span class="ref">Laravel PHP Framework</span>
+  <a href="https://laravel.com/" target="_blank" rel="noopener">https://laravel.com</a>
+  <span class="retrieved">15. Januar 2018</span>
+</p>
+<p id="ref-mariadb" class="reference-item">
+  <span class="ref">MariaDB</span>
+  <a href="https://mariadb.org/" target="_blank" rel="noopener">https://mariadb.org</a>
+  <span class="retrieved">15. Januar 2018</span>
+</p>
+<p id="ref-graphql" class="reference-item">
+  <span class="ref">GraphQL</span>
+  <a href="http://graphql.org/" target="_blank" rel="noopener">http://graphql.org</a>
+  <span class="retrieved">15. Januar 2018</span>
+</p>
+<p id="ref-angular" class="reference-item">
+  <span class="ref">Angular Frontend Framework</span>
+  <a href="https://angular.io/" target="_blank" rel="noopener">https://angular.io</a>
+  <span class="retrieved">15. Januar 2018</span>
+</p>
+<p id="ref-angular-material" class="reference-item">
+  <span class="ref">Angular Material</span>
+  <a href="https://material.angular.io/" target="_blank" rel="noopener">https://material.angular.io</a>
+  <span class="retrieved">15. Januar 2018</span>
+</p>
+<p id="ref-apollo" class="reference-item">
+  <span class="ref">Apollo GraphQL Client</span>
+  <a href="https://www.apollographql.com/" target="_blank" rel="noopener">https://www.apollographql.com/</a>
+  <span class="retrieved">15. Januar 2018</span>
+</p>
