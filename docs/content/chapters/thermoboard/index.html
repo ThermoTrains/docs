@@ -2,9 +2,50 @@
   <h2 class="break">Analyse: Thermoboard</h2>
 
   <h3>Ziel</h3>
-  TODO thermoboard ziel: warum wir die bilder nicht in den FLIR TOOLS öffnen
   <p>
+    Um die akquirierten und verarbeiteten Sensordaten nun analysieren zu können müssen wir eine geeignete Plattform
+    finden. Diese Plattform soll einem Experten der sich mit der Technik der Züge auskennt ermöglichen die Daten in
+    seinem Büro anzusehen, diese zu vergleichen und eventuell weitere Inspektionen von Fahrzeugen dadurch anfordern.
+  </p>
 
+  <p>
+    Eine automatische Analyse mit Bilderkennung oder gar Machine Learning können wir leider noch nicht implementieren,
+    weil wir in unserem Projekt kein Schadensfall gefunden haben. Man könnte zwar sagen man vergleicht Zugswagen vom
+    selben Typ untereinander und markiert die gefundenen Unterschiede auf den Bildern automatisch. Dies bringt aber
+    mit dem jetzigen Wissensstand auch eher wenig, weil der Wagen auf dem Infrarotbild deutlich anders aussehen kann,
+    je nachdem was er vorher gemacht hat. Ist der auf dem Gleisfeld stillgestanden? Liefen die Heizungen? Strahlte in
+    die Sonne an? All diese Gegebenheiten würden zu Unterschieden führen. Diese müssen zuerst in Erfahrung gebracht
+    werden und festgehalten werden damit man sagen ob der Unterschied nun einen Schaden darstellt oder einfach eine
+    andere Rahmenbedingung.
+  </p>
+
+  <p>
+    Deshalb brauchen wir eine Applikation die das Vergleichen der Aufnahmen erlaubt. Unsere Aufnahmen sind nach dem
+    Post-Processing sehr breite Bilder mit einer Auflösung von bis zu 20'000 Pixeln in der Breite und 512 Pixel in
+    der Höhe. Die erste Idee war, diese Bilder mit den rohen Sensordaten anzureichern damit sie in den FLIR Tools
+    angesehen werden können. Die FLIR Tools bieten alle Werkzeuge um die Bilder zu analysieren, Kommentare zu
+    erfassen und sogar Reports zu erstellen. Der Nachteil der FLIR Tools ist allerdings, dass diese lokal installiert
+    werden müssen. Müssten jetzt alle Experten die auf die Bilder ansehen möchten bei ihrem SBB Büro-PC eine Software
+    installieren gäbe das einen grossen Aufwand für die interne IT.
+  </p>
+
+  <p>
+    Das zweite Problem ist, dass die FLIR Tools auf dem FLIR ATLAS SDK basieren. Wenn ein Bild geöffnet wird, welches
+    nicht einer Auflösung entspricht zu der es auch eine FLIR Kamera gibt, stürzt die Software einfach mit einer
+    unaufgefangenen Exception ab. Warum das passiert scheint uns ein Rätsel, kann aber durchaus so gewollt sein. FLIR
+    hat keine Interessen Tools zu bauen mit denen andere Bilder analysiert werden können. Jedenfalls haben wir
+    erwiesen, dass es wirklich an der Auflösung liegt. Ansonsten würde der Ansatz funktionieren. Wir haben unsere
+    Panoramabilder angereichert mit den Binärdaten und Metadaten und auf eine Auflösung herunterskaliert von 640 x
+    512 Pixeln. Dann konnte man das Bild ansehen und die Temperaturen wurden korrekt berechnet. Auch haben wir im
+    FLIR Produktekatalog alle Kameraauflösungen herausgesucht und festgestellt, dass alle diese Auflösungen
+    funktionieren. Nun ist jedoch ein Bild, dass von 20'000 Pixeln Breite auf 640 Pixel Breite reduziert wurde, nicht
+    mehr brauchbar. FLIR hat uns da also einen Stein in den Weg gelegt.
+  </p>
+
+  <p>
+    Als Lösung haben wir unsere eigene Analyseplattform geschaffen namens Thermoboard. Die Webapplikation erlaubt es
+    Experten über den Browser die Sensordaten anzusehen, die Züge zu suchen, die sie interessieren und Kommentare zu
+    verfassen.
   </p>
 
   <h3>Architektur</h3>
@@ -24,8 +65,7 @@
 
   <h3>Implementation</h3>
   TODO thermoboard implementation<br>
-  TODO thermoboard ORM<br>
-  TODO OCR
+  TODO thermoboard ORM
 </div>
 
 <!-- References -->
