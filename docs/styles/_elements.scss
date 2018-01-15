@@ -196,3 +196,9 @@ dd {
   margin-left: 140px;
   margin-bottom: 1em;
 }
+
+p,
+li,
+dd {
+  hyphens: auto;
+}
