@@ -1,2 +1,126 @@
 <h3>Zugnummererkennung</h3>
-TODO
+<p>
+  Während dieser Arbeit kam das Aufgabe auf, die aufgenommenen Züge mit der Zugsidentifikationsnummer zu
+  identifizieren. Diese Aufgäbe hätte der RFID Reader übernommen, wenn wir einen erhalten hätten. Wir kamen dann zur
+  Idee die auf die Fahrzeuge aufgedruckte Nummer auf dem Bild zu erkennen und so den Wagen zu identifizieren.
+</p>
+
+<p>
+  Jeder Wagen muss zwingend eine aufgedruckte Nummer nach UIC Norm haben. Die Länge der Nummer ist unterschiedlich.
+  Es gibt Nummern wie 50 85 2673 106-4, 94 85 0500 037-2 oder auch verkürzt nur 802 710-4. Alle Nummern haben am
+  Schluss eine Prüfziffer.
+</p>
+
+<figure>
+  <img src="images/research/ocr/uic-kennzeichnung.png">
+  <figcaption>UIC Kennzeichnungsnummer</figcaption>
+  <span class="source">Quelle:
+    <a href="#ref-wikipedia-uic-kennzeichnung">Wikipedia: UIC-Kennzeichnung der Triebfahrzeuge</a></span>
+</figure>
+
+<p>
+  Die Berechnung der Prüfziffer haben wir anhand einer <a href="#ref-eisenbahn-katalog">Eisenbahn-Fan-Website</a>
+  rekonstruiert. In C# sieht der Code dazu wie folgt aus:
+</p>
+
+<figure class="affix">
+  <pre><code>public static int TrainNumberCheckSum(string number)
+{
+    var sum = 0;
+    var multiplier = 2;
+
+    for (var i = number.Length - 1; i != -1; i--)
+    {
+        var c = number[i];
+
+        if (c >= '0' && c <= '9')
+        {
+            var zsum = ushort.Parse("" + c) * multiplier;
+            sum += zsum % 10 + zsum / 10;
+        }
+
+        if (c >= '0' && c <= '9')
+        {
+            multiplier = 3 - multiplier;
+        }
+    }
+
+    var checkDigit = (10 - sum % 10) % 10;
+
+    return checkDigit;
+}</code></pre>
+  <figcaption>Code UIC Prüfzifferberechnung</figcaption>
+</figure>
+
+<p>
+  Um die Kennzeichnung auf den Bildern zu finden wenden wir Template Matching. Die Kennzeichnungen sind in der
+  Schrift Helvetica geschrieben. Deswegen haben wir eine Font Map von Helvetica selber erstellt.
+</p>
+
+<figure class="affix">
+  <img src="images/research/ocr/font-map-helvetica.png">
+  <figcaption>UIC Kennzeichnungsnummer</figcaption>
+</figure>
+
+<p>
+  Als erstes müssen wir die Nummer finden, damit wir danach die einzelnen Zeichen identifizieren können. Unsere Idee
+  war, nach dem Text SBB zu suchen, weil dieser, zumindest bei SBB Fahrzeugen, meistens nach der Nummer steht und gut
+  gefunden werden kann. Deshalb bauen wir unser Template aus "S", "B" und "B" zusammen und suchen es in der Szene.
+  Die Szene, also das Gesamtbild des Fahrzeugs haben wir vorher in Graustufen umgewandelt und so zugeschnitten, dass
+  es etwa die Nummer enthält. Zudem wenden wir ein adaptives Thresholding an.
+</p>
+
+<figure class="affix">
+  <img src="images/research/ocr/matched-sbb-template.png">
+  <figcaption>UIC Kennzeichnungsnummer</figcaption>
+</figure>
+
+<p>
+  Es kann sein, dass der Text schwarz auf weiss gedruckt ist oder weiss auf schwarz. Deshalb suchen wir das Template
+  immer normal und invertiert. Die höhere Trefferwahrscheinlich gewinnt. Danach merken wir uns ob der Text schwarz
+  oder weiss ist.
+</p>
+
+<p>
+  Nun können wir die Nummer ausschneiden:
+</p>
+
+<figure class="affix">
+  <img src="images/research/ocr/cropped-number.jpg">
+  <figcaption>Ausgeschnittene Kennzeichnung</figcaption>
+</figure>
+
+<p>
+  Dadurch sieht man jetzt wie schwierig es ist, diese Nummern zu lesen. Die Menschen haben bereits Mühe dies zu
+  entziffern. Wir schieben nun alle Zahlen über die Nummer um die Templates zu matchen. Wir erhalten für jedes
+  Zeichen eine Wahrscheinlichkeitstabelle. Mit dieser Tabelle können wir nun überprüfen ob wir eine korrekte Nummer
+  gefunden haben. Ist dies nicht der Fall kommt unser Guesstimator-Algorithmus zum Zug. Dieser Algorithmus probiert
+  anhand der Wahrscheinlichkeiten so lange Ziffern auszutauschen bis es eine gültige Nummer gefunden hat.
+</p>
+
+<p>
+  Die Resultate sind leider ernüchtern. Meistens stimmen eine oder zwei Ziffern nicht. Mit dem Guesstimator
+  verschlimmert sich meist das Resultat noch. Auch haben wir bemerkt, dass die meisten Züge in der Nacht oder
+  zumindest bei Dunkelheit gewaschen werden. Unsere Aufnahmen mit langer Belichtungszeit lassen kein Lesen der Nummer
+  zu. Hinzu kommen Regentropfen auf dem Sichtglas, die die Sicht noch weiter verschlechtern. Deswegen haben wir
+  diesen Code auf Eis gelegt und werden diesen Ansatz nicht weiterverfolgen.
+</p>
+
+<p>
+  Der bessere Ansatz wird sein die Aufnahmen-Zeitstempel mit den Waschstrassentabellen abzugleichen. Jede
+  Waschstrasse führt ein Logbuch wann welcher Zug mit welchen Wagen gewaschen worden ist.
+</p>
+
+<!-- References -->
+
+<p id="ref-wikipedia-uic-kennzeichnung" class="reference-item">
+  <span class="ref">Wikipedia: UIC-Kennzeichnung der Triebfahrzeuge</span>
+  <a href="https://de.wikipedia.org/wiki/UIC-Kennzeichnung_der_Triebfahrzeuge" target="_blank" rel="noopener">https://de.wikipedia.org/wiki/UIC-Kennzeichnung_der_Triebfahrzeuge</a>
+  <span class="retrieved">17. Januar 2018</span>
+</p>
+
+<p id="ref-eisenbahn-katalog" class="reference-item">
+  <span class="ref">Berechnung der UIC-Prüfziffern</span>
+  <a href="http://www.eisenbahn-webkatalog.de/lexikon/prueffziffer.html" target="_blank" rel="noopener">http://www.eisenbahn-webkatalog.de/lexikon/prueffziffer.html</a>
+  <span class="retrieved">17. Januar 2018</span>
+</p>
