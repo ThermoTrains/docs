@@ -100,7 +100,65 @@
   </figure>
 
   <h3>Implementation</h3>
-  TODO thermoboard implementation<br>
+  <p>
+    Das Thermoboard ist schlicht gehalten und setzt Material Design um. Die dazu verwendete Library
+    <code>angular-material</code> hilft dabei die Komponenten gemäss Designspezifikation umzusetzen. Mithilfe von
+    Bootstrap gestalten wir das Layout.
+  </p>
+  <p>
+    Auf der Startseite sieht der Benutzer ein Dashboard mit interessanten Graphen, seinen zuletzt angesehenen
+    Einträge, seine Favoriten und die neusten Aktivitäten. Die Graphen werden mit der Library <a
+    href="#ref-chartjs">Chart.js</a> erzeugt. Die zuletzt angesehenen Einträge und die Favoriten werden im
+    <code>localStorage</code> abgelegt.
+  </p>
+
+  TODO screenshot dashboard
+
+  <p>
+    Neben dem Dashboard kann der Benutzer entweder über die Seite "Fahrzeugtypen" oder "Aufnahmen" weiter eintauchen.
+    Über die Seite Fahrzeugtypen, wählt er zuerst den Fahrzeugtyp aus und sieht dann eine Liste an Fahrzeugen. Diese
+    kann er mit einem Freitextfeld weiter filtern und kann so zur Detailansicht des Fahrzeugs gelangen.
+  </p>
+
+  TODO screenshot fahrzeugtypen
+
+  <p>
+    Über die Seite "Aufnahmen" kann der Benutzer die letzten Aufnahmen einsehen. Auch hier gibt es ein Freitextfeld
+    um die Liste zu filtern. So kann zum Beispiel nach Ort oder nach einer bestimmten Menge Fahrzeugtypen gefiltert
+    werden.
+  </p>
+
+  TODO screenshot aufnahmen
+
+  <p>
+    Auf der Detailansicht einer Aufnahme sieht der Benutzer die Sensorwerte der ganzen Aufnahme. Weiter unten sind
+    alle Fahrzeugaufnahmen aufgelistet die zu dieser Aufnahmen gehören. Navigiert der Benutzer dort hin, sieht er die
+    Werte des einzelnen Fahrzeuges sowie alle dessen anderen Aufnahmen.
+  </p>
+
+  TODO screenshot detailansicht aufnahme
+
+  <h4>Image Viewer</h4>
+  <p>
+    Der eigens gebaute Image Viewer erlaubt es dem Benutzer in die sehr grossen Panoramabilder hineinzuzoomen und
+    Details zu betrachten. Ausserdem kann der Viewer die Temperaturen aus den Infrarotbildern automatische berechnen
+    und zeigt sie dem Benutzer über der Maus an. Dazu verwenden wir die Metainformationen aus der Bilddatei. Die
+    Berechnung geschieht live und ist nicht sehr zeitintensiv, weil wir natürlich nicht sämtliche Werte der
+    Temperaturformel neuberechnen müssen.
+  </p>
+
+  TODO screenshot image viewer
+
+  <h3>Reflexion</h3>
+  <p>
+    Das Thermoboard zeigt wie sich eine Predictive Maintenance Plattform aus Endbenutzersicht anfühlt. Uns ist klar,
+    dass die Plattform nicht Feature-Komplett ist und weitere Anforderungen umgesetzt werden müssen die vor allem das
+    kollaborative zusammen arbeiten auf der Plattform fördern. Zudem müssen die Daten mit noch weiteren
+    Kontextinformationen aus anderen SBB System angereichert werden können. So soll zum Beispiel nachvollzogen werden
+    können wodurch sich ein Fahrzeug bewegt hat unmittelbar bevor es aufgenommen wurde. Eventuell ist auch eine
+    Integration in ein anderes Messsystem anzudenken welches die Passagierraumtemperatur aufzeichnet. All diese
+    Informationen sind ein Puzzlestück des Ganzen und helfen am Schluss eine saubere Analyse zu machen.
+  </p>
 
 </div>
 
@@ -135,4 +193,9 @@
   <span class="ref">Apollo GraphQL Client</span>
   <a href="https://www.apollographql.com/" target="_blank" rel="noopener">https://www.apollographql.com/</a>
   <span class="retrieved">15. Januar 2018</span>
+</p>
+<p id="ref-chartjs" class="reference-item">
+  <span class="ref">Chart.js Graph Library</span>
+  <a href="http://www.chartjs.org/" target="_blank" rel="noopener">http://www.chartjs.org</a>
+  <span class="retrieved">16. Januar 2018</span>
 </p>
