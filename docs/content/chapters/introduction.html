@@ -8,7 +8,7 @@
     einsparen. Das AKW Mühleberg produziert im Vergleich dazu knapp 3'000 GWh pro Jahr. Das Energie- und direkt damit
     verbundene Kosteneinsparungspotential ist dementsprechend enorm. Eine Massnahme aus diesem Projekt ist,
     Schienenfahrzeuge automatisch auf fehlerhafte Isolationen zu prüfen. Durch die Bedingungen, denen die Materialien im
-    täglichen Verkehr ausgesetzt sind, kommt es vor, dass sich Isolationsteile vor allem im Dachbereich lösen oder
+    täglichen Verkehr ausgesetzt sind, kommt es vor, dass sich Isolationsteile, vor allem im Dachbereich, lösen oder
     aufgrund von Materialfehlern oder Wasser- und Feuchtigkeitseintritt Schaden nehmen und zerfallen.
   </p>
 
@@ -18,8 +18,8 @@
     Die Vision des Gesamtprojekts der SBB ist das automatische Erkennen von fehlerhaften Zügen. Ein fehlerhafter Zug
     soll mit detaillierten Informationen (Zug X, n-ter Wagon von vorne, betroffener Bereich, etc.) an ein Servicecenter
     gemeldet werden. Weil dadurch der genaue Zustand bekannt ist, lässt sich der optimale Zeitpunkt einer Wartung
-    kosteneffektiv festlegen. Solch vorausschauende Wartung (Predictive Maintenance) ist der nächste Schritt in der
-    Industrie, um noch effizienter zu wirtschaften. Zeit- oder distanzabhängige Wartungen entfallen.
+    kosteneffektiv festlegen. Predictive Maintenance ist meist günstiger, weil Schäden noch nicht enstanden oder
+    kleiner sind. Dies trifft bei unentdeckten Wasserschäden besonders zu.
   </p>
 
   <h3>Projektidee</h3>
@@ -51,8 +51,8 @@
     </li>
     <li>
       <strong>Evaluation Standorte:</strong> ​Wir haben einen ersten Standort vor einer Waschanlage in Zürich Herdern
-      bei der wir unseren Thermo-Scanner aufstellen können. In einer 2-wöchigen Testphase sollen hier möglichst viele
-      Daten gesammelt werden.
+      gewählt bei der wir unseren Thermo-Scanner aufstellen können. In einer 2-wöchigen Testphase sollen hier möglichst
+      viele Daten gesammelt werden.
     </li>
   </ol>
 
@@ -86,12 +86,12 @@
   <p>
     Da wir aber zu Beginn des Projektes feststellen mussten, dass noch gar keine Infrarotaufnahmen von Isolationsschäden
     vorhanden sind, haben wir den Inhalt der Arbeit angepasst. Der Fokus der Arbeit hat sich von der automatischen
-    Klassifizierung von Isolationsschäden auf das Sammeln und Aufbereiten von Infrarotaufnahmen verschoben. Ziel ist neu
-    Erkenntnisse darüber zu gewinnen ob und wie Isolationsschäden mit Wärmebildkameras sichtbar sind.
+    Klassifizierung von Isolationsschäden auf das Sammeln und Aufbereiten von Infrarotaufnahmen verschoben. Neu ist
+    das Ziel Erkenntnisse darüber zu gewinnen ob und wie Isolationsschäden mit Wärmebildkameras sichtbar sind.
   </p>
   <p>
-    Die Problemstellung ist also: Wie kann man automatisiert Infrarotaufnahmen von Zügen erstellen, diese für eine Analyse
-    vorbereiten und Erkenntnisse aus den Daten gewinnen.
+    Die Problemstellung ist also: Wie kann man automatisiert Infrarotaufnahmen von Zügen erstellen, diese für eine
+    Analyse vorbereiten und Erkenntnisse aus den Daten gewinnen?
   </p>
 
   <p>
@@ -110,14 +110,17 @@
     <figcaption>Thermographie Test SBB</figcaption>
   </figure>
 
-  <p class="affix">
+  <p>
     Das obige Bild zeigt gut, wie ein intakter Zug auf einer Thermographie aussieht. Die auffallenden roten
     Flächen auf beiden Seiten der Türe sind die Stahlträger des Wagons, durch die auch die Warmluft geführt wird.
     Weitere auffallende Wärmebrücken sehen wir im Bereich der Notausstiegfenster und natürlich der Lüftungsschlitze.
+  </p>
+
+  <p>
     Folgende Bilder zeigen diese Stellen noch genauer.
   </p>
 
-  <figure>
+  <figure class="affix">
     <img src="images/aircon.png">
     <figcaption>Zuluftkanal (Klimaanlage)</figcaption>
   </figure>
@@ -177,8 +180,7 @@
     </li>
     <li>
       Die Temperaturspannen hingegen scheinen nicht ein Problem zu werden.
-      Klar müssen wir die Kamera manuell kalibrieren.
-      Die Kamera ist aber genügend sensitiv um auch bei einer grossen Spanne unterschiedliche Wärmeflächen zu erkennen.
+      Die Kamera ist genügend sensitiv um auch bei einer grossen Spanne unterschiedliche Wärmeflächen zu erkennen.
     </li>
     <li>
       Die SC620 führt in unregelmässigen Abständen eine automatische Rekalibrierung durch.
@@ -257,7 +259,7 @@
       durchlaufen somit die Waschanlage häufig.
     </li>
     <li>
-      <strong>Identifizierung der Wagons:</strong> Alle Züge resp. sogar jeder Wagon ist mit einem RFID-Chip
+      <strong>Identifizierung der Wagons:</strong> Alle Züge, ja sogar jeder Wagon ist mit einem RFID-Chip
       ausgestattet. In der Waschanlage wird dieser ausgelesen. Somit wäre die Identifikation der einzelnen Wagons
       sehr einfach.
     </li>

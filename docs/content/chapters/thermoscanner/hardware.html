@@ -26,7 +26,7 @@
 </p>
 
 <ul>
-  <li>Temperatursensor für die Aussentemperatur (hängt unten raus)</li>
+  <li>Temperatursensor für die Aussentemperatur (hängt unten heraus)</li>
   <li>Steckerleiste für die Stromversorgung aller Komponenten</li>
   <li>Heizlüfter um Kondenswasserbildung zu verhindern</li>
   <li>Mini PC für Betrieb der Software</li>
@@ -59,7 +59,7 @@
 
 <p>
   Das Gehäuse ist eine Spezialanfertigung, die wir bei der Firma Almatec in Auftrag gegeben haben. Es ist wetterfest und
-  für das Betreiben von Elektronik im freien geeignet. Oben befinden sich die Öffnungen für die beiden Kameras. Die
+  für das Betreiben von Elektronik im Freien geeignet. Oben befinden sich die Öffnungen für die beiden Kameras. Die
   Farbkamera schaut durch ein Plexiglas und die Infrarotkamera durch ein Loch. Die Infrarotkamera darf nicht durch ein
   Glas filmen, da sonst die Infrarotwellen gefiltert werden. Spezialgläser existieren zwar, sind aber extrem teuer. Um
   dennoch einigermassen gegen Wassereintritt geschützt zu sein, ist die Öffnung mit einer Gummitülle abgedichtet. Auf
@@ -106,7 +106,7 @@
       <td>Auflösung</td>
       <td>
         Je höher die Auflösung desto besser lassen sich die Aufnahmen bearbeiten und analysieren. Die Auflösung von
-        Infrarotkamera sind technologiebedingt klein, deshalb sollte eine grösstmögliche Auflösung gewählt werden.
+        Infrarotkameras sind technologiebedingt klein, deshalb sollte eine grösstmögliche Auflösung gewählt werden.
       </td>
     </tr>
     <tr>
@@ -375,8 +375,8 @@
       <td>4</td>
       <td>Dauerbetrieb</td>
       <td>
-        Der Mini-PC muss für den Dauerbetrieb ausgelegt sein. Möglichst wenig bewegliche Teile, robuste
-        Komponenten und ein gutes Klimamanagement sind nötig.
+        Der Mini-PC muss für den Dauerbetrieb ausgelegt sein. Möglichst wenig bewegliche Teile, robuste Komponenten und
+        ein gutes Klimamanagement sind nötig.
       </td>
     </tr>
     <tr>
@@ -496,10 +496,10 @@
 
 <p>
   Der Mini PC verfügt über ein LTE Modul mit zwei Antennenanschlüssen. Die mitgelieferten Antennen sind direkt am Mini
-  PC montiert und somit innerhalb des Gehäuses. Im Gehäuse selber gibt es aber überhaupt keinen Empfang. Bis zu dieser
+  PC montiert und somit innerhalb des Gehäuses. Im Gehäuse selber gibt es überhaupt keinen Empfang. Bis zu dieser
   Erkenntnis hat es lange gedauert, da zuerst die Antennen nicht geliefert wurden und wir dachten, dass LTE Modul
-  funktioniere nicht. Wir nahmen an die Antennen befinden sich innerhalb des Mini PC. Als die Antennen nachgeliefert
-  wurden, hat jemand sie aus dem Briefkasten gestohlen. Als wir die Antennen dann endlich hatten, mussten wir
+  funktioniere nicht. Wir nahmen an, die Antennen befinden sich innerhalb des Mini PC. Als die Antennen nachgeliefert
+  wurden, hat jemand sie aus dem Briefkasten gestohlen. Sobald wir die Antennen dann endlich hatten, mussten wir
   feststellen, dass es im Gehäuse keinen Empfang gibt.
 </p>
 <p>
@@ -544,9 +544,9 @@
 
 <p>
   Die evaluierte LTE Antenne erfüllt alle unsere Anforderungen und ist dank 90°-Kreuz-Polarisierung empfangsstark. Dank
-  der Kreuzpolarisierung spielt es keine Rolle, wie die Antenne zum Signal ausgerichtet ist. Das lange Antennenkabel
-  führen wir unten aus dem Gehäuse (zusammen mit Strom usw.) und montieren die Antenne mit starkem Klebeband auf dem
-  Dach des Thermo-Scanners.
+  dieser spielt es keine Rolle, wie die Antenne zum Signal ausgerichtet ist. Das lange Antennenkabel führen wir unten
+  aus dem Gehäuse (zusammen mit Strom usw.) und montieren die Antenne mit starkem Klebeband auf dem Dach des
+  Thermo-Scanners.
 </p>
 
 <figure>
@@ -621,11 +621,11 @@
 
 <p>
   Um die Aussentemperatur zu messen, wurde ein USB-Temperatursensor <a href="#ref-temper2">TEMPer2 von PCSensor</a>
-  verbaut. Wir brauchen die Aussentemperatur, um aus den Infrarotaufnahmen die genaue Temperatur berechnen zu können. Der
-  Sensor wird durch ein Loch im Bodenblech aus dem Gehäuse geführt. In der Praxis hat sich leider gezeigt, dass der
+  verbaut. Wir brauchen die Aussentemperatur, um aus den Infrarotaufnahmen die genaue Temperatur berechnen zu können.
+  Der Sensor wird durch ein Loch im Bodenblech aus dem Gehäuse geführt. In der Praxis hat sich leider gezeigt, dass der
   Sensor nicht zuverlässig funktioniert. Es müsste das gesamte Kabel aus dem Gehäuse rausschauen nicht nur das Endstück,
   um eine richtige Messung zu erhalten. Wir greifen deshalb auf die Temperaturdaten einer nahe gelegenen Wetterstation
-  zu für die Aussentemperatur. Die Ungenauigkeiten, die sich dadurch ergeben, sind für unseren Fall vernachlässigbar.
+  zu. Die Ungenauigkeiten, die sich dadurch ergeben, sind für unseren Fall vernachlässigbar.
 </p>
 
 <figure>
@@ -634,17 +634,20 @@
 </figure>
 
 <p>
-  Zum Ende des Projektes haben wir eine neue Seite von PCSensor gefunden, die den Sensor besser beschreibt. Zum
+  Gegen Ende des Projektes haben wir eine neue Website von PCSensor gefunden, die den Sensor besser beschreibt. Zum
   Zeitpunkt der Implementierung waren englische Information leider nur über ältere Gerätetypen vorhanden. TEMPer2 war
-  nur auf Chinesisch beschrieben. Auch gibt es seit 22. November 2017 eine neue Version der TEMPer Software. Wir
-  haben nun herausgefunden, dass die 2 in TEMPer2 dafürsteht, dass das Gerät zwei Sensoren hat. Einer im Gehäuse und
-  einer über ein Kabel. Da unsere Messungen, wie man unten sieht, fast nie unter 14°C gelangen, gehen wir davon aus,
-  dass wir die Innentemperatur gemessen haben. Man sieht gut, wie die Temperatur in der Nacht konstant bei ca. 14°C
-  verharrt und am Tag, falls Aussentemperatur über 14°C stieg, im Verlaufe des Tages ansteigt. Das auf und ab
-  gegen Ende der ersten Testphase deuten wir als eine Aussentemperatur, die stark unter 14°C lag, so dass der
-  Thermostat den Heizlüfter über längere Intervalle eingeschaltet lies. Die Zeitstempel zu denen wir die Temperatur
-  gemessen haben sind leider nicht schön linear verteilt, weil nur bei Zugdurchfahrt eine Aufnahme gespeichert wird.
-  Die Züge fahren nicht regelmässig durch die Waschstrasse.
+  nur auf Chinesisch beschrieben. Auch gibt es seit 22. November 2017 eine neue Version der TEMPer Software. Wir haben
+  nun herausgefunden, dass die 2 in TEMPer2 dafürsteht, dass das Gerät zwei Sensoren hat. Einer im Gehäuse und einer
+  über ein Kabel.
+</p>
+<p>
+  Da unsere Messungen, wie man unten sieht, fast nie unter 14°C gelangen, gehen wir davon aus, dass wir die
+  Innentemperatur gemessen haben. Man sieht gut, wie die Temperatur in der Nacht konstant bei ca. 14°C verharrt, im
+  Verlaufe des Tages allerdings ansteigt, wenn die Aussentemperatur über 14°C war. Das auf und ab gegen Ende der ersten
+  Testphase deuten wir als eine Aussentemperatur, die stark unter 14°C lag, so dass der Thermostat den Heizlüfter über
+  längere Intervalle eingeschaltet lies. Die Zeitstempel zu denen wir die Temperaturen gemessen haben, sind leider nicht
+  schön linear verteilt, weil nur bei Zugdurchfahrt eine Aufnahme gespeichert wird. Die Züge fahren nicht regelmässig
+  durch die Waschstrasse.
 </p>
 
 <figure class="full">
@@ -692,16 +695,16 @@
 
 <!-- References -->
 
+<p id="ref-almatec-offerte" class="reference-item">
+  <span class="ref">Offerte Almatec</span>
+  <span class="retrieved">25. September 2017</span>
+</p>
+
 <p id="ref-flir-a65" class="reference-item">
   <span class="ref">FLIR A65 User Manual</span>
   <a href="http://support.flir.com/DocDownload/Assets/dl/t559770-en-us_a4.pdf" target="_blank" rel="noopener">
     http://support.flir.com/DocDownload/Assets/dl/t559770-en-us_a4.pdf</a>
   <span class="retrieved">16. Juni 2017</span>
-</p>
-
-<p id="ref-almatec-offerte" class="reference-item">
-  <span class="ref">Offerte Almatec</span>
-  <span class="retrieved">25. September 2017</span>
 </p>
 
 <p id="ref-basler-ace" class="reference-item">
@@ -718,14 +721,14 @@
   <span class="retrieved">17. Dezember 2017</span>
 </p>
 
-<p id="ref-temper2" class="reference-item">
-  <span class="ref">TEMPer2 von PCSensor</span>
-  <a href="http://www.pcsensor.com/usb-thermometer/temper2.html" target="_blank" rel="noopener">http://www.pcsensor.com/usb-thermometer/temper2.html</a>
-  <span class="retrieved">11. Januar 2017</span>
-</p>
-
 <p id="ref-brack-lte" class="reference-item">
   <span class="ref">USL LTE-ANTENNE, 2X SMA STECKER</span>
   <a href="https://www.brack.ch/usl-lte-antenne-237340" target="_blank" rel="noopener">https://www.brack.ch/usl-lte-antenne-237340</a>
   <span class="retrieved">12. Januar 2017</span>
+</p>
+
+<p id="ref-temper2" class="reference-item">
+  <span class="ref">TEMPer2 von PCSensor</span>
+  <a href="http://www.pcsensor.com/usb-thermometer/temper2.html" target="_blank" rel="noopener">http://www.pcsensor.com/usb-thermometer/temper2.html</a>
+  <span class="retrieved">11. Januar 2017</span>
 </p>

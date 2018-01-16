@@ -284,8 +284,8 @@
 <h5>Error Monitoring</h5>
 <p>
   In den jeweiligen Komponenten können Errors, Warnings oder gar nicht abgefangene Exceptions
-  auftreten. Um diese nicht mühsam im Log suchen zu müssen, sollen diese einfacher eingesehen werden können. Zudem sollte
-  bei neuen Fehler gleich eine E-Mail-Benachrichtigung versendet werden.
+  auftreten. Um diese nicht mühsam im Log suchen zu müssen, sollen diese einfacher eingesehen werden können. Zudem
+  sollte bei neuen Fehler gleich eine E-Mail-Benachrichtigung versendet werden.
 </p>
 
 <p>
@@ -503,9 +503,13 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 </p>
 
 <p>
-  Die Emulator-Kamera ist hilfreich, wenn man die Komponente testen will ohne dass man die Kamera im Netzwerk in
-  Betrieb genommen hat. Das erzeugte Bild ist ein Test-Infrarotbild bei welchem sich ein Balken auf und ab bewegt
-  sowie einige Noise-Pixel die sich zufällig verteilen.
+  Die Emulator-Kamera ist hilfreich, wenn man die Komponente testen will ohne, dass man die Kamera im Netzwerk in
+  Betrieb nimmt. Das erzeugte Bild ist ein Test-Infrarotbild bei welchem sich ein Balken auf und ab bewegt, sowie einige
+  Noise-Pixel die sich zufällig verteilen. Diese Noise Pixel stellen sicher, dass jedes Frame andere Statistikwerte
+  aufweist. So können Entwickler testen ob Minimum, Maximum, Median und so weiter für jedes Frame neu und richtig
+  berechnet werden. Diese Werte sind wichtig um das Bild dem Betrachter mit einer sinnvollen Temperaturspanne anzeigen
+  zu können. Macht die anzeigende Software keine laufende Anpassung der Spanne sind die Noise-Pixel nicht immer
+  sichtbar.
 </p>
 
 <figure>
@@ -795,9 +799,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <p>
-  In der Detektionsklasse ist das Hintergrundbild abgelegt. Also das Bild der Kamera, auf welchem sich kein Zug befindet.
-  Wir nennen es von nun an Background. Der Background wird beim Start sowie in regelmässigen Abständen immer wieder neu
-  abgelegt. Wenn wir den Background ablegen, führen wir zuerst einen Blurfilter aus. Danach berechnen wir die
+  In der Detektionsklasse ist das Hintergrundbild abgelegt. Also das Bild der Kamera, auf welchem sich kein Zug
+  befindet. Wir nennen es von nun an Background. Der Background wird beim Start sowie in regelmässigen Abständen immer
+  wieder neu abgelegt. Wenn wir den Background ablegen, führen wir zuerst einen Blurfilter aus. Danach berechnen wir die
   arithmetische durchschnittliche Helligkeit. Wir speichern also nur ein Wert zwischen 0 und 255.
 </p>
 
@@ -874,11 +878,11 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Wir mussten also ein einfacheres Verfahren entwickeln, welches nun simpel die Helligkeit zum Background vergleicht. Mit
-  fleissiger Überwachung des Detektionsalgorithmus und ständigem Nachschrauben sowie den praktischen Tools die wir
+  Wir mussten also ein einfacheres Verfahren entwickeln, welches nun simpel die Helligkeit zum Background vergleicht.
+  Mit fleissiger Überwachung des Detektionsalgorithmus und ständigem Nachschrauben sowie den praktischen Tools die wir
   geschaffen haben konnten wir die Thresholds ständig verbessern. Das nachfolgende Flow Chart zeigt auf was passiert,
-  wenn der Threshold erreicht wurde oder nicht. Zur Übersicht wurde der End-State weggelassen. Wenn kein Pfeil von
-  einem Kasten weggeht, endet der Flow dort.
+  wenn der Threshold erreicht wurde oder nicht. Zur Übersicht wurde der End-State weggelassen. Wenn kein Pfeil von einem
+  Kasten weggeht, endet der Flow dort.
 </p>
 
 <figure>
@@ -1138,14 +1142,13 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Die Bilder von der FLIR Infrarotkamera können mithilfe des FLIR ATLAS SDKs leider nicht anders abgespeichert werden
   als SEQ Datei. Diese Dateien sind zu gross, um in Vernünftiger Zeit über eine Mobilfunkantenne zu übertragen, ohne
   dass sich Übertragungen überlappen würden. Eventuell käme es dann zu einem nicht aufholbaren Rückstand in der
-  Übertragungsqueue. Der andere Grund ist, dass der Server auf den die Dateien übertragen werden nicht unendlich Speicher
-  hat. Dieser hat nur 50 GiB an Speicherplatz verfügbar. Dies ist jedoch ein softes Limit wie wir bemerkt haben. Wir
-  möchten also die SEQ Dateien in ein anderes Format komprimieren, um die Daten zu übertragen. Da es sich um
-  aufeinander folgende Bilder handelt würde sich ein Videoformat anbieten. Das proprietäre Format von FLIR SEQ
-  mussten wir selber reverse engineeren, um die Inhalte zu verstehen und diese auslesen zu können. FLIR hat kein
-  Interesse diese Innereien zu dokumentieren oder Gratissoftware anzubieten die diese konvertieren kann. Es gibt
-  nämlich Bezahltools von FLIR, die aber mehrere zehntausend Franken kosten können. Deswegen haben wir es selber
-  angegangen.
+  Übertragungsqueue. Der andere Grund ist, dass der Server auf den die Dateien übertragen werden nicht unendlich
+  Speicher hat. Dieser hat nur 50 GiB an Speicherplatz verfügbar. Dies ist jedoch ein softes Limit wie wir bemerkt
+  haben. Wir möchten also die SEQ Dateien in ein anderes Format komprimieren, um die Daten zu übertragen. Da es sich um
+  aufeinander folgende Bilder handelt würde sich ein Videoformat anbieten. Das proprietäre Format von FLIR SEQ mussten
+  wir selber reverse engineeren, um die Inhalte zu verstehen und diese auslesen zu können. FLIR hat kein Interesse diese
+  Innereien zu dokumentieren oder Gratissoftware anzubieten die diese konvertieren kann. Es gibt nämlich Bezahltools von
+  FLIR, die aber mehrere zehntausend Franken kosten können. Deswegen haben wir es selber angegangen.
 </p>
 
 <p>
@@ -1181,7 +1184,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Sämtliche Verluste haben wir in diesem Histogramm beider Testphasen aufgezeigt:
+  Sämtliche Verluste haben wir in diesem Histogramm beider Testphasen aufgezeigt. Die Y-Achse stellt die Anzahl Bilder
+  dar.
 </p>
 
 <figure>
@@ -1359,12 +1363,6 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <!-- References -->
 
-<p id="ref-openweathermap" class="reference-item">
-  <span class="ref">OpenWeatherMap: Wetter API</span>
-  <a href="http://openweathermap.org" target="_blank" rel="noopener">http://openweathermap.org</a>
-  <span class="retrieved">10. Januar 2018</span>
-</p>
-
 <p id="ref-json-net" class="reference-item">
   <span class="ref">Json.NET: .NET API für JSON</span>
   <a href="https://www.newtonsoft.com/json" target="_blank" rel="noopener">https://www.newtonsoft.com/json</a>
@@ -1377,7 +1375,13 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   <span class="retrieved">12. Januar 2018</span>
 </p>
 
-<p id="ref-apple-propres" class="reference-item">
+<p id="ref-openweathermap" class="reference-item">
+  <span class="ref">OpenWeatherMap: Wetter API</span>
+  <a href="http://openweathermap.org" target="_blank" rel="noopener">http://openweathermap.org</a>
+  <span class="retrieved">10. Januar 2018</span>
+</p>
+
+<p id="ref-apple-prores" class="reference-item">
   <span class="ref">Apple ProRes</span>
   <a href="https://en.wikipedia.org/wiki/Apple_ProRes" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Apple_ProRes</a>
   <span class="retrieved">13. Januar 2018</span>
