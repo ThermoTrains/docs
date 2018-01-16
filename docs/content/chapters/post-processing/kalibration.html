@@ -45,10 +45,13 @@
   <figcaption>Schachbrett an warmem Fenster</figcaption>
 </figure>
 
+<figure>
+  <img src="images/post-processing/chessboard_ir.png">
+  <figcaption>Schachbrett an warmem Fenster (Infrarot)</figcaption>
+</figure>
+
 <p>
-  Die gefundenen Daten serialisieren wir in eine JSON Datei. Um das zu realisieren mussten wir aber zuerst noch den
-  Code zur Serialisierung von OpenCV <code>Mat</code> Objekten schreiben, was sich als mühsame Arbeit herausgestellt
-  hat.
+  Die gefundenen Daten serialisieren wir in eine JSON Datei.
 </p>
 
 <figure>
@@ -75,4 +78,19 @@
   die Methode <code>getOptimalNewCameraMatrix(...)</code> an, welche die Kameramatrix berechnet. Die einzelnen Frames
   lassen sich dann mit der Methode <code>undistort(...)</code> entzerren. Durch das Entzerren werden jedoch schwarze
   Ränder hinzugefügt. Wir schneiden diese Ränder anschliessend noch ab.
+</p>
+
+<figure>
+  <img src="images/post-processing/flir_calibration.jpg">
+  <figcaption>Rechts: Verzerrt, Links: Entzerrt</figcaption>
+</figure>
+
+<figure>
+  <img src="images/post-processing/flir_calibration_diff.jpg">
+  <figcaption>Absolute Differenz zum entzerrten Bild</figcaption>
+</figure>
+
+<p>
+  Bei der FLIR Kamera ist die Verzerrung auf die aufgenommenen Distanz von Auge kaum zu erkennen. Nimmt man die absolute
+  Differenz der beiden Bilder, kann man den Unterschied aber sichtbar machen.
 </p>

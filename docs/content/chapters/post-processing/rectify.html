@@ -21,7 +21,7 @@
 
 <p>
   Folgend arbeiten wir mit dem V-Kanal (Value) von HSV bei den Farbbildern. Die Infrarotbilder sind bereits
-  Graustufenbilder. Um die obere und untere Kante zu finden, unterteilen wir das Bild erst einmal um die
+  Graustufenbilder. Um die obere und untere Kante zu finden, unterteilen wir das Bild erst einmal, um die
   Wahrscheinlichkeit des Erfolgs zu erhöhen. Die obere Zugkante ist im oberen Drittel und die untere im unteren Drittel.
   In den beiden Ausschnitten suchen wir nun die maximale Frequenz in Y Richtung. Das heisst, wir wollen pro Spalte im
   Bild ein weisser Pixel. Diese finden wir mit einer Art vereinfachtem Sobel-Filter, der nur in eine Richtung agiert.
