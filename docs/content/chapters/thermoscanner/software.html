@@ -480,7 +480,7 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
     </ul>
   </li>
 </ul>
-<p>
+<p class="affix">
   Die Aufgabe des IRReaders ist die Bilder FLIR Kamera aufzunehmen. Bevor die eigentliche Komponente gestartet wird,
   wird zuerst die Kamera gefunden. Die Suche nach der Kamera geschieht asynchron. Um die Testingzyklen sowie
   grundsätzlich den Start der Komponente zu beschleunigen haben wir folgendes Verfahren entwickelt, um möglichst
@@ -709,7 +709,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
     </ul>
   </li>
 </ul>
-<p>
+<p class="affix">
   Aus technischen Limitierungen erfüllt der VisibleLightReader zwei Aufgaben was gegen das Microservice Prinzip
   verstösst. Die Komponente liest zum einen den Bildstream der Basler Kamera, um festzustellen, ob sich ein Zug in das
   Bild hineinbewegt hat. Hat sie einen Zug detektiert, meldet sie mit <code>capture:start</code> dies an alle
@@ -1022,7 +1022,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
     </ul>
   </li>
 </ul>
-<p>
+<p class="affix">
   Um unseren TEMPer2 Temperatursensor auszulesen, mussten wir das USB HID (Human Interface Device) konsumieren. Vom
   Hersteller gibt es nur eine Bedienersoftware ohne Code Beispiele oder Support für Entwickler. Glücklicherweise
   haben wir ein .NET Codebeispiel gefunden, welches jedoch etwas veraltet ist. Wir haben die Konstanten, die der
@@ -1058,7 +1058,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
     </ul>
   </li>
 </ul>
-<p>
+<p class="affix">
   In der zweiten Aufnahmephase haben wir uns entschieden den TemperatureReader nicht mehr zu verwenden, weil die
   Messdaten nicht brauchbar sind. Um die aufgenommenen IR Bilder trotzdem auswerten zu können haben wir den
   WeatherReader implementiert der aktuellen Wetterdaten von <a href="#ref-openweathermap">OpenWeatherMap</a>
@@ -1071,7 +1071,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Durch das müssen wir nicht bezahlen. Die Daten können über einen HTTP GET Request abgefragt werden:
 </p>
 
-<figure>
+<figure class="affix">
   <pre><code>http://api.openweathermap.org/data/2.5/weather?q=Zürich,CH&appid={openWeatherMapApiKey}</code></pre>
   <figcaption>OpenWeatherMap API Request URL</figcaption>
 </figure>
@@ -1080,7 +1080,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Die Antwort die zurück kommt sieht dann ungefähr so aus:
 </p>
 
-<figure>
+<figure class="affix">
   <pre><code>{
   "coord": {"lon": 8.54, "lat": 47.37},
   "weather": [{
@@ -1138,7 +1138,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
     </ul>
   </li>
 </ul>
-<p>
+<p class="affix">
   Die Bilder von der FLIR Infrarotkamera können mithilfe des FLIR ATLAS SDKs leider nicht anders abgespeichert werden
   als SEQ Datei. Diese Dateien sind zu gross, um in Vernünftiger Zeit über eine Mobilfunkantenne zu übertragen, ohne
   dass sich Übertragungen überlappen würden. Eventuell käme es dann zu einem nicht aufholbaren Rückstand in der
@@ -1188,7 +1188,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   dar.
 </p>
 
-<figure>
+<figure class="affix">
   <img src="images/thermoscanner/compression-precision-loss.png">
   <figcaption>IRCompressor Histogramm Präzisionsverlust in Prozent</figcaption>
 </figure>
@@ -1239,7 +1239,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
     </ul>
   </li>
 </ul>
-<p>
+<p class="affix">
   Die Uploader Komponente hört auf Nachrichten im Kanal <code>delivery:upload</code>. Die Dateien werden auf einen
   FTP Server hochgeladen und anschliessend in den Papierkorb verschoben. Die Zugangsdaten zum FTP Server sind in der
   Umgebungsvariable <code>THERMOBOX_FTP</code> abgelegt in der Form <code>username:password@server</code>.
