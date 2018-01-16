@@ -33,11 +33,17 @@ dl {
 }
 
 p,
+ul,
+ol,
 li,
 dd,
 table,
 pre code {
   page-break-inside: avoid;
+}
+
+.allow-page-break {
+  page-break-inside: auto;
 }
 
 .nobr {
@@ -182,6 +188,10 @@ figure {
 
   table {
     margin: 0 auto 10px;
+  }
+
+  + figure {
+    margin-top: 10px;
   }
 }
 
