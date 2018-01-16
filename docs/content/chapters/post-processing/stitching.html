@@ -8,20 +8,21 @@
 <p class="affix">
   Durch die vorgängig angewandten Operationen auf den Frames, können wir nun ein vereinfachtes Stitching
   Verfahren anwenden. Wir haben zuerst mit handelsüblichem Panoramastitching versucht Resultate herauszuholen,
-  schlugen aber fehl. Die <code>Stitcher</code> Klasse von OpenCV ist zum einen nicht in der Java Wrapper Library verfügbar,
-  weshalb wir selber einen JNI Wrapper schreiben mussten. Dieser hat es schlussendlich nicht überlebt. Die <code>Stitcher</code>
-  Funktionalität von OpenCV bietet zwei Modi an: Landschaftspanorama und Ebenenpanorama. Der
+  schlugen aber fehl. Die <code>Stitcher</code> Klasse von OpenCV ist zum einen nicht in der Java Wrapper Library
+  verfügbar, weshalb wir selber einen JNI Wrapper schreiben mussten. Dieser hat es schlussendlich nicht überlebt. Die
+  <code>Stitcher</code> Funktionalität von OpenCV bietet zwei Modi an: Landschaftspanorama und Ebenenpanorama. Der
   Landschaftspanorama-Modus geht davon aus, dass die Kamera geschwenkt wurde bei der Aufnahme der verschiedenen
-  Bilder. Der Ebenen-Modus geht davon aus, man hat eine Karte oder Dokumente fotografiert, welche man in einer
-  Ebene zusammenfügen möchte.
+  Bilder. Der Ebenen-Modus geht davon aus, man hat eine Karte oder Dokumente fotografiert, welche man in einer Ebene
+  zusammenfügen möchte. Das wäre eigentlich unser Anwendungsfall.
 </p>
 
 <p>
-  Das Hauptproblem besteht darin, dass es jeweils grosse Überlappungen zwischen den einzelnen Frames gibt. Hinzu
-  kommt, dass sich Wagons ziemlich ähnlich sind. Der erste Versuch war einfach mal drauf los zu stitchen. Wir haben
-  sämtliche Frames der <code>Stitcher</code> Klasse übergeben, den Modus auf Ebene gestellt und geschaut was passiert. Es gab
-  einen Fehler, den wir auf keine Weise beheben konnten. Der Modus Landschaft hat ein sehr amüsantes Resultat
-  geliefert, das allerdings weniger hilfreich war. Die Wagons waren wild übereinandergestapelt und verzerrt.
+  Das Hauptproblem besteht darin, dass es jeweils grosse Überlappungen zwischen den einzelnen Frames gibt und es
+  einen immer gleichbleibenden Hintergrund gibt. Hinzu kommt, dass sich Wagons ziemlich ähnlich sind. Der erste Versuch
+  war einfach mal drauf los zu stitchen. Wir haben sämtliche Frames der <code>Stitcher</code> Klasse übergeben, den
+  Modus auf Ebene gestellt und geschaut was passiert. Es gab einen Fehler, den wir auf keine Weise beheben konnten. Der
+  Modus Landschaft hat ein sehr amüsantes Resultat geliefert, das allerdings weniger hilfreich war. Die Wagons waren
+  wild übereinandergestapelt und verzerrt.
 </p>
 
 <p>
@@ -34,7 +35,8 @@
 <p>
   Danach haben wir versucht das Stitching selber zu implementieren mit der OpenCV Methode
   <code>findHomography(...)</code>. Dazu mussten wir Featurepunkte in den beiden Bildern finden, die wir
-  zusammenstitchen wollten. Das hat aber auch nicht geklappt. Wahrscheinlich war die Qualität der Featurepunkte ungenügend.
+  zusammenstitchen wollten. Das hat aber auch nicht geklappt. Wahrscheinlich war die Qualität der Featurepunkte
+  ungenügend.
 </p>
 
 <h4>Pattern Matching</h4>
@@ -76,6 +78,7 @@
 
 <p id="ref-sqdiff-normed" class="reference-item">
   <span class="ref">OpenCV: Template Match Modes</span>
-  <a href="http://docs.opencv.org/3.2.0/df/dfb/group__imgproc__object.html#ga3a7850640f1fe1f58fe91a2d7583695d" target="_blank" rel="noopener">http://docs.opencv.org/3.2.0/df/dfb/group__imgproc__object.html</a>
+  <a href="http://docs.opencv.org/3.2.0/df/dfb/group__imgproc__object.html#ga3a7850640f1fe1f58fe91a2d7583695d"
+     target="_blank" rel="noopener">http://docs.opencv.org/3.2.0/df/dfb/group__imgproc__object.html</a>
   <span class="retrieved">15. Juni 2017</span>
 </p>

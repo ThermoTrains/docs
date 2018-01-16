@@ -284,7 +284,7 @@
 <h5>Error Monitoring</h5>
 <p>
   In den jeweiligen Komponenten können Errors, Warnings oder gar nicht abgefangene Exceptions
-  auftreten. Um diese nicht mühsam im Log suchen zu müssen, sollen diese einfacher eingesehen werden können. Zudem
+  auftreten. Um diese nicht umständlich im Log suchen zu müssen, sollen diese einfacher eingesehen werden können. Zudem
   sollte bei neuen Fehler gleich eine E-Mail-Benachrichtigung versendet werden.
 </p>
 
@@ -574,8 +574,8 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 </p>
 
 <p>
-  Die Kontrolle der Kamera über das FLIR ATLAS SDK ist etwas mühsam. Die Control-Library ist nicht sehr stabil. Es kann
-  zu zufälligen Exceptions kommen, wenn ein Befehl abgesetzt wird. Um uns Abhilfe zu schaffen, haben wir eine Retry
+  Die Kontrolle der Kamera über das FLIR ATLAS SDK ist etwas umständlich. Die Control-Library ist nicht sehr stabil. Es
+  kann zu zufälligen Exceptions kommen, wenn ein Befehl abgesetzt wird. Um uns Abhilfe zu schaffen, haben wir eine Retry
   Methode gebaut, der ein Callback zur Befehlsausführung mitgegeben wird sowie ein Callback zur Überprüfung ob es
   erfolgreich war. Diese Retry Methode führt dann den Befehl so lange wiederholt aus, bis keine Exception geworfen wird
   und der zweite Callback sagt, dass es funktioniert hat. Leider können wir nicht in den Code hineinschauen, weil er
@@ -1267,9 +1267,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <h4>CLI Utils</h4>
 <p>
-  Während der Projektarbeit sind wir immer wieder auf mühsame Arbeiten gestossen die wir automatisiert haben. Diese
-  kleinen CLI Tools haben wir auch in die .NET Solution integriert damit diese auch vom gemeinsamen Code profitieren
-  können.
+  Während der Projektarbeit sind wir immer wieder auf sich wiederholende Arbeiten gestossen die wir automatisiert haben.
+  Diese kleinen CLI Tools haben wir auch in die .NET Solution integriert damit diese auch vom gemeinsamen Code
+  profitieren können.
 </p>
 
 <h5>SeqConverter</h5>
