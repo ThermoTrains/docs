@@ -15,26 +15,26 @@
     mit dem jetzigen Wissensstand auch eher wenig, weil der Wagen auf dem Infrarotbild deutlich anders aussehen kann,
     je nachdem was er vorher gemacht hat. Ist der auf dem Gleisfeld stillgestanden? Liefen die Heizungen? Strahlte in
     die Sonne an? All diese Gegebenheiten würden zu Unterschieden führen. Diese müssen zuerst in Erfahrung gebracht
-    werden und festgehalten werden damit man sagen ob der Unterschied nun einen Schaden darstellt oder einfach eine
+    und festgehalten werden. Nur so kann man sagen, ob der Unterschied nun einen Schaden darstellt oder einfach eine
     andere Rahmenbedingung.
   </p>
 
   <p>
-    Deshalb brauchen wir eine Applikation die das Vergleichen der Aufnahmen erlaubt. Unsere Aufnahmen sind nach dem
+    Deshalb brauchen wir eine Applikation, die das Vergleichen der Aufnahmen erlaubt. Unsere Aufnahmen sind nach dem
     Post-Processing sehr breite Bilder mit einer Auflösung von bis zu 20'000 Pixeln in der Breite und 512 Pixel in
-    der Höhe. Die erste Idee war, diese Bilder mit den rohen Sensordaten anzureichern damit sie in den FLIR Tools
-    angesehen werden können. Die FLIR Tools bieten alle Werkzeuge um die Bilder zu analysieren, Kommentare zu
+    der Höhe. Die erste Idee war, diese Bilder mit den rohen Sensordaten anzureichern, damit sie in den FLIR Tools
+    angesehen werden können. Die FLIR Tools bieten alle Werkzeuge, um die Bilder zu analysieren, Kommentare zu
     erfassen und sogar Reports zu erstellen. Der Nachteil der FLIR Tools ist allerdings, dass diese lokal installiert
-    werden müssen. Müssten jetzt alle Experten die auf die Bilder ansehen möchten bei ihrem SBB Büro-PC eine Software
-    installieren gäbe das einen grossen Aufwand für die interne IT.
+    werden müssen. Müssten jetzt alle Experten, die die Bilder ansehen möchten, bei ihrem SBB Büro-PC eine Software
+    installieren, gäbe das einen grossen Aufwand für die interne IT.
   </p>
 
   <p>
     Das zweite Problem ist, dass die FLIR Tools auf dem FLIR ATLAS SDK basieren. Wenn ein Bild geöffnet wird, welches
-    nicht einer Auflösung entspricht zu der es auch eine FLIR Kamera gibt, stürzt die Software einfach mit einer
+    nicht einer Auflösung entspricht, zu der es auch eine FLIR Kamera gibt, stürzt die Software einfach mit einer
     unaufgefangenen Exception ab. Warum das passiert scheint uns ein Rätsel, kann aber durchaus so gewollt sein. FLIR
-    hat keine Interessen Tools zu bauen mit denen andere Bilder analysiert werden können. Jedenfalls haben wir
-    erwiesen, dass es wirklich an der Auflösung liegt. Ansonsten würde der Ansatz funktionieren. Wir haben unsere
+    hat keine Interessen Tools zu bauen, mit denen andere Bilder analysiert werden können. Jedenfalls haben wir
+    bewiesen, dass es wirklich an der Auflösung liegt. Ansonsten würde der Ansatz funktionieren. Wir haben unsere
     Panoramabilder angereichert mit den Binärdaten und Metadaten und auf eine Auflösung herunterskaliert von 640 x
     512 Pixeln. Dann konnte man das Bild ansehen und die Temperaturen wurden korrekt berechnet. Auch haben wir im
     FLIR Produktekatalog alle Kameraauflösungen herausgesucht und festgestellt, dass alle diese Auflösungen
