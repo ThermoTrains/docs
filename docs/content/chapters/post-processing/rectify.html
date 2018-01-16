@@ -67,3 +67,16 @@
   Deshalb bilden wir von allen verzerrten Vierecken den Median. Daraus berechnen wir die Matrix, um die Bilder
   schlussendlich zu rektifizieren.
 </p>
+
+<p>
+  Die Matrix können wir nicht im voraus berechnen, weil wir nicht wissen ob sich der Zug über das parallel
+  verlaufende Gleis oder über die Weiche fährt. Dies kann zum Teil zu ganz anderen Winkeln führen. Ausserdem kann so
+  der Standort gewechselt werden ohne, dass man eine Kalibrierung vornehmen muss. Unten aufgezeigt ist eine
+  Visualisierung, auf der ein Zug über die Weiche fährt. Gestrichelt ist das Sichtfeld der Kamera angedeutet. Ob der
+  Zug vom oberen oder unterem Gleis kommt wissen wir nicht und kann immer ändern.
+</p>
+
+<figure class="affix">
+  <img src="images/post-processing/rectify/gleis-winkel.png">
+  <figcaption>Zug fährt über Weiche</figcaption>
+</figure>
