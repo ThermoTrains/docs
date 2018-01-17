@@ -6,21 +6,19 @@
 </ul>
 
 <p class="affix">
-  Durch die vorgängig angewandten Operationen auf den Frames, können wir nun ein vereinfachtes Stitching
-  Verfahren anwenden. Wir haben zuerst mit handelsüblichem Panoramastitching versucht Resultate herauszuholen,
-  schlugen aber fehl. Die <code>Stitcher</code> Klasse von OpenCV ist zum einen nicht in der Java Wrapper Library
-  verfügbar, weshalb wir selber einen JNI Wrapper schreiben mussten. Dieser hat es schlussendlich nicht überlebt. Die
-  <code>Stitcher</code> Funktionalität von OpenCV bietet zwei Modi an: Landschaftspanorama und Ebenenpanorama. Der
-  Landschaftspanorama-Modus geht davon aus, dass die Kamera geschwenkt wurde bei der Aufnahme der verschiedenen
-  Bilder. Der Ebenen-Modus geht davon aus, man hat eine Karte oder Dokumente fotografiert, welche man in einer Ebene
-  zusammenfügen möchte. Das wäre eigentlich unser Anwendungsfall.
+  Durch die vorgängig angewandten Operationen auf den Frames können wir nun ein vereinfachtes Stitching
+  Verfahren anwenden. Die Versuche mit handelsüblichem Panoramastitching brauchbare Resultate zu erzielen,
+  schlugen fehl. Die <code>Stitcher</code> Funktionalität von OpenCV bietet zwei Modi an: Landschaftspanorama und Ebenenpanorama.
+  Der Landschaftspanorama-Modus geht davon aus, dass die Kamera bei der Aufnahme geschwenkt wurde.
+  Der Ebenen-Modus geht davon aus, man hat eine Karte oder Dokumente fotografiert, welche in einer Ebene
+  liegen. Das wäre eigentlich unser Anwendungsfall.
 </p>
 
 <p>
-  Das Hauptproblem besteht darin, dass es jeweils grosse Überlappungen zwischen den einzelnen Frames gibt und es
-  einen immer gleichbleibenden Hintergrund gibt. Hinzu kommt, dass sich Wagons ziemlich ähnlich sind. Der erste Versuch
+  Das Hauptproblem besteht darin, dass es jeweils grosse Überlappungen zwischen den einzelnen Frames gibt und
+  der Hintergrund immer gleich bleibt. Hinzu kommt, dass sich Wagons ziemlich ähnlich sind. Der erste Versuch
   war einfach mal drauf los zu stitchen. Wir haben sämtliche Frames der <code>Stitcher</code> Klasse übergeben, den
-  Modus auf Ebene gestellt und geschaut was passiert. Es gab einen Fehler, den wir auf keine Weise beheben konnten. Der
+  Modus auf Ebene gestellt und beobachtet was passiert. Es gab einen Fehler, den wir auf keine Weise beheben konnten. Der
   Modus Landschaft hat ein sehr amüsantes Resultat geliefert, das allerdings weniger hilfreich war. Die Wagons waren
   wild übereinandergestapelt und verzerrt.
 </p>
@@ -42,9 +40,9 @@
 <h4>Pattern Matching</h4>
 
 <p>
-  Das Verfahren das uns das die Augen geöffnet hat und einwandfrei funktioniert ist verblüffend simpel. Wir finden in
+  Das Verfahren, das uns dann die Augen geöffnet hat und einwandfrei funktioniert, ist verblüffend simpel. Wir finden in
   zwei aufeinanderfolgenden Frames ein Teilausschnitt von Frame A in Frame B. Dies tun wir mit der <a
-  href="#ref-sqdiff-normed">Normalisierten Cross Correlation Funktion</a>. Wenn wir ihn gefunden haben, haben wir eine
+  href="#ref-sqdiff-normed">Normalisierten Cross Correlation Funktion</a>. Wenn wir den Teilausschnitt gefunden haben, haben wir eine
   X-Koordinate und dort können wir die Bilder zusammenfügen.
 </p>
 
