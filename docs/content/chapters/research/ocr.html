@@ -1,8 +1,8 @@
 <h3>Zugnummererkennung</h3>
 <p>
-  Während dieser Arbeit kam das Aufgabe auf, die aufgenommenen Züge mit der Zugsidentifikationsnummer zu
-  identifizieren. Diese Aufgäbe hätte der RFID Reader übernommen, wenn wir einen erhalten hätten. Wir kamen dann zur
-  Idee die auf die Fahrzeuge aufgedruckte Nummer auf dem Bild zu erkennen und so den Wagen zu identifizieren.
+  Während dieser Arbeit kam die Problematik auf, dass wir die Wagen mit der Zugsidentifikationsnummer identifizieren
+  möchten. Diese Aufgabe hätte der RFID Reader übernommen, hätten wir einen erhalten. Wir kamen dann zur Idee, die auf
+  die Fahrzeuge aufgedruckte Nummer auf dem Bild zu erkennen und so den Wagen zu identifizieren.
 </p>
 
 <p>
@@ -53,8 +53,9 @@
 </figure>
 
 <p>
-  Um die Kennzeichnung auf den Bildern zu finden wenden wir Template Matching. Die Kennzeichnungen sind in der
-  Schrift Helvetica geschrieben. Deswegen haben wir eine Font Map von Helvetica selber erstellt.
+  Um die Kennzeichnung auf den Bildern zu finden, wenden wir Template Matching an. Die Kennzeichnungen sind in der
+  Schrift Helvetica geschrieben. Deswegen haben wir eine Font Map von Helvetica erstellt in dem wir Bilder der einzelnen
+  Zeichen in ein grosses Bild eingefügt haben.
 </p>
 
 <figure class="affix">
@@ -63,11 +64,11 @@
 </figure>
 
 <p>
-  Als erstes müssen wir die Nummer finden, damit wir danach die einzelnen Zeichen identifizieren können. Unsere Idee
-  war, nach dem Text SBB zu suchen, weil dieser, zumindest bei SBB Fahrzeugen, meistens nach der Nummer steht und gut
-  gefunden werden kann. Deshalb bauen wir unser Template aus "S", "B" und "B" zusammen und suchen es in der Szene.
-  Die Szene, also das Gesamtbild des Fahrzeugs haben wir vorher in Graustufen umgewandelt und so zugeschnitten, dass
-  es etwa die Nummer enthält. Zudem wenden wir ein adaptives Thresholding an.
+  Als erstes müssen wir die Nummer im Bild finden, damit wir danach die einzelnen Zeichen identifizieren können. Unsere
+  Idee war, nach dem Text "SBB" zu suchen, weil dieser, zumindest bei SBB Fahrzeugen, meistens nach der Nummer steht und
+  gut gefunden werden kann. Deshalb bauen wir unser Template aus "S", "B" und "B" zusammen und suchen es in der Szene.
+  Die Szene, also das Gesamtbild des Fahrzeugs, haben wir vorher in Graustufen umgewandelt und so zugeschnitten, dass es
+  in etwa den unteren Wagenbereich abdeckt. Zudem wenden wir ein adaptives Thresholding an.
 </p>
 
 <figure class="affix">
@@ -76,9 +77,9 @@
 </figure>
 
 <p>
-  Es kann sein, dass der Text schwarz auf weiss gedruckt ist oder weiss auf schwarz. Deshalb suchen wir das Template
+  Es kann sein, dass der Text schwarz auf weiss oder weiss auf schwarz gedruckt ist. Deshalb suchen wir das Template
   immer normal und invertiert. Die höhere Trefferwahrscheinlich gewinnt. Danach merken wir uns ob der Text schwarz
-  oder weiss ist.
+  oder weiss ist für den nächsten Schritt.
 </p>
 
 <p>
@@ -91,11 +92,11 @@
 </figure>
 
 <p>
-  Dadurch sieht man jetzt wie schwierig es ist, diese Nummern zu lesen. Die Menschen haben bereits Mühe dies zu
+  Dadurch sieht man jetzt wie schwierig es ist, diese Nummern zu lesen. Menschen haben bereits Mühe diese zu
   entziffern. Wir schieben nun alle Zahlen über die Nummer um die Templates zu matchen. Wir erhalten für jedes
-  Zeichen eine Wahrscheinlichkeitstabelle. Mit dieser Tabelle können wir nun überprüfen ob wir eine korrekte Nummer
-  gefunden haben. Ist dies nicht der Fall kommt unser Guesstimator-Algorithmus zum Zug. Dieser Algorithmus probiert
-  anhand der Wahrscheinlichkeiten so lange Ziffern auszutauschen bis es eine gültige Nummer gefunden hat.
+  Zeichen eine Tabelle mit der Wahrscheinlich pro Zeichen. Mit dieser Tabelle können wir nun überprüfen ob wir eine
+  korrekte Nummer gefunden haben. Ist dies nicht der Fall, kommt unser Guesstimator-Algorithmus zum Zug. Dieser
+  probiert anhand der Wahrscheinlichkeiten so lange Ziffern auszutauschen bis er eine gültige Nummer gefunden hat.
 </p>
 
 <p>
@@ -107,8 +108,8 @@
 </p>
 
 <p>
-  Der bessere Ansatz wird sein die Aufnahmen-Zeitstempel mit den Waschstrassentabellen abzugleichen. Jede
-  Waschstrasse führt ein Logbuch wann welcher Zug mit welchen Wagen gewaschen worden ist.
+  Die Aufnahmen-Zeitstempel mit den Waschstrassentabellen abzugleichen wird der bessere Ansatz sein. Jede Waschstrasse
+  führt ein Logbuch wann welcher Zug mit welchen Wagen gewaschen worden ist.
 </p>
 
 <!-- References -->

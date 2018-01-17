@@ -8,19 +8,19 @@
 <h4>Software Landschaft</h4>
 <p>
   Um die vielfältigen Anforderung an die Entwicklung der Software abzudecken, haben wir über den Verlauf dieser Arbeit
-  eine ganze Software-Landschaft aufgebaut um unsere Hardware.
+  um unsere Hardware eine ganze Software-Landschaft aufgebaut.
 </p>
 
 <h5>Continuous Integration</h5>
 <p>
-  Zu einem guten Entwicklungsprozess gehört Continuous Integration. Da es für die zu verwendeten Technologien und
-  Frameworks keine gratis Dienste gibt und wir selber keine Server besitzen die diese Aufgabe übernehmen könnten,
-  haben wir die Thermobox selber als Continuous Integration Server eingesetzt. Startet die Thermobox wird automatisch
-  der HEAD commit aus dem Git repository auf dem master Branch ausgecheckt. Dann werden die NuGet Dependencies
-  aktualisiert. Somit kann anschliessend der Release Build durchgeführt werden. Alle Assemblies erhalten die korrekte
-  Versionsnummer die im Repository in der Datei <code>SharedAssemblyInfo.cs</code> eingecheckt ist. Weil wir aber
-  nicht andauernd die Version erhöhen möchten, um diese bauen zu lassen, hängen wir auch den Commit Hash hinten an.
-  Dieser String kann mit folgendem Git Befehl erzeugt werden:
+  Zu einem guten Entwicklungsprozess gehört Continuous Integration. Da es für die verwendeten Technologien und
+  Frameworks keine Gratisdienste gibt und wir selber keine Server besitzen, die diese Aufgabe übernehmen können,
+  haben wir den Thermo-Scanner selber als Continuous Integration Server eingesetzt. Startet die Thermobox, wird
+  automatisch der HEAD commit aus dem Git repository auf dem master Branch ausgecheckt. Dann werden die NuGet
+  Dependencies aktualisiert. Somit kann anschliessend der Release Build durchgeführt werden. Alle Assemblies erhalten
+  die korrekte Versionsnummer die im Repository in der Datei <code>SharedAssemblyInfo.cs</code> eingecheckt ist. Weil
+  wir aber nicht andauernd die Version erhöhen möchten, um diese bauen zu lassen, hängen wir auch den Commit Hash hinten
+  an. Dieser String kann mit folgendem Git Befehl erzeugt werden:
 </p>
 
 <figure>
@@ -48,8 +48,8 @@
 </figure>
 
 <p>
-  Zu beachten ist, dass Visual Studio dabei sämtliche Dateiänderungen folgt. In unserem Build wurde anfänglich
-  jedes Mal die Datei <code>SharedVersionInfo.cs</code> generiert welche die aktuelle Versionsnummer enthält. Dies hat
+  Zu beachten ist, dass Visual Studio dabei sämtlichen Dateiänderungen folgt. In unserem Build wurde anfänglich
+  jedes Mal die Datei <code>SharedVersionInfo.cs</code> generiert, welche die aktuelle Versionsnummer enthält. Dies hat
   den Build jedes Mal neu getriggert. Somit hat Visual Studio non-Stopp gebuilded und die Unit Tests ausgeführt. Nach
   dem hilfreichen Feedback auf eine <a
   href="https://developercommunity.visualstudio.com/content/problem/152749/live-unit-testing-rebuilding-non-stop.html">Frage
@@ -78,7 +78,7 @@
 </ul>
 
 <p>
-  Eine Log Zeile sind dann als Beispiel so aus:
+  Eine Log Zeile sieht dann als Beispiel so aus:
 </p>
 
 <figure>
@@ -88,7 +88,7 @@
 </figure>
 
 <p>
-  Wird eine Log Datei zu gross wird diese automatisch umbenannt und es wird eine neue Datei begonnen. Wir haben ein
+  Wird eine Log Datei zu gross, wird diese automatisch umbenannt und es wird eine neue Datei begonnen. Wir haben ein
   Threshold von 10 MiB gewählt. Dieser wurde eigentlich nur von der VisibleLightReader-Komponente erreicht, weil wir
   dort Debug Logs einsetzen, um den Detektionsalgorithmus laufend zu verbessern. Gesamthaft haben wir über die zwei
   Testphasen ca. 154 MiB an Logdateien gesammelt.
@@ -97,13 +97,13 @@
 <p>
   Auf einer Logzeile wird der Assembly Name aufgeführt. Dies mag redundant erscheinen, weil dieser ja auch bereits in
   der Logdatei enthalten ist. Allerdings starten mit dem Start Script alle Komponenten miteinander und lassen diese
-  auch auf dieselbe Konsole schreiben, damit man nicht 6 verschiedene Fenster offen und überwachen muss. Im
-  Normalbetrieb starten die Komponenten im Hintergrund. Somit hätte man eigentlich keine Möglichkeit die Logs
+  auch auf dieselbe Konsole schreiben, damit man nicht 6 verschiedene Fenster offen haben muss um diese zu überwachen.
+  Im Normalbetrieb starten die Komponenten im Hintergrund. Somit hätte man eigentlich keine Möglichkeit die Logs
   aggregiert zu sehen. Man kann höchstens ein <code>tail</code> auf die einzelnen Dateien machen. Also haben wir ein
-  PowerShell Script geschrieben, dass sämtliche Logdateien folgt. Zudem färbt es die verschiedenen Loglevels auch
-  gleich ein. Also erscheint eine Exception auch gleich rot. Die Entwicklung des Scripts war nicht ganz einfach, weil
-  pro Logdatei ein Thread gestartet werden muss, der einer einzelnen Logdatei folgt und dessen neuen Logs zurück auf
-  die Hauptkonsole schreibt. Diese Lösung könnte eventuell auch für andere Projekte interessant sein.
+  PowerShell Script geschrieben, dass sämtlichen Logdateien folgt. Zudem färbt es die verschiedenen Loglevels auch
+  gleich ein. Also erscheint eine Exception auch sofort rot. Die Entwicklung des Scripts war nicht ganz einfach, weil
+  pro Logdatei ein Thread gestartet werden muss, der einer einzelnen Logdatei folgt und dessen neuen Logs zurück auf die
+  Hauptkonsole schreibt. Diese Lösung könnte eventuell auch für andere Projekte interessant sein.
 </p>
 
 <p>
@@ -114,12 +114,12 @@
 
 <h5>Remote Access</h5>
 <p>
-  Um von Fern auf den Mini-PC und die Hardware zu zugreifen, haben wir einen Teamviewer Server installiert. Dieser
+  Um aus der Ferne auf den Mini-PC und die Hardware zu zugreifen, haben wir einen Teamviewer Server installiert. Dieser
   ermöglicht es mit einer Partner ID und einem Passwort darauf zuzugreifen. Teamviewer bietet das beste
   Benutzererlebnis verschiedenster Remote Access Lösungen. Auf die Standard-Windows-Remote-Desktop-Lösung können wir
-  nicht zugreifen, weil der Server direkt mit einer IP im Internet angebunden ist welche nicht statisch ist.
+  nicht zugreifen, weil der Server direkt mit einer öffentlichen IP im Internet steht, welche nicht statisch ist.
   Teamviewer darf für nicht kommerzielle Zwecke gratis eingesetzt werden. Sobald die SBB das Projekt weiterführt,
-  müsste ein Lizenz angeschafft werden sofern noch keine bestehen.
+  müsste ein Lizenz angeschafft werden, sofern noch kein besteht.
 </p>
 
 <h5>Hardware Monitoring</h5>
@@ -131,12 +131,12 @@
 </p>
 
 <p>
-  Weiter möchten wir die Temperatur der Hardware überwachen, um eventuelle Konstruktionsbedingte Wärmestaus frühzeitig
-  zu erkennen, bevor es anfängt zu schmelzen. Die Hardware ist draussen und kann nur in den vorgegebenen Temperaturen
+  Weiter möchten wir die Temperatur der Hardware überwachen, um eventuelle konstruktionsbedingte Wärmestaus frühzeitig
+  zu erkennen, bevor etwas anfängt zu schmelzen. Die Hardware ist draussen und kann nur in den vorgegebenen Temperaturen
   betrieben werden. Durch eine Fehlfunktion des Heizlüfters oder Thermostats könnte das Innere des Gehäuses auch
-  überhitzen. Oder der Mini PC erzeugt eventuell so viel Hitze, dass diese nicht abgebaut werden kann. Einen
-  Lüftungsschlitz nach aussen gibt es nämlich nicht. Der einzige undichte Ort ist der Kabelschlitz im Boden des
-  Gehäuses. Also möchten wir die Temperatur des Mini-PCs überwachen können.
+  überhitzen. Oder der Mini PC erzeugt so viel Hitze, dass diese nicht abgebaut werden kann. Einen Lüftungsschlitz nach
+  aussen gibt es nämlich nicht. Der einzige undichte Ort ist der Kabelschlitz im Boden des Gehäuses. Also möchten wir
+  die Temperatur des Mini-PCs überwachen können.
 </p>
 
 <p>
@@ -154,7 +154,7 @@
 </ul>
 
 <p>
-  Diese Abläufe können sich auch in die Quere kommen, was wir erkennen möchten. Zudem möchten wir erkennen, wann der
+  Diese Abläufe können sich auch in die Quere kommen, was wir erkennen möchten. Zudem möchten wir erfahren, wann der
   Arbeitsspeicher ausgeht und eventuell auf die Disk geswapped wird.
 </p>
 
@@ -164,16 +164,16 @@
   können wir allerdings nicht selber betreiben, weil uns die Server dazu fehlen. Ausserdem ist ein solches System
   dafür ausgelegt eine ganze Serverlandschaft zu überwachen und nicht nur einen einzigen. Deswegen ist die
   Installation und Konfiguration einer solchen Lösung sehr aufwändig. Diesen Aufwand wollten wir uns, wenn möglich,
-  sparen.
+  ersparen.
 </p>
 
 <p>
-  Die andere Option ist eine SaaS Monitoring-Lösung zu verwenden. Das Problem hierbei ist, dass es keine Anbieter
+  Die andere Option: Eine SaaS Monitoring-Lösung verwenden. Das Problem hierbei ist, dass es keine Anbieter
   gibt, die das gratis machen. Oder jedenfalls nicht so, dass wir mehrere Monate lang auf den Server zugreifen können.
 </p>
 
 <p>
-  Deswegen haben wir uns entschlossen, eine eigene Lösung zu schaffen die wir auf dem Server von Sebastian Häni hosten
+  Deswegen haben wir uns entschlossen, eine eigene Lösung zu schaffen, die wir auf dem Server von Sebastian Häni hosten
   können. Die entworfene Lösung ist so simpel gehalten wie möglich und ist nicht sehr erweiterbar. Die Funktionsweise
   ist so, dass die Thermobox alle 5 Minuten ein Datentupel im JSON Format mit folgenden Werten an den Server per HTTP
   POST schickt:
@@ -190,8 +190,8 @@
 <p>
   Der Server hängt das Datentupel an eine Datei. Das Frontend liest dann diese Datei aus und erzeugt eine HTML Seite
   die vier Graphen im Browser darstellt. Oben links wird dargestellt, ob die Box online ist. Oben rechts werden die
-  CPU Auslastung sowie die CPU Temperatur überlagert dargestellt. Unten links sieht man die Memory Auslastung. Und
-  unten rechts sieht man den Verlauf des freien Speicherplatzes.
+  CPU Auslastung sowie die CPU Temperatur überlagert dargestellt. Unten links sieht man die Memory Auslastung und
+  unten rechts den Verlauf des freien Speicherplatzes.
 </p>
 
 <figure>
@@ -201,9 +201,8 @@
 
 <p>
   Weil es ab und zu vorkam, dass die Software nicht so funktionierte wie gewünscht, hat sich die Festplatte gefüllt
-  und es konnten keine Aufnahmen mehr gemacht werden. Um sofort reagieren zu können, wenn dies bald der Fall sein
-  wird, schickt der Server eine E-Mail mit der Information, dass weniger als 5 GiB freier Speicherplatz zur Verfügung
-  ist.
+  und es konnten keine Aufnahmen mehr gemacht werden. Bevor dies der Fall ist, schickt der Server eine E-Mail an
+  uns mit der Information, dass weniger als 5 GiB freier Speicherplatz zur Verfügung steht.
 </p>
 
 <figure>
@@ -221,9 +220,9 @@
 </ul>
 
 <p>
-  Um den Server in Betrieb zu nehmen, müssen nur die Sourcen auf den Webserver kopiert werden und die
+  Um den Server in Betrieb zu nehmen, müssen nur die Sourcen auf den Webserver kopiert und die
   Schreibberechtigung eingerichtet werden. Im <code>ping.ps1</code> Script muss die richtige URL konfiguriert werden
-  damit die Datentupel an den richtigen Ort gelangen. Es gibt kein Mechanismus die alten Daten zu löschen. Dazu muss
+  damit die Datentupel an den richtigen Ort gelangen. Es gibt keinen Mechanismus der die alten Daten löscht. Dazu muss
   manuell die Datei <code>stats.txt</code> geleert werden. Die Graphen stellen jeweils nur die letzten 48 Stunden
   dar. Details über ältere Posts können mit dem Button "Show more" angezeigt werden.
 </p>
@@ -262,9 +261,9 @@
   Eine generell funktionierende Lösung, um die Sensoren der Hardware auszulesen, gibt es nicht. Jeder Hersteller
   programmiert in seinen Treibern eigene Interfaces, um die Werte auszulesen. Die Software OpenHardwareMonitor versucht
   diese verschiedenen Interfaces zusammen zu tragen und stellt diese im einfachen Tool dar. Zusätzlich bietet
-  OpenHardwareMonitor die Option an beim Systemstart sich selber im Tray auszuführen. Dies haben wir auf dem Mini-PC
+  OpenHardwareMonitor die Option an, sich beim Systemstart selber im Tray auszuführen. Dies haben wir auf dem Mini-PC
   so konfiguriert. Wenn OpenHardwareMonitor läuft, kann über die angebotenen WMI Objekte (Windows Management
-  Instrumentation) auf die Sensorwerte mit simplen Queries zugegriffen werden. Als Beispiel hier ein Befehl welcher
+  Instrumentation) auf die Sensorwerte mit simplen Queries zugegriffen werden. Als Beispiel, hier ein Befehl welcher
   alle CPU Kern Temperaturen in Kelvin ausliest:
 </p>
 
@@ -290,7 +289,7 @@
 
 <p>
   Dazu haben wir Sentry integriert. Sentry ist ein Dienst, welcher selber gehostet werden kann oder auf sentry.io
-  betrieben wird. Da die Gratis-Lizenz mit ihren Einschränkungen für uns gut reicht, müssen wir keine Kosten
+  betrieben wird. Da die Gratis-Lizenz mit ihren Einschränkungen für uns ausreicht, müssen wir keine Kosten
   aufwenden. Wenn eine Warnung oder Fehler auftritt, wird dieses Event an die Sentry API gemeldet. Sentry aggregiert
   dann die Events zusammen und schickt bei neuen unentdeckten Events eine E-Mail an uns.
 </p>
@@ -303,14 +302,14 @@
 <p>
   Der Dienst ermöglicht es uns die Fehler sofort zu beheben nachdem sie aufgetreten sind. Zudem können wir die
   Warnungen dazu benutzen, um zu sehen wie häufig und wann gewisse Meldungen auftauchen. Zum Beispiel schicken wir
-  immer eine Warnung, wenn ein Zug entdeckt wurde dieser aber "anscheinenden" nach zu kurzer Zeit schon wieder aus dem
-  Bild gefahren ist, dass das eigentlich gar nicht möglich ist. Wenn wir dann sehen, dass das immer während der
-  Dämmerung passiert ist das ein guter Hinweis, was womöglich mit der Bildanalyse schiefläuft.
+  immer eine Warnung, wenn ein Zug entdeckt, wurde dieser aber "anscheinenden" nach zu kurzer Zeit wieder aus dem Bild
+  gefahren ist, dass das eigentlich gar nicht möglich ist. Wenn wir dann sehen, dass dies immer während der Dämmerung
+  passiert ist das ein guter Hinweis, was womöglich mit der Bildanalyse schiefläuft.
 </p>
 
 <p>
   Um Sentry einzubinden, mussten wir einen eigenen log4net Appender bauen. Die existierenden Appender sind zu alt und
-  werden nicht mehr gewartet. Sollte sich in naher Zukunft nichts mehr tun in diesen Projekten, erwägen wir unseren
+  werden nicht mehr gewartet. Sollte sich in naher Zukunft nichts mehr in diesen Projekten tun, erwägen wir unseren
   Appender selber als NuGet Package zu veröffentlich, damit andere auch davon profitieren können.
 </p>
 
@@ -333,7 +332,7 @@
   Redis kann zwar mehr als nur Broker spielen, wir brauchen diese Features allerdings nicht. Redis zeichnet sich aus
   durch die Einfachheit sowie die grosse Anzahl an production ready Bibliotheken zur Integration in alle gängigen
   und zum Teil auch nicht gängigen Technologien. Ausserdem gibt es ein Command Line Interface mit welchem bequem
-  manuell Nachrichten in die Queue geschrieben werden können sowie diese auch ausgelesen werden kann.
+  manuell Nachrichten in die Queue geschrieben und diese auch ausgelesen werden können.
 </p>
 
 <p>
@@ -347,9 +346,9 @@
   Um auf der Entwicklungsumgebung nicht den Redis Server installieren zu müssen, gibt es ein Redis Docker Image
   welches den Server in einem Container startet. Somit kann eine Instanz ohne Konfiguration on Demand gestartet werden.
   Auf dem Mini PC haben wir zuerst auch mit Docker den Redis Server eingerichtet, weil die Windows Version des Redis
-  Servers nicht offiziell unterstützt wird von Seite Redis. Jedoch ist zum Zeitpunkt dieser Arbeit Docker immer noch
+  Servers nicht offiziell von Seite Redis unterstützt wird. Jedoch ist zum Zeitpunkt dieser Arbeit Docker immer noch
   nicht sehr stabil, um Container auf einer Serverplattform laufen zu lassen. Für eine Entwicklungsumgebung ist es ok,
-  aber auch nicht ideal. Deshalb haben wir dann den Redis Server der Microsoft offiziell unterstützt als
+  aber auch nicht ideal. Deshalb haben wir schliesslich den Redis Server, der Microsoft offiziell unterstützt, als
   Windowsdienst installiert.
 </p>
 
@@ -370,8 +369,8 @@
 
 <p>
   Im Diagramm unten ist dargestellt, wie eine Aufnahme des Zuges auf der Kommunikationsebene abläuft. Es sind sämtliche
-  Nachrichten ersichtlich. Wie man sieht, geht jede Nachricht immer zuerst an den Redis Server welche sie dann weiter
-  an die Komponenten, die sich darauf subscribed haben, leitet. Die einzelnen Komponenten werden später erklärt.
+  Nachrichten ersichtlich. Wie man sieht, geht jede Nachricht immer zuerst an den Redis Server, welche sie dann weiter
+  an die Komponenten, die sich darauf subscribed haben, weiterleitet. Die einzelnen Komponenten werden später erklärt.
 </p>
 
 <figure class="full">
@@ -407,7 +406,7 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 <h4>Komponenten Architektur</h4>
 <p>
   Damit es einfach ist neue Komponenten zu erstellen, haben wir ein Common-Modul erstellt welches Code bereitstellt,
-  welcher für alle Komponenten derselbe ist. Im Common Modul gibt es eine abstrakte Klasse
+  der für alle Komponenten derselbe ist. Im Common Modul gibt es eine abstrakte Klasse
   <code>ThermoBoxComponent</code> von welcher konkrete Komponenten erben können. Eine Komponente kann dann definieren,
   welchen Kanälen sie folgen möchte und welchen Handler sie anstossen möchte, wenn eine Nachricht eintritt. Zudem gibt
   es eine Funktion um Nachrichten zu publishen.
@@ -416,8 +415,8 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 <p>
   Die gewählte Architektur hat sich sehr bewährt. Es ermöglicht den selektiven Betrieb einzelner Komponenten so, dass
   diese isoliert getestet werden können. Zudem kann man auch mal eine Komponente ausschalten, wenn man das Feature
-  gerade nicht braucht. Zum Beispiel können wir den Uploader einfach nicht starten, wenn wir nicht möchten, dass
-  Dateien auf den Server hochgeladen werden. Es ist keine Konfigurationsänderung notwendig.
+  gerade nicht braucht. Zum Beispiel können wir den Uploader nicht starten, wenn wir nicht möchten, dass Dateien auf den
+  Server hochgeladen werden. Es ist keine Konfigurationsänderung notwendig.
 </p>
 
 <p>
@@ -455,7 +454,7 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 </p>
 
 <p>
-  Um manuelle Befehle zu geben haben wir ein PowerShell Script <code>Control.ps1</code> erstellt mit welchem
+  Um manuelle Befehle zu auszuführen, haben wir ein PowerShell Script <code>Control.ps1</code> erstellt mit welchem
   interaktiv die möglichen Befehle abgesendet werden können.
 </p>
 
@@ -481,7 +480,7 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
   </li>
 </ul>
 <p class="affix">
-  Die Aufgabe des IRReaders ist die Bilder FLIR Kamera aufzunehmen. Bevor die eigentliche Komponente gestartet wird,
+  Die Aufgabe des IRReaders ist, die Bilder FLIR Kamera aufzunehmen. Bevor die eigentliche Komponente gestartet wird,
   wird zuerst die Kamera gefunden. Die Suche nach der Kamera geschieht asynchron. Um die Testingzyklen sowie
   grundsätzlich den Start der Komponente zu beschleunigen haben wir folgendes Verfahren entwickelt, um möglichst
   schnell mit der Kamera zu verbinden.
@@ -495,10 +494,10 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 
 <p>
   Zuerst wird ein Discovery Thread gestartet der in einem Event Handler auf gefundene Kameras reagiert. Wird die
-  richtige Kamera gefunden welche den Suchstring matcht, wird der originale Thread mit dem Resultat der Kamera
-  beendet und er retourniert. Die Kamera die gefunden werden soll, ist in der Konfiguration unter dem Key
-  <code>IR_CAMERA_NAME</code> abgelegt. Für unsere Kamera ist dieser "FLIR AX5". Wird die Kamera nicht innerhalb von
-  5 Sekunden gefunden, verwenden wir die Emulator-Kamera, die das FLIR ATLAS SDK anbietet. Das heisst das
+  richtige Kamera gefunden, welche dem Suchstring enspricht, wird der originale Thread mit dem Resultat der Kamera
+  beendet und retourniert. Die Kamera die gefunden werden soll, ist in der Konfiguration unter dem Key
+  <code>IR_CAMERA_NAME</code> abgelegt. Für unsere Kamera lautet dieser "FLIR AX5". Wird die Kamera nicht innerhalb von
+  5 Sekunden gefunden, verwenden wir die Emulator-Kamera, die das FLIR ATLAS SDK anbietet. Das heisst, das
   Discovery-Verfahren dauert maximal 5 Sekunden oder weniger.
 </p>
 
@@ -546,12 +545,11 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 </p>
 
 <p>
-  Wir möchten in unseren Aufnahmen keine schwarzen Frames haben. Als Lösung haben wir eingebaut, dass unmittelbar
-  bevor eine Aufnahme gestartet wird ein NUC durchgeführt wird. Dann können wir davon ausgehen, sofern die Kamera
-  länger als ein paar Minuten in Betrieb ist, dass der nächste NUC erst in 4 Minuten durchgeführt wird. Der
-  anfängliche NUC dauert auch nicht zu lange, dass wir eventuell sogar den Anfang verpassen würden. Die NUC
-  Einstellungen können via die Parameter <code>NUCMode</code>, <code>NUCTempDelta</code> und
-  <code>NUCIntervalFrames</code> eingerichtet werden.
+  Wir möchten in unseren Aufnahmen keine schwarzen Frames haben. Deshalb wird unmittelbar bevor eine Aufnahme
+  gestartet wird ein NUC durchgeführt. Dann können wir davon ausgehen, sofern die Kamera länger als ein paar Minuten in
+  Betrieb ist, dass der nächste NUC erst in 4 Minuten durchgeführt wird. Der anfängliche NUC dauert auch nicht zu lange,
+  so, dass wir eventuell sogar den Anfang verpassen würden. Die NUC Einstellungen können via die Parameter
+  <code>NUCMode</code>, <code>NUCTempDelta</code> und <code>NUCIntervalFrames</code> eingerichtet werden.
 </p>
 
 <p>
@@ -568,16 +566,16 @@ Redis->Uploader: delivery:upload "1-temperature.txt"
 </figure>
 
 <p>
-  Nehmen wir in der vollen Auflösung und Framerate auf werden die Dateien schnell so gross, dass sie gar nicht mehr
-  der Disk Platz hätten. Deshalb haben wir die Framerate auf ein Frame pro Sekunde verringert. Die Auflösung zu
+  Nehmen wir in der vollen Auflösung und Framerate auf, werden die Dateien schnell so gross, dass sie gar nicht mehr
+  auf der Disk Platz hätten. Deshalb haben wir die Framerate auf ein Frame pro Sekunde verringert. Die Auflösung zu
   verringern macht keinen Sinn, weil wir dann Bilddetails verlieren.
 </p>
 
 <p>
   Die Kontrolle der Kamera über das FLIR ATLAS SDK ist etwas umständlich. Die Control-Library ist nicht sehr stabil. Es
-  kann zu zufälligen Exceptions kommen, wenn ein Befehl abgesetzt wird. Um uns Abhilfe zu schaffen, haben wir eine Retry
+  kann zu zufälligen Exceptions kommen, wenn ein Befehl abgesetzt wird. Um Abhilfe zu schaffen, haben wir eine Retry
   Methode gebaut, der ein Callback zur Befehlsausführung mitgegeben wird sowie ein Callback zur Überprüfung ob es
-  erfolgreich war. Diese Retry Methode führt dann den Befehl so lange wiederholt aus, bis keine Exception geworfen wird
+  erfolgreich war. Diese Retry Methode führt den Befehl so lange wiederholt aus, bis keine Exception geworfen wird
   und der zweite Callback sagt, dass es funktioniert hat. Leider können wir nicht in den Code hineinschauen, weil er
   proprietär und obfuscatet ist.
 </p>
@@ -623,7 +621,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Wird die Aufnahme gestoppt erzeugt der IRReader drei Dateien.
+  Wird die Aufnahme gestoppt, erzeugt der IRReader drei Dateien.
 </p>
 
 <ul>
@@ -633,11 +631,11 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </ul>
 
 <p>
-  Die SEQ Datei wird via <code>delivery:compress</code> an den IRCompressor übergeben welcher die Datei komprimiert
-  damit dieser übertragen werden kann. Das übertragen der Rohdaten ist erstens zu langsam, weil Züge schneller
+  Die SEQ Datei wird via <code>delivery:compress</code> an den IRCompressor übergeben, welcher die Datei komprimiert,
+  damit dieser übertragen werden kann. Das Übertragen der Rohdaten ist erstens zu langsam, weil Züge schneller
   vorbeifahren als wir hochladen könnten und zweitens haben wir nicht genügend Serverspeicherplatz im die Dateien
   abzuspeichern. Zu beachten ist, dass die SEQ Datei nur die Sensorwerte enthält. Es sind noch keine Temperaturwerte
-  darin. Um diese zu berechnen müssen weitere Parameter hinzugenommen werden.
+  erzeugt worden. Um diese zu berechnen müssen weitere Parameter hinzugenommen werden.
 </p>
 
 <p>
