@@ -1,6 +1,9 @@
+a[href^="#ref-"]:not([data-duplicate-ref]):before {
+  float: footnote;
+}
+
 a[href^="#ref-"]:before {
   content: prince-script(ref-footnote, attr(href));
-  float: footnote;
   footnote-style-position: inside;
   font-size: 0.75em;
   padding-left: 90px;
