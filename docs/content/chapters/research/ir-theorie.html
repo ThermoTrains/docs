@@ -18,7 +18,7 @@
 </p>
 
 <p>
-  FLIR Kameras bereinigen die Messungen in Echtzeit bei der Aufnahme. Dafür muss die Kamera aber richtig parametrisiert
+  FLIR Kameras bereinigen die Messungen bei der Aufnahme in Echtzeit. Dafür muss die Kamera aber richtig parametrisiert
   sein, damit die verschiedenen Strahlungsquellen berücksichtig werden können. Diese Parameter sind:
 </p>
 
@@ -206,7 +206,7 @@
   Quantenphysik.
 </p>
 <p>
-  Die graphische Darstellung für verschieden Temperaturen ergibt eine Familie von Kurven. Bei jeder
+  Die graphische Darstellung für verschiedene Temperaturen ergibt eine Familie von Kurven. Bei jeder
   dieser Planckkurven ist die Ausstrahlung null bei λ = 0, steigt danach stark an bis zum
   Maximum bei λ<sub>max</sub> und flacht danach wieder Richtung null ab.
   Je höher die Temperatur, desto schmaler wird die Kurve im Bereich des Maximums. Bei einer Temperatur
@@ -235,8 +235,8 @@
 </figure>
 
 <p>
-  Wie vorhin bereits beschrieben spiegelt das die Beobachtung wieder, dass z.B. Metall zuerst
-  rot, dann orange usw. anfängt zu glühen. Oder die Sonne die ca. 6000K heiss ist, emittiert
+  Wie vorhin bereits beschrieben, ist das der Grund wieso z.B. Metall zuerst
+  rot, dann orange usw. anfängt zu glühen. Oder die Sonne, die ca. 6000K heiss ist, emittiert
   gelbes Licht mit einem λ<sub>max</sub> von ca. 0.5μm.
 </p>
 
@@ -260,7 +260,7 @@
 <h4>Nicht-Schwarze Strahler</h4>
 <p>
   Das Verhalten eines idealen Schwarzkörpers ist nun klar. Wie sieht es aber mit realen Objekten aus?
-  Diese Verhalten sich praktisch nie wie ein Schwarzkörper über grössere Wellenlängenbereiche gesehen.
+  Diese Verhalten sich, über grössere Wellenlängenbereiche gesehen, praktisch nie wie ein Schwarzkörper.
   Es gibt drei Faktoren, die einen realen Körper beeinflussen:
 </p>
 
@@ -281,7 +281,7 @@
 </figure>
 
 <p>
-  Ein weiterer Faktor, der bereits viel erwähnte Emissionsgrad ε ist nötig und die Abstrahlung im Verhältnis zu einem
+  Ein weiterer Faktor, der bereits viel erwähnte Emissionsgrad ε ist nötig um die Abstrahlung im Verhältnis zu einem
   Schwarzkörper bei derselben Temperatur anzugeben. Der spektrale Emissionsgrad ε<sub>λ</sub> ist das Verhältnis
   der spektralen Strahlungsleistung eines Köpers zu dem eines Schwarzkörpers bei gleicher Temperatur und Wellenlänge λ.
 </p>
@@ -293,7 +293,7 @@
 </figure>
 
 <p>
-  Man kann Strahlungsquellen in drei Typen aufteilen und zwar nach je nachdem wie ihre Abstrahlung in
+  Man kann Strahlungsquellen in drei Typen aufteilen und zwar je nachdem wie ihre Abstrahlung in
   verschiedenen Wellenlängen variiert.
 </p>
 <ul>
@@ -362,8 +362,8 @@
 <p>
   Wie bereits erwähnt, misst eine Infrarotkamera nicht nur die Strahlung des Objekts selber sondern auch reflektierte
   und atomsphärische Strahlung. Zudem wird die Messung von der Absorption der Atmosphäre beeinflusst. Die generelle
-  Messsituation ist in untenstehender Grafik dargestellt. Dabei wird angenommen, dass grössere Störquellen (wie z.B.
-  Hitzequellen in der Umgebung) eliminiert werden, durch anpassen der Messsituation.
+  Messsituation ist in untenstehender Grafik dargestellt. Dabei wird angenommen, dass durch anpassen der Messsituation
+  grössere Störquellen (wie z.B. Hitzequellen in der Umgebung), eliminiert werden.
 </p>
 
 <figure>
@@ -394,7 +394,7 @@
 </figure>
 
 <p>
-  Wenn das Objekt ein Graukörper ist mit Emissionsgrad ε ist die Abstrahlung W<sub>source</sub> mit εW<sub>source</sub>
+  Wenn das Objekt ein Graukörper mit Emissionsgrad ε ist die Abstrahlung W<sub>source</sub> mit εW<sub>source</sub>
   zu ersetzen. Die Abstrahlung W<sub>source</sub> setzt sich zusammen aus:
 </p>
 <ol>
@@ -405,7 +405,7 @@
   <li>
     Reflektierte Abstrahlung aus der Umgebung = (1-ε)τW<sub>refl</sub>, wobei (1-ε) der Reflexionsgrad des Objektes ist.
     Die Strahlungsquellen aus der Umgebung haben die Temperatur T<sub>refl</sub>. Die Annahme ist, dass T<sub>refl</sub>
-    für alle Strahlungsqullen, in derselben Halbsphäre wie das Objekt, die gleiche ist.
+    für alle Strahlungsquellen, in derselben Halbsphäre wie das Objekt, die gleiche ist.
   </li>
   <li>
     Abstrahlung aus der Atmosphäre = (1-τ)τW<sub>atm</sub>, wobei (1-τ) der Emissionsgrad der Atmosphäre ist. Die
@@ -443,7 +443,7 @@
 
 <p>
   All die notwendigen Parameter dienen also dazu einerseits diese Gleichung aufzustellen
-  und daraus dann die richtige Objekttemperatur zu berechnen.
+  und daraus die richtige Objekttemperatur zu berechnen.
 </p>
 
 <h3>Implementation Temperaturberechnung</h3>
@@ -589,7 +589,7 @@
 <p>
   Da jede FLIR Kamera unterschiedlich misst, werden sie auf einen Schwarzkörper kalibriert. Das Resultat sind
   untenstehende Werte. Die Werte aus der Kalibrierung substituieren die Konstanten Teile des planckschen
-  Strahlungsgesetz (siehe Tabelle unten). Für alle Berechnungen müssen also diese neuen Konstanten verwendet werden. Sie
+  Strahlungsgesetz (siehe Tabelle unten). Für alle Berechnungen müssen diese neuen Konstanten verwendet werden. Sie
   sind in den EXIF-Metadaten der Videodatei zu finden.
 </p>
 
@@ -679,7 +679,7 @@
 </figure>
 
 <p>
-  Wenn wir und die ursprüngliche Messformel nochmals ansehen, sehen wir, dass nun alle Variablen bekannt sind und
+  Wenn wir uns die ursprüngliche Messformel nochmals ansehen, sehen wir, dass nun alle Variablen bekannt sind und
   W<sub>obj</sub> berechnet werden kann.
 </p>
 

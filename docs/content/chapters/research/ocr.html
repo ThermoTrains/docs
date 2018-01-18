@@ -1,8 +1,8 @@
 <h3>Zugnummererkennung</h3>
 <p>
   Während dieser Arbeit kam die Problematik auf, dass wir die Wagen mit der Zugsidentifikationsnummer identifizieren
-  möchten. Diese Aufgabe hätte der RFID Reader übernommen, hätten wir einen erhalten. Wir kamen dann zur Idee, die auf
-  die Fahrzeuge aufgedruckte Nummer auf dem Bild zu erkennen und so den Wagen zu identifizieren.
+  möchten. Diese Aufgabe hätte der RFID Reader übernommen, hätten wir einen erhalten. Wir kamen dann auf die Idee,
+  die auf den Fahrzeugen aufgedruckte Nummer auf dem Bild zu erkennen und so den Wagen zu identifizieren.
 </p>
 
 <p>
@@ -78,8 +78,8 @@
 
 <p>
   Es kann sein, dass der Text schwarz auf weiss oder weiss auf schwarz gedruckt ist. Deshalb suchen wir das Template
-  immer normal und invertiert. Die höhere Trefferwahrscheinlich gewinnt. Danach merken wir uns ob der Text schwarz
-  oder weiss ist für den nächsten Schritt.
+  immer normal und invertiert. Die höhere Trefferwahrscheinlichkeit gewinnt. Danach merken wir uns für den nächsten Schritt,
+  ob der Text schwarz oder weiss ist.
 </p>
 
 <p>
@@ -94,13 +94,13 @@
 <p>
   Dadurch sieht man jetzt wie schwierig es ist, diese Nummern zu lesen. Menschen haben bereits Mühe diese zu
   entziffern. Wir schieben nun alle Zahlen über die Nummer um die Templates zu matchen. Wir erhalten für jedes
-  Zeichen eine Tabelle mit der Wahrscheinlich pro Zeichen. Mit dieser Tabelle können wir nun überprüfen ob wir eine
+  Zeichen eine Tabelle mit der Wahrscheinlichkeit pro Zeichen. Mit dieser Tabelle können wir nun überprüfen ob wir eine
   korrekte Nummer gefunden haben. Ist dies nicht der Fall, kommt unser Guesstimator-Algorithmus zum Zug. Dieser
   probiert anhand der Wahrscheinlichkeiten so lange Ziffern auszutauschen bis er eine gültige Nummer gefunden hat.
 </p>
 
 <p>
-  Die Resultate sind leider ernüchtern. Meistens stimmen eine oder zwei Ziffern nicht. Mit dem Guesstimator
+  Die Resultate sind leider ernüchternd. Meistens stimmen eine oder zwei Ziffern nicht. Mit dem Guesstimator
   verschlimmert sich meist das Resultat noch. Auch haben wir bemerkt, dass die meisten Züge in der Nacht oder
   zumindest bei Dunkelheit gewaschen werden. Unsere Aufnahmen mit langer Belichtungszeit lassen kein Lesen der Nummer
   zu. Hinzu kommen Regentropfen auf dem Sichtglas, die die Sicht noch weiter verschlechtern. Deswegen haben wir
