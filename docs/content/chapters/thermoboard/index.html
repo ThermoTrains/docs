@@ -154,14 +154,42 @@
   <p>
     Der eigens gebaute Image Viewer erlaubt es dem Benutzer in die sehr grossen Panoramabilder hineinzuzoomen und
     Details zu betrachten. Ausserdem kann der Viewer die Temperaturen aus den Infrarotbildern automatische berechnen
-    und zeigt sie dem Benutzer über der Maus an. Dazu verwenden wir die Metainformationen aus der Bilddatei. Die
-    Berechnung geschieht live und ist nicht sehr zeitintensiv, weil wir natürlich nicht sämtliche Werte der
-    Temperaturformel neuberechnen müssen.
+    und zeigt sie dem Benutzer über der Maus an. Der Viewer ist ein Canvas Element in welches wir das Bild an den
+    bestimmten Koordinaten zeichnen. Mit der Maus kann der Benutzer das Bild verschieben. Mit dem Mausraud kann
+    hineingezoomt werden.
   </p>
 
   <figure>
     <img src="images/thermoboard/image-viewer.png">
     <figcaption>Thermoboard Screenshot Aufnahme</figcaption>
+  </figure>
+
+  <p>
+    Um die Temperatur berechnen zu können müssen wir als erstes die Falschfarbe wieder zurück auf eine Graustufe
+    führen. Den Pixelwert können wir auslesen weil wir ein Canvas verwenden. Dann könnte man meinen, man kann einfach
+    eine Lookup Table der Color Map anfertigen und diese abfragen. Leider gibt es in JPG Bildern immer kleine
+    Abweichungen durch Kompressionsartefakte. Das heisst wird müssen eine Nearest Neighbor Search durchführen und die
+    naheste Farbe im RGB Raum in der Lookup Table finden. Zum Glück ist die JavaScript Welt voll mit Libraries. Die
+    Library <a href="#ref-nearest-color">nearest-color</a> macht genau das.
+  </p>
+
+  <p>
+    Danach können wir mit <a href="#ref-exif-js">Exif.js</a> die Exifdaten auslesen um den von uns
+    definierten Skalierungs- und Offsetparameter zu erhalten. Den erhaltenen Wert geben wir in die Temperaturformel
+    hinein und heraus kommt die Temperatur in Grad Celsius. Die Formel haben wir soweit wie möglich mit sinnvollen
+    Konstanten ausgerechnet damit diese live, während die Maus bewegt wird, berechnet werden kann.
+  </p>
+
+  <figure>
+    <pre><code>private calculateTemp(value: number): number {
+  const obj = (value / 0.95 - 154.2268539477985 + -207);
+  const log = Math.log(16556 / (0.046952017 * obj) + 1);
+  const celsius = 1428 / log - 273.15;
+
+  return celsius;
+}
+</code></pre>
+    <figcaption>Code Temperaturberechnung im Browser</figcaption>
   </figure>
 
   <h3>Reflexion</h3>
@@ -206,11 +234,22 @@
 </p>
 <p id="ref-apollo" class="reference-item">
   <span class="ref">Apollo GraphQL Client</span>
-  <a href="https://www.apollographql.com/" target="_blank" rel="noopener">https://www.apollographql.com/</a>
+  <a href="https://www.apollographql.com/" target="_blank" rel="noopener">https://www.apollographql.com</a>
   <span class="retrieved">15. Januar 2018</span>
 </p>
 <p id="ref-chartjs" class="reference-item">
   <span class="ref">Chart.js Graph Library</span>
   <a href="http://www.chartjs.org/" target="_blank" rel="noopener">http://www.chartjs.org</a>
+  <span class="retrieved">16. Januar 2018</span>
+</p>
+<p id="ref-nearest-color" class="reference-item">
+  <span class="ref">JavaScript Library nearest-color</span>
+  <a href="https://github.com/dtao/nearest-color" target="_blank"
+     rel="noopener">https://github.com/dtao/nearest-color</a>
+  <span class="retrieved">16. Januar 2018</span>
+</p>
+<p id="ref-exif-js" class="reference-item">
+  <span class="ref">JavaScript Library Exif.js</span>
+  <a href="https://github.com/exif-js/exif-js" target="_blank" rel="noopener">https://github.com/exif-js/exif-js</a>
   <span class="retrieved">16. Januar 2018</span>
 </p>
