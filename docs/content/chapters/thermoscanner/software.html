@@ -639,9 +639,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <p>
-  Die JPG Datei dient uns zum Vergleich des komprimierten Videos. Damit sehen wir ob der Kompressionsalgorithmus
+  Die JPG Datei dient uns zum Vergleich des komprimierten Videos. Damit sehen wir, ob der Kompressionsalgorithmus
   keine offensichtlichen Fehler beinhaltet. Weiter dauern das Kompressionsverfahren sowie der Upload einige Zeit.
-  Möchten wir trotzdem schon sehen was aufgenommen wurde müssten wir warten. Dieser Snapshot kann allerdings sehr
+  Möchten wir trotzdem schon sehen was aufgenommen wurde, müssten wir warten. Dieser Snapshot kann allerdings sehr
   schnell und ohne langwierige Kompression hochgeladen werden. So sehen wir direkt, ob und welcher Zug sich im Bild
   befindet.
 </p>
@@ -713,36 +713,35 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Bild hineinbewegt hat. Hat sie einen Zug detektiert, meldet sie mit <code>capture:start</code> dies an alle
   Komponenten weiter so wie auch sich selber. Selber startet sie nämlich dann auf den Befehl die Aufnahme in eine
   Videodatei. Der Name der Komponente kommt davon, dass wir damit die für das menschliche Auge sichtbaren Wellenlängen
-  aufnehmen. Das Licht und Wellenlängen nicht dasselbe ist, ist uns bewusst. Der Name ist also wissenschaftlich nicht
+  aufnehmen. Dass Licht und Wellenlängen nicht dasselbe ist, ist uns bewusst. Der Name ist also wissenschaftlich nicht
   ganz korrekt.
 </p>
 
 <p>
   Die Komponente benutzt zur Kommunikation das Basler Pylon SDK. Da die Firma Basler einer der führenden Hersteller
-  ist von Industriekameras, sich aber trotzdem gegen eine starke Konkurrenz wehren muss, merkt man auch, dass das SDK
-  weit aus durchdachter und stabiler ist als das Pendant von FLIR. Man merkt auch das FLIR einige Patterns vom Pylon
-  SDK abgekupfert hat.
+  von Industriekameras ist, ist ihr SDK auch weit aus durchdachter und stabiler als das Pendant von FLIR.
+  Man merkt, dass FLIR einige Patterns vom Pylon SDK abgekupfert hat.
 </p>
 
 <p>
-  Die technische Limitierung ist die, dass man nur von einem Windows Prozess auf die über USB angeschlossene Basler
+  Die technische Limitierung ist, dass man nur von einem Windows Prozess auf die über USB angeschlossene Basler
   Kamera zugreifen kann. Der Prozess blockiert die Kamera und kein zweiter kann mehr darauf zugreifen. Das heisst, wir
-  mussten den Image Grab Loop so schreiben, dass die Bilder zum einen vom Erkennungsalgorithmus verarbeitet werden
-  können und zum anderen in eine Videodatei geschrieben werden können. Das setzt natürlich voraus, dass die
+  mussten den Image Grab Loop so schreiben, dass die Bilder zum einen vom Erkennungsalgorithmus verarbeitet
+  und zum anderen in eine Videodatei geschrieben werden. Das setzt natürlich voraus, dass die
   Erkennungsphase nicht länger dauert als die Aufnahme eines Frames. Ansonsten verlieren wir entweder Frames oder der
   Buffer wird unendlich gross.
 </p>
 
 <p>
   Das folgende Flow Chart erklärt, wie wir das gelöst haben. In der Implementation haben wir eine Klasse
-  <code>Recorder</code> geschrieben welche intern einen State hat ob sie am Aufnehmen ist oder nicht. Der Image Grab
-  Loop schickt dann an eine Instanz der Klasse die Bilder. Der Recorder weiss dann selber, ob er das Bild verwerfen
+  <code>Recorder</code> geschrieben, welche intern einen State hat, ob sie am Aufnehmen ist oder nicht. Der Image Grab
+  Loop schickt die Bilder dann an eine Instanz der Klasse. Der Recorder weiss dann selber, ob er das Bild verwerfen
   oder aufnehmen soll.
 </p>
 
 <p>
   Die Prozesse, die gelb umrandet sind, werden später in einem weiteren Flow Chart erklärt. Den gesamten Flow in einem
-  einzigen Flow Chart darzustellen ist leider zu unübersichtlich.
+  einzigen Flow Chart darzustellen, ist leider zu unübersichtlich.
 </p>
 
 <figure>
@@ -751,15 +750,15 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Zuerst finden wir die richtige Kamera mithilfe des Namens welcher in der Konfiguration unter dem Key
+  Zuerst finden wir die richtige Kamera mithilfe des Namens, welcher in der Konfiguration unter dem Key
   <code>VISIBLE_LIGHT_CAMERA_NAME</code> abgelegt ist. Dazu mussten wir glücklicherweise keinen asynchronen
-  Discover-Service bauen. Im Pylon Framework gibt es einen synchronen Aufruf der das Kameraobjekt liefert. Nach dem
+  Discover-Service bauen. Im Pylon Framework gibt es einen synchronen Aufruf, der das Kameraobjekt liefert. Nach dem
   Öffnen konfigurieren wir die Kameraparameter für uns passend. Wir stellen ein, dass nur 1 Frame pro Sekunde
-  aufgezeichnet werden kann. Das machen wir, weil wir ansonsten zu grosse Dateien erhalten für welche wir kein
+  aufgezeichnet werden kann. Das machen wir, weil wir ansonsten zu grosse Dateien erhalten, für welche wir kein
   Speicherplatz haben. Ausserdem haben wir in der Nacht sowieso nicht mehr als 1 FPS, weil die Beleuchtungszeit so
   hoch wird. Den Image Grabber stellen wir so ein, dass er immer das aktuellste Frame der Kamera holt. Somit baut
   sich kein versteckter Buffer unendlich auf. Den Grab Loop entwickeln wir wie erwähnt selber, weil wir mehr Kontrolle
-  brauchen. Pylon würde auch eine Implementation anbieten.
+  brauchen.
 </p>
 
 <p>
@@ -774,8 +773,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Es geht nun weiter in den Detektionsalgorithmus. Dies ist eine eigene Klasse. Die 4 übergebenen Bilder von vorher
-  sind bereits vorverarbeitet. Sie sind in Graustufen, verkleinert und enthalten nur den Ausschnitt des Bildes auf
-  welchem sich nur die Räder des Zuges befinden.
+  sind bereits vorverarbeitet. Sie sind in Graustufen, verkleinert und enthalten nur den Ausschnitt des Bildes, auf
+  welchem sich die Räder des Zuges befinden.
 </p>
 
 <figure>
@@ -789,9 +788,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Das Erkennen des Zuges mit dem ganzen Bild ist sehr schwierig wie auch unnötig. Der Ausschnitt verändert sich nicht
+  Das Erkennen des Zuges mit dem ganzen Bild ist sehr schwierig, wie auch unnötig. Der Ausschnitt verändert sich nicht
   solange die Kabine nicht bewegt wird. Im gesamten Hintergrund gibt es ca. 10 weitere Gleise auf welchen Zügen
-  vorbeifahren können. Zu Beginn haben wir den Ausschnitt nicht ausgeschnitten. Dass wir dann mehr aufnehmen war uns
+  vorbeifahren können. Zu Beginn haben wir den Ausschnitt nicht ausgeschnitten. Dass wir dann mehr aufnehmen, war uns
   klar. Da wussten wir aber noch nicht, dass wir an einer neuralgischen Stelle aufnehmen werden, wo jede Minute
   mindestens ein Zug im Hintergrund vorbeifährt.
 </p>
@@ -800,17 +799,16 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   In der Detektionsklasse ist das Hintergrundbild abgelegt. Also das Bild der Kamera, auf welchem sich kein Zug
   befindet. Wir nennen es von nun an Background. Der Background wird beim Start sowie in regelmässigen Abständen immer
   wieder neu abgelegt. Wenn wir den Background ablegen, führen wir zuerst einen Blurfilter aus. Danach berechnen wir die
-  arithmetische durchschnittliche Helligkeit. Wir speichern also nur ein Wert zwischen 0 und 255.
+  arithmetische durchschnittliche Helligkeit. Wir speichern also nur einen Wert zwischen 0 und 255.
 </p>
 
 <p>
-  Um immer etwas zu sehen auf dem Bild, müssen wir periodisch die Beleuchtungszeit korrigieren lassen. In der Nacht
+  Um auf dem Bild immer etwas zu sehen, müssen wir periodisch die Beleuchtungszeit korrigieren. In der Nacht
   haben wir Beleuchtungszeiten von einer Sekunde und am Tag von wenigen Millisekunden. Aber auch mit der
-  Beleuchtungszeit von einer Sekunde haben wir je nach eingeschalteten Flutlichtern zu wenig gesehen. Deswegen weisen
-  wir die Kamera auch an den Gain automatisch zu korrigieren. Diese automatische Korrektur dauert im Extremfall bis
-  zu zwei Sekunden. Wir geben den Befehl zur automatischen Korrektur selber. Würden wir es die Kamera selber
-  periodisch machen lassen, könnten wir im falschen Moment eine Background-Momentaufnahme machen und wir würden dann
-  fälschlicherweise einen Zug detektieren.
+  Beleuchtungszeit von einer Sekunde haben wir, je nach eingeschalteten Flutlichtern, zu wenig gesehen. Deswegen weisen
+  wir die Kamera an den Gain automatisch zu korrigieren. Diese automatische Korrektur dauert im Extremfall bis
+  zu zwei Sekunden. Wir geben den Befehl zur automatischen Korrektur selber. Würden wir es der Kamera überlassen
+  dies periodisch zu tun, könnten wir im falschen Moment eine Background-Momentaufnahme machen, was dann fälschlicherweise einen Zug detektiert.
 </p>
 
 <p>
@@ -824,8 +822,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Haben wir alle diese State-Geschichten hinter uns gelassen, können wir die eigentlichen Bilder evaluieren.
-  Nachfolgend das Flow Chart welche Schritte durchlaufen werden bis es dazu kommt:
+  Haben wir alle diese State-Geschichten hinter uns, können wir die eigentlichen Bilder evaluieren.
+  Nachfolgend das Flow Chart, mit den bis dort durchlaufenen Schritten:
 </p>
 
 <figure>
@@ -834,23 +832,23 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Bisher haben wir also einen Background-Durchschnittswert und nun neu auch die Durchschnittswerte der aktuellen
-  Bilder. Wir können nun vergleichen ob der aktuelle Wert dunkler ist als der Backgroundwert. Zugräder sind nämlich
-  dunkler als der Schotter und produzieren einen deutlich sichtbaren Einfall der Bildhelligkeit. Auf dieses Verfahren
-  sind wir nicht von Anfang an gekommen so einfach es klingt. Die Umstände der echten Welt sind viel abstruser als
+  Bisher haben wir also einen Background-Durchschnittswert und neu auch die Durchschnittswerte der aktuellen
+  Bilder. Wir können jetzt vergleichen, ob der aktuelle Wert dunkler ist als der Backgroundwert. Zugräder sind nämlich
+  dunkler als der Schotter und produzieren einen deutlich sichtbaren Einfall der Bildhelligkeit. Auf dieses einfache Verfahren
+  erst mit der Zeit gekommen, nachdem viele andere Ansätze fehl schlugen. Die Umstände der echten Welt sind viel abstruser, als
   man sich das im Labor vorstellt. Der Kasten ist diversen Umständen ausgeliefert und muss damit umgehen können.
 </p>
 
 <ul>
-  <li>Sonnenaufgang und Sonnenuntergang verändern</li>
-  <li>Regen und Schnee erzeugen Noise im Bild welcher potentiell detektiert wird</li>
-  <li>Wenn Schnee liegt sieht das Bild anders aus</li>
-  <li>Personen können auf dem Fussweg vor der Kabine durchgehen</li>
+  <li>Sonnenaufgang und Sonnenuntergang</li>
+  <li>Regen und Schnee erzeugen Noise im Bild, welcher potentiell detektiert wird</li>
+  <li>Wenn Schnee liegt, sieht das Bild anders aus</li>
+  <li>Personen auf dem Fussweg vor der Kabine</li>
   <li>Regen kann an der Scheibe Tropfen bilden</li>
   <li>Nebel kann die Sicht verschlechtern</li>
   <li>Reflexionen vom Prime Tower können Kaustiken bilden</li>
-  <li>Vorbeifahrende Züge in der Nacht werfen Licht auf den Boden</li>
-  <li>Züge fahren nicht immer in derselben Richtung durch</li>
+  <li>In der Nacht vorbeifahrende Züge werfen Licht auf den Boden</li>
+  <li>Unterschiedliche Fahrtrichtungen</li>
 </ul>
 
 <p>
@@ -865,9 +863,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <p>
-  Nachdem wir den Analyseausschnitt auf das untere Gleis gelegt haben, haben wir gehofft, dass es jetzt funktionieren
-  wird. Das Problem war jetzt, dass in der Nacht vorbeifahrende Züge einen sofort auftretenden starken Lichteinfall
-  auf den Boden werfen. Dies hat den Detektor eine Aufnahme auslösen lassen.
+  Nachdem wir den Analyseausschnitt auf das untere Gleis gelegt haben, mussten wir feststellen,
+  dass in der Nacht vorbeifahrende Züge einen starken Lichteinfall auf den Boden werfen.
+  Dies hat den Detektor eine Aufnahme auslösen lassen.
 </p>
 
 <figure>
@@ -876,9 +874,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Wir mussten also ein einfacheres Verfahren entwickeln, welches nun simpel die Helligkeit zum Background vergleicht.
-  Mit fleissiger Überwachung des Detektionsalgorithmus und ständigem Nachschrauben sowie den praktischen Tools die wir
-  geschaffen haben konnten wir die Thresholds ständig verbessern. Das nachfolgende Flow Chart zeigt auf was passiert,
+  Wir mussten also ein einfacheres Verfahren entwickeln, welches nur die Helligkeit zum Background vergleicht.
+  Mit fleissiger Überwachung des Detektionsalgorithmus und ständigem Nachschrauben sowie den praktischen Tools, die wir
+  geschaffen haben, konnten wir die Thresholds ständig verbessern. Das nachfolgende Flow Chart zeigt auf was passiert,
   wenn der Threshold erreicht wurde oder nicht. Zur Übersicht wurde der End-State weggelassen. Wenn kein Pfeil von einem
   Kasten weggeht, endet der Flow dort.
 </p>
@@ -912,7 +910,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
     <tbody>
     <tr>
       <td>NoBoundingBoxBackgroundThreshold</td>
-      <td>Nachdem solange sich nichts bewegt hat wird der Background neu initialisiert</td>
+      <td>Solange sich nichts bewegt, wird der Background neu initialisiert</td>
       <td>Sekunden</td>
       <td>30</td>
     </tr>
@@ -936,13 +934,13 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
     </tr>
     <tr>
       <td>AutoExposureTimeout</td>
-      <td>Zeit die die Kamera braucht um die Belichtung einzustellen</td>
+      <td>Zeit, die die Kamera braucht, um die Belichtung einzustellen</td>
       <td>Sekunden</td>
       <td>2</td>
     </tr>
     <tr>
       <td>ExitThreshold</td>
-      <td>Wievielmal bestätigt werden muss, dass kein Zug mehr da ist</td>
+      <td>Anzahl Bestätigungen, dass kein Zug mehr da ist</td>
       <td>Einheit</td>
       <td>8</td>
     </tr>
@@ -959,8 +957,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Insgesamt sind wir mit der Erkennungsrate des Verfahrens zufrieden. Es detektiert zwar eindeutig zu viele Bilder als
-  Zug jedoch wird kein einziger Zug verpasst. Wenn man folgende Beispiele anschaut, ist es aber erstaunlich, wie gut es
-  in den miserablen Sichtverhältnissen funktioniert.
+  Zug, jedoch wird kein einziger Zug verpasst. Wenn man folgende Beispiele anschaut, ist es aber erstaunlich, wie gut es
+  bei schlechten Sichtverhältnissen funktioniert.
 </p>
 
 <figure>
@@ -974,30 +972,29 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Die Erkennungsrate liegt in der ersten Testphase in den finalen Tagen, als der Algorithmus stabil war, bei 99
-  erkannt von 100. 27 Aufnahmen wurden gestartet und hochgeladen auf welchen kein Zug war. In der zweiten Testphase
-  wurden 178 von 178 Zügen erkannt. Es gab eine hohe Anzahl von falsch erkannten Zügen von 49. Als Grund dazu
-  halten wir das schlechte Wetter sowie die Wassertropfen die sich auf dem Sichtglas festgesetzt haben. In einer
-  neuen Version der Kabine wäre ein Glas welches keine Tropfen ansetzen lässt sicher besser. Allenfalls würde auch
-  ein kleines Dach Abhilfe schaffen (welches wir eigentlich ursprünglich von Almatec bestellt hatten).
+  Die Erkennungsrate lag am Ende der ersten Testphase mit verbessertem Algorithmus bei 99%.
+  27 Aufnahmen wurden gestartet und hochgeladen, auf welchen kein Zug war. In der zweiten Testphase
+  wurden 178 von 178 Zügen erkannt. Die Anzahl falsch erkannter Züge lag bei 49. Als Grund dafür sehen wir das
+  schlechte Wetter sowie die Wassertropfen, die sich auf dem Sichtglas festgesetzt haben. In einer
+  neuen Version der Kabine wäre ein Glas, welches keine Tropfen ansetzt, sicher besser. Allenfalls würde auch
+  ein kleines Dach Abhilfe schaffen (welches wir eigentlich ursprünglich bei Almatec bestellt hatten).
 </p>
 
 <p>
-  Die Sensitivität liegt also bei 0.78 trotz dem schlechten Wetter mit dem Sturm Burglind. Die Spezifität ist
+  Die Sensitivität liegt also bei 0.78, trotz dem schlechten Wetter mit Sturm Burglind. Die Spezifität ist
   schwierig zu beziffern, weil wir künstlich etwa ein Zeitintervall für richtig negativ erkannte Bilder festlegen
-  müssten. Oder dann müssten wir mögliche Features in sämtlichen Bildern als richtig negativ erkannt zählen was
-  unmöglich ist.
+  müssten. Oder es müssten in sämtlichen Bildern Features als richtig negativ erkannt und gezählt werden, was unmöglich ist.
 </p>
 
 <p>
-  Nachdem wir die erste Durchlaufwaschstrasse besucht haben, haben wir bemerkt, dass Züge zuerst an die Waschstrasse
+  Nachdem wir die erste Durchlaufwaschstrasse besucht haben, bemerkten wir, dass Züge zuerst an die Waschstrasse
   heranfahren und dann dort ein paar Minuten verweilen. Während dieser Zeit kommunizieren Sie mit dem
-  Waschstrassenleiter oder bedienen die Steueranlage je nach Typ der Anlage. Für uns heisst das, dass auf dem Video
+  Waschstrassenleiter oder bedienen die Steueranlage, je nach Typ der Anlage. Für uns heisst das, dass auf dem Video
   der Zug zu Beginn einfach steht und sich nicht bewegt. Das erzeugt unnötig grosse Videodateien. Deshalb hatten wir
-  die Idee das Video zu pausieren und wieder fortzusetzen, wenn sich der Zug in Bewegung setzt. Das hat bei gutem
-  Wetter gut funktioniert. Wir haben die Bewegung auf dem Bild analysiert mit dem vorherigen Bild und konnten sagen
-  ob sich etwas bewegt hat. Leider funktionierte das Verfahren bei Nacht, wenn diverse Lichtquellen Bewegung
-  verursachen und schlechtes Wetter, wenn Regentropfen oder Schnee im Bild sichtbar sind eher schlecht. Deshalb haben
+  die Idee das Video zu pausieren und fortzusetzen, wenn sich der Zug in Bewegung setzt. Das hat bei gutem
+  Wetter gut funktioniert. Wir haben die Bewegung auf dem Bild mit dem vorherigen Bild analysiert und konnten so sagen, ob sich etwas bewegt hat.
+  Leider funktionierte das Verfahren bei Nacht nicht, da diverse Lichtquellen Bewegung
+  verursachen. Dasselbe bei schlechtem Wetter, wenn Regentropfen oder Schnee ins Bild kommen. Deshalb haben
   wir die Pausierung und Fortsetzung wieder entfernt. Die Reader selber sind aber noch in der Lage zu pausieren und
   fortzusetzen, wenn ein manueller Befehl eintrifft.
 </p>
@@ -1025,8 +1022,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Hersteller gibt es nur eine Bedienersoftware ohne Code Beispiele oder Support für Entwickler. Glücklicherweise
   haben wir ein .NET Codebeispiel gefunden, welches jedoch etwas veraltet ist. Wir haben die Konstanten, die der
   Autor gefunden hat übernommen und den Code neu geschrieben. Im Artikel
-  <a href="#ref-temper-in-csharp">Code Project: Temper USB Thermometer in C#</a> wurde jedoch von einem älteren
-  TEMPer Gerät ausgegangen welches nicht zwei Sensoren hat. Deswegen haben wir anfangs nicht gemerkt, dass wir
+  <a href="#ref-temper-in-csharp">Code Project: Temper USB Thermometer in C#</a> wurde allerdings von einem älteren
+  TEMPer Gerät ausgegangen, welches nicht zwei Sensoren hat. Deswegen haben wir anfangs nicht gemerkt, dass wir
   eigentlich den falschen Sensor auslesen.
 </p>
 
@@ -1064,8 +1061,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <p>
-  OpenWeatherMap bietet eine gratis API an um das aktuelle Wetter abzufragen. Um alte Daten abzufragen, müsste man
-  bezahlen. Deswegen haben wir uns entschieden die Daten jeweils dann abzufragen wann die Aufnahme gemacht wird.
+  OpenWeatherMap bietet eine gratis API an, um das aktuelle Wetter abzufragen. Um alte Daten abzufragen, müsste man
+  bezahlen. Deswegen haben wir uns entschieden die Daten jeweils dann abzufragen, wenn die Aufnahme gemacht wird.
   Durch das müssen wir nicht bezahlen. Die Daten können über einen HTTP GET Request abgefragt werden:
 </p>
 
@@ -1075,7 +1072,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Die Antwort die zurück kommt sieht dann ungefähr so aus:
+  Die Antwort, die zurück kommt sieht dann ungefähr so aus:
 </p>
 
 <figure class="affix">
@@ -1108,8 +1105,8 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Der WeatherReader setzt eine Internetverbindung voraus. In der Zeit als das LTE Modul ausgefallen ist, hatten wir
-  somit keine Wetterdaten sammeln können. Die Rate Limits der Gratis API Subscription schränken uns mit 60 Calls pro
-  Minute nicht ein. Etwas unschön ist, dass die Wetterdaten nur alle 2 Stunden aktualisiert werden, wenn man nicht
+  somit keine Wetterdaten sammeln können. Leider werden bei der kostenlosen Variante die Wetterdaten nur alle 2 Stunden aktualisiert.
+  Etwas unschön ist, dass die Wetterdaten nur alle 2 Stunden aktualisiert werden, wenn man nicht
   zahlt.
 </p>
 
@@ -1137,16 +1134,16 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   </li>
 </ul>
 <p class="affix">
-  Die Bilder von der FLIR Infrarotkamera können mithilfe des FLIR ATLAS SDKs leider nicht anders abgespeichert werden
-  als SEQ Datei. Diese Dateien sind zu gross, um in Vernünftiger Zeit über eine Mobilfunkantenne zu übertragen, ohne
-  dass sich Übertragungen überlappen würden. Eventuell käme es dann zu einem nicht aufholbaren Rückstand in der
-  Übertragungsqueue. Der andere Grund ist, dass der Server auf den die Dateien übertragen werden nicht unendlich
-  Speicher hat. Dieser hat nur 50 GiB an Speicherplatz verfügbar. Dies ist jedoch ein softes Limit wie wir bemerkt
+  Die Bilder von der FLIR Infrarotkamera können mithilfe des FLIR ATLAS SDKs leider nur als SEQ Datei abgespeichert werden.
+  Diese Dateien sind zu gross, um sie in vernünftiger Zeit über eine Mobilfunkantenne zu übertragen.
+  Eventuell käme es dann zu einem nicht aufholbaren Rückstand in der
+  Übertragungsqueue. Der andere Grund ist der begrenzte Speicherplatz des Servers, auf den die Dateien übertragen werden.
+  Dieser verfügt nur über 50 GiB Speicherplatz. Dies ist jedoch ein Soft-Limit wie wir bemerkt
   haben. Wir möchten also die SEQ Dateien in ein anderes Format komprimieren, um die Daten zu übertragen. Da es sich um
-  aufeinander folgende Bilder handelt würde sich ein Videoformat anbieten. Das proprietäre Format von FLIR SEQ mussten
-  wir selber reverse engineeren, um die Inhalte zu verstehen und diese auslesen zu können. FLIR hat kein Interesse diese
-  Innereien zu dokumentieren oder Gratissoftware anzubieten die diese konvertieren kann. Es gibt nämlich Bezahltools von
-  FLIR, die aber mehrere zehntausend Franken kosten können. Deswegen haben wir es selber angegangen.
+  aufeinander folgende Bilder handelt, würde sich ein Videoformat anbieten. Das proprietäre Format von FLIR SEQ mussten
+  wir selber reverse engineeren, um die Inhalte zu verstehen und auslesen zu können. FLIR hat kein Interesse diese
+  Innereien zu dokumentieren oder Gratissoftware anzubieten, die diese konvertieren kann. Es gibt nämlich Bezahltools von
+  FLIR, die aber mehrere zehntausend Franken kosten. Deswegen haben wir es selber entwickelt.
 </p>
 
 <p>
@@ -1163,17 +1160,17 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Die Rohdaten aus der SEQ Datei sind absolute und linear verteilte Sensorwerte. Das heisst der Wert 0 entspricht dem
-  niedrigsten Sensorwert und 16'384 (2<sup>14</sup>) entspricht dem höchsten. Wenn wir ein Zug aufnehmen geht dessen
-  Temperaturspanne nicht von 0 bis 16'384 sondern bewegt sich im Bereich von wenigen Celsius. Die kältesten Objekte
-  sind so kalt wie die Aussentemperatur und die heissesten Objekte, die Bremsen und Achsen bis zu 40°C. Züge fahren
-  idealerweise nicht mit Vollgas auf die Waschstrasse zu und bremsen mit einer Vollbremsung ab was die Bremsen
+  niedrigsten Sensorwert und 16'384 (2<sup>14</sup>) entspricht dem höchsten. Wenn wir ein Zug aufnehmen, geht dessen
+  Temperaturspanne nicht von 0 bis 16'384, sondern bewegt sich im Bereich von wenigen Celsius. Die kältesten Objekte
+  sind so kalt wie die Aussentemperatur und die heissesten Objekte, die Bremsen und Achsen, bis zu 40°C. Züge fahren
+  idealerweise nicht mit Vollgas auf die Waschstrasse zu machen eine Vollbremsung, was die Bremsen
   zum Glühen bringen würde.
 </p>
 
 <p>
-  Mit dieser Erkenntnis haben wir ausprobiert, was das heissen würde, wenn die minimalen maximalen Pixelwerte auslesen
+  Mit dieser Erkenntnis haben wir ausprobiert, was es heissen würde, wenn wir die minimalen maximalen Pixelwerte auslesen
   und die Werte mit dem Offset "clampen". Nach dem Clamping nehmen wir die ganze Range und skalieren sie auf 8 Bit.
-  Dabei können wir auch gleich ausrechnen wieviel Präzision das wir verlieren.
+  Dabei können wir auch gleich den Präzisionsverlust berechnen.
 </p>
 
 <figure>
@@ -1192,7 +1189,7 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </figure>
 
 <p>
-  Man sieht, dass der Verlust in der Regel zwischen 78% und 88% liegt. Wir gewinnen also platt gesagt nicht so viel
+  Man sieht, dass der Verlust in der Regel zwischen 78% und 88% liegt. Wir gewinnen also nicht viel
   dabei. Man muss allerdings folgendes berücksichtigen. Die Kamera liefert im HighGainMode eine Temperaturgenauigkeit
   von 0.01°C (Temperaturspanne von 160 (-25° bis 135°C) geteilt durch 16'384). Bei einem Verlust von 100% können wir
   die Temperatur mit einer Genauigkeit von 0.625°C angeben. Bei einem Verlust von 80% bei <strong>0.125°C</strong>.
