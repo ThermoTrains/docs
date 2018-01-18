@@ -1197,14 +1197,14 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 </p>
 
 <p>
-  Nachdem wir die Bilder zu 8 Bit Graustufen konvertiert haben können wir sie mit h.264 encodieren und erhalten somit
-  eine sehr kleine Datei die zudem auch direkt im Browser im Cockpit angeschaut werden kann. Den Offset- und
+  Nachdem wir die Bilder zu 8 Bit Graustufen konvertiert haben, können wir sie mit h.264 encodieren und erhalten somit
+  eine sehr kleine Datei die auch direkt im Browser im Cockpit angeschaut werden kann. Den Offset- und
   Skalierungsfaktor den wir zum Clamping benutzt haben speichern wir in den Metadaten der MP4 Datei damit die SEQ
   Datei wieder rekonstruiert werden kann wenn auch mit Verlust.
 </p>
 
 <p>
-  Ein Problem ergab sich während dem Betrieb. Wenn die aufgenommen SEQ Datei sehr gross war hat der IRCompressor die
+  Ein Problem ergab sich während dem Betrieb. Wenn die aufgenommen SEQ Datei sehr gross war, hat der IRCompressor die
   CPU zu 100% ausgelastet um das Video zu encodieren. Das hatte zur Folge, dass der VisibleLightReader keine
   Aufnahmen mehr machen konnte, weil er nicht mehr genug schnell seine eigene Aufnahme encodieren konnte. Somit
   endeten diese Videos als schwarze Frames. Der Bildanalyseteil hat aber wie bis anhin funktioniert, weil das
@@ -1213,9 +1213,9 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Als Gegenmassnahme haben wir zum einen mit dem C# Profiler den Code soweit wie möglich optimiert. Dies ergab ein
   merkbarer aber vernichtend kleinen Performance Boost. Wir haben uns dann entschlossen, die Framerate der IR Videos
   auf 1 Frame zu setzen. Danach konnten wir die Videos innerhalb einer Minute konvertieren. Da wir das Video sowieso
-  nur zum Stitching verwenden, spielt dies keine Rolle. Wir haben es nicht von Beginn an gemacht, weil 30 FPS Videos zu
-  zeigen besser bei Projektpartnern der SBB ankommt, als wenn man ein Video mit 1 FPS zeigt. Die
-  Hardwarelimitation haben uns also davon abgehalten.
+  nur zum Stitching verwenden, spielt dies keine Rolle. Wir haben es nicht von Beginn an so gemacht. Denn 30 FPS Videos
+  bei Projektpartnern zu zeigen kommt besser an als ein Video mit 1 FPS. Die Hardwaelimitation hat uns also davon
+  abgehalten.
 </p>
 
 <h5>Uploader</h5>
@@ -1240,30 +1240,30 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
   Umgebungsvariable <code>THERMOBOX_FTP</code> abgelegt in der Form <code>username:password@server</code>.
 </p>
 <p>
-  Die Dateien werden anschliessend nicht einfach gelöscht, sondern in den Papierkorb verschoben, weil sich so die
-  Möglichkeit bietet nachzuschauen welche Dateien genau auf dem Mini PC existiert haben, weil vielleicht etwas mit dem
-  Upload schiefgegangen ist. Auf Windows kann dann eingestellt werden, wie gross der Inhalt des Papierkorbs maximal
+  Die Dateien werden anschliessend nicht einfach gelöscht, sondern in den Papierkorb verschoben. Damit bietet sich
+  die Möglichkeit Möglichkeit nachzuschauen, welche Dateien auf dem Mini PC existiert haben, falls vielleicht etwas mit
+  dem Upload schiefgegangen ist. Auf Windows kann dann eingestellt werden, wie gross der Inhalt des Papierkorbs maximal
   sein darf. Ist das Limit überschritten, leert Windows automatisch die ältesten Dateien. So können wir den
   Festplattenspeicherplatz optimal ausnutzen und trotzdem sicherstellen, dass sie nie vollläuft. Ausser ein Programm
   erstellt eine einzige Datei, die den verfügbaren Speicherplatz alleine ausnutzt.
 </p>
 
 <p>
-  Um Dateien von einer .NET Applikation in den Papierkorb zu verschieben, gibt es leider kein einfaches Interface.
-  Zum einen kann man ein Shell32 Objekt erstellen welches auf den Papierkorb zeigt und die Datei dann dort
-  hin verschieben. Damit das klappt, muss man aber zuerst in einem STA Thread (single-threaded apartment) sein, welches
+  Um Dateien von einer .NET Applikation in den Papierkorb zu verschieben, gibt es bedauerlicherweise kein einfaches
+  Interface. Zum einen kann man ein Shell32 Objekt erstellen, welches auf den Papierkorb zeigt und die Datei dort hin
+  verschieben. Damit das klappt, muss man aber zuerst in einem STA Thread (single-threaded apartment) sein, welches
   unsere Komponenten nicht sind.
 </p>
 
 <p>
-  Die auf den FTP Server hochgeladenen Dateien lesen wir dann im Thermobox Cockpit aus und zeigen sie im Browser an.
-  So kann live mitverfolgt werden was gerade aufgenommen wurde.
+  Die auf den FTP Server hochgeladenen Dateien lesen wir im Thermobox Cockpit aus und zeigen sie im Browser an.
+  So kann live mitverfolgt werden, was gerade aufgenommen wurde.
 </p>
 
 <h4>CLI Utils</h4>
 <p>
-  Während der Projektarbeit sind wir immer wieder auf sich wiederholende Arbeiten gestossen die wir automatisiert haben.
-  Diese kleinen CLI Tools haben wir auch in die .NET Solution integriert damit diese auch vom gemeinsamen Code
+  Während der Projektarbeit sind wir immer wieder auf sich wiederholende Arbeiten gestossen, die wir automatisiert
+  haben. Diese kleinen CLI Tools haben wir auch in die .NET Solution integriert damit diese auch vom gemeinsamen Code
   profitieren können.
 </p>
 
@@ -1279,22 +1279,22 @@ private static void Retry(Action action, Func&lt;bool&gt; testSuccess)
 
 <p>
   Im Modus <strong>MP4 zu SEQ</strong> werden die Metainformationen der MP4 Datei ausgelesen um die SEQ Datei zu
-  rekonstruieren. Dies dient uns dazu, dass wir verifizieren können, dass unser Kompressionsverfahren funktioniert.
-  Vorher und nachher sollten dieselben Temperaturwerte berechnet werden. Auch können wir so visualisieren was der
-  Präzisionsverlust effektiv ausmacht indem wir die zwei Dateien in den FLIR Tools vergleichen können. Das FLIR ATLAS
-  SDK bietet leider keine Möglichkeit an SEQ oder auch nur einzelne Bilder mit Signaldaten zu erstellen an. Das heisst
+  rekonstruieren. Dies dient dazu, dass wir verifizieren können, ob unser Kompressionsverfahren funktioniert.
+  Vorher und nachher sollten dieselben Temperaturwerte berechnet werden. Auch können wir so visualisieren, was der
+  Präzisionsverlust effektiv ausmacht, indem wir die zwei Dateien in den FLIR Tools vergleichen können. Das FLIR ATLAS
+  SDK bietet keine Möglichkeit an, SEQ oder auch nur einzelne Bilder mit Signaldaten zu erstellen, an. Das heisst
   wir mussten die SEQ Datei bit für bit selber erstellen. Damit wir das konnten mussten wir zuerst die essentiellen Tags
-  der Metadaten finden damit die SEQ Datei valide ist und von den FLIR Tools erkannt und gelesen wird. Mithilfe von
+  der Metadaten finden, damit die SEQ Datei valide ist und von den FLIR Tools erkannt und gelesen wird. Mithilfe von
   ExifTool und einem Hex Editor und einer langen Nacht konnten wir das nötige Verständnis aufbauen.
 </p>
 
 <p>
   Als Einstiegspunkt diente das veraltete <a href="#ref-flir-interface">Spezifikationsdokument</a> von FLIR für einzelne
-  Bilder mit angehängten Signaldaten. Das fehlende Puzzlestück war die Framerate des Videos. Ist diese gesetzt
-  erkennt FLIR Tools die Datei als Video. Fehlt sie, wird nur das erste Frame angezeigt. Die Kenntnis welches Tag
-  Feld und welchen Datentyp die Framerate haben wir zurück ins ExifTool fliessen lassen. Phil Harvey hat kurz später
-  eine neue Version erstellt die nun die Framerate von SEQ Dateien auslesen kann. Sebastian Häni wurde dankend in den
-  Release Notes erwähnt.
+  Bilder mit angehängten Signaldaten. Das fehlende Puzzlestück war die Framerate des Videos. Ist diese gesetzt,
+  erkennt FLIR Tools die Datei als Video. Fehlt sie, wird nur das erste Frame angezeigt. Die Kenntnis, welches Tag
+  Feld und welchen Datentyp die Framerate hat, haben wir zurück ins ExifTool fliessen lassen. Phil Harvey, der
+  Maintainer von ExifTool, hat kurz später eine neue Version erstellt die nun die Framerate von SEQ Dateien auslesen
+  kann. Sebastian Häni wurde dankend in den Release Notes erwähnt.
 </p>
 
 <p>
