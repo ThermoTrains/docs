@@ -3,17 +3,17 @@
 
   <h3>Ziel</h3>
   <p>
-    Um die akquirierten und verarbeiteten Sensordaten nun analysieren zu können müssen wir eine geeignete Plattform
-    finden. Diese Plattform soll einem Experten der sich mit der Technik der Züge auskennt ermöglichen die Daten in
-    seinem Büro anzusehen, diese zu vergleichen und eventuell weitere Inspektionen von Fahrzeugen dadurch anfordern.
+    Um die akquirierten und verarbeiteten Sensordaten nun analysieren zu können, müssen wir eine geeignete Plattform
+    finden. Diese Plattform soll einem Experten, der sich mit der Technik der Züge auskennt, ermöglichen die Daten in
+    seinem Büro anzusehen, diese zu vergleichen und dadurch eventuell weitere Inspektionen von Fahrzeugen anzufordern.
   </p>
 
   <p>
     Eine automatische Analyse mit Bilderkennung oder gar Machine Learning können wir leider noch nicht implementieren,
-    weil wir in unserem Projekt kein Schadensfall gefunden haben. Man könnte zwar sagen man vergleicht Zugswagen vom
+    weil wir in unserem Projekt kein Schadensfall gefunden haben. Man könnte zwar sagen, man vergleicht Zugswagen vom
     selben Typ untereinander und markiert die gefundenen Unterschiede auf den Bildern automatisch. Dies bringt aber
     mit dem jetzigen Wissensstand auch eher wenig, weil der Wagen auf dem Infrarotbild deutlich anders aussehen kann,
-    je nachdem was er vorher gemacht hat. Ist der auf dem Gleisfeld stillgestanden? Liefen die Heizungen? Strahlte in
+    je nachdem was er vorher gemacht hat. Ist er auf dem Gleisfeld stillgestanden? Liefen die Heizungen? Strahlte ihn
     die Sonne an? All diese Gegebenheiten würden zu Unterschieden führen. Diese müssen zuerst in Erfahrung gebracht
     und festgehalten werden. Nur so kann man sagen, ob der Unterschied nun einen Schaden darstellt oder einfach eine
     andere Rahmenbedingung.
@@ -32,10 +32,10 @@
   <p>
     Das zweite Problem ist, dass die FLIR Tools auf dem FLIR ATLAS SDK basieren. Wenn ein Bild geöffnet wird, welches
     nicht einer Auflösung entspricht, zu der es auch eine FLIR Kamera gibt, stürzt die Software einfach mit einer
-    unaufgefangenen Exception ab. Warum das passiert scheint uns ein Rätsel, kann aber durchaus so gewollt sein. FLIR
+    Exception ab. Warum das passiert scheint uns ein Rätsel, kann aber durchaus so gewollt sein. FLIR
     hat keine Interessen Tools zu bauen, mit denen andere Bilder analysiert werden können. Jedenfalls haben wir
     bewiesen, dass es wirklich an der Auflösung liegt. Ansonsten würde der Ansatz funktionieren. Wir haben unsere
-    Panoramabilder angereichert mit den Binärdaten und Metadaten und auf eine Auflösung herunterskaliert von 640 x
+    Panoramabilder mit den Binärdaten und Metadaten angereichert und auf eine Auflösung herunterskaliert von 640 x
     512 Pixeln. Dann konnte man das Bild ansehen und die Temperaturen wurden korrekt berechnet. Auch haben wir im
     FLIR Produktekatalog alle Kameraauflösungen herausgesucht und festgestellt, dass alle diese Auflösungen
     funktionieren. Nun ist jedoch ein Bild, dass von 20'000 Pixeln Breite auf 640 Pixel Breite reduziert wurde, nicht
@@ -43,7 +43,7 @@
   </p>
 
   <p>
-    Als Lösung haben wir unsere eigene Analyseplattform geschaffen namens Thermoboard. Die Webapplikation erlaubt es
+    Als Lösung haben wir unsere eigene Analyseplattform namens Thermoboard geschaffen. Die Webapplikation erlaubt es
     Experten über den Browser die Sensordaten anzusehen, die Züge zu suchen, die sie interessieren und Kommentare zu
     verfassen.
   </p>
@@ -153,8 +153,8 @@
   <h4>Image Viewer</h4>
   <p>
     Der eigens gebaute Image Viewer erlaubt es dem Benutzer in die sehr grossen Panoramabilder hineinzuzoomen und
-    Details zu betrachten. Ausserdem kann der Viewer die Temperaturen aus den Infrarotbildern automatische berechnen
-    und zeigt sie dem Benutzer über der Maus an. Der Viewer ist ein Canvas Element in welches wir das Bild an den
+    Details zu betrachten. Ausserdem kann der Viewer die Temperaturen aus den Infrarotbildern automatisch berechnen
+    und zeigt sie dem Benutzer über der Maus an. Der Viewer ist ein Canvas Element, in welches wir das Bild an den
     bestimmten Koordinaten zeichnen. Mit der Maus kann der Benutzer das Bild verschieben. Mit dem Mausraud kann
     hineingezoomt werden.
   </p>
@@ -165,17 +165,17 @@
   </figure>
 
   <p>
-    Um die Temperatur berechnen zu können müssen wir als erstes die Falschfarbe wieder zurück auf eine Graustufe
-    führen. Den Pixelwert können wir auslesen weil wir ein Canvas verwenden. Dann könnte man meinen, man kann einfach
+    Um die Temperatur berechnen zu können, müssen wir als erstes die Falschfarbe wieder zurück auf eine Graustufe
+    führen. Den Pixelwert können wir auslesen, weil wir ein Canvas verwenden. Dann könnte man meinen, man kann einfach
     eine Lookup Table der Color Map anfertigen und diese abfragen. Leider gibt es in JPG Bildern immer kleine
-    Abweichungen durch Kompressionsartefakte. Das heisst wird müssen eine Nearest Neighbor Search durchführen und die
+    Abweichungen durch Kompressionsartefakte. Das heisst, wir müssen eine Nearest Neighbor Search durchführen und die
     naheste Farbe im RGB Raum in der Lookup Table finden. Zum Glück ist die JavaScript Welt voll mit Libraries. Die
     Library <a href="#ref-nearest-color">nearest-color</a> macht genau das.
   </p>
 
   <p>
     Danach können wir mit <a href="#ref-exif-js">Exif.js</a> die Exifdaten auslesen um den von uns
-    definierten Skalierungs- und Offsetparameter zu erhalten. Den erhaltenen Wert geben wir in die Temperaturformel
+    definierten Skalierungs- und Offsetparameter zu erhalten. Den gelesenen Wert geben wir in die Temperaturformel
     hinein und heraus kommt die Temperatur in Grad Celsius. Die Formel haben wir soweit wie möglich mit sinnvollen
     Konstanten ausgerechnet damit diese live, während die Maus bewegt wird, berechnet werden kann.
   </p>
@@ -195,10 +195,10 @@
   <h3>Reflexion</h3>
   <p>
     Das Thermoboard zeigt wie sich eine Predictive Maintenance Plattform aus Endbenutzersicht anfühlt. Uns ist klar,
-    dass die Plattform nicht Feature-Komplett ist und weitere Anforderungen umgesetzt werden müssen die vor allem das
-    kollaborative zusammen arbeiten auf der Plattform fördern. Zudem müssen die Daten mit noch weiteren
+    dass die Plattform nicht Feature-Komplett ist und weitere Anforderungen umgesetzt werden müssen, die vor allem das
+    kollaborative Zusammenarbeiten auf der Plattform fördern. Zudem müssen die Daten mit weiteren
     Kontextinformationen aus anderen SBB System angereichert werden können. So soll zum Beispiel nachvollzogen werden
-    können wodurch sich ein Fahrzeug bewegt hat unmittelbar bevor es aufgenommen wurde. Eventuell ist auch eine
+    können, welche Route ein Fahrzeug vor der Aufnahme gefahren ist. Eventuell ist auch eine
     Integration in ein anderes Messsystem anzudenken, welches die Passagierraumtemperatur aufzeichnet. All diese
     Informationen sind ein Puzzlestück des Ganzen und helfen am Schluss eine saubere Analyse zu machen.
   </p>
